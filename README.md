@@ -21,7 +21,7 @@ O Spring não sobe se a conexão com o banco de dados não for bem-sucedida.
 - **Nome do banco:** `techelp`
 - **Usuário:** `root`
 - **Senha:** `root`
-- **Porta:** `5433`
+- **Porta:** `5432`
 
 ---
 

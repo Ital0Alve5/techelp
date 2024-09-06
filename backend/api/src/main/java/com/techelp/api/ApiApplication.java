@@ -13,7 +13,7 @@ public class ApiApplication {
 
 	@GetMapping("/")
 	public String teste() {
-		return "opa, tamo aí!";
+		return "mudei";
 	}
 
 	public static void main(String[] args) {

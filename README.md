@@ -25,7 +25,7 @@ O Spring não sobe se a conexão com o banco de dados não for bem-sucedida.
 
 ---
 
-### Para subir o servidor:
+### Para subir o servidor da API:
 
 1. Vá na classe `ApiApplication.java` e execute com o play no canto superior direito conforme a imagem:
    ![image](https://github.com/user-attachments/assets/56813761-137b-42cf-9097-1bf48357dc1e)
@@ -37,7 +37,19 @@ O Spring não sobe se a conexão com o banco de dados não for bem-sucedida.
 
 ### Para iniciar o frontend:
 
-1. Com a API funcionando, não feche o terminal. Abra outro terminal e vá para o diretório **frontend** para executar o comando:
+Com a API funcionando, não feche o terminal, abra um outro e vá para o diretório frontend para executar o comando:
+```bash
+npm install
+```
 
-   ```bash
-   npm install
+A pasta node_modules surgirá com as dependências. Para subir o server do Angular, digite o comando:
+```
+ng serve --open
+```
+
+Abra a página localhost:4200 que é a porta padrão do Angular.
+
+Se tudo deu certo, você deverá ver a resposta da API exibida na tela:
+
+![image](https://github.com/user-attachments/assets/c8857df9-79b4-4557-a31d-49eb2e3c35b7)
+

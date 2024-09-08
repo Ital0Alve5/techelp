@@ -1,0 +1,24 @@
+<app-card>
+  <h1>Bem-vindo de volta!</h1>
+  <form (ngSubmit)="onSubmit()">
+    <app-input
+      [value]="formValues().email"
+      placeholder="Digite seu e-mail *"
+      (valueChange)="onInputChange('email', $event)"
+    >
+      <user-icon input-icon width="14px" color="#9197B3" />
+    </app-input>
+
+    <app-input
+      [value]="formValues().password"
+      type="password"
+      placeholder="Digite sua senha *"
+      (valueChange)="onInputChange('password', $event)"
+    >
+      <lock-icon input-icon width="14px" color="#9197B3" />
+    </app-input>
+
+    <a href="#">Esqueci minha senha</a>
+    <button>Entrar</button>
+  </form>
+</app-card>

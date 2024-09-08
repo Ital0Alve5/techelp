@@ -1,0 +1,14 @@
+@import 'variables';
+
+main {
+  height: 100vh;
+  position: relative;
+  margin: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (min-width: $tablet-width) {
+    margin: 0 80px;
+  }
+}

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { TesteService } from '../../core/services/teste/teste.service';
+import { TesteService } from '@/core/services/teste/teste.service';
 
 @Component({
-  selector: 'teste-component',
+  selector: 'app-teste-component',
   standalone: true,
   templateUrl: './teste.component.html',
   styleUrl: './teste.component.scss',

@@ -53,7 +53,7 @@ export class LoginComponent {
       return;
     }
 
-    let emailMatch = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$').test(this.formValues().email.value);
+    const emailMatch = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$').test(this.formValues().email.value);
 
     if (!emailMatch) {
       this.formValues().email.error = true;

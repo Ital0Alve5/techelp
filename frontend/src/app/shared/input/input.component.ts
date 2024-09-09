@@ -33,6 +33,4 @@ export class InputComponent {
     if (this.isHidden()) this.variableType.set('password');
     else this.variableType.set('text');
   }
-
-  
 }

@@ -17,11 +17,10 @@ input {
   outline: none;
   width: 100%;
 }
-  
-.negative{
-    border: 1px solid $feedback-negative-50;
-   }
 
+.negative {
+  border: 1px solid $feedback-negative-50;
+}
 
 allow-visibility-icon,
 block-visibility-icon {

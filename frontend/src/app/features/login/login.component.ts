@@ -15,73 +15,70 @@ import { InputComponent } from '@/shared/input/input.component';
 })
 export class LoginComponent {
   isError = false;
-  errorLog = "";
+  errorLog = '';
   formValues = signal({
     email: {
-      value:'',
-      error: false
+      value: '',
+      error: false,
     },
     password: {
-      value:'',
-      error: false
-    }
+      value: '',
+      error: false,
+    },
   });
 
   onInputChange(fieldName: string, newValue: string) {
     this.formValues.update((currentValues) => ({
       ...currentValues,
-      [fieldName]:{
-        value: newValue
-      } 
+      [fieldName]: {
+        value: newValue,
+      },
     }));
   }
 
-  handleError(){
-    if(this.formValues().email.value.length == 0){
+  handleError() {
+    if (this.formValues().email.value.length == 0) {
       this.formValues().email.error = true;
       this.isError = true;
-      this.errorLog = "Complete todos os campos";
-   }
-
-   if(this.formValues().password.value.length == 0){
-    this.formValues().password.error = true;
-    this.isError = true;
-    this.errorLog = "Complete todos os campos";
- }
- 
- if(this.isError){
-  return;
- }
-
-   let emailMatch = new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$").test(this.formValues().email.value);
-     
-    if(!emailMatch){
-      this.formValues().email.error = true;
-      this.isError = true;
-      this.errorLog = "E-mail incorreto";
-        return;
+      this.errorLog = 'Complete todos os campos';
     }
-    
-    
+
+    if (this.formValues().password.value.length == 0) {
+      this.formValues().password.error = true;
+      this.isError = true;
+      this.errorLog = 'Complete todos os campos';
+    }
+
+    if (this.isError) {
+      return;
+    }
+
+    let emailMatch = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$').test(this.formValues().email.value);
+
+    if (!emailMatch) {
+      this.formValues().email.error = true;
+      this.isError = true;
+      this.errorLog = 'E-mail incorreto';
+      return;
+    }
   }
   onSubmit() {
     this.isError = false;
     this.handleError();
-    if(!this.isError){
-    console.log('form enviado:', this.formValues());
+    if (!this.isError) {
+      console.log('form enviado:', this.formValues());
 
-    this.formValues.update((currentValues) => ({
-      ...currentValues,
-      email: {
-        value:'',
-        error: false
-      },
-      password: {
-        value:'',
-        error: false
-      }
-    }));
-
-  } 
+      this.formValues.update((currentValues) => ({
+        ...currentValues,
+        email: {
+          value: '',
+          error: false,
+        },
+        password: {
+          value: '',
+          error: false,
+        },
+      }));
+    }
   }
 }

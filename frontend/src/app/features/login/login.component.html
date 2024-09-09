@@ -2,7 +2,7 @@
   <h1>Bem-vindo de volta!</h1>
   <form (ngSubmit)="onSubmit()">
     @if (isError) {
-        <p class="errorLog">{{ errorLog }}</p>
+      <p class="errorLog">{{ errorLog }}</p>
     }
     <app-input
       [value]="formValues().email.value"

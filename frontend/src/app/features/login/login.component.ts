@@ -37,13 +37,13 @@ export class LoginComponent {
   }
 
   handleError() {
-    if (this.formValues().email.value.length == 0) {
+    if (this.formValues().email.value.length === 0) {
       this.formValues().email.error = true;
       this.isError = true;
       this.errorLog = 'Complete todos os campos';
     }
 
-    if (this.formValues().password.value.length == 0) {
+    if (this.formValues().password.value.length === 0) {
       this.formValues().password.error = true;
       this.isError = true;
       this.errorLog = 'Complete todos os campos';

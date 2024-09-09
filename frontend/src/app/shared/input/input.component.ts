@@ -12,9 +12,8 @@ export class InputComponent {
   placeholder = input<string>();
   type = input<string>('text');
   value = input<string>();
-
   valueChange = output<string>();
-
+  isError = input<boolean>(false);
   isHidden = signal<boolean>(true);
   variableType = signal(this.type());
 
@@ -34,4 +33,6 @@ export class InputComponent {
     if (this.isHidden()) this.variableType.set('password');
     else this.variableType.set('text');
   }
+
+  
 }

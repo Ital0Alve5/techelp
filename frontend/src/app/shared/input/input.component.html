@@ -1,6 +1,6 @@
 <div>
   <ng-content select="[input-icon]"></ng-content>
-  <input [value]="value()" (input)="onInput($event)" [type]="variableType()" [placeholder]="placeholder()" />
+  <input class="{{isError() ? 'negative' : '' }}" [value]="value()" (input)="onInput($event)" [type]="variableType()" [placeholder]="placeholder()" />
   @if (type() === 'password') {
     @if (isHidden()) {
       <allow-visibility-icon (click)="toggleHidden(false)" width="14px" color="#9197B3" />

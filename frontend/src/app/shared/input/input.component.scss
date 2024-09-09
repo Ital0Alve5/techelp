@@ -11,11 +11,16 @@ input {
   font-size: 14px;
   padding: 8px 16px;
   border-radius: 24px;
-  border: 1px solid $neutral-30;
   background-color: $neutral-10;
+  border: 1px solid $neutral-30;
   outline: none;
   width: 100%;
 }
+  
+.negative{
+    border: 1px solid $feedback-negative-50;
+   }
+
 
 allow-visibility-icon,
 block-visibility-icon {

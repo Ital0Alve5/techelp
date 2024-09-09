@@ -1,4 +1,5 @@
 @import 'colors';
+@import 'typology';
 
 div {
   display: flex;
@@ -8,7 +9,7 @@ div {
 }
 
 input {
-  font-size: 14px;
+  font-size: $size-small;
   padding: 8px 16px;
   border-radius: 24px;
   background-color: $neutral-10;

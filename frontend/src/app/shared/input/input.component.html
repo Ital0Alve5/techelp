@@ -1,7 +1,7 @@
 <div>
   <ng-content select="[input-icon]"></ng-content>
   <input
-    class="{{ isError() ? 'negative' : '' }}"
+    [class.negative]="isError()"
     [value]="value()"
     (input)="onInput($event)"
     [type]="variableType()"

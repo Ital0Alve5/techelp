@@ -1,6 +1,7 @@
 import { Component, input, signal, model } from '@angular/core';
 import { AllowVisibilityIcon } from '../icons/allow-visibility.icon';
 import { BlockVisibilityIcon } from '../icons/block-visibility.icon';
+import { InputError } from '@/shared/types/input-error.type';
 @Component({
   selector: 'app-input',
   standalone: true,
@@ -13,7 +14,9 @@ export class InputComponent {
   value = model<string>('');
 
   placeholder = input<string>();
-  isError = input<boolean>(false);
+  id = input<string>();
+  label = input<string>('ou');
+  validation = input<InputError>();
 
   isHidden = signal<boolean>(true);
 

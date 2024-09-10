@@ -1,30 +1,55 @@
 @import 'colors';
 @import 'typology';
 
-div {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  position: relative;
-}
-
-input {
-  font-size: $size-small;
-  padding: 8px 16px;
-  border-radius: 24px;
-  background-color: $neutral-10;
-  border: 1px solid $neutral-30;
-  outline: none;
+.general-container {
   width: 100%;
-}
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 
-.negative {
-  border: 1px solid $feedback-negative-50;
-}
+  label {
+    font-size: $size-small;
+    color: $neutral-50;
+  }
 
-allow-visibility-icon,
-block-visibility-icon {
-  position: absolute;
-  right: 12px;
-  cursor: pointer;
+  .error-container {
+    width: 100%;
+
+    .errorMessage {
+      color: $feedback-negative-50;
+      font-size: $size-x-small;
+      margin-top: 4px;
+    }
+
+    .input-container {
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      input {
+        font-size: $size-small;
+        padding: 8px 16px;
+        border-radius: 24px;
+        background-color: $neutral-10;
+        border: 1px solid $neutral-30;
+        outline: none;
+        width: 100%;
+
+        &.error {
+          border: 1px solid $feedback-negative-50;
+        }
+      }
+
+      allow-visibility-icon,
+      block-visibility-icon {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+    }
+  }
 }

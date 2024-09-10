@@ -1,23 +1,22 @@
 <app-card>
   <h1>Bem-vindo de volta!</h1>
   <form (ngSubmit)="onSubmit()">
-    @if (isError) {
-      <p class="errorLog">{{ errorLog }}</p>
-    }
     <app-input
+      label="E-mail"
       placeholder="Digite seu e-mail *"
       [(value)]="formValues().email.value"
       [type]="formValues().email.type"
-      [isError]="formValues().email.error"
+      [validation]="formValues().email.validation"
     >
       <user-icon input-icon width="14px" color="#9197B3" />
     </app-input>
 
     <app-input
+      label="Senha"
       placeholder="Digite sua senha *"
       [(value)]="formValues().password.value"
       [type]="formValues().password.type"
-      [isError]="formValues().password.error"
+      [validation]="formValues().password.validation"
     >
       <lock-icon input-icon width="14px" color="#9197B3" />
     </app-input>

@@ -5,30 +5,38 @@ import { CardComponent } from '@/shared/ui/card/card.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
 import { InputComponent } from '@/shared/ui/input/input.component';
+import { ValidatorService } from '@/shared/services/input/validator.service';
+import { Validation } from '@/shared/enums/validation.enum';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CardComponent, UserIcon, InputComponent, LockIcon, FormsModule],
+  providers: [ValidatorService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  isError = false;
-  errorLog = '';
-
   formValues = signal({
     email: {
       value: '',
       type: 'text',
-      error: false,
+      validation: {
+        error: false,
+        message: '',
+      },
     },
     password: {
       value: '',
       type: 'password',
-      error: false,
+      validation: {
+        error: false,
+        message: '',
+      },
     },
   });
+
+  constructor(private validatorService: ValidatorService) {}
 
   onInputChange(fieldName: string, newValue: string) {
     this.formValues.update((currentValues) => ({
@@ -39,51 +47,51 @@ export class LoginComponent {
     }));
   }
 
-  handleError() {
-    if (this.formValues().email.value.length === 0) {
-      this.formValues().email.error = true;
-      this.isError = true;
-      this.errorLog = 'Complete todos os campos';
-    }
-
-    if (this.formValues().password.value.length === 0) {
-      this.formValues().password.error = true;
-      this.isError = true;
-      this.errorLog = 'Complete todos os campos';
-    }
-
-    if (this.isError) {
-      return;
-    }
-
-    const emailMatch = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$').test(this.formValues().email.value);
-
-    if (!emailMatch) {
-      this.formValues().email.error = true;
-      this.isError = true;
-      this.errorLog = 'E-mail incorreto';
-      return;
-    }
+  resetInputs() {
+    this.formValues.update((currentValues) => ({
+      ...currentValues,
+      email: {
+        value: '',
+        type: 'text',
+        validation: {
+          error: false,
+          message: '',
+        },
+      },
+      password: {
+        value: '',
+        type: 'password',
+        validation: {
+          error: false,
+          message: '',
+        },
+      },
+    }));
   }
-  onSubmit() {
-    this.isError = false;
-    this.handleError();
-    if (!this.isError) {
-      console.log('form enviado:', this.formValues());
 
-      this.formValues.update((currentValues) => ({
-        ...currentValues,
-        email: {
-          value: '',
-          type: 'text',
-          error: false,
-        },
-        password: {
-          value: '',
-          type: 'password',
-          error: false,
-        },
-      }));
+  sendData() {
+    console.log({
+      email: this.formValues().email.value,
+      password: this.formValues().password.value,
+    });
+  }
+
+  onSubmit() {
+    const emailValidation = this.validatorService.setValidation(this.formValues().email.value, Validation.Email, {});
+
+    const passwordValidation = this.validatorService.setValidation(
+      this.formValues().password.value,
+      Validation.Password,
+      { maxLength: 12, minLength: 6 },
+    );
+
+    this.formValues().email.validation = emailValidation;
+
+    this.formValues().password.validation = passwordValidation;
+
+    if (!emailValidation.error && !passwordValidation.error) {
+      this.sendData();
+      this.resetInputs();
     }
   }
 }

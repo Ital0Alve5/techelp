@@ -24,36 +24,22 @@ form {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
 
-input {
-  font-size: $size-small;
-  padding: 8px 16px;
-  border-radius: 24px;
-  background-color: $neutral-10;
-  border: 1px solid $neutral-30;
-  outline: none;
-}
-
-.errorLog {
-  padding: 0 16px;
-  color: $feedback-negative-50;
-}
-
-button {
-  padding: 12px;
-  background-color: $brand-purple;
-  border-radius: 24px;
-  border: none;
-  color: $neutral-base;
-  font-size: $size-base;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $brand-purple-hover;
+  a {
+    font-size: $size-small;
   }
-}
 
-a {
-  font-size: $size-small;
+  button {
+    padding: 12px;
+    background-color: $brand-purple;
+    border-radius: 24px;
+    border: none;
+    color: $neutral-base;
+    font-size: $size-base;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $brand-purple-hover;
+    }
+  }
 }

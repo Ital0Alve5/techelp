@@ -1,4 +1,4 @@
-import { Component, input, HostBinding } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'allow-visibility-icon',
@@ -12,11 +12,12 @@ import { Component, input, HostBinding } from '@angular/core';
       />
     </svg>
   `,
+  host: {
+    '[style.width]': 'width()',
+    '[style.fill]': 'color()',
+  },
 })
 export class AllowVisibilityIcon {
-  @HostBinding('style.width')
   width = input.required<string>();
-
-  @HostBinding('style.fill')
   color = input.required<string>();
 }

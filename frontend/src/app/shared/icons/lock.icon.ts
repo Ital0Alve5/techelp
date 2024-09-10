@@ -1,5 +1,4 @@
-import { Component, input, HostBinding } from '@angular/core';
-
+import { Component, input } from '@angular/core';
 @Component({
   selector: 'lock-icon',
   standalone: true,
@@ -12,11 +11,12 @@ import { Component, input, HostBinding } from '@angular/core';
       />
     </svg>
   `,
+  host: {
+    '[style.width]': 'width()',
+    '[style.fill]': 'color()',
+  },
 })
 export class LockIcon {
-  @HostBinding('style.width')
   width = input.required<string>();
-
-  @HostBinding('style.fill')
   color = input.required<string>();
 }

@@ -1,10 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { CardComponent } from '@/shared/card/card.component';
-import { UserIcon } from '@/shared/icons/user.icon';
-import { LockIcon } from '@/shared/icons/lock.icon';
-import { InputComponent } from '@/shared/input/input.component';
+import { CardComponent } from '@/shared/UI/card/card.component';
+import { UserIcon } from '@/shared/UI/icons/user.icon';
+import { LockIcon } from '@/shared/UI/icons/lock.icon';
+import { InputComponent } from '@/shared/UI/input/input.component';
 
 @Component({
   selector: 'app-login',

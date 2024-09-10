@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, input, signal, model } from '@angular/core';
 import { AllowVisibilityIcon } from '../icons/allow-visibility.icon';
 import { BlockVisibilityIcon } from '../icons/block-visibility.icon';
 @Component({
@@ -9,28 +9,22 @@ import { BlockVisibilityIcon } from '../icons/block-visibility.icon';
   styleUrl: './input.component.scss',
 })
 export class InputComponent {
-  placeholder = input<string>();
-  type = input<string>('text');
-  value = input<string>();
-  valueChange = output<string>();
-  isError = input<boolean>(false);
-  isHidden = signal<boolean>(true);
-  variableType = signal(this.type());
+  type = model<string>('text');
+  value = model<string>('');
 
-  ngOnInit() {
-    this.variableType.set(this.type());
-  }
+  placeholder = input<string>();
+  isError = input<boolean>(false);
+
+  isHidden = signal<boolean>(true);
 
   onInput($event: Event) {
-    const value = (<HTMLInputElement>$event.target).value;
-
-    this.valueChange.emit(value);
+    this.value.set((<HTMLInputElement>$event.target).value);
   }
 
   toggleHidden(shouldBeHidden: boolean) {
     this.isHidden.set(shouldBeHidden);
 
-    if (this.isHidden()) this.variableType.set('password');
-    else this.variableType.set('text');
+    if (this.isHidden()) this.type.set('password');
+    else this.type.set('text');
   }
 }

@@ -5,19 +5,18 @@
       <p class="errorLog">{{ errorLog }}</p>
     }
     <app-input
-      [value]="formValues().email.value"
       placeholder="Digite seu e-mail *"
-      (valueChange)="onInputChange('email', $event)"
+      [(value)]="formValues().email.value"
+      [type]="formValues().email.type"
       [isError]="formValues().email.error"
     >
       <user-icon input-icon width="14px" color="#9197B3" />
     </app-input>
 
     <app-input
-      [value]="formValues().password.value"
-      type="password"
       placeholder="Digite sua senha *"
-      (valueChange)="onInputChange('password', $event)"
+      [(value)]="formValues().password.value"
+      [type]="formValues().password.type"
       [isError]="formValues().password.error"
     >
       <lock-icon input-icon width="14px" color="#9197B3" />

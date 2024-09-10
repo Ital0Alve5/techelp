@@ -16,13 +16,16 @@ import { InputComponent } from '@/shared/input/input.component';
 export class LoginComponent {
   isError = false;
   errorLog = '';
+
   formValues = signal({
     email: {
       value: '',
+      type: 'text',
       error: false,
     },
     password: {
       value: '',
+      type: 'password',
       error: false,
     },
   });
@@ -72,10 +75,12 @@ export class LoginComponent {
         ...currentValues,
         email: {
           value: '',
+          type: 'text',
           error: false,
         },
         password: {
           value: '',
+          type: 'password',
           error: false,
         },
       }));

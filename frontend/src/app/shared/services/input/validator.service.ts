@@ -34,7 +34,7 @@ export class ValidatorService {
       case Validation.Email:
         return this.validateEmail(inputValue);
       case Validation.Password:
-        return this.validatePassword(inputValue);
+        return this.validatePassword(inputValue, minLength, maxLength);
       case Validation.Required:
         return this.validateRequired(inputValue, fieldName);
       case Validation.MinLength:
@@ -76,7 +76,7 @@ export class ValidatorService {
     return this.maxLengthValidationService.validate(inputValue);
   }
 
-  validatePassword(inputValue: string) {
+  validatePassword(inputValue: string, minLength: number | undefined, maxLength: number | undefined) {
     let result = {
       error: false,
       message: '',
@@ -86,11 +86,11 @@ export class ValidatorService {
 
     if (result.error) return result;
 
-    result = this.validateMinLength(inputValue, 6);
+    result = this.validateMinLength(inputValue, minLength);
 
     if (result.error) return result;
 
-    result = this.validateMaxLength(inputValue, 12);
+    result = this.validateMaxLength(inputValue, maxLength);
 
     if (result.error) return result;
 

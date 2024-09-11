@@ -82,7 +82,7 @@ export class LoginComponent {
     const passwordValidation = this.validatorService.setValidation(
       this.formValues().password.value,
       Validation.Password,
-      { maxLength: 12, minLength: 6 },
+      { maxLength: 12, minLength: 4 },
     );
 
     this.formValues().email.validation = emailValidation;

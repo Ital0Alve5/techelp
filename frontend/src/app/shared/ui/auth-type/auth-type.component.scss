@@ -3,44 +3,45 @@
 @import 'typology';
 
 .authTypes {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    button {
-      flex: 100%;
-      text-align: center;
-      text-decoration: none;
-      padding: 12px;
-      margin: 0 0 20px 0;
-      border: none;
-      font-size: $size-base;
-      cursor: pointer;
-      color: $neutral-90;
+  display: flex;
+
+  button {
+    flex: 100%;
+    text-align: center;
+    text-decoration: none;
+    padding: 12px;
+    margin: 0 0 20px 0;
+    border: none;
+    font-size: $size-base;
+    cursor: pointer;
+    color: $neutral-90;
+    transition: 1s;
+    background-color: $neutral-10;
+    &:hover {
+      background-color: $neutral-30;
       transition: 1s;
-      background-color: $neutral-10;
-      &:hover {
-        background-color: $neutral-30;
-        transition: 1s;
-      }
-    
     }
-    .loginBtn {
-      border-radius: 20px 0 0 20px;
-      border: 1px solid $neutral-30;
-      border-right: none;
-    }
-    .signUpBtn {
-      border-radius: 0 20px 20px 0;
-      border: 1px solid $neutral-30;
-      border-left: none;
-    }
-  
+  }
+
+  .loginBtn {
+    border-radius: 20px 0 0 20px;
+    border: 1px solid $neutral-30;
+    border-right: none;
+  }
+
+  .signUpBtn {
+    border-radius: 0 20px 20px 0;
+    border: 1px solid $neutral-30;
+    border-left: none;
+  }
+
   .active {
     color: $neutral-base;
     background-color: $brand-purple;
+
     &:hover {
       background-color: $brand-purple-hover;
       transition: 1s;
     }
   }
-  }
+}

@@ -15,7 +15,7 @@ export class InputComponent {
 
   placeholder = input<string>();
   id = input<string>();
-  label = input<string>('ou');
+  label = input<string>('');
   validation = input<InputError>();
 
   isHidden = signal<boolean>(true);

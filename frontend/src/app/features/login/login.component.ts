@@ -12,7 +12,6 @@ import { Validation } from '@/shared/enums/validation.enum';
   selector: 'app-login',
   standalone: true,
   imports: [CardComponent, UserIcon, InputComponent, LockIcon, FormsModule],
-  providers: [ValidatorService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

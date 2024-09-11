@@ -8,7 +8,7 @@ import {
 import { Validation } from '@/shared/enums/validation.enum';
 import { InputError } from '@/shared/types/input-error.type';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ValidatorService {
   constructor(
     private emailValidationService: EmailValidationService,

@@ -1,10 +1,7 @@
 <app-card>
 
   <h1>Bem-vindo de volta!</h1>
-  <div class="formTypes">
-    <a href="#" class="active loginBtn">Login</a>
-    <a href="#" class="signUpBtn">Cadastro</a>
-  </div>
+  <app-auth-type></app-auth-type>
   <form (ngSubmit)="onSubmit()">
     <app-input
       label="E-mail"

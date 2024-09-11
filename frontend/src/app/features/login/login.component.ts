@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component'
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
@@ -11,7 +11,7 @@ import { Validation } from '@/shared/enums/validation.enum';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CardComponent, UserIcon, InputComponent, LockIcon, FormsModule],
+  imports: [CardComponent, UserIcon, InputComponent, LockIcon, FormsModule, AuthTypeComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

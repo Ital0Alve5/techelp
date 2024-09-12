@@ -28,4 +28,9 @@ form {
   a {
     font-size: $size-small;
   }
+
+  div {
+    display: flex;
+    gap: 20px;
+  }  
 }

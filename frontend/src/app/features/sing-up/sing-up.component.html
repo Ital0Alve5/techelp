@@ -9,8 +9,8 @@
       [type]="formValues().email.type"
       [validation]="formValues().email.validation"
     >
-      <user-icon input-icon width="14px" color="#9197B3" />
-    </app-input>
+<!--       <user-icon input-icon width="14px" color="#9197B3" />
+ -->    </app-input>
     <app-input
       label="Nome"
       placeholder="Nome completo *"
@@ -18,36 +18,38 @@
       [type]="formValues().name.type"
       [validation]="formValues().name.validation"
     >
-      <user-icon input-icon width="14px" color="#9197B3" />
-    </app-input>
-    <app-input
-      label="CPF"
-      placeholder="Digite seu CPF *"
-      [(value)]="formValues().cpf.value"
-      [type]="formValues().cpf.type"
-      [validation]="formValues().cpf.validation"
-    >
-      <user-icon input-icon width="14px" color="#9197B3" />
-    </app-input>
-    <app-input
-      label="Número de telefone"
-      placeholder="Digite seu número *"
-      [(value)]="formValues().phone.value"
-      [type]="formValues().phone.type"
-      [validation]="formValues().phone.validation"
-    >
-      <user-icon input-icon width="14px" color="#9197B3" />
-    </app-input>
-    <hr />
-    <app-input
+<!--       <user-icon input-icon width="14px" color="#9197B3" />
+ -->    </app-input>
+    <div>
+      <app-input
+        label="CPF"
+        placeholder="Digite seu CPF *"
+        [(value)]="formValues().cpf.value"
+        [type]="formValues().cpf.type"
+        [validation]="formValues().cpf.validation"
+      >
+<!--         <user-icon input-icon width="14px" color="#9197B3" />
+ -->      </app-input>
+      <app-input
+        label="Número de telefone"
+        placeholder="Digite seu número *"
+        [(value)]="formValues().phone.value"
+        [type]="formValues().phone.type"
+        [validation]="formValues().phone.validation"
+      >
+<!--         <user-icon input-icon width="14px" color="#9197B3" />
+ -->      </app-input>
+    </div>
+<!--     <hr />
+ -->    <app-input
       label="CEP"
       placeholder="Digite seu CEP *"
       [(value)]="formValues().cep.value"
       [type]="formValues().cep.type"
       [validation]="formValues().cep.validation"
     >
-      <user-icon input-icon width="14px" color="#9197B3" />
-    </app-input>
+<!--       <user-icon input-icon width="14px" color="#9197B3" />
+ -->    </app-input>
     <app-input
       label="Rua"
       placeholder="Nome da rua *"
@@ -55,36 +57,39 @@
       [type]="formValues().street.type"
       [validation]="formValues().street.validation"
     >
-      <user-icon input-icon width="14px" color="#9197B3" />
-    </app-input>
-    <app-input
-      label="Número"
-      placeholder="Digite o número da residência *"
-      [(value)]="formValues().number.value"
-      [type]="formValues().number.type"
-      [validation]="formValues().number.validation"
-    >
-      <user-icon input-icon width="14px" color="#9197B3" />
-    </app-input>
-    <app-input
-      label="Complemento"
-      placeholder="Digite um complemento do seu endereço"
-      [(value)]="formValues().complement.value"
-      [type]="formValues().complement.type"
-      [validation]="formValues().complement.validation"
-    >
-      <user-icon input-icon width="14px" color="#9197B3" />
-    </app-input>
-    <hr />
-    <app-input
+<!--       <user-icon input-icon width="14px" color="#9197B3" />
+ -->    </app-input>
+    <div>
+      <app-input
+        label="Número"
+        placeholder="Número da residência *"
+        [(value)]="formValues().number.value"
+        [type]="formValues().number.type"
+        [validation]="formValues().number.validation"
+        id="inputNumber"
+      >
+<!--         <user-icon input-icon width="14px" color="#9197B3" />
+ -->      </app-input>
+      <app-input
+        label="Complemento"
+        placeholder="Complemento do endereço"
+        [(value)]="formValues().complement.value"
+        [type]="formValues().complement.type"
+        [validation]="formValues().complement.validation"
+      >
+<!--         <user-icon input-icon width="14px" color="#9197B3" />
+ -->      </app-input>
+    </div>
+<!--     <hr />
+ -->    <app-input
       label="Senha"
       placeholder="Digite sua senha *"
       [(value)]="formValues().password.value"
       [type]="formValues().password.type"
       [validation]="formValues().password.validation"
     >
-      <lock-icon input-icon width="14px" color="#9197B3" />
-    </app-input>
+<!--       <lock-icon input-icon width="14px" color="#9197B3" />
+ -->    </app-input>
     <app-input
       label="Senha"
       placeholder="Confirmar senha *"
@@ -92,8 +97,8 @@
       [type]="formValues().password.type"
       [validation]="formValues().password.validation"
     >
-      <lock-icon input-icon width="14px" color="#9197B3" />
-    </app-input>
+<!--       <lock-icon input-icon width="14px" color="#9197B3" />
+ -->    </app-input>
     <button app-button>Cadastrar</button>
   </form>
 </app-card>

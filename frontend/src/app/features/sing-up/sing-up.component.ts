@@ -73,7 +73,7 @@ export class SingUpComponent {
     },
     number: {
       value: '',
-      type: 'number',
+      type: 'text',
       validation: {
         error: false,
         message: '',

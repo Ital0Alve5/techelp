@@ -31,6 +31,14 @@ export class SingUpComponent {
         message: '',
       },
     },
+    redefinePassword: {
+      value: '',
+      type: 'password',
+      validation: {
+        error: false,
+        message: '',
+      },
+    },
     name: {
       value: '',
       type: 'text',

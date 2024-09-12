@@ -1,11 +1,10 @@
-@import 'variables';
 @import 'colors';
 @import 'typology';
 
 .authTypes {
   display: flex;
 
-  button {
+  a {
     flex: 100%;
     text-align: center;
     text-decoration: none;
@@ -17,6 +16,7 @@
     color: $neutral-90;
     transition: 1s;
     background-color: $neutral-10;
+
     &:hover {
       background-color: $neutral-30;
       transition: 1s;

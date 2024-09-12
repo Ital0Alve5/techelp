@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './features/login/login.component';
+import { SingUpComponent } from './features/sing-up/sing-up.component';
 
 export const routes: Routes = [
   {
@@ -8,7 +9,7 @@ export const routes: Routes = [
   },
   {
     path: 'cadastro',
-    component: LoginComponent,
+    component: SingUpComponent,
   },
 
 ];

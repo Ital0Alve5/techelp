@@ -7,8 +7,6 @@ import { ClientTableRowComponent } from '@/shared/ui/client-table-row/client-tab
   standalone: true,
   imports: [CardComponent, ClientTableRowComponent],
   templateUrl: './client-panel.component.html',
-  styleUrl: './client-panel.component.scss'
+  styleUrl: './client-panel.component.scss',
 })
-export class ClientPanelComponent {
-
-}
+export class ClientPanelComponent {}

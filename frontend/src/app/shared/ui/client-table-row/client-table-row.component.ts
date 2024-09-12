@@ -6,11 +6,10 @@ import { Component, input, ViewEncapsulation } from '@angular/core';
   imports: [],
   templateUrl: './client-table-row.component.html',
   styleUrl: './client-table-row.component.scss',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class ClientTableRowComponent {
   date = input<string>('');
   desc = input<string>('');
   status = input<string>('');
-
 }

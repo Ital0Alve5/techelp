@@ -1,23 +1,21 @@
-    <td><button>Abrir</button></td>
-    <td>{{ date() }}</td>
-    <td>{{ desc() }}</td>
-    <td>{{ status() }}</td>
-    <td>
-        @switch(status()){
-            @case ('APROVADA'){
-            }
-            @case ('ORÇADA'){
-                <button>Aprovar/Rejeitar</button>
-            }
-            @case ('REJEITADA'){
-                <button>Resgatar</button>
-            }
-            @case ('ARRUMADA'){
-                <button>Pagar</button>
-            }
-            @default {
-                <button>Visualizar</button>
-            }
-        }
-
-    </td>
+<td><button>Abrir</button></td>
+<td>{{ date() }}</td>
+<td>{{ desc() }}</td>
+<td>{{ status() }}</td>
+<td>
+  @switch (status()) {
+    @case ('APROVADA') {}
+    @case ('ORÇADA') {
+      <button>Aprovar/Rejeitar</button>
+    }
+    @case ('REJEITADA') {
+      <button>Resgatar</button>
+    }
+    @case ('ARRUMADA') {
+      <button>Pagar</button>
+    }
+    @default {
+      <button>Visualizar</button>
+    }
+  }
+</td>

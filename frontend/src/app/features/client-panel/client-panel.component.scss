@@ -2,12 +2,19 @@
 @import 'colors';
 @import 'typology';
 
+:host {
+    width: 100%;
+    max-width: 1400px;
+}
+
 table {
     text-align: center;
     color: $neutral-70;
     font-size: $size-base;
     border-collapse: collapse;
     border-style: hidden;
+    width: 100%;
+    max-width: 1400px;
 }
 tr {
     transition: 0.5s;

@@ -13,7 +13,7 @@ export const routes: Routes = [
     component: SingUpComponent,
   },
   {
-    path: 'cliente',
+    path: 'cliente/:userId',
     component: ClientPanelComponent,
   },
 ];

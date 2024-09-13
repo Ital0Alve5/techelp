@@ -6,32 +6,7 @@
     <th>Estado</th>
     <th>Ação</th>
   </tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-  <tr app-client-table-row date="20/20/20" desc="1aaaaaaaaaaaaaaaaaaaaaaaaaaa123456789" status="ORÇADA"></tr>
-
-  <tr app-client-table-row></tr>
+  @for (request of requests(); track request.id) {
+    <tr app-client-table-row [date]="request.date" [description]="request.description" [status]="request.state"></tr>
+  }
 </table>

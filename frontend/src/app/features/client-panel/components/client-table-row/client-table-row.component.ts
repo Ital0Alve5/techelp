@@ -1,17 +1,17 @@
-import { Component, model, input, ViewEncapsulation } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { ButtonComponent } from '@/shared/ui/button/button.component';
 
 @Component({
   selector: 'tr[app-client-table-row]',
   standalone: true,
-  imports: [],
+  imports: [ButtonComponent],
   templateUrl: './client-table-row.component.html',
   styleUrl: './client-table-row.component.scss',
-  encapsulation: ViewEncapsulation.None,
 })
 export class ClientTableRowComponent {
   date = input<string>('');
-  desc = input(null, {
-    transform: (value: String | null) => {
+  description = input(null, {
+    transform: (value: string | null) => {
       if (value && value.length > 30) {
         value = value.slice(0, 30);
       }

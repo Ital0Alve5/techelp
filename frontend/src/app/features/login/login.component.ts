@@ -7,11 +7,12 @@ import { LockIcon } from '@/shared/ui/icons/lock.icon';
 import { InputComponent } from '@/shared/ui/input/input.component';
 import { ValidatorService } from '@/shared/services/input/validator.service';
 import { Validation } from '@/shared/enums/validation.enum';
+import { ButtonComponent } from '@/shared/ui/button/button.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CardComponent, UserIcon, InputComponent, LockIcon, FormsModule, AuthTypeComponent],
+  imports: [CardComponent, UserIcon, InputComponent, LockIcon, FormsModule, AuthTypeComponent, ButtonComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

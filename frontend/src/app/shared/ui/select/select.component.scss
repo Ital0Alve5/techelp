@@ -1,0 +1,30 @@
+@import 'colors';
+@import 'typology';
+
+.general-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  label {
+    font-size: $size-small;
+    color: $neutral-50;
+  }
+
+  .select-container {
+    width: 100%;
+    position: relative;
+
+    select {
+      font-size: $size-small;
+      padding: 8px 16px;
+      border-radius: 24px;
+      background-color: $neutral-10;
+      border: 1px solid $neutral-30;
+      outline: none;
+      width: 100%;
+
+    }
+  }
+}

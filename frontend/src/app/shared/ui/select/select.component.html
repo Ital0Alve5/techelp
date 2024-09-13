@@ -1,0 +1,13 @@
+<div class="general-container">
+  <label [for]="id">
+    {{ label }}
+  </label>
+  <div class="select-container">
+    <select [id]="id" (change)="onChange($event)">
+      <option value="" disabled selected>{{ placeholder }}</option>
+      <option *ngFor="let option of options" [value]="option.value">
+        {{ option.label }}
+      </option>
+    </select>
+  </div>
+</div>

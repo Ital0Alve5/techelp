@@ -1,0 +1,31 @@
+<app-card>
+  <h1>Solicitação de Manutenção</h1>
+  <form>
+    <app-input
+      id="deviceDescription"
+      label="Descrição do Equipamento"
+      placeholder="Descreva o equipamento *"
+      type="text"
+    >
+    </app-input>
+
+    <app-select
+      id="deviceCategory"
+      label="Categoria do Equipamento"
+      placeholder="Selecione a categoria *"
+      [options]="[
+      ]"
+    >
+    </app-select>
+
+    <app-input
+      id="defectDescription"
+      label="Descrição do Defeito"
+      placeholder="Descreva o defeito *"
+      type="text"
+    >
+    </app-input>
+
+    <button app-button>Enviar Solicitação</button>
+  </form>
+</app-card>

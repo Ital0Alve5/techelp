@@ -3,6 +3,7 @@
   <app-auth-type></app-auth-type>
   <form (ngSubmit)="onSubmit()">
     <app-input
+      id="email"
       label="E-mail"
       placeholder="Digite seu e-mail *"
       [(value)]="formValues().email.value"
@@ -13,6 +14,7 @@
     </app-input>
 
     <app-input
+      id="senha"
       label="Senha"
       placeholder="Digite sua senha *"
       [(value)]="formValues().password.value"

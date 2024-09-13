@@ -5,7 +5,7 @@ import { InputComponent } from '@/shared/ui/input/input.component';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
-
+import { Mask } from '@/shared/enums/mask.enum';
 @Component({
   selector: 'app-sing-up',
   standalone: true,
@@ -54,6 +54,7 @@ export class SingUpComponent {
         error: false,
         message: '',
       },
+      mask: Mask.Cpf,
     },
     phone: {
       value: '',
@@ -62,6 +63,7 @@ export class SingUpComponent {
         error: false,
         message: '',
       },
+      mask: Mask.Phone,
     },
     cep: {
       value: '',
@@ -70,6 +72,7 @@ export class SingUpComponent {
         error: false,
         message: '',
       },
+      mask: Mask.Cep,
     },
     street: {
       value: '',

@@ -1,4 +1,4 @@
-import { Component, input, ViewEncapsulation } from '@angular/core';
+import { Component, model, input, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'tr[app-client-table-row]',
@@ -10,6 +10,13 @@ import { Component, input, ViewEncapsulation } from '@angular/core';
 })
 export class ClientTableRowComponent {
   date = input<string>('');
-  desc = input<string>('');
+  desc = input(null, {
+    transform: (value: String | null) => {
+      if (value && value.length > 30) {
+        value = value.slice(0, 30);
+      }
+      return value;
+    },
+  });
   status = input<string>('');
 }

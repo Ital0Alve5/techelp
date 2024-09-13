@@ -3,29 +3,28 @@
 @import 'typology';
 
 :host {
-    width: 100%;
-    max-width: 1400px;
+  width: 100%;
+  max-width: 1400px;
 }
 
 table {
-    text-align: center;
-    color: $neutral-70;
-    font-size: $size-base;
-    border-collapse: collapse;
-    border-style: hidden;
-    width: 100%;
-    max-width: 1400px;
+  text-align: center;
+  color: $neutral-70;
+  font-size: $size-base;
+  border-collapse: collapse;
+  border-style: hidden;
+  width: 100%;
+  max-width: 1400px;
 }
 tr {
+  transition: 0.5s;
+  border-bottom: 1px solid $neutral-30;
+  &:hover {
+    background-color: $neutral-30;
     transition: 0.5s;
-    border-bottom: 1px solid $neutral-30;
-    &:hover {
-        background-color: $neutral-30;
-        transition: 0.5s;
-    }
   }
+}
 th {
-    padding: 10px;
-    border-right: 1px solid $neutral-30;
-    
+  padding: 10px;
+  border-right: 1px solid $neutral-30;
 }

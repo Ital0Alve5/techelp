@@ -1,0 +1,35 @@
+@import 'variables';
+@import 'colors';
+@import 'typology';
+
+:host {
+  width: 100%;
+  overflow: auto;
+  max-height: 50%;
+  max-width: 1400px;
+  border: 1px solid $neutral-30;
+  border-radius: 20px;
+  padding: 30px;
+}
+
+table {
+  text-align: center;
+  color: $neutral-70;
+  font-size: $size-base;
+  border-collapse: collapse;
+  border-style: hidden;
+  width: 100%;
+  max-width: 1400px;
+}
+tr {
+  transition: 0.5s;
+  border-bottom: 1px solid $neutral-30;
+  &:hover {
+    background-color: $neutral-10;
+    transition: 0.5s;
+  }
+}
+th {
+  padding: 10px;
+  border-right: 1px solid $neutral-30;
+}

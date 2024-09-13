@@ -5,8 +5,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './auth-type.component.html',
-  styleUrl: './auth-type.component.scss'
+  styleUrl: './auth-type.component.scss',
 })
-export class AuthTypeComponent {
-
-}
+export class AuthTypeComponent {}

@@ -10,7 +10,7 @@ export const loggedUserMock = [
         id: 1,
         date: '01/09/2024',
         hour: '13:24',
-        description: 'Lorem Ipsum is simply dummy',
+        equipmentDescription: 'Lorem Ipsum is simply dummy',
         status: 'Orçada',
       },
     ],

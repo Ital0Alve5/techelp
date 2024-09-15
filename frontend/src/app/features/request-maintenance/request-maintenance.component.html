@@ -11,14 +11,25 @@
         { value: 'impressora', label: 'Impressora' },
         { value: 'mouse', label: 'Mouse' },
         { value: 'teclado', label: 'Teclado' },
-        { value: 'outro', label: 'Outro' },
+        { value: 'outro', label: 'Outro' }
       ]"
-    />
+      (valueChange)="onInputChange('deviceCategory', $event)"
+    ></app-select>
 
-    <app-textarea id="deviceDescription" label="Descrição do Equipamento" placeholder="Descreva o equipamento *" />
+    <app-textarea
+      id="deviceDescription"
+      label="Descrição do Equipamento"
+      placeholder="Descreva o equipamento *"
+      (valueChange)="onInputChange('deviceDescription', $event)"
+    ></app-textarea>
 
-    <app-textarea id="defectDescription" label="Descrição do Defeito" placeholder="Descreva o defeito *" />
+    <app-textarea
+      id="defectDescription"
+      label="Descrição do Defeito"
+      placeholder="Descreva o defeito *"
+      (valueChange)="onInputChange('defectDescription', $event)"
+    ></app-textarea>
 
-    <button app-button>Enviar Solicitação</button>
+    <button app-button (click)="onSubmit()">Enviar Solicitação</button>
   </form>
 </app-card>

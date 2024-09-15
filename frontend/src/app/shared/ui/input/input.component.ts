@@ -1,4 +1,4 @@
-import { Component, input, signal, model } from '@angular/core';
+import { Component, input, signal, model, output } from '@angular/core';
 import { AllowVisibilityIcon } from '../icons/allow-visibility.icon';
 import { BlockVisibilityIcon } from '../icons/block-visibility.icon';
 import { InputError } from '@/shared/types/input-error.type';
@@ -20,6 +20,7 @@ export class InputComponent {
   label = input<string>('');
   validation = input<InputError>();
   mask = input<Mask>();
+  inputEvent = output<string>();
 
   isHidden = signal<boolean>(true);
 
@@ -32,6 +33,8 @@ export class InputComponent {
     else this.value.set(inputValue);
 
     (<HTMLInputElement>$event.target).value = this.value();
+
+    this.inputEvent.emit(this.value());
   }
 
   toggleHidden(shouldBeHidden: boolean) {

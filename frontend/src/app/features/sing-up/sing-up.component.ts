@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component';
 import { InputComponent } from '@/shared/ui/input/input.component';
@@ -6,10 +7,13 @@ import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
 import { Mask } from '@/shared/enums/mask.enum';
+import { CepService } from './services/cep.service';
+import { DebounceService } from '@/shared/services/utils/debounce.service';
 @Component({
   selector: 'app-sing-up',
   standalone: true,
   imports: [CardComponent, AuthTypeComponent, InputComponent, ButtonComponent, UserIcon, LockIcon],
+  providers: [CepService],
   templateUrl: './sing-up.component.html',
   styleUrl: './sing-up.component.scss',
 })
@@ -74,6 +78,30 @@ export class SingUpComponent {
       },
       mask: Mask.Cep,
     },
+    state: {
+      value: '',
+      type: 'text',
+      validation: {
+        error: false,
+        message: '',
+      },
+    },
+    city: {
+      value: '',
+      type: 'text',
+      validation: {
+        error: false,
+        message: '',
+      },
+    },
+    neighborhood: {
+      value: '',
+      type: 'text',
+      validation: {
+        error: false,
+        message: '',
+      },
+    },
     street: {
       value: '',
       type: 'text',
@@ -99,4 +127,48 @@ export class SingUpComponent {
       },
     },
   });
+
+  constructor(
+    private cepService: CepService,
+    private debounceService: DebounceService,
+  ) {}
+
+  setAddressUsingCep(cep: string) {
+    if (cep.replace(/[^0-9]/g, '').length < 8) {
+      this.cleanAddressFields();
+      this.clearCepError();
+      return;
+    }
+
+    this.debounceService.setDebounce(800, async () => {
+      const response = await this.cepService.getAddressData(cep);
+
+      if ('data' in response) {
+        this.formValues().state.value = response.data.uf;
+        this.formValues().city.value = response.data.localidade;
+        this.formValues().neighborhood.value = response.data.bairro;
+        this.formValues().street.value = response.data.logradouro;
+
+        this.clearCepError();
+      } else {
+        this.cleanAddressFields();
+        this.formValues().cep.validation = response;
+      }
+    });
+  }
+
+  cleanAddressFields() {
+    this.formValues().state.value = '';
+    this.formValues().city.value = '';
+    this.formValues().neighborhood.value = '';
+    this.formValues().street.value = '';
+  }
+
+  clearCepError() {
+    this.formValues().cep.validation = { error: false, message: '' };
+  }
+
+  onSubmit() {
+    console.log(this.formValues());
+  }
 }

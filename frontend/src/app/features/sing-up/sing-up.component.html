@@ -1,7 +1,7 @@
 <app-card>
   <h1>Cadastre-se</h1>
   <app-auth-type></app-auth-type>
-  <form>
+  <form (ngSubmit)="onSubmit()">
     <app-input
       id="email"
       label="E-mail"
@@ -42,62 +42,76 @@
       >
       </app-input>
     </div>
-    <app-input
-      id="cep"
-      label="CEP"
-      placeholder="Digite seu CEP *"
-      [(value)]="formValues().cep.value"
-      [type]="formValues().cep.type"
-      [validation]="formValues().cep.validation"
-      [mask]="formValues().cep.mask"
-    >
-    </app-input>
-    <app-input
-      id="street"
-      label="Rua"
-      placeholder="Nome da rua *"
-      [(value)]="formValues().street.value"
-      [type]="formValues().street.type"
-      [validation]="formValues().street.validation"
-    >
-    </app-input>
     <div>
       <app-input
-        id="number"
-        label="Número"
-        placeholder="Número da residência *"
-        [(value)]="formValues().number.value"
-        [type]="formValues().number.type"
-        [validation]="formValues().number.validation"
-        id="inputNumber"
+        id="cep"
+        label="CEP"
+        placeholder="Digite seu CEP *"
+        [(value)]="formValues().cep.value"
+        [type]="formValues().cep.type"
+        [validation]="formValues().cep.validation"
+        [mask]="formValues().cep.mask"
+        (inputEvent)="setAddressUsingCep($event)"
       >
       </app-input>
       <app-input
-        id="complement"
-        label="Complemento"
-        placeholder="Complemento do endereço"
-        [(value)]="formValues().complement.value"
-        [type]="formValues().complement.type"
-        [validation]="formValues().complement.validation"
+        id="state"
+        label="Estado"
+        placeholder="Estado *"
+        [(value)]="formValues().state.value"
+        [type]="formValues().state.type"
+        [validation]="formValues().state.validation"
+      >
+      </app-input>
+    </div>
+    <div>
+      <app-input
+        id="city"
+        label="Cidade"
+        placeholder="Nome da cidade *"
+        [(value)]="formValues().city.value"
+        [type]="formValues().city.type"
+        [validation]="formValues().city.validation"
+      >
+      </app-input>
+      <app-input
+        id="neighborhood"
+        label="Bairro"
+        placeholder="Nome do bairro *"
+        [(value)]="formValues().neighborhood.value"
+        [type]="formValues().neighborhood.type"
+        [validation]="formValues().neighborhood.validation"
+      >
+      </app-input>
+    </div>
+
+    <div>
+      <app-input
+        id="street"
+        label="Rua"
+        placeholder="Nome da rua *"
+        [(value)]="formValues().street.value"
+        [type]="formValues().street.type"
+        [validation]="formValues().street.validation"
+      >
+      </app-input>
+      <app-input
+        id="number"
+        label="Número"
+        placeholder="Número *"
+        [(value)]="formValues().number.value"
+        [type]="formValues().number.type"
+        [validation]="formValues().number.validation"
       >
       </app-input>
     </div>
     <app-input
-      id="password"
-      label="Senha"
-      placeholder="Digite sua senha *"
-      [(value)]="formValues().password.value"
-      [type]="formValues().password.type"
-      [validation]="formValues().password.validation"
-    >
-    </app-input>
-    <app-input
-      id="confirmPassword"
-      label="Confirmar senha"
-      placeholder="Confirme sua senha *"
-      [(value)]="formValues().redefinePassword.value"
-      [type]="formValues().redefinePassword.type"
-      [validation]="formValues().redefinePassword.validation"
+      id="complement"
+      label="Complemento"
+      placeholder="Complemento do endereço"
+      [(value)]="formValues().complement.value"
+      [type]="formValues().complement.type"
+      [validation]="formValues().complement.validation"
     >
     </app-input>
     <button app-button>Cadastrar</button>

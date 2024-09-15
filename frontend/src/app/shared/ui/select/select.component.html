@@ -1,0 +1,17 @@
+<div class="general-container">
+  <label [for]="id()">
+    {{ label() }}
+  </label>
+
+  <div class="select-container">
+    <select [id]="id()" (change)="onChange($event)">
+      <option disabled selected>{{ placeholder() }}</option>
+
+      @for (option of options(); track option.value) {
+        <option [value]="option.value">
+          {{ option.label }}
+        </option>
+      }
+    </select>
+  </div>
+</div>

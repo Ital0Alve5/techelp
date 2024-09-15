@@ -1,0 +1,24 @@
+<app-card>
+  <h1>Solicitação de Manutenção</h1>
+  <form>
+    <app-select
+      id="deviceCategory"
+      label="Categoria do Equipamento"
+      placeholder="Selecione a categoria *"
+      [options]="[
+        { value: 'notebook', label: 'Notebook' },
+        { value: 'desktop', label: 'Desktop' },
+        { value: 'impressora', label: 'Impressora' },
+        { value: 'mouse', label: 'Mouse' },
+        { value: 'teclado', label: 'Teclado' },
+        { value: 'outro', label: 'Outro' },
+      ]"
+    />
+
+    <app-textarea id="deviceDescription" label="Descrição do Equipamento" placeholder="Descreva o equipamento *" />
+
+    <app-textarea id="defectDescription" label="Descrição do Defeito" placeholder="Descreva o defeito *" />
+
+    <button app-button>Enviar Solicitação</button>
+  </form>
+</app-card>

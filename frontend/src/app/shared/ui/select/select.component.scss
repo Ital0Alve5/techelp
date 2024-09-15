@@ -1,0 +1,42 @@
+@import 'colors';
+@import 'typology';
+
+.general-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  label {
+    font-size: $size-small;
+    color: $neutral-50;
+  }
+
+  select {
+    width: 100%;
+    padding: 8px 16px;
+    border-radius: 16px;
+    background-color: $neutral-10;
+    border: 1px solid $neutral-30;
+    outline: none;
+    font-size: $size-small;
+    color: $neutral-70;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .select-container {
+    position: relative;
+
+    &::after {
+      content: '⌵';
+      font-size: 1rem;
+      top: 6px;
+      right: 16px;
+      position: absolute;
+      font-weight: 900;
+      transform: translateY(-1px);
+    }
+  }
+}

@@ -14,7 +14,13 @@
       label="Categoria do Equipamento"
       placeholder="Selecione a categoria *"
       [options]="[
-      ]"
+        { value: 'notebook', label: 'Notebook' },
+        { value: 'desktop', label: 'Desktop' },
+        { value: 'impressora', label: 'Impressora' },
+        { value: 'mouse', label: 'Mouse' },
+        { value: 'teclado', label: 'Teclado' },
+        { value: 'outro', label: 'Outro' }
+      ]"             
     >
     </app-select>
 

@@ -17,7 +17,6 @@ export class CepService {
   async getAddressData(cep: string): adressDataType {
     try {
       const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
-      console.log(response.data)
       if (response.data.erro)
         return {
           error: true,

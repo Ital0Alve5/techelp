@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, input, model } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,14 +9,14 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./select.component.scss'],
 })
 export class SelectComponent {
-  id = input<string>(''); // input() substitui o @Input()
-  label = input<string>(''); // input() substitui o @Input()
-  placeholder = input<string>(''); // input() substitui o @Input()
-  options = input<{ value: string, label: string }[]>([]); // Usando input() para a lista de opções
-  value = signal<string>(''); // signal() para manter o estado do valor selecionado
+  id = input<string>('');
+  label = input<string>('');
+  placeholder = input<string>('');
+  options = input<{ value: string; label: string }[]>([]);
+  value = model<string>('');
 
   onChange(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
-    this.value.set(selectElement.value); // Atualiza o signal com o valor selecionado
+    this.value.set(selectElement.value);
   }
 }

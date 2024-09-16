@@ -129,15 +129,13 @@ export class SingUpComponent {
       },
     },
   });
-  passValues = signal(
-    {
-      value: '',
-      validation: {
-        error: false,
-        message: '',
-      },
-    }
-    );
+  passValues = signal({
+    value: '',
+    validation: {
+      error: false,
+      message: '',
+    },
+  });
   constructor(
     private cepService: CepService,
     private debounceService: DebounceService,
@@ -183,7 +181,7 @@ export class SingUpComponent {
     this.successModal = true;
   }
 
-  confirmPassword(){
+  confirmPassword() {
     console.log(this.passValues());
     this.successModal = false;
   }

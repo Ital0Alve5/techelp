@@ -40,7 +40,7 @@ export class ValidatorService {
       case Validation.MinLength:
         return this.validateMinLength(inputValue, minLength);
       case Validation.MaxLength:
-        return this.validateMinLength(inputValue, maxLength);
+        return this.validateMaxLength(inputValue, maxLength);
     }
   }
 

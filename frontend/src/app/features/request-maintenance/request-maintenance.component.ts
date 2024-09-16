@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component';
 import { TextareaComponent } from '@/shared/ui/textarea/textarea.component';
@@ -12,7 +13,7 @@ import { Validation } from '@/shared/enums/validation.enum';
 @Component({
   selector: 'app-request-maintenance',
   standalone: true,
-  imports: [CardComponent, AuthTypeComponent, TextareaComponent, ButtonComponent, UserIcon, LockIcon, SelectComponent],
+  imports: [CardComponent, AuthTypeComponent, TextareaComponent, ButtonComponent, UserIcon, LockIcon, SelectComponent, FormsModule],
   templateUrl: './request-maintenance.component.html',
   styleUrls: ['./request-maintenance.component.scss'],
 })
@@ -45,15 +46,6 @@ export class RequestMaintenanceComponent {
   });
 
   constructor(private validatorService: ValidatorService) {}
-
-  onInputChange(fieldName: string, newValue: string) {
-    this.formValues.update((currentValues) => ({
-      ...currentValues,
-      [fieldName]: {
-        value: newValue,
-      },
-    }));
-  }
 
   resetInputs() {
     this.formValues.update((currentValues) => ({
@@ -94,47 +86,55 @@ export class RequestMaintenanceComponent {
   }
 
   onSubmit() {
-
     const deviceMinLengthValidation = this.validatorService.setValidation(
-      this.formValues().deviceDescription.value, 
-      Validation.MinLength, 
+      this.formValues().deviceDescription.value,
+      Validation.MinLength,
       { minLength: 5 }
     );
-
+  
     const deviceMaxLengthValidation = this.validatorService.setValidation(
-      this.formValues().deviceDescription.value, 
-      Validation.MaxLength, 
+      this.formValues().deviceDescription.value,
+      Validation.MaxLength,
       { maxLength: 50 }
     );
-
-    const deviceDescriptionValidation = {
-      error: deviceMinLengthValidation.error || deviceMaxLengthValidation.error,
-      message: deviceMinLengthValidation.error ? deviceMinLengthValidation.message : deviceMaxLengthValidation.message,
-    };
-
+  
     const defectMinLengthValidation = this.validatorService.setValidation(
-      this.formValues().defectDescription.value, 
-      Validation.MinLength, 
+      this.formValues().defectDescription.value,
+      Validation.MinLength,
       { minLength: 5 }
     );
   
     const defectMaxLengthValidation = this.validatorService.setValidation(
-      this.formValues().defectDescription.value, 
-      Validation.MaxLength, 
+      this.formValues().defectDescription.value,
+      Validation.MaxLength,
       { maxLength: 150 }
     );
   
-    const defectDescriptionValidation = {
-      error: defectMinLengthValidation.error || defectMaxLengthValidation.error,
-      message: defectMinLengthValidation.error ? defectMinLengthValidation.message : defectMaxLengthValidation.message,
+    // Combinar as validações de deviceDescription
+    const deviceDescriptionValidation = {
+      error: deviceMinLengthValidation.error || deviceMaxLengthValidation.error,
+      message: deviceMinLengthValidation.error 
+        ? deviceMinLengthValidation.message 
+        : deviceMaxLengthValidation.message
     };
   
+    // Combinar as validações de defectDescription
+    const defectDescriptionValidation = {
+      error: defectMinLengthValidation.error || defectMaxLengthValidation.error,
+      message: defectMinLengthValidation.error 
+        ? defectMinLengthValidation.message 
+        : defectMaxLengthValidation.message
+    };
+  
+    // Atribuir as validações consolidadas
     this.formValues().deviceDescription.validation = deviceDescriptionValidation;
     this.formValues().defectDescription.validation = defectDescriptionValidation;
   
+    // Verificar se todas as validações passaram
     if (!deviceDescriptionValidation.error && !defectDescriptionValidation.error) {
       this.sendData();
       this.resetInputs();
     }
-  }  
+  }
+   
 }

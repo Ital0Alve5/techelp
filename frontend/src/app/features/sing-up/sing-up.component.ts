@@ -9,6 +9,7 @@ import { LockIcon } from '@/shared/ui/icons/lock.icon';
 import { Mask } from '@/shared/enums/mask.enum';
 import { CepService } from './services/cep.service';
 import { DebounceService } from '@/shared/services/utils/debounce.service';
+import { CheckDatabaseService } from '@/shared/services/input/check-database.service';
 @Component({
   selector: 'app-sing-up',
   standalone: true,
@@ -131,6 +132,7 @@ export class SingUpComponent {
   constructor(
     private cepService: CepService,
     private debounceService: DebounceService,
+    private checkDatabaseService: CheckDatabaseService,
   ) {}
 
   setAddressUsingCep(cep: string) {
@@ -169,6 +171,12 @@ export class SingUpComponent {
   }
 
   onSubmit() {
+    if (this.checkDatabaseService.checkCpf(this.formValues().cpf.value)) {
+      console.log('CPF já usado');
+    }
+    if (this.checkDatabaseService.checkEmail(this.formValues().email.value)) {
+      console.log('email já usado');
+    }
     console.log(this.formValues());
   }
 }

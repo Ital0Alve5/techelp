@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component'
+import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component';
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
@@ -8,7 +8,7 @@ import { InputComponent } from '@/shared/ui/input/input.component';
 import { ValidatorService } from '@/shared/services/input/validator.service';
 import { Validation } from '@/shared/enums/validation.enum';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
-
+import { CheckDatabaseService } from '@/shared/services/input/check-database.service';
 @Component({
   selector: 'app-login',
   standalone: true,

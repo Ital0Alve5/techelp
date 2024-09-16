@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { InputValidator } from '@/shared/models/input-validator.model';
 import { InputError } from '@/shared/types/input-error.type';
+import { CheckDatabaseService } from './check-database.service';
 
 @Injectable({ providedIn: 'root' })
 export class EmailValidationService extends InputValidator {
@@ -113,5 +114,24 @@ export class RequiredValidationService extends InputValidator {
       error: true,
       message: `${this.fieldName} é obrigatório!`,
     };
+  }
+}
+@Injectable({ providedIn: 'root' })
+export class CheckEmailLoginValidationService extends InputValidator {
+  constructor(private checkDatabaseService: CheckDatabaseService) {
+    super();
+  }
+  override validate(inputValue: string): InputError {
+    if (!this.checkDatabaseService.checkEmail(inputValue)) {
+      return {
+        error: true,
+        message: `E-mail não cadastrado`,
+      };
+    } else {
+      return {
+        error: false,
+        message: '',
+      };
+    }
   }
 }

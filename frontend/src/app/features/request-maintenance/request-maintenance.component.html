@@ -13,6 +13,8 @@
         { value: 'teclado', label: 'Teclado' },
         { value: 'outro', label: 'Outro' }
       ]"
+      [(value)]="formValues().deviceCategory.value"
+      [validation]="formValues().deviceCategory.validation"
     ></app-select>
 
     <app-textarea

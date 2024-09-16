@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component';
@@ -13,7 +13,14 @@ import { Validation } from '@/shared/enums/validation.enum';
 @Component({
   selector: 'app-request-maintenance',
   standalone: true,
-  imports: [CardComponent, AuthTypeComponent, TextareaComponent, ButtonComponent, UserIcon, LockIcon, SelectComponent, FormsModule],
+  imports: [CardComponent, 
+            AuthTypeComponent, 
+            TextareaComponent, 
+            ButtonComponent, 
+            UserIcon, 
+            LockIcon, 
+            SelectComponent, 
+            FormsModule],
   templateUrl: './request-maintenance.component.html',
   styleUrls: ['./request-maintenance.component.scss'],
 })
@@ -110,7 +117,6 @@ export class RequestMaintenanceComponent {
       { maxLength: 150 }
     );
   
-    // Combinar as validações de deviceDescription
     const deviceDescriptionValidation = {
       error: deviceMinLengthValidation.error || deviceMaxLengthValidation.error,
       message: deviceMinLengthValidation.error 
@@ -118,20 +124,29 @@ export class RequestMaintenanceComponent {
         : deviceMaxLengthValidation.message
     };
   
-    // Combinar as validações de defectDescription
     const defectDescriptionValidation = {
       error: defectMinLengthValidation.error || defectMaxLengthValidation.error,
       message: defectMinLengthValidation.error 
         ? defectMinLengthValidation.message 
         : defectMaxLengthValidation.message
     };
+
+    //const deviceCategoryValidation = this.validatorService.setValidation(
+    //  this.formValues().deviceCategory.value, 
+    //  Validation.Required, 
+    //  {fieldName: "deviceCategory"})
+
+    const deviceCategoryValidation = {
+      error: !this.formValues().deviceCategory.value, // Verifica se o valor está vazio
+      message: !this.formValues().deviceCategory.value ? 'Selecione uma categoria válida' : '',
+    };
+    
   
-    // Atribuir as validações consolidadas
     this.formValues().deviceDescription.validation = deviceDescriptionValidation;
     this.formValues().defectDescription.validation = defectDescriptionValidation;
+    this.formValues().deviceCategory.validation = deviceCategoryValidation;
   
-    // Verificar se todas as validações passaram
-    if (!deviceDescriptionValidation.error && !defectDescriptionValidation.error) {
+    if (!deviceDescriptionValidation.error && !defectDescriptionValidation.error && !deviceCategoryValidation.error) {
       this.sendData();
       this.resetInputs();
     }

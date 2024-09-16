@@ -19,7 +19,7 @@ import { DebounceService } from '@/shared/services/utils/debounce.service';
   styleUrl: './sing-up.component.scss',
 })
 export class SingUpComponent {
-  successModal = false;
+  successModal = true;
   formValues = signal({
     email: {
       value: '',

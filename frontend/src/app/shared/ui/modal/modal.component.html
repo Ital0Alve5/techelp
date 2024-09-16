@@ -1,4 +1,5 @@
-<div class="modal" [ngClass]="{ hidden: isHidden() }" id="modal-content">
+<div class="modal" [ngClass]="{ hidden: isHidden() }">
+  <div class="outside-modal"></div>
   <div class="modal-content">
     <span class="close" (click)="close()">&times;</span>
     <ng-content />

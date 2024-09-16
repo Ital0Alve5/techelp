@@ -185,21 +185,29 @@ export class SingUpComponent {
     );
     this.formValues().phone.validation = phoneValidation;
 
-    const houseNumber = this.signupValidatorService.setValidation(
+    const houseNumberValidation = this.signupValidatorService.setValidation(
       this.formValues().number.value,
       Validation.HouseNumber,
       {},
     );
-    this.formValues().number.validation = houseNumber;
+    this.formValues().number.validation = houseNumberValidation;
 
-    const complement = this.signupValidatorService.setValidation(
+    const complementValidation = this.signupValidatorService.setValidation(
       this.formValues().complement.value,
       Validation.Complement,
       {},
     );
-    this.formValues().complement.validation = complement;
+    this.formValues().complement.validation = complementValidation;
 
-    if (!emailValidation.error && !nameValidation.error && CPFValidation) {
+    const validForm =
+      !emailValidation.error &&
+      !nameValidation.error &&
+      !CPFValidation.error &&
+      !phoneValidation.error &&
+      !houseNumberValidation.error &&
+      !complementValidation.error;
+
+    if (validForm) {
       this.sendData();
       this.resetInputs();
     }

@@ -3,6 +3,7 @@ import { Component, signal } from '@angular/core';
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component';
 import { InputComponent } from '@/shared/ui/input/input.component';
+import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
@@ -12,12 +13,13 @@ import { DebounceService } from '@/shared/services/utils/debounce.service';
 @Component({
   selector: 'app-sing-up',
   standalone: true,
-  imports: [CardComponent, AuthTypeComponent, InputComponent, ButtonComponent, UserIcon, LockIcon],
+  imports: [ModalComponent, CardComponent, AuthTypeComponent, InputComponent, ButtonComponent, UserIcon, LockIcon],
   providers: [CepService],
   templateUrl: './sing-up.component.html',
   styleUrl: './sing-up.component.scss',
 })
 export class SingUpComponent {
+  successModal = false;
   formValues = signal({
     email: {
       value: '',
@@ -127,7 +129,15 @@ export class SingUpComponent {
       },
     },
   });
-
+  passValues = signal(
+    {
+      value: '',
+      validation: {
+        error: false,
+        message: '',
+      },
+    }
+    );
   constructor(
     private cepService: CepService,
     private debounceService: DebounceService,
@@ -170,5 +180,11 @@ export class SingUpComponent {
 
   onSubmit() {
     console.log(this.formValues());
+    this.successModal = true;
+  }
+
+  confirmPassword(){
+    console.log(this.passValues());
+    this.successModal = false;
   }
 }

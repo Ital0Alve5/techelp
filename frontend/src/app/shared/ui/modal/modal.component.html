@@ -1,0 +1,7 @@
+<div class="modal" [ngClass]="{'hidden' : isHidden()}" id="modal-content">
+    <div class="modal-content">
+        <span class="close" (click)="close()">&times;</span>
+        <ng-content/>
+    </div>
+   
+</div>

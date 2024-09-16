@@ -116,4 +116,21 @@
     </app-input>
     <button app-button>Cadastrar</button>
   </form>
+  <app-modal>
+    <h1>Cheque seu e-mail</h1>
+    <p>Enviamos suas credenciais por e-mail.</p>
+    <p>Não compartilhe sua senha com ninguém.</p>
+  <form (ngSubmit)="confirmPassword()">
+    <app-input
+    id="senha"
+    label="Senha"
+    placeholder="XXXX"
+    [(value)]="passValues().value"
+    [validation]="passValues().validation">
+  </app-input>
+  <button app-button>Confirmar</button>
+  </form>
+  </app-modal>
+
 </app-card>
+

@@ -4,4 +4,9 @@ export enum Validation {
   MinLength,
   MaxLength,
   Required,
+  Name,
+  CPF,
+  Phone,
+  HouseNumber,
+  Complement,
 }

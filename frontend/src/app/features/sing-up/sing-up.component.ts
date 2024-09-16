@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component';
 import { InputComponent } from '@/shared/ui/input/input.component';
@@ -8,11 +8,13 @@ import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
 import { Mask } from '@/shared/enums/mask.enum';
 import { CepService } from './services/cep.service';
+import { SignupValidatorService } from '@/shared/services/input/signup-validator.service';
+import { Validation } from '@/shared/enums/validation.enum';
 import { DebounceService } from '@/shared/services/utils/debounce.service';
 @Component({
   selector: 'app-sing-up',
   standalone: true,
-  imports: [CardComponent, AuthTypeComponent, InputComponent, ButtonComponent, UserIcon, LockIcon],
+  imports: [CardComponent, AuthTypeComponent, InputComponent, ButtonComponent, UserIcon, LockIcon, FormsModule],
   providers: [CepService],
   templateUrl: './sing-up.component.html',
   styleUrl: './sing-up.component.scss',
@@ -22,22 +24,6 @@ export class SingUpComponent {
     email: {
       value: '',
       type: 'text',
-      validation: {
-        error: false,
-        message: '',
-      },
-    },
-    password: {
-      value: '',
-      type: 'password',
-      validation: {
-        error: false,
-        message: '',
-      },
-    },
-    redefinePassword: {
-      value: '',
-      type: 'password',
       validation: {
         error: false,
         message: '',
@@ -62,7 +48,7 @@ export class SingUpComponent {
     },
     phone: {
       value: '',
-      type: 'text',
+      type: 'tel',
       validation: {
         error: false,
         message: '',
@@ -131,6 +117,7 @@ export class SingUpComponent {
   constructor(
     private cepService: CepService,
     private debounceService: DebounceService,
+    private signupValidatorService: SignupValidatorService,
   ) {}
 
   setAddressUsingCep(cep: string) {
@@ -168,7 +155,161 @@ export class SingUpComponent {
     this.formValues().cep.validation = { error: false, message: '' };
   }
 
+  onInputChange(fieldName: string, newValue: string) {
+    this.formValues.update((currentValues) => ({
+      ...currentValues,
+      [fieldName]: {
+        value: newValue,
+      },
+    }));
+  }
+
   onSubmit() {
-    console.log(this.formValues());
+    const emailValidation = this.signupValidatorService.setValidation(
+      this.formValues().email.value,
+      Validation.Email,
+      {},
+    );
+    this.formValues().email.validation = emailValidation;
+
+    const nameValidation = this.signupValidatorService.setValidation(this.formValues().name.value, Validation.Name, {});
+    this.formValues().name.validation = nameValidation;
+
+    const CPFValidation = this.signupValidatorService.setValidation(this.formValues().cpf.value, Validation.CPF, {});
+    this.formValues().cpf.validation = CPFValidation;
+
+    const phoneValidation = this.signupValidatorService.setValidation(
+      this.formValues().phone.value,
+      Validation.Phone,
+      {},
+    );
+    this.formValues().phone.validation = phoneValidation;
+
+    const houseNumber = this.signupValidatorService.setValidation(
+      this.formValues().number.value,
+      Validation.HouseNumber,
+      {},
+    );
+    this.formValues().number.validation = houseNumber;
+
+    const complement = this.signupValidatorService.setValidation(
+      this.formValues().complement.value,
+      Validation.Complement,
+      {},
+    );
+    this.formValues().complement.validation = complement;
+
+    if (!emailValidation.error && !nameValidation.error && CPFValidation) {
+      this.sendData();
+      this.resetInputs();
+    }
+  }
+
+  resetInputs() {
+    this.formValues.update((currentValues) => ({
+      ...currentValues,
+      email: {
+        value: '',
+        type: 'text',
+        validation: {
+          error: false,
+          message: '',
+        },
+      },
+      name: {
+        value: '',
+        type: 'text',
+        validation: {
+          error: false,
+          message: '',
+        },
+      },
+      cpf: {
+        value: '',
+        type: 'text',
+        validation: {
+          error: false,
+          message: '',
+        },
+        mask: Mask.Cpf,
+      },
+      phone: {
+        value: '',
+        type: 'text',
+        validation: {
+          error: false,
+          message: '',
+        },
+        mask: Mask.Phone,
+      },
+      cep: {
+        value: '',
+        type: 'text',
+        validation: {
+          error: false,
+          message: '',
+        },
+        mask: Mask.Cep,
+      },
+      state: {
+        value: '',
+        type: 'text',
+        validation: {
+          error: false,
+          message: '',
+        },
+      },
+      city: {
+        value: '',
+        type: 'text',
+        validation: {
+          error: false,
+          message: '',
+        },
+      },
+      neighborhood: {
+        value: '',
+        type: 'text',
+        validation: {
+          error: false,
+          message: '',
+        },
+      },
+      street: {
+        value: '',
+        type: 'text',
+        validation: {
+          error: false,
+          message: '',
+        },
+      },
+      number: {
+        value: '',
+        type: 'text',
+        validation: {
+          error: false,
+          message: '',
+        },
+      },
+      complement: {
+        value: '',
+        type: 'text',
+        validation: {
+          error: false,
+          message: '',
+        },
+      },
+    }));
+  }
+
+  sendData() {
+    console.log({
+      email: this.formValues().email.value,
+      name: this.formValues().name.value,
+      CPF: this.formValues().cpf.value,
+      phone: this.formValues().phone.value,
+      houseNumber: this.formValues().number.value,
+      complement: this.formValues().complement.value,
+    });
   }
 }

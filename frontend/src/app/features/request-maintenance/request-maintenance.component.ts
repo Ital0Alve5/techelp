@@ -131,13 +131,8 @@ export class RequestMaintenanceComponent {
         : defectMaxLengthValidation.message
     };
 
-    //const deviceCategoryValidation = this.validatorService.setValidation(
-    //  this.formValues().deviceCategory.value, 
-    //  Validation.Required, 
-    //  {fieldName: "deviceCategory"})
-
     const deviceCategoryValidation = {
-      error: !this.formValues().deviceCategory.value, // Verifica se o valor está vazio
+      error: !this.formValues().deviceCategory.value,
       message: !this.formValues().deviceCategory.value ? 'Selecione uma categoria válida' : '',
     };
     

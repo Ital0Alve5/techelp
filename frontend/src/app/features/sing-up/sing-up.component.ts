@@ -155,15 +155,6 @@ export class SingUpComponent {
     this.formValues().cep.validation = { error: false, message: '' };
   }
 
-  onInputChange(fieldName: string, newValue: string) {
-    this.formValues.update((currentValues) => ({
-      ...currentValues,
-      [fieldName]: {
-        value: newValue,
-      },
-    }));
-  }
-
   onSubmit() {
     const emailValidation = this.signupValidatorService.setValidation(
       this.formValues().email.value,

@@ -14,6 +14,7 @@ import { Validation } from '@/shared/enums/validation.enum';
 import { DebounceService } from '@/shared/services/utils/debounce.service';
 import { CheckDatabaseService } from '@/shared/services/input/check-database.service';
 import { SelectComponent } from '@/shared/ui/select/select.component';
+import { LoginValidatorService } from '@/shared/services/input/login-validator.service';
 
 @Component({
   selector: 'app-sing-up',
@@ -162,6 +163,7 @@ export class SingUpComponent {
     private debounceService: DebounceService,
     private checkDatabaseService: CheckDatabaseService,
     private signupValidatorService: SignupValidatorService,
+    private loginValidatorService: LoginValidatorService,
   ) {}
 
   setAddressUsingCep(cep: string) {
@@ -200,7 +202,17 @@ export class SingUpComponent {
   }
 
   confirmPassword() {
-    this.isPassConfirmationModalOpen.set(true);
+    const passwordValidation = this.loginValidatorService.setValidation(
+      this.formValues().password.value,
+      Validation.Password,
+      { maxLength: 12, minLength: 4 },
+    );
+    this.formValues().password.validation = passwordValidation;
+
+    if (!passwordValidation.error) {
+      this.isPassConfirmationModalOpen.set(true);
+    }
+    
   }
 
   onSubmit() {

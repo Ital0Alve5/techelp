@@ -137,7 +137,6 @@ export class CheckEmailLoginValidationService extends InputValidator {
   }
 }
 
-
 @Injectable({ providedIn: 'root' })
 export class NameValidationService extends InputValidator {
   constructor() {
@@ -147,17 +146,25 @@ export class NameValidationService extends InputValidator {
   override validate(inputValue: string): InputError {
     inputValue = inputValue.trim();
 
-    const nameMatch = new RegExp(/^[\p{L}]+(['\p{L}\s-]+[\p{L}]){1,}$/u).test(inputValue);
+    const isAlphabetic = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ'\s]+$/.test(inputValue.replace(' ', ''));
 
-    if (nameMatch)
+    if (!isAlphabetic)
+      return {
+        error: true,
+        message: 'Nome aceita apenas letras!',
+      };
+
+    if (inputValue.indexOf(' ') === -1) {
+      return {
+        error: true,
+        message: 'Deve ser o nome completo!',
+      };
+    }
+
     return {
-      error: true,
-      message: 'Nome inválido!',
-    };
-    return{
       error: false,
       message: '',
-    }
+    };
   }
 }
 

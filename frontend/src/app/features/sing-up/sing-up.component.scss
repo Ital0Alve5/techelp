@@ -24,6 +24,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-top: 20px;
 
   a {
     font-size: $size-small;
@@ -39,6 +40,11 @@ form {
   max-width: 104px;
 }
 
-#state{
-max-width: 104px;
+#state {
+  max-width: 104px;
+}
+
+p {
+  margin-bottom: 4px;
+  font-size: $size-small;
 }

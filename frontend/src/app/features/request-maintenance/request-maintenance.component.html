@@ -10,7 +10,7 @@
         { value: 'desktop', label: 'Desktop' },
         { value: 'impressora', label: 'Impressora' },
         { value: 'mouse', label: 'Mouse' },
-        { value: 'teclado', label: 'Teclado' }
+        { value: 'teclado', label: 'Teclado' },
       ]"
       [(value)]="formValues().deviceCategory.value"
       [validation]="formValues().deviceCategory.validation"
@@ -30,7 +30,7 @@
       placeholder="Descreva o defeito *"
       [(value)]="formValues().defectDescription.value"
       [validation]="formValues().defectDescription.validation"
-    ></app-textarea>
+    />
 
     <button app-button>Enviar Solicitação</button>
   </form>

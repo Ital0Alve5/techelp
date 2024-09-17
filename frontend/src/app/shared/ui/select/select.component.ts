@@ -14,6 +14,11 @@ export class SelectComponent {
   placeholder = input<string>('');
   options = input<{ value: string; label: string }[]>([]);
   value = model<string>('');
+  type = input<string>('');
+  validation = {
+    error: false,
+    message: '',
+  };
 
   onChange(event: Event) {
     const selectElement = event.target as HTMLSelectElement;

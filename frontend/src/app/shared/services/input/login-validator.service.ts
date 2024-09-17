@@ -10,7 +10,7 @@ import { Validation } from '@/shared/enums/validation.enum';
 import { InputError } from '@/shared/types/input-error.type';
 
 @Injectable({ providedIn: 'root' })
-export class ValidatorService {
+export class LoginValidatorService {
   constructor(
     private emailValidationService: EmailValidationService,
     private minLengthValidationService: MinLengthValidationService,
@@ -43,6 +43,8 @@ export class ValidatorService {
         return this.validateMinLength(inputValue, minLength);
       case Validation.MaxLength:
         return this.validateMinLength(inputValue, maxLength);
+      default:
+        return { error: true, message: 'Tipo de campo desconhecido' };
     }
   }
 

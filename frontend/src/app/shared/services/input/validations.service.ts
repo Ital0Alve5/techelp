@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { InputValidator } from '@/shared/models/input-validator.model';
 import { InputError } from '@/shared/types/input-error.type';
+import { CheckDatabaseService } from './check-database.service';
 
 @Injectable({ providedIn: 'root' })
 export class EmailValidationService extends InputValidator {
@@ -117,6 +118,27 @@ export class RequiredValidationService extends InputValidator {
 }
 
 @Injectable({ providedIn: 'root' })
+export class CheckEmailLoginValidationService extends InputValidator {
+  constructor(private checkDatabaseService: CheckDatabaseService) {
+    super();
+  }
+  override validate(inputValue: string): InputError {
+    if (!this.checkDatabaseService.checkEmail(inputValue)) {
+      return {
+        error: true,
+        message: `E-mail não cadastrado`,
+      };
+    } else {
+      return {
+        error: false,
+        message: '',
+      };
+    }
+  }
+}
+
+
+@Injectable({ providedIn: 'root' })
 export class NameValidationService extends InputValidator {
   constructor() {
     super();
@@ -128,15 +150,14 @@ export class NameValidationService extends InputValidator {
     const nameMatch = new RegExp(/^[\p{L}]+(['\p{L}\s-]+[\p{L}]){1,}$/u).test(inputValue);
 
     if (nameMatch)
-      return {
-        error: false,
-        message: '',
-      };
-
     return {
       error: true,
       message: 'Nome inválido!',
     };
+    return{
+      error: false,
+      message: '',
+    }
   }
 }
 

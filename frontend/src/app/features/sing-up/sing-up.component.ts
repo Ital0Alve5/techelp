@@ -11,6 +11,7 @@ import { CepService } from './services/cep.service';
 import { SignupValidatorService } from '@/shared/services/input/signup-validator.service';
 import { Validation } from '@/shared/enums/validation.enum';
 import { DebounceService } from '@/shared/services/utils/debounce.service';
+import { CheckDatabaseService } from '@/shared/services/input/check-database.service';
 import { SelectComponent } from '@/shared/ui/select/select.component';
 
 @Component({
@@ -158,6 +159,7 @@ export class SingUpComponent {
   constructor(
     private cepService: CepService,
     private debounceService: DebounceService,
+    private checkDatabaseService: CheckDatabaseService,
     private signupValidatorService: SignupValidatorService,
   ) {}
 
@@ -197,6 +199,24 @@ export class SingUpComponent {
   }
 
   onSubmit() {
+    if (this.checkDatabaseService.checkCpf(this.formValues().cpf.value)) {
+      console.log('CPF já usado');
+    }
+    if (this.checkDatabaseService.checkEmail(this.formValues().email.value)) {
+      console.log('email já usado');
+    }
+    const CpfUsed = this.checkDatabaseService.checkCpf(this.formValues().cpf.value);
+    this.formValues().cpf.validation.error = CpfUsed;
+    if(CpfUsed){
+      this.formValues().cpf.validation.message = 'CPF já está em uso!'
+    }
+
+    const EmailUsed = this.checkDatabaseService.checkEmail(this.formValues().email.value);
+    this.formValues().email.validation.error = EmailUsed;
+    if(EmailUsed){
+      this.formValues().email.validation.message = 'E-Mail já está em uso!'
+    }
+    
     const emailValidation = this.signupValidatorService.setValidation(
       this.formValues().email.value,
       Validation.Email,
@@ -261,6 +281,8 @@ export class SingUpComponent {
       !ruaValidation.error &&
       !bairroValidation.error &&
       !cidadeValidation.error &&
+      !CpfUsed &&
+      !EmailUsed &&
       !cepValidation.error;
 
     if (validForm) {

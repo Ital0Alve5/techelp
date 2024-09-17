@@ -4,6 +4,7 @@ import {
   MinLengthValidationService,
   MaxLengthValidationService,
   RequiredValidationService,
+  CheckEmailLoginValidationService,
 } from './validations.service';
 import { Validation } from '@/shared/enums/validation.enum';
 import { InputError } from '@/shared/types/input-error.type';
@@ -15,6 +16,7 @@ export class LoginValidatorService {
     private minLengthValidationService: MinLengthValidationService,
     private maxLengthValidationService: MaxLengthValidationService,
     private requiredValidationService: RequiredValidationService,
+    private checkEmailLoginValidationService: CheckEmailLoginValidationService,
   ) {}
 
   setValidation(
@@ -64,6 +66,8 @@ export class LoginValidatorService {
     result = this.emailValidationService.validate(inputValue);
 
     if (result.error) return result;
+
+    result = this.checkEmailLoginValidationService.validate(inputValue);
 
     return result;
   }

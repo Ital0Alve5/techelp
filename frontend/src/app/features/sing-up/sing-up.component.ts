@@ -34,7 +34,7 @@ import { SelectComponent } from '@/shared/ui/select/select.component';
   styleUrl: './sing-up.component.scss',
 })
 export class SingUpComponent {
-  successModal = true;
+  successModal = signal(true);
   states = [
     { value: 'acre', label: 'AC' },
     { value: 'alagoas', label: 'AL' },
@@ -208,14 +208,10 @@ export class SingUpComponent {
   }
 
   confirmPassword() {
-    console.log(this.passValues());
-    this.successModal = false;
+    this.successModal.set(true);
   }
 
   onSubmit() {
-    console.log(this.formValues());
-    this.successModal = true;
-    
     if (this.checkDatabaseService.checkCpf(this.formValues().cpf.value)) {
       console.log('CPF já usado');
     }
@@ -224,16 +220,16 @@ export class SingUpComponent {
     }
     const CpfUsed = this.checkDatabaseService.checkCpf(this.formValues().cpf.value);
     this.formValues().cpf.validation.error = CpfUsed;
-    if(CpfUsed){
-      this.formValues().cpf.validation.message = 'CPF já está em uso!'
+    if (CpfUsed) {
+      this.formValues().cpf.validation.message = 'CPF já está em uso!';
     }
 
     const EmailUsed = this.checkDatabaseService.checkEmail(this.formValues().email.value);
     this.formValues().email.validation.error = EmailUsed;
-    if(EmailUsed){
-      this.formValues().email.validation.message = 'E-Mail já está em uso!'
+    if (EmailUsed) {
+      this.formValues().email.validation.message = 'E-Mail já está em uso!';
     }
-    
+
     const emailValidation = this.signupValidatorService.setValidation(
       this.formValues().email.value,
       Validation.Email,
@@ -406,6 +402,8 @@ export class SingUpComponent {
   }
 
   sendData() {
+    this.successModal.set(false);
+
     console.log({
       email: this.formValues().email.value,
       name: this.formValues().name.value,
@@ -414,9 +412,9 @@ export class SingUpComponent {
       houseNumber: this.formValues().number.value,
       complement: this.formValues().complement.value,
       cep: this.formValues().cep.value,
-      rua: this.formValues().cep.value,
-      bairro: this.formValues().cep.value,
-      cidade: this.formValues().cep.value,
+      rua: this.formValues().street.value,
+      bairro: this.formValues().neighborhood.value,
+      cidade: this.formValues().city.value,
       estado: this.formValues().state.value,
     });
   }

@@ -1,9 +1,8 @@
-import { Component, model, HostListener } from '@angular/core';
-import { NgClass } from '@angular/common';
+import { Component, model } from '@angular/core';
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [NgClass],
+  imports: [],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss',
   host: {
@@ -11,10 +10,10 @@ import { NgClass } from '@angular/common';
   }
 })
 export class ModalComponent {
-  isHidden = model<boolean>();
+  isHidden = model.required<boolean>();
+
   close() {
     this.isHidden.set(true);
-    console.log(this.isHidden());
   }
 
   onClick(event: KeyboardEvent) {
@@ -22,7 +21,6 @@ export class ModalComponent {
       const targetElement = event.target as Element;
       if (targetElement.className === 'outside-modal') {
         this.isHidden.set(true);
-        console.log(this.isHidden());
       }
     }
   }

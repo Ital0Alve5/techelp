@@ -54,13 +54,7 @@
         (inputEvent)="setAddressUsingCep($event)"
       >
       </app-input>
-      <app-select
-        id="state"
-        label="Estado"
-        placeholder="UF *"
-        [(value)]="formValues().state.value"
-        [options]="states"
-      >
+      <app-select id="state" label="Estado" placeholder="UF *" [(value)]="formValues().state.value" [options]="states">
       </app-select>
     </div>
     <div>
@@ -115,7 +109,7 @@
     </app-input>
     <button app-button>Cadastrar</button>
   </form>
-  <app-modal>
+  <app-modal [(isHidden)]="successModal">
     <h1>Cheque seu e-mail</h1>
     <p>Enviamos suas credenciais por e-mail.</p>
     <p>Não compartilhe sua senha com ninguém.</p>

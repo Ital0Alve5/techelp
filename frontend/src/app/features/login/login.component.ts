@@ -41,15 +41,6 @@ export class LoginComponent {
     private popUpService: PopupService,
   ) {}
 
-  onInputChange(fieldName: string, newValue: string) {
-    this.formValues.update((currentValues) => ({
-      ...currentValues,
-      [fieldName]: {
-        value: newValue,
-      },
-    }));
-  }
-
   resetInputs() {
     this.formValues.update((currentValues) => ({
       ...currentValues,

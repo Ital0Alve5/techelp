@@ -34,7 +34,6 @@ import { SelectComponent } from '@/shared/ui/select/select.component';
   styleUrl: './sing-up.component.scss',
 })
 export class SingUpComponent {
-  successModal = signal(true);
   states = [
     { value: 'acre', label: 'AC' },
     { value: 'alagoas', label: 'AL' },
@@ -68,7 +67,6 @@ export class SingUpComponent {
   formValues = signal({
     email: {
       value: '',
-      type: 'text',
       validation: {
         error: false,
         message: '',
@@ -76,7 +74,6 @@ export class SingUpComponent {
     },
     name: {
       value: '',
-      type: 'text',
       validation: {
         error: false,
         message: '',
@@ -84,7 +81,6 @@ export class SingUpComponent {
     },
     cpf: {
       value: '',
-      type: 'text',
       validation: {
         error: false,
         message: '',
@@ -102,7 +98,6 @@ export class SingUpComponent {
     },
     cep: {
       value: '',
-      type: 'text',
       validation: {
         error: false,
         message: '',
@@ -111,7 +106,6 @@ export class SingUpComponent {
     },
     state: {
       value: '',
-      type: 'text',
       validation: {
         error: false,
         message: '',
@@ -119,7 +113,6 @@ export class SingUpComponent {
     },
     city: {
       value: '',
-      type: 'text',
       validation: {
         error: false,
         message: '',
@@ -127,7 +120,6 @@ export class SingUpComponent {
     },
     neighborhood: {
       value: '',
-      type: 'text',
       validation: {
         error: false,
         message: '',
@@ -135,7 +127,6 @@ export class SingUpComponent {
     },
     street: {
       value: '',
-      type: 'text',
       validation: {
         error: false,
         message: '',
@@ -143,7 +134,6 @@ export class SingUpComponent {
     },
     number: {
       value: '',
-      type: 'text',
       validation: {
         error: false,
         message: '',
@@ -151,20 +141,22 @@ export class SingUpComponent {
     },
     complement: {
       value: '',
-      type: 'text',
+      validation: {
+        error: false,
+        message: '',
+      },
+    },
+    password: {
+      value: '',
       validation: {
         error: false,
         message: '',
       },
     },
   });
-  passValues = signal({
-    value: '',
-    validation: {
-      error: false,
-      message: '',
-    },
-  });
+
+  isPassConfirmationModalOpen = signal(true);
+
   constructor(
     private cepService: CepService,
     private debounceService: DebounceService,
@@ -208,7 +200,7 @@ export class SingUpComponent {
   }
 
   confirmPassword() {
-    this.successModal.set(true);
+    this.isPassConfirmationModalOpen.set(true);
   }
 
   onSubmit() {
@@ -402,7 +394,7 @@ export class SingUpComponent {
   }
 
   sendData() {
-    this.successModal.set(false);
+    this.isPassConfirmationModalOpen.set(false);
 
     console.log({
       email: this.formValues().email.value,

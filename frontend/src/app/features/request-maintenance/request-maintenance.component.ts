@@ -7,19 +7,19 @@ import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
 import { SelectComponent } from '@/shared/ui/select/select.component';
-import { ValidatorService } from '@/shared/services/input/validator.service';
+import { RequestMaintenanceValidatorService } from '@/shared/services/input/request-maintenance-validator.service';
 import { Validation } from '@/shared/enums/validation.enum';
 
 @Component({
   selector: 'app-request-maintenance',
   standalone: true,
-  imports: [CardComponent, 
-            AuthTypeComponent, 
-            TextareaComponent, 
-            ButtonComponent, 
-            UserIcon, 
-            LockIcon, 
-            SelectComponent, 
+  imports: [CardComponent,
+            AuthTypeComponent,
+            TextareaComponent,
+            ButtonComponent,
+            UserIcon,
+            LockIcon,
+            SelectComponent,
             FormsModule],
   templateUrl: './request-maintenance.component.html',
   styleUrls: ['./request-maintenance.component.scss'],
@@ -52,7 +52,7 @@ export class RequestMaintenanceComponent {
     },
   });
 
-  constructor(private validatorService: ValidatorService) {}
+  constructor(private validatorService: RequestMaintenanceValidatorService) {}
 
   resetInputs() {
     this.formValues.update((currentValues) => ({
@@ -98,36 +98,36 @@ export class RequestMaintenanceComponent {
       Validation.MinLength,
       { minLength: 5 }
     );
-  
+
     const deviceMaxLengthValidation = this.validatorService.setValidation(
       this.formValues().deviceDescription.value,
       Validation.MaxLength,
       { maxLength: 50 }
     );
-  
+
     const defectMinLengthValidation = this.validatorService.setValidation(
       this.formValues().defectDescription.value,
       Validation.MinLength,
       { minLength: 5 }
     );
-  
+
     const defectMaxLengthValidation = this.validatorService.setValidation(
       this.formValues().defectDescription.value,
       Validation.MaxLength,
       { maxLength: 150 }
     );
-  
+
     const deviceDescriptionValidation = {
       error: deviceMinLengthValidation.error || deviceMaxLengthValidation.error,
-      message: deviceMinLengthValidation.error 
-        ? deviceMinLengthValidation.message 
+      message: deviceMinLengthValidation.error
+        ? deviceMinLengthValidation.message
         : deviceMaxLengthValidation.message
     };
-  
+
     const defectDescriptionValidation = {
       error: defectMinLengthValidation.error || defectMaxLengthValidation.error,
-      message: defectMinLengthValidation.error 
-        ? defectMinLengthValidation.message 
+      message: defectMinLengthValidation.error
+        ? defectMinLengthValidation.message
         : defectMaxLengthValidation.message
     };
 
@@ -135,16 +135,16 @@ export class RequestMaintenanceComponent {
       error: !this.formValues().deviceCategory.value,
       message: !this.formValues().deviceCategory.value ? 'Selecione uma categoria válida' : '',
     };
-    
-  
+
+
     this.formValues().deviceDescription.validation = deviceDescriptionValidation;
     this.formValues().defectDescription.validation = defectDescriptionValidation;
     this.formValues().deviceCategory.validation = deviceCategoryValidation;
-  
+
     if (!deviceDescriptionValidation.error && !defectDescriptionValidation.error && !deviceCategoryValidation.error) {
       this.sendData();
       this.resetInputs();
     }
   }
-   
+
 }

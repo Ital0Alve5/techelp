@@ -11,8 +11,17 @@
     font-size: $size-small;
     color: $neutral-50;
   }
-
   .error-container {
+    width: 100%;
+
+    .errorMessage {
+      color: $feedback-negative-50;
+      font-size: $size-x-small;
+      margin-top: 4px;
+    }
+  }
+
+  select {
     width: 100%;
     padding: 8px 40px 8px 16px;
     border-radius: 16px;
@@ -24,6 +33,11 @@
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
+
+    &.error {
+      border: 1px solid $feedback-negative-50;
+    }
+
   }
 
   .select-container {

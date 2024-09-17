@@ -4,11 +4,7 @@
   </label>
   <div class="error-container">
     <div class="select-container">
-      <select
-        [id]="id()"
-        [class.error]="validation()?.error"
-        (change)="onChange($event)"
-      >
+      <select [id]="id()" [class.error]="validation()?.error" (change)="onChange($event)">
         <option disabled selected>{{ placeholder() }}</option>
         @for (option of options(); track option.value) {
           <option [value]="option.value">

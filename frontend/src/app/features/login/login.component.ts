@@ -5,7 +5,7 @@ import { CardComponent } from '@/shared/ui/card/card.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
 import { InputComponent } from '@/shared/ui/input/input.component';
-import { ValidatorService } from '@/shared/services/input/validator.service';
+import { LoginValidatorService } from '@/shared/services/input/login-validator.service';
 import { Validation } from '@/shared/enums/validation.enum';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
@@ -37,7 +37,7 @@ export class LoginComponent {
   });
 
   constructor(
-    private validatorService: ValidatorService,
+    private loginValidatorService: LoginValidatorService,
     private popUpService: PopupService,
   ) {}
 
@@ -80,9 +80,13 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    const emailValidation = this.validatorService.setValidation(this.formValues().email.value, Validation.Email, {});
+    const emailValidation = this.loginValidatorService.setValidation(
+      this.formValues().email.value,
+      Validation.Email,
+      {},
+    );
 
-    const passwordValidation = this.validatorService.setValidation(
+    const passwordValidation = this.loginValidatorService.setValidation(
       this.formValues().password.value,
       Validation.Password,
       { maxLength: 12, minLength: 4 },

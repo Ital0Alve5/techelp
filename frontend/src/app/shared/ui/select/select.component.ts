@@ -1,6 +1,6 @@
 import { Component, input, model } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { InputError } from '@/shared/types/input-error.type';
 @Component({
   selector: 'app-select',
   standalone: true,
@@ -14,6 +14,7 @@ export class SelectComponent {
   placeholder = input<string>('');
   options = input<{ value: string; label: string }[]>([]);
   value = model<string>('');
+  validation = input<InputError>();
 
   onChange(event: Event) {
     const selectElement = event.target as HTMLSelectElement;

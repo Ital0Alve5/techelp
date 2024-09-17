@@ -1,0 +1,14 @@
+@for (popUp of popUpService.getPopUpList(); track popUp.message) {
+  <div class="popUp" [class.error]="popUp.type === status.Error" [class.success]="popUp.type === status.Success">
+    @switch (popUp.type) {
+      @case (status.Error) {
+        <warning-icon width="20px" color="#fff" />
+      }
+
+      @case (status.Success) {
+        <success-icon width="20px" color="#fff" />
+      }
+    }
+    <p>{{ popUp.message }}</p>
+  </div>
+}

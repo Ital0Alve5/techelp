@@ -8,7 +8,7 @@ import { InputComponent } from '@/shared/ui/input/input.component';
 import { LoginValidatorService } from '@/shared/services/input/login-validator.service';
 import { Validation } from '@/shared/enums/validation.enum';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
-import { CheckDatabaseService } from '@/shared/services/input/check-database.service';
+import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -36,7 +36,10 @@ export class LoginComponent {
     },
   });
 
-  constructor(private loginValidatorService: LoginValidatorService) {}
+  constructor(
+    private loginValidatorService: LoginValidatorService,
+    private popUpService: PopupService,
+  ) {}
 
   onInputChange(fieldName: string, newValue: string) {
     this.formValues.update((currentValues) => ({

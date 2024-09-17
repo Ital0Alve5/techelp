@@ -1,14 +1,14 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component'
+import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component';
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
 import { InputComponent } from '@/shared/ui/input/input.component';
-import { ValidatorService } from '@/shared/services/input/validator.service';
+import { LoginValidatorService } from '@/shared/services/input/login-validator.service';
 import { Validation } from '@/shared/enums/validation.enum';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
-
+import { CheckDatabaseService } from '@/shared/services/input/check-database.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -36,7 +36,7 @@ export class LoginComponent {
     },
   });
 
-  constructor(private validatorService: ValidatorService) {}
+  constructor(private loginValidatorService: LoginValidatorService) {}
 
   onInputChange(fieldName: string, newValue: string) {
     this.formValues.update((currentValues) => ({
@@ -77,9 +77,13 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    const emailValidation = this.validatorService.setValidation(this.formValues().email.value, Validation.Email, {});
+    const emailValidation = this.loginValidatorService.setValidation(
+      this.formValues().email.value,
+      Validation.Email,
+      {},
+    );
 
-    const passwordValidation = this.validatorService.setValidation(
+    const passwordValidation = this.loginValidatorService.setValidation(
       this.formValues().password.value,
       Validation.Password,
       { maxLength: 12, minLength: 4 },

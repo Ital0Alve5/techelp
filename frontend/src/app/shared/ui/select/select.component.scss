@@ -11,10 +11,19 @@
     font-size: $size-small;
     color: $neutral-50;
   }
+  .error-container {
+    width: 100%;
+
+    .errorMessage {
+      color: $feedback-negative-50;
+      font-size: $size-x-small;
+      margin-top: 4px;
+    }
+  }
 
   select {
     width: 100%;
-    padding: 8px 16px;
+    padding: 8px 40px 8px 16px;
     border-radius: 16px;
     background-color: $neutral-10;
     border: 1px solid $neutral-30;
@@ -24,10 +33,16 @@
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
+
+    &.error {
+      border: 1px solid $feedback-negative-50;
+    }
+
   }
 
   .select-container {
     position: relative;
+    min-width: 100px;
 
     &::after {
       content: '⌵';
@@ -37,6 +52,7 @@
       position: absolute;
       font-weight: 900;
       transform: translateY(-1px);
+      pointer-events: none;
     }
   }
 }

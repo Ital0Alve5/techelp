@@ -54,15 +54,14 @@
         (inputEvent)="setAddressUsingCep($event)"
       >
       </app-input>
-      <app-input
+      <app-select
         id="state"
         label="Estado"
-        placeholder="Estado *"
+        placeholder="UF *"
         [(value)]="formValues().state.value"
-        [type]="formValues().state.type"
-        [validation]="formValues().state.validation"
+        [options]="states"
       >
-      </app-input>
+      </app-select>
     </div>
     <div>
       <app-input

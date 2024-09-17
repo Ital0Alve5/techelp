@@ -9,4 +9,8 @@ export enum Validation {
   Phone,
   HouseNumber,
   Complement,
+  CEP,
+  Cidade,
+  Bairro,
+  Rua,
 }

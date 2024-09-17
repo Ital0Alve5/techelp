@@ -231,13 +231,37 @@ export class SingUpComponent {
     );
     this.formValues().complement.validation = complementValidation;
 
+    const cepValidation = this.signupValidatorService.setValidation(this.formValues().cep.value, Validation.CEP, {});
+    this.formValues().cep.validation = cepValidation;
+
+    const cidadeValidation = this.signupValidatorService.setValidation(
+      this.formValues().city.value,
+      Validation.Cidade,
+      {},
+    );
+    this.formValues().city.validation = cidadeValidation;
+
+    const ruaValidation = this.signupValidatorService.setValidation(this.formValues().street.value, Validation.Rua, {});
+    this.formValues().street.validation = ruaValidation;
+
+    const bairroValidation = this.signupValidatorService.setValidation(
+      this.formValues().neighborhood.value,
+      Validation.Bairro,
+      {},
+    );
+    this.formValues().neighborhood.validation = bairroValidation;
+
     const validForm =
       !emailValidation.error &&
       !nameValidation.error &&
       !CPFValidation.error &&
       !phoneValidation.error &&
       !houseNumberValidation.error &&
-      !complementValidation.error;
+      !complementValidation.error &&
+      !ruaValidation.error &&
+      !bairroValidation.error &&
+      !cidadeValidation.error &&
+      !cepValidation.error;
 
     if (validForm) {
       this.sendData();
@@ -275,7 +299,7 @@ export class SingUpComponent {
       },
       phone: {
         value: '',
-        type: 'text',
+        type: 'tel',
         validation: {
           error: false,
           message: '',
@@ -350,6 +374,11 @@ export class SingUpComponent {
       phone: this.formValues().phone.value,
       houseNumber: this.formValues().number.value,
       complement: this.formValues().complement.value,
+      cep: this.formValues().cep.value,
+      rua: this.formValues().cep.value,
+      bairro: this.formValues().cep.value,
+      cidade: this.formValues().cep.value,
+      estado: this.formValues().state.value,
     });
   }
 }

@@ -271,3 +271,99 @@ export class ComplementValidationService extends InputValidator {
     };
   }
 }
+
+@Injectable({ providedIn: 'root' })
+export class CEPValidationService extends InputValidator {
+  constructor() {
+    super();
+  }
+
+  override validate(inputValue: string): InputError {
+    inputValue = inputValue.trim();
+
+    const cepNumber = new RegExp(/^\d{5}-?\d{3}$/).test(inputValue);
+
+    if (cepNumber)
+      return {
+        error: false,
+        message: '',
+      };
+
+    return {
+      error: true,
+      message: 'CEP inválido!',
+    };
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class RuaValidationService extends InputValidator {
+  constructor() {
+    super();
+  }
+
+  override validate(inputValue: string): InputError {
+    inputValue = inputValue.trim();
+
+    const rua = new RegExp(/^[A-Za-zÀ-ÖØ-öø-ÿ0-9' -]{2,}$/).test(inputValue);
+
+    if (rua)
+      return {
+        error: false,
+        message: '',
+      };
+
+    return {
+      error: true,
+      message: 'Nome de rua inválido!',
+    };
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class BairroValidationService extends InputValidator {
+  constructor() {
+    super();
+  }
+
+  override validate(inputValue: string): InputError {
+    inputValue = inputValue.trim();
+
+    const bairro = new RegExp(/^[A-Za-zÀ-ÖØ-öø-ÿ0-9' -]{2,}$/).test(inputValue);
+
+    if (bairro)
+      return {
+        error: false,
+        message: '',
+      };
+
+    return {
+      error: true,
+      message: 'Bairro inválido!',
+    };
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class CidadeValidationService extends InputValidator {
+  constructor() {
+    super();
+  }
+
+  override validate(inputValue: string): InputError {
+    inputValue = inputValue.trim();
+
+    const cidade = new RegExp(/^[A-Za-zÀ-ÖØ-öø-ÿ'´ ]{2,}$/).test(inputValue);
+
+    if (cidade)
+      return {
+        error: false,
+        message: '',
+      };
+
+    return {
+      error: true,
+      message: 'Cidade inválida!',
+    };
+  }
+}

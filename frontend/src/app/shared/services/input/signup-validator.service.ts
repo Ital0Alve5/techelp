@@ -7,6 +7,10 @@ import {
   PhoneValidationService,
   HouseNumberValidationService,
   ComplementValidationService,
+  CEPValidationService,
+  CidadeValidationService,
+  BairroValidationService,
+  RuaValidationService,
 } from './validations.service';
 import { Validation } from '@/shared/enums/validation.enum';
 import { InputError } from '@/shared/types/input-error.type';
@@ -21,6 +25,10 @@ export class SignupValidatorService {
     private phoneValidatorService: PhoneValidationService,
     private houseNumberValidationService: HouseNumberValidationService,
     private complementValidationService: ComplementValidationService,
+    private cepValidationService: CEPValidationService,
+    private cidadeValidationService: CidadeValidationService,
+    private bairroValidationService: BairroValidationService,
+    private ruaValidationService: RuaValidationService,
   ) {}
 
   setValidation(
@@ -47,6 +55,14 @@ export class SignupValidatorService {
         return this.validateHouseNumber(inputValue);
       case Validation.Complement:
         return this.validateComplement(inputValue);
+      case Validation.CEP:
+        return this.validateCEP(inputValue);
+      case Validation.Cidade:
+        return this.validateCidade(inputValue);
+      case Validation.Bairro:
+        return this.validateBairro(inputValue);
+      case Validation.Rua:
+        return this.validateRua(inputValue);
       default:
         return { error: true, message: 'Tipo de campo desconhecido' };
     }
@@ -144,6 +160,74 @@ export class SignupValidatorService {
 
   validateComplement(inputValue: string) {
     const result = this.complementValidationService.validate(inputValue);
+
+    if (result.error) return result;
+
+    return result;
+  }
+
+  validateCEP(inputValue: string) {
+    let result = {
+      error: false,
+      message: '',
+    };
+
+    result = this.validateRequired(inputValue, 'CEP');
+
+    if (result.error) return result;
+
+    result = this.cepValidationService.validate(inputValue);
+
+    if (result.error) return result;
+
+    return result;
+  }
+
+  validateCidade(inputValue: string) {
+    let result = {
+      error: false,
+      message: '',
+    };
+
+    result = this.validateRequired(inputValue, 'Cidade');
+
+    if (result.error) return result;
+
+    result = this.cidadeValidationService.validate(inputValue);
+
+    if (result.error) return result;
+
+    return result;
+  }
+
+  validateBairro(inputValue: string) {
+    let result = {
+      error: false,
+      message: '',
+    };
+
+    result = this.validateRequired(inputValue, 'Bairro');
+
+    if (result.error) return result;
+
+    result = this.bairroValidationService.validate(inputValue);
+
+    if (result.error) return result;
+
+    return result;
+  }
+
+  validateRua(inputValue: string) {
+    let result = {
+      error: false,
+      message: '',
+    };
+
+    result = this.validateRequired(inputValue, 'Rua');
+
+    if (result.error) return result;
+
+    result = this.ruaValidationService.validate(inputValue);
 
     if (result.error) return result;
 

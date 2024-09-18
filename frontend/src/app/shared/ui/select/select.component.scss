@@ -54,6 +54,10 @@ ul {
     border-top-right-radius: 16px;
   }
 
+  &.disabled {
+    cursor: default;
+  }
+
   span {
     font-size: $size-small;
     color: $neutral-50;

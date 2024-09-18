@@ -106,6 +106,7 @@ export class SignUpComponent {
     if (cep.replace(/[^0-9]/g, '').length < 8) {
       this.cleanAddressFields();
       this.clearCepError();
+      this.enableAddressFields();
       return;
     }
 
@@ -117,13 +118,29 @@ export class SignUpComponent {
         this.formValues().city.value = response.data.localidade;
         this.formValues().neighborhood.value = response.data.bairro;
         this.formValues().street.value = response.data.logradouro;
-
         this.clearCepError();
+        this.clearAddressError();
+        this.disableAddressFields();
       } else {
+        if (response.message.includes('indisponível')) this.enableAddressFields();
+        else this.disableAddressFields();
+
         this.cleanAddressFields();
         this.formValues().cep.validation = response;
       }
     });
+  }
+
+  enableAddressFields() {
+    this.formValues().state.disabled = false;
+    this.formValues().city.disabled = false;
+    this.formValues().neighborhood.disabled = false;
+  }
+
+  disableAddressFields() {
+    this.formValues().state.disabled = true;
+    this.formValues().city.disabled = true;
+    this.formValues().neighborhood.disabled = true;
   }
 
   cleanAddressFields() {
@@ -136,6 +153,17 @@ export class SignUpComponent {
 
   clearCepError() {
     this.formValues().cep.validation = { error: false, message: '' };
+  }
+
+  clearAddressError() {
+    this.formValues().state.validation = { error: false, message: '' };
+    this.formValues().city.validation = { error: false, message: '' };
+    this.formValues().neighborhood.validation = { error: false, message: '' };
+    this.formValues().street.validation = { error: false, message: '' };
+
+    if (this.formValues().number.value) {
+      this.formValues().number.validation = { error: false, message: '' };
+    }
   }
 
   onSubmit() {

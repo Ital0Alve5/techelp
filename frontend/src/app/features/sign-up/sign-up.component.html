@@ -65,10 +65,10 @@
         id="state"
         label="Estado"
         placeholder="UF *"
-        defaultValue="UF *"
         [(value)]="formValues().state.value"
         [options]="states"
         [validation]="formValues().state.validation"
+        [disabled]="formValues().state.disabled"
       />
     </div>
     <div>
@@ -78,6 +78,7 @@
         placeholder="Nome da cidade *"
         [(value)]="formValues().city.value"
         [validation]="formValues().city.validation"
+        [disabled]="formValues().state.disabled"
       />
       <app-input
         id="neighborhood"
@@ -85,6 +86,7 @@
         placeholder="Nome do bairro *"
         [(value)]="formValues().neighborhood.value"
         [validation]="formValues().neighborhood.validation"
+        [disabled]="formValues().state.disabled"
       />
     </div>
 
@@ -95,6 +97,7 @@
         placeholder="Nome da rua *"
         [(value)]="formValues().street.value"
         [validation]="formValues().street.validation"
+        [disabled]="formValues().state.disabled"
       />
       <app-input
         id="number"

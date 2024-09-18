@@ -24,6 +24,7 @@ export class InputComponent {
   label = input<string>('');
   validation = input<InputError>();
   mask = input<Mask>();
+  disabled = input<boolean>();
   inputEvent = output<string>();
 
   isHidden = signal<boolean>(true);

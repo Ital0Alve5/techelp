@@ -1,4 +1,4 @@
-import { Component, input, model, signal } from '@angular/core';
+import { Component, input, model, signal, SimpleChanges, OnChanges } from '@angular/core';
 
 import { InputError } from '@/shared/types/input-error.type';
 @Component({
@@ -7,18 +7,24 @@ import { InputError } from '@/shared/types/input-error.type';
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
 })
-export class SelectComponent {
+export class SelectComponent implements OnChanges {
   value = model<string>('');
-  defaultValue = input.required<string>();
 
   id = input<string>('');
   label = input<string>('');
-  placeholder = input<string>('');
+  placeholder = input.required<string>();
   options = input<{ id: number; label: string }[]>([]);
   validation = input<InputError>();
+  disabled = input<boolean>();
   isOpen = signal<boolean>(false);
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['disabled']?.currentValue) this.isOpen.set(false);
+  }
+
   toggleSelect() {
+    if (this.disabled()) return;
+
     this.isOpen.set(!this.isOpen());
   }
 

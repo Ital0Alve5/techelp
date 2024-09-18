@@ -19,7 +19,7 @@ import { RequestMaintenanceService } from './services/request-maintenance.servic
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 
 import { InputError } from '@/shared/types/input-error.type';
-import { UserData } from '@/shared/types/user-data.type';
+import { UserData } from '@/shared/types/api/user-data.type';
 
 import { formData } from './model/form-data.model';
 import { Categories } from './types/categories.type';

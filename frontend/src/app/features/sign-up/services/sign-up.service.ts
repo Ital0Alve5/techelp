@@ -4,8 +4,8 @@ import { CpfMaskService } from '@/shared/services/input/masks.service';
 import { registeredUsersMock } from '@/shared/mock/registered-users.mock';
 import { InputError } from '@/shared/types/input-error.type';
 import { loggedUserMock } from '@/shared/mock/logged-user.mock';
-import { Response } from '@/shared/types/response.type';
-import { UserData } from '@/shared/types/user-data.type';
+import { Response } from '@/shared/types/api/response.type';
+import { UserData } from '@/shared/types/api/user-data.type';
 
 type RegisterUserData = {
   email: string;

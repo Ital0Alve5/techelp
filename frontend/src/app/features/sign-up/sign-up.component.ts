@@ -30,7 +30,7 @@ import { UfValidator } from '@/shared/services/validators/uf-validator.service';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 
 import { InputError } from '@/shared/types/input-error.type';
-import { UserData } from '@/shared/types/user-data.type';
+import { UserData } from '@/shared/types/api/user-data.type';
 
 import { CepService } from './services/cep.service';
 import { states } from './constants/states.constant';

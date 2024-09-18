@@ -17,7 +17,7 @@ import { MinLengthValidator } from '@/shared/services/validators/min-length-vali
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 
 import { InputError } from '@/shared/types/input-error.type';
-import { UserData } from '@/shared/types/user-data.type';
+import { UserData } from '@/shared/types/api/user-data.type';
 
 import { LoginService } from './services/login.service';
 import { formData } from './model/form-data.model';

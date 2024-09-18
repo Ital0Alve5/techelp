@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { InputError } from '@/shared/types/input-error.type';
-import { Response } from '@/shared/types/response.type';
+import { Response } from '@/shared/types/api/response.type';
 import { deviceCategories } from '@/shared/mock/device-categories.mock';
 import { Categories } from '../types/categories.type';
 import { loggedUserMock } from '@/shared/mock/logged-user.mock';
-import { UserData } from '@/shared/types/user-data.type';
+import { UserData } from '@/shared/types/api/user-data.type';
 
 @Injectable()
 export class RequestMaintenanceService {

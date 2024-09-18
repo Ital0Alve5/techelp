@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { InputError } from '@/shared/types/input-error.type';
 import { BaseValidator } from '@/shared/models/validator/Validator.model';
-import { deviceCategories } from '@/features/request-maintenance/constants/device-categories.constant';
+import { deviceCategories } from '@/shared/mock/device-categories.mock';
 
 @Injectable()
 export class DeviceCategoryValidator extends BaseValidator {

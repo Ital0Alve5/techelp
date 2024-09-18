@@ -16,22 +16,6 @@ ul {
   max-height: 170px;
   overflow: auto;
 
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: $neutral-10;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $neutral-30;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: $neutral-50;
-  }
-
   li {
     padding: 8px 16px;
     font-size: $size-small;

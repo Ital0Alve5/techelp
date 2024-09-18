@@ -15,7 +15,7 @@ export class SelectComponent {
   id = input<string>('');
   label = input<string>('');
   placeholder = input<string>('');
-  options = input<{ value: string; label: string }[]>([]);
+  options = input<{ id: number; label: string }[]>([]);
   validation = input<InputError>();
   isOpen = signal<boolean>(false);
 

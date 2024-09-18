@@ -1,4 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { FormsModule } from '@angular/forms';
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component';
@@ -11,8 +13,13 @@ import { RequiredValidator } from '@/shared/services/validators/required-validat
 import { MaxLengthValidator } from '@/shared/services/validators/max-length-validator.service';
 import { MinLengthValidator } from '@/shared/services/validators/min-length-validator.service';
 import { formData } from './model/form-data.model';
-import { deviceCategories } from './constants/device-categories.constant';
 import { DeviceCategoryValidator } from '@/shared/services/validators/device-category.service';
+import { RequestMaintenanceService } from './services/request-maintenance.service';
+import { Categories } from './types/categories.type';
+import { PopupService } from '@/shared/services/pop-up/pop-up.service';
+import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+import { InputError } from '@/shared/types/input-error.type';
+import { UserData } from '@/shared/types/user-data.type';
 @Component({
   selector: 'app-request-maintenance',
   standalone: true,
@@ -26,31 +33,58 @@ import { DeviceCategoryValidator } from '@/shared/services/validators/device-cat
     SelectComponent,
     FormsModule,
   ],
-  providers: [RequiredValidator, MaxLengthValidator, MinLengthValidator, DeviceCategoryValidator],
+  providers: [
+    RequiredValidator,
+    MaxLengthValidator,
+    MinLengthValidator,
+    DeviceCategoryValidator,
+    RequestMaintenanceService,
+    PopupService,
+  ],
   templateUrl: './request-maintenance.component.html',
   styleUrls: ['./request-maintenance.component.scss'],
 })
-export class RequestMaintenanceComponent {
+export class RequestMaintenanceComponent implements OnInit {
   formValues = signal(JSON.parse(JSON.stringify(formData)));
-  deviceCategories = deviceCategories;
+  deviceCategories: Categories | null = null;
 
   constructor(
     private requiredValidator: RequiredValidator,
     private maxLengthValidator: MaxLengthValidator,
     private minLengthValidator: MinLengthValidator,
     private deviceCategoryValidator: DeviceCategoryValidator,
+    private requestMaintenanceService: RequestMaintenanceService,
+    private popupService: PopupService,
+    private router: Router,
   ) {}
+
+  ngOnInit() {
+    this.requestMaintenanceService.getCategories().then((response) => {
+      this.deviceCategories = response;
+    });
+  }
 
   resetInputs() {
     this.formValues.update(() => JSON.parse(JSON.stringify(formData)));
   }
 
   sendData() {
-    console.log({
-      deviceDescription: this.formValues().deviceDescription.value,
-      deviceCategory: this.formValues().deviceCategory.value,
-      defectDescription: this.formValues().defectDescription.value,
-    });
+    this.requestMaintenanceService
+      .send({
+        deviceDescription: this.formValues().deviceDescription.value,
+        deviceCategory: this.formValues().deviceCategory.value,
+        defectDescription: this.formValues().defectDescription.value,
+      })
+      .then((response) => {
+        if (response.error) {
+          this.popupService.addNewPopUp({
+            type: Status.Error,
+            message: (response.data as InputError).message,
+          });
+        } else {
+          this.router.navigate([`/cliente/${(response.data as UserData).id}/solicitacoes`]);
+        }
+      });
   }
 
   onSubmit() {

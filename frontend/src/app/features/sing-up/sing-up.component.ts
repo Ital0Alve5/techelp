@@ -1,5 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component';
 import { InputComponent } from '@/shared/ui/input/input.component';
@@ -26,6 +28,12 @@ import { PhoneValidator } from '@/shared/services/validators/phone-validator.ser
 import { UfValidator } from '@/shared/services/validators/uf-validator.service';
 import { states } from './constants/states.constant';
 import { formData } from './model/form-data.model';
+import { SignUpService } from './services/sign-up.service';
+import { PopupService } from '@/shared/services/pop-up/pop-up.service';
+import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+import { InputError } from '@/shared/types/input-error.type';
+import { UserData } from '@/shared/types/user-data.type';
+
 @Component({
   selector: 'app-sing-up',
   standalone: true,
@@ -56,6 +64,7 @@ import { formData } from './model/form-data.model';
     CepValidator,
     PhoneValidator,
     UfValidator,
+    SignUpService,
   ],
   templateUrl: './sing-up.component.html',
   styleUrl: './sing-up.component.scss',
@@ -82,6 +91,9 @@ export class SingUpComponent {
     private cepValidator: CepValidator,
     private phoneValidator: PhoneValidator,
     private ufValidator: UfValidator,
+    private signUpService: SignUpService,
+    private popupService: PopupService,
+    private router: Router,
   ) {}
 
   setAddressUsingCep(cep: string) {
@@ -121,7 +133,31 @@ export class SingUpComponent {
   }
 
   confirmPassword() {
-    this.isPassConfirmationModalOpen.set(true);
+    this.signUpService
+      .confirmPassword({
+        email: this.formValues().email.value,
+        name: this.formValues().name.value,
+        CPF: this.formValues().cpf.value,
+        phone: this.formValues().phone.value,
+        houseNumber: this.formValues().number.value,
+        complement: this.formValues().complement.value,
+        cep: this.formValues().cep.value,
+        rua: this.formValues().street.value,
+        bairro: this.formValues().neighborhood.value,
+        cidade: this.formValues().city.value,
+        estado: this.formValues().state.value,
+        password: this.formValues().password.value,
+      })
+      .then((response) => {
+        if (response.error)
+          this.popupService.addNewPopUp({
+            type: Status.Error,
+            message: (response.data as InputError).message,
+          });
+        else {
+          this.router.navigate([`/cliente/${(response.data as UserData).id}/solicitacoes`]);
+        }
+      });
   }
 
   onSubmit() {
@@ -178,7 +214,6 @@ export class SingUpComponent {
 
     if (validForm) {
       this.sendData();
-      this.resetInputs();
     }
   }
 
@@ -187,20 +222,20 @@ export class SingUpComponent {
   }
 
   sendData() {
-    this.isPassConfirmationModalOpen.set(false);
-
-    console.log({
-      email: this.formValues().email.value,
-      name: this.formValues().name.value,
-      CPF: this.formValues().cpf.value,
-      phone: this.formValues().phone.value,
-      houseNumber: this.formValues().number.value,
-      complement: this.formValues().complement.value,
-      cep: this.formValues().cep.value,
-      rua: this.formValues().street.value,
-      bairro: this.formValues().neighborhood.value,
-      cidade: this.formValues().city.value,
-      estado: this.formValues().state.value,
-    });
+    this.signUpService
+      .validate({
+        email: this.formValues().email.value,
+        cpf: this.formValues().cpf.value,
+      })
+      .then((response) => {
+        if (response.error) {
+          this.popupService.addNewPopUp({
+            type: Status.Error,
+            message: (response.data as InputError).message,
+          });
+        } else {
+          this.isPassConfirmationModalOpen.set(false);
+        }
+      });
   }
 }

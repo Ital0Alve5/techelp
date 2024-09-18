@@ -6,7 +6,12 @@
     <th>Estado</th>
     <th>Ação</th>
   </tr>
-  @for (request of requests(); track request.id) {
-    <tr app-client-table-row [date]="request.date" [description]="request.description" [status]="request.state"></tr>
+  @for (request of userData.requests; track request.id) {
+    <tr
+      app-client-table-row
+      [date]="request.date"
+      [description]="request.deviceDescription"
+      [status]="request.status"
+    ></tr>
   }
 </table>

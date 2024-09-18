@@ -1,5 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component';
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
@@ -11,11 +13,16 @@ import { RequiredValidator } from '@/shared/services/validators/required-validat
 import { MaxLengthValidator } from '@/shared/services/validators/max-length-validator.service';
 import { MinLengthValidator } from '@/shared/services/validators/min-length-validator.service';
 import { formData } from './model/form-data.model';
+import { LoginService } from './services/login.service';
+import { PopupService } from '@/shared/services/pop-up/pop-up.service';
+import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+import { InputError } from '@/shared/types/input-error.type';
+import { UserData } from '@/shared/types/user-data.type';
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CardComponent, UserIcon, InputComponent, LockIcon, FormsModule, AuthTypeComponent, ButtonComponent],
-  providers: [EmailValidator, RequiredValidator, MaxLengthValidator, MinLengthValidator],
+  providers: [EmailValidator, RequiredValidator, MaxLengthValidator, MinLengthValidator, LoginService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -27,6 +34,9 @@ export class LoginComponent {
     private requiredValidator: RequiredValidator,
     private maxLengthValidator: MaxLengthValidator,
     private minLengthValidator: MinLengthValidator,
+    private loginService: LoginService,
+    private popupService: PopupService,
+    private router: Router,
   ) {}
 
   resetInputs() {
@@ -34,10 +44,21 @@ export class LoginComponent {
   }
 
   sendData() {
-    console.log({
-      email: this.formValues().email.value,
-      password: this.formValues().password.value,
-    });
+    this.loginService
+      .validate({
+        email: this.formValues().email.value,
+        password: this.formValues().password.value,
+      })
+      .then((response) => {
+        if (response.error) {
+          this.popupService.addNewPopUp({
+            type: Status.Error,
+            message: (response.data as InputError).message,
+          });
+        } else {
+          this.router.navigate([`/cliente/${(response.data as UserData).id}/solicitacoes`]);
+        }
+      });
   }
 
   onSubmit() {

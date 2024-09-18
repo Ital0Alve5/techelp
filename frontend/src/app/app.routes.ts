@@ -18,7 +18,7 @@ export const routes: Routes = [
     component: ClientPanelComponent,
   },
   {
-    path: 'solicitar-manutencao',
+    path: 'cliente/:userId/solicitar-manutencao',
     component: RequestMaintenanceComponent,
   },
 ];

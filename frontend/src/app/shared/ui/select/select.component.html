@@ -14,8 +14,8 @@
       >
         <span>{{ value().length > 0 ? value() : defaultValue() }}</span>
         <ul [class.open]="isOpen()">
-          @for (option of options(); track option.value) {
-            <li (click)="onOptionChosen($event)" [value]="option.value">
+          @for (option of options(); track option.label) {
+            <li (click)="onOptionChosen($event)" [value]="option.id">
               {{ option.label }}
             </li>
           }

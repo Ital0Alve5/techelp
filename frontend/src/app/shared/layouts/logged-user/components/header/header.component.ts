@@ -11,7 +11,7 @@ import { ExitIcon } from '@/shared/ui/icons/exit.icon';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  constructor(private router: Router) {}
+  constructor(public router: Router) {}
 
   onLogout() {
     this.router.navigate([`/login`]);

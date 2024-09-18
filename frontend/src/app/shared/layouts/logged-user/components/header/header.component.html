@@ -4,8 +4,12 @@
     <span>Techelp</span>
   </div>
   <nav>
-    <a href="cliente/1/solicitar-manutencao">Solicitar manutenção</a>
+    @if (router.url.includes('solicitar')) {
+      <a href="cliente/1/solicitacoes">Consultar solicitações</a>
+    } @else if (router.url.includes('solicitacoes')) {
+      <a href="cliente/1/solicitar-manutencao">Solicitar manutenção</a>
+    }
     <p>Olá, <b>Yasmim</b></p>
-    <exit-icon width="24px" color="#ff57a7" (click)="onLogout()" /> 
+    <exit-icon width="24px" color="#ff57a7" (click)="onLogout()" />
   </nav>
 </header>

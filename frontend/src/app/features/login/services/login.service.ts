@@ -14,9 +14,14 @@ export class LoginService {
     return false;
   }
 
+  checkPassword(passwordInput: string) {
+    if (registeredUsersMock.find(({ password }) => password === passwordInput)) return true;
+    return false;
+  }
+
   async validate(data: { email: string; password: string }): Promise<Response<InputError> | Response<UserData>> {
     return new Promise((resolve) => {
-      if (this.checkEmail(data.email))
+      if (this.checkEmail(data.email) && this.checkPassword(data.password))
         resolve({
           error: false,
           data: loggedUserMock,

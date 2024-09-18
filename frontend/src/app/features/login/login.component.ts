@@ -70,9 +70,6 @@ export class LoginComponent {
     this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
     this.formValues().password.validation = this.requiredValidator.validate(password.value);
 
-    if (!email.validation.error && !password.validation.error) {
-      this.sendData();
-      this.resetInputs();
-    }
+    if (!email.validation.error && !password.validation.error) this.sendData();
   }
 }

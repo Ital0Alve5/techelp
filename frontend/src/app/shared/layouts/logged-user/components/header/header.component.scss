@@ -1,5 +1,12 @@
 @import 'colors';
 
+:host {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
 header {
   padding: 20px 80px;
   display: flex;
@@ -18,26 +25,36 @@ header {
 
     span {
       font-size: 30px;
-      font-weight: 600;
+      font-weight: 500;
       color: $neutral-90;
     }
   }
 
   nav {
     display: flex;
+    align-items: center;
     gap: 20px;
 
     a {
       text-decoration: none;
       color: $neutral-90;
+      border: 1px solid $brand-purple;
+      border-radius: 24px;
+      padding: 12px 24px;
+
+      &:hover {
+        background-color: $neutral-base-hover;
+      }
     }
 
     p {
-      color: $neutral-90;
+      color: $brand-purple;
     }
 
     exit-icon {
       display: block;
+      margin-left: 32px;
+      cursor: pointer;
     }
   }
 }

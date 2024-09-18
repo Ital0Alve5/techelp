@@ -9,9 +9,10 @@ import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
-import { CepService } from './services/cep.service';
-import { DebounceService } from '@/shared/services/utils/debounce.service';
 import { SelectComponent } from '@/shared/ui/select/select.component';
+import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+
+import { DebounceService } from '@/shared/services/utils/debounce.service';
 import { EmailValidator } from '@/shared/services/validators/email-validator.service';
 import { RequiredValidator } from '@/shared/services/validators/required-validator.service';
 import { MaxLengthValidator } from '@/shared/services/validators/max-length-validator.service';
@@ -26,13 +27,16 @@ import { StreetValidator } from '@/shared/services/validators/street-validator.s
 import { CepValidator } from '@/shared/services/validators/cep-validator.service';
 import { PhoneValidator } from '@/shared/services/validators/phone-validator.service';
 import { UfValidator } from '@/shared/services/validators/uf-validator.service';
+import { NumericValidator } from '@/shared/services/validators/numeric-validator.service';
+import { PopupService } from '@/shared/services/pop-up/pop-up.service';
+
+import { InputError } from '@/shared/types/input-error.type';
+import { UserData } from '@/shared/types/api/user-data.type';
+
+import { CepService } from './services/cep.service';
 import { states } from './constants/states.constant';
 import { formData } from './model/form-data.model';
 import { SignUpService } from './services/sign-up.service';
-import { PopupService } from '@/shared/services/pop-up/pop-up.service';
-import { Status } from '@/shared/ui/pop-up/enum/status.enum';
-import { InputError } from '@/shared/types/input-error.type';
-import { UserData } from '@/shared/types/user-data.type';
 
 @Component({
   selector: 'app-sign-up',
@@ -64,6 +68,7 @@ import { UserData } from '@/shared/types/user-data.type';
     CepValidator,
     PhoneValidator,
     UfValidator,
+    NumericValidator,
     SignUpService,
   ],
   templateUrl: './sign-up.component.html',
@@ -91,6 +96,7 @@ export class SignUpComponent {
     private cepValidator: CepValidator,
     private phoneValidator: PhoneValidator,
     private ufValidator: UfValidator,
+    private numericValidator: NumericValidator,
     private signUpService: SignUpService,
     private popupService: PopupService,
     private router: Router,
@@ -100,6 +106,7 @@ export class SignUpComponent {
     if (cep.replace(/[^0-9]/g, '').length < 8) {
       this.cleanAddressFields();
       this.clearCepError();
+      this.enableAddressFields();
       return;
     }
 
@@ -111,13 +118,29 @@ export class SignUpComponent {
         this.formValues().city.value = response.data.localidade;
         this.formValues().neighborhood.value = response.data.bairro;
         this.formValues().street.value = response.data.logradouro;
-
         this.clearCepError();
+        this.clearAddressError();
+        this.disableAddressFields();
       } else {
+        if (response.message.includes('indisponível')) this.enableAddressFields();
+        else this.disableAddressFields();
+
         this.cleanAddressFields();
         this.formValues().cep.validation = response;
       }
     });
+  }
+
+  enableAddressFields() {
+    this.formValues().state.disabled = false;
+    this.formValues().city.disabled = false;
+    this.formValues().neighborhood.disabled = false;
+  }
+
+  disableAddressFields() {
+    this.formValues().state.disabled = true;
+    this.formValues().city.disabled = true;
+    this.formValues().neighborhood.disabled = true;
   }
 
   cleanAddressFields() {
@@ -132,37 +155,19 @@ export class SignUpComponent {
     this.formValues().cep.validation = { error: false, message: '' };
   }
 
-  confirmPassword() {
-    this.signUpService
-      .confirmPassword({
-        email: this.formValues().email.value,
-        name: this.formValues().name.value,
-        CPF: this.formValues().cpf.value,
-        phone: this.formValues().phone.value,
-        houseNumber: this.formValues().number.value,
-        complement: this.formValues().complement.value,
-        cep: this.formValues().cep.value,
-        rua: this.formValues().street.value,
-        bairro: this.formValues().neighborhood.value,
-        cidade: this.formValues().city.value,
-        estado: this.formValues().state.value,
-        password: this.formValues().password.value,
-      })
-      .then((response) => {
-        if (response.error)
-          this.popupService.addNewPopUp({
-            type: Status.Error,
-            message: (response.data as InputError).message,
-          });
-        else {
-          this.router.navigate([`/cliente/${(response.data as UserData).id}/solicitacoes`]);
-        }
-      });
+  clearAddressError() {
+    this.formValues().state.validation = { error: false, message: '' };
+    this.formValues().city.validation = { error: false, message: '' };
+    this.formValues().neighborhood.validation = { error: false, message: '' };
+    this.formValues().street.validation = { error: false, message: '' };
+
+    if (this.formValues().number.value) {
+      this.formValues().number.validation = { error: false, message: '' };
+    }
   }
 
   onSubmit() {
-    const { email, name, cpf, phone, cep, city, state, neighborhood, street, number, complement, password } =
-      this.formValues();
+    const { email, name, cpf, phone, cep, city, state, neighborhood, street, number, complement } = this.formValues();
 
     this.requiredValidator.setNext(this.emailValidator);
     this.formValues().email.validation = this.requiredValidator.validate(email.value);
@@ -193,9 +198,6 @@ export class SignUpComponent {
 
     this.formValues().complement.validation = this.complementValidator.validate(complement.value);
 
-    this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
-    this.formValues().password.validation = this.requiredValidator.validate(password.value);
-
     this.requiredValidator.setNext(this.ufValidator);
     this.formValues().state.validation = this.requiredValidator.validate(state.value);
 
@@ -217,8 +219,43 @@ export class SignUpComponent {
     }
   }
 
-  resetInputs() {
-    this.formValues.update(() => JSON.parse(JSON.stringify(formData)));
+  confirmPassword() {
+    const { password } = this.formValues();
+
+    this.maxLengthValidator.setMaxLength(4);
+    this.requiredValidator
+      .setNext(this.numericValidator)
+      .setNext(this.minLengthValidator)
+      .setNext(this.maxLengthValidator);
+    this.formValues().password.validation = this.requiredValidator.validate(password.value);
+
+    if (password.validation.error) return;
+
+    this.signUpService
+      .confirmPassword({
+        email: this.formValues().email.value,
+        name: this.formValues().name.value,
+        CPF: this.formValues().cpf.value,
+        phone: this.formValues().phone.value,
+        houseNumber: this.formValues().number.value,
+        complement: this.formValues().complement.value,
+        cep: this.formValues().cep.value,
+        rua: this.formValues().street.value,
+        bairro: this.formValues().neighborhood.value,
+        cidade: this.formValues().city.value,
+        estado: this.formValues().state.value,
+        password: this.formValues().password.value,
+      })
+      .then((response) => {
+        if (response.error)
+          this.popupService.addNewPopUp({
+            type: Status.Error,
+            message: (response.data as InputError).message,
+          });
+        else {
+          this.router.navigate([`/cliente/${(response.data as UserData).id}/solicitacoes`]);
+        }
+      });
   }
 
   sendData() {

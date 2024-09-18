@@ -11,6 +11,7 @@
         [id]="id()"
         [class.error]="validation()?.error"
         [value]="value()"
+        [disabled]="disabled()"
         (input)="onInput($event)"
         [type]="type()"
         [placeholder]="placeholder()"

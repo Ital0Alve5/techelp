@@ -7,7 +7,7 @@ export class NeighborhoodValidator extends BaseValidator {
   override validate(inputValue: string): InputError {
     inputValue = inputValue.trim();
 
-    const isNeighborhoodValid = new RegExp(/^[A-Za-zÀ-ÖØ-öø-ÿ0-9' -]{2,}$/).test(inputValue);
+    const isNeighborhoodValid = /^[A-Za-zÀ-ÖØ-öø-ÿ0-9' -]{2,}$/.test(inputValue);
 
     if (!isNeighborhoodValid)
       return {

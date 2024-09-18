@@ -46,6 +46,7 @@ export const formData = {
       error: false,
       message: '',
     },
+    disabled: false,
   },
   city: {
     value: '',
@@ -53,6 +54,7 @@ export const formData = {
       error: false,
       message: '',
     },
+    disabled: false,
   },
   neighborhood: {
     value: '',
@@ -60,6 +62,7 @@ export const formData = {
       error: false,
       message: '',
     },
+    disabled: false,
   },
   street: {
     value: '',
@@ -67,6 +70,7 @@ export const formData = {
       error: false,
       message: '',
     },
+    disabled: false,
   },
   number: {
     value: '',

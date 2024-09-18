@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { FormsModule } from '@angular/forms';
+
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component';
 import { TextareaComponent } from '@/shared/ui/textarea/textarea.component';
@@ -9,17 +9,20 @@ import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
 import { SelectComponent } from '@/shared/ui/select/select.component';
+import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+
 import { RequiredValidator } from '@/shared/services/validators/required-validator.service';
 import { MaxLengthValidator } from '@/shared/services/validators/max-length-validator.service';
 import { MinLengthValidator } from '@/shared/services/validators/min-length-validator.service';
-import { formData } from './model/form-data.model';
 import { DeviceCategoryValidator } from '@/shared/services/validators/device-category.service';
 import { RequestMaintenanceService } from './services/request-maintenance.service';
-import { Categories } from './types/categories.type';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
-import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+
 import { InputError } from '@/shared/types/input-error.type';
-import { UserData } from '@/shared/types/user-data.type';
+import { UserData } from '@/shared/types/api/user-data.type';
+
+import { formData } from './model/form-data.model';
+import { Categories } from './types/categories.type';
 @Component({
   selector: 'app-request-maintenance',
   standalone: true,

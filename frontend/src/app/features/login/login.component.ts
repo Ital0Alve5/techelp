@@ -8,16 +8,19 @@ import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
 import { InputComponent } from '@/shared/ui/input/input.component';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
+import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+
 import { EmailValidator } from '@/shared/services/validators/email-validator.service';
 import { RequiredValidator } from '@/shared/services/validators/required-validator.service';
 import { MaxLengthValidator } from '@/shared/services/validators/max-length-validator.service';
 import { MinLengthValidator } from '@/shared/services/validators/min-length-validator.service';
-import { formData } from './model/form-data.model';
-import { LoginService } from './services/login.service';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
-import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+
 import { InputError } from '@/shared/types/input-error.type';
-import { UserData } from '@/shared/types/user-data.type';
+import { UserData } from '@/shared/types/api/user-data.type';
+
+import { LoginService } from './services/login.service';
+import { formData } from './model/form-data.model';
 @Component({
   selector: 'app-login',
   standalone: true,

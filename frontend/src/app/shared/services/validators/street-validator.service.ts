@@ -7,7 +7,7 @@ export class StreetValidator extends BaseValidator {
   override validate(inputValue: string): InputError {
     inputValue = inputValue.trim();
 
-    const isStreetValid = new RegExp(/^[A-Za-zÀ-ÖØ-öø-ÿ0-9' -]{2,}$/).test(inputValue);
+    const isStreetValid = /^[A-Za-zÀ-ÖØ-öø-ÿ0-9' -]{2,}$/.test(inputValue);
 
     if (!isStreetValid)
       return {

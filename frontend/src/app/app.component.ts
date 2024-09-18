@@ -1,5 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
 import { GuestLayout } from '@/shared/layouts/guest/guest.layout';
 import { PopUpComponent } from '@/shared/ui/pop-up/pop-up.component';
 @Component({

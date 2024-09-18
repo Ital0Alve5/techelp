@@ -1,9 +1,13 @@
 import { Component, input, signal, model, output } from '@angular/core';
-import { AllowVisibilityIcon } from '../icons/allow-visibility.icon';
-import { BlockVisibilityIcon } from '../icons/block-visibility.icon';
-import { InputError } from '@/shared/types/input-error.type';
-import { Mask } from '../../enums/mask.enum';
+
+import { AllowVisibilityIcon } from '@/shared/ui/icons/allow-visibility.icon';
+import { BlockVisibilityIcon } from '@/shared/ui/icons/block-visibility.icon';
+
 import { MaskApplicator } from '@/shared/services/input/mask-applicator.service';
+
+import { InputError } from '@/shared/types/input-error.type';
+import { Mask } from '@/shared/enums/mask.enum';
+
 @Component({
   selector: 'app-input',
   standalone: true,
@@ -20,6 +24,7 @@ export class InputComponent {
   label = input<string>('');
   validation = input<InputError>();
   mask = input<Mask>();
+  disabled = input<boolean>();
   inputEvent = output<string>();
 
   isHidden = signal<boolean>(true);

@@ -1,10 +1,9 @@
 import { Component, input, model, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { InputError } from '@/shared/types/input-error.type';
 @Component({
   selector: 'app-select',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
 })

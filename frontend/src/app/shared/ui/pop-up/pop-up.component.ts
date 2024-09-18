@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+
+import { PopupService } from '@/shared/services/pop-up/pop-up.service';
+
 import { WarningIcon } from '../icons/warning.icon';
 import { SuccessIcon } from '../icons/success.icon';
 import { Status } from './enum/status.enum';
-import { PopupService } from '@/shared/services/pop-up/pop-up.service';
-
 @Component({
   selector: 'app-pop-up',
   standalone: true,

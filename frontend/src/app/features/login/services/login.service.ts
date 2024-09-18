@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { registeredUsersMock } from '@/shared/mock/registered-users.mock';
 import { InputError } from '@/shared/types/input-error.type';
 import { loggedUserMock } from '@/shared/mock/logged-user.mock';

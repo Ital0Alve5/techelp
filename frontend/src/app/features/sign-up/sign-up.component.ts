@@ -9,9 +9,10 @@ import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
-import { CepService } from './services/cep.service';
-import { DebounceService } from '@/shared/services/utils/debounce.service';
 import { SelectComponent } from '@/shared/ui/select/select.component';
+import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+
+import { DebounceService } from '@/shared/services/utils/debounce.service';
 import { EmailValidator } from '@/shared/services/validators/email-validator.service';
 import { RequiredValidator } from '@/shared/services/validators/required-validator.service';
 import { MaxLengthValidator } from '@/shared/services/validators/max-length-validator.service';
@@ -26,13 +27,15 @@ import { StreetValidator } from '@/shared/services/validators/street-validator.s
 import { CepValidator } from '@/shared/services/validators/cep-validator.service';
 import { PhoneValidator } from '@/shared/services/validators/phone-validator.service';
 import { UfValidator } from '@/shared/services/validators/uf-validator.service';
+import { PopupService } from '@/shared/services/pop-up/pop-up.service';
+
+import { InputError } from '@/shared/types/input-error.type';
+import { UserData } from '@/shared/types/user-data.type';
+
+import { CepService } from './services/cep.service';
 import { states } from './constants/states.constant';
 import { formData } from './model/form-data.model';
 import { SignUpService } from './services/sign-up.service';
-import { PopupService } from '@/shared/services/pop-up/pop-up.service';
-import { Status } from '@/shared/ui/pop-up/enum/status.enum';
-import { InputError } from '@/shared/types/input-error.type';
-import { UserData } from '@/shared/types/user-data.type';
 
 @Component({
   selector: 'app-sign-up',
@@ -132,34 +135,6 @@ export class SignUpComponent {
     this.formValues().cep.validation = { error: false, message: '' };
   }
 
-  confirmPassword() {
-    this.signUpService
-      .confirmPassword({
-        email: this.formValues().email.value,
-        name: this.formValues().name.value,
-        CPF: this.formValues().cpf.value,
-        phone: this.formValues().phone.value,
-        houseNumber: this.formValues().number.value,
-        complement: this.formValues().complement.value,
-        cep: this.formValues().cep.value,
-        rua: this.formValues().street.value,
-        bairro: this.formValues().neighborhood.value,
-        cidade: this.formValues().city.value,
-        estado: this.formValues().state.value,
-        password: this.formValues().password.value,
-      })
-      .then((response) => {
-        if (response.error)
-          this.popupService.addNewPopUp({
-            type: Status.Error,
-            message: (response.data as InputError).message,
-          });
-        else {
-          this.router.navigate([`/cliente/${(response.data as UserData).id}/solicitacoes`]);
-        }
-      });
-  }
-
   onSubmit() {
     const { email, name, cpf, phone, cep, city, state, neighborhood, street, number, complement, password } =
       this.formValues();
@@ -217,8 +192,32 @@ export class SignUpComponent {
     }
   }
 
-  resetInputs() {
-    this.formValues.update(() => JSON.parse(JSON.stringify(formData)));
+  confirmPassword() {
+    this.signUpService
+      .confirmPassword({
+        email: this.formValues().email.value,
+        name: this.formValues().name.value,
+        CPF: this.formValues().cpf.value,
+        phone: this.formValues().phone.value,
+        houseNumber: this.formValues().number.value,
+        complement: this.formValues().complement.value,
+        cep: this.formValues().cep.value,
+        rua: this.formValues().street.value,
+        bairro: this.formValues().neighborhood.value,
+        cidade: this.formValues().city.value,
+        estado: this.formValues().state.value,
+        password: this.formValues().password.value,
+      })
+      .then((response) => {
+        if (response.error)
+          this.popupService.addNewPopUp({
+            type: Status.Error,
+            message: (response.data as InputError).message,
+          });
+        else {
+          this.router.navigate([`/cliente/${(response.data as UserData).id}/solicitacoes`]);
+        }
+      });
   }
 
   sendData() {

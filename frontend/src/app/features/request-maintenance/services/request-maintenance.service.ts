@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { InputError } from '@/shared/types/input-error.type';
 import { Response } from '@/shared/types/response.type';
 import { deviceCategories } from '@/shared/mock/device-categories.mock';

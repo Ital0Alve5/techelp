@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+
 import { CardComponent } from '@/shared/ui/card/card.component';
+
 import { ClientTableRowComponent } from '@/features/client-panel/components/client-table-row/client-table-row.component';
 import { loggedUserMock } from '@/shared/mock/logged-user.mock';
 @Component({

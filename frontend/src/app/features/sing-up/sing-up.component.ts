@@ -23,6 +23,7 @@ import { NeighborhoodValidator } from '@/shared/services/validators/neighborhood
 import { StreetValidator } from '@/shared/services/validators/street-validator.service';
 import { CepValidator } from '@/shared/services/validators/cep-validator.service';
 import { PhoneValidator } from '@/shared/services/validators/phone-validator.service';
+import { UfValidator } from '@/shared/services/validators/uf-validator.service';
 import { states } from './constants/states.constant';
 import { formData } from './model/form-data.model';
 @Component({
@@ -54,6 +55,7 @@ import { formData } from './model/form-data.model';
     StreetValidator,
     CepValidator,
     PhoneValidator,
+    UfValidator,
   ],
   templateUrl: './sing-up.component.html',
   styleUrl: './sing-up.component.scss',
@@ -79,6 +81,7 @@ export class SingUpComponent {
     private streetValidator: StreetValidator,
     private cepValidator: CepValidator,
     private phoneValidator: PhoneValidator,
+    private ufValidator: UfValidator,
   ) {}
 
   setAddressUsingCep(cep: string) {
@@ -110,6 +113,7 @@ export class SingUpComponent {
     this.formValues().city.value = '';
     this.formValues().neighborhood.value = '';
     this.formValues().street.value = '';
+    this.formValues().number.value = '';
   }
 
   clearCepError() {
@@ -121,7 +125,7 @@ export class SingUpComponent {
   }
 
   onSubmit() {
-    const { email, name, cpf, phone, cep, city, neighborhood, street, number, complement, password } =
+    const { email, name, cpf, phone, cep, city, state, neighborhood, street, number, complement, password } =
       this.formValues();
 
     this.requiredValidator.setNext(this.emailValidator);
@@ -156,6 +160,9 @@ export class SingUpComponent {
     this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
     this.formValues().password.validation = this.requiredValidator.validate(password.value);
 
+    this.requiredValidator.setNext(this.ufValidator);
+    this.formValues().state.validation = this.requiredValidator.validate(state.value);
+
     const validForm =
       !email.validation.error &&
       !name.validation.error &&
@@ -166,7 +173,8 @@ export class SingUpComponent {
       !street.validation.error &&
       !neighborhood.validation.error &&
       !city.validation.error &&
-      !cep.validation.error;
+      !cep.validation.error &&
+      !state.validation.error;
 
     if (validForm) {
       this.sendData();

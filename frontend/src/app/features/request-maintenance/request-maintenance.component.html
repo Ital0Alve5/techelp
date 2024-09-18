@@ -5,13 +5,8 @@
       id="deviceCategory"
       label="Categoria do Equipamento"
       placeholder="Selecione a categoria *"
-      [options]="[
-        { value: 'notebook', label: 'Notebook' },
-        { value: 'desktop', label: 'Desktop' },
-        { value: 'impressora', label: 'Impressora' },
-        { value: 'mouse', label: 'Mouse' },
-        { value: 'teclado', label: 'Teclado' },
-      ]"
+      defaultValue="Selecione o equipamento *"
+      [options]="deviceCategories"
       [(value)]="formValues().deviceCategory.value"
       [validation]="formValues().deviceCategory.validation"
     ></app-select>

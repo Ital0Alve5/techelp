@@ -65,8 +65,10 @@
         id="state"
         label="Estado"
         placeholder="UF *"
+        defaultValue="UF *"
         [(value)]="formValues().state.value"
         [options]="states"
+        [validation]="formValues().state.validation"
       />
     </div>
     <div>

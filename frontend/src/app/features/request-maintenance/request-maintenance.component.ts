@@ -11,7 +11,8 @@ import { RequiredValidator } from '@/shared/services/validators/required-validat
 import { MaxLengthValidator } from '@/shared/services/validators/max-length-validator.service';
 import { MinLengthValidator } from '@/shared/services/validators/min-length-validator.service';
 import { formData } from './model/form-data.model';
-
+import { deviceCategories } from './constants/device-categories.constant';
+import { DeviceCategoryValidator } from '@/shared/services/validators/device-category.service';
 @Component({
   selector: 'app-request-maintenance',
   standalone: true,
@@ -25,17 +26,19 @@ import { formData } from './model/form-data.model';
     SelectComponent,
     FormsModule,
   ],
-  providers: [RequiredValidator, MaxLengthValidator, MinLengthValidator],
+  providers: [RequiredValidator, MaxLengthValidator, MinLengthValidator, DeviceCategoryValidator],
   templateUrl: './request-maintenance.component.html',
   styleUrls: ['./request-maintenance.component.scss'],
 })
 export class RequestMaintenanceComponent {
   formValues = signal(JSON.parse(JSON.stringify(formData)));
+  deviceCategories = deviceCategories;
 
   constructor(
     private requiredValidator: RequiredValidator,
     private maxLengthValidator: MaxLengthValidator,
     private minLengthValidator: MinLengthValidator,
+    private deviceCategoryValidator: DeviceCategoryValidator,
   ) {}
 
   resetInputs() {
@@ -51,7 +54,7 @@ export class RequestMaintenanceComponent {
   }
 
   onSubmit() {
-    const { deviceDescription, defectDescription } = this.formValues();
+    const { deviceDescription, defectDescription, deviceCategory } = this.formValues();
 
     this.minLengthValidator.setMinLength(5);
     this.maxLengthValidator.setMaxLength(50);
@@ -63,7 +66,14 @@ export class RequestMaintenanceComponent {
     this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
     this.formValues().defectDescription.validation = this.requiredValidator.validate(defectDescription.value);
 
-    if (!deviceDescription.validation.error && !defectDescription.validation.error) {
+    this.requiredValidator.setNext(this.deviceCategoryValidator);
+    this.formValues().deviceCategory.validation = this.requiredValidator.validate(deviceCategory.value);
+
+    if (
+      !deviceDescription.validation.error &&
+      !defectDescription.validation.error &&
+      !deviceCategory.validation.error
+    ) {
       this.sendData();
       this.resetInputs();
     }

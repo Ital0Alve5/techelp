@@ -1,4 +1,4 @@
-import { Component, input, model } from '@angular/core';
+import { Component, input, model, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InputError } from '@/shared/types/input-error.type';
 @Component({
@@ -9,15 +9,25 @@ import { InputError } from '@/shared/types/input-error.type';
   styleUrls: ['./select.component.scss'],
 })
 export class SelectComponent {
+  value = model<string>('');
+  defaultValue = input.required<string>();
+
   id = input<string>('');
   label = input<string>('');
   placeholder = input<string>('');
   options = input<{ value: string; label: string }[]>([]);
-  value = model<string>('');
   validation = input<InputError>();
+  isOpen = signal<boolean>(false);
+
+  toggleSelect() {
+    this.isOpen.set(!this.isOpen());
+  }
 
   onChange(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    this.value.set(selectElement.value);
+    this.value.set((event.target as HTMLSelectElement).value);
+  }
+
+  onOptionChosen(event: Event) {
+    this.value.set((event.target as HTMLElement).innerText);
   }
 }

@@ -3,16 +3,16 @@ import { InputError } from '@/shared/types/input-error.type';
 import { BaseValidator } from '@/shared/models/validator/Validator.model';
 
 @Injectable()
-export class PhoneValidator extends BaseValidator {
+export class NumericValidator extends BaseValidator {
   override validate(inputValue: string): InputError {
     inputValue = inputValue.trim();
 
-    const phoneMatch = /^(?:\+55\s?)?(?:\(?\d{2}\)?\s?)?\d{4,5}[-\s]?\d{4}$/.test(inputValue);
+    const isNumeric = /^\d+$/.test(inputValue);
 
-    if (!phoneMatch)
+    if (!isNumeric)
       return {
         error: true,
-        message: 'Telefone inválido!',
+        message: 'O campo aceita apenas números!',
       };
     else if (this.nextValidator) return this.nextValidator.validate(inputValue);
 

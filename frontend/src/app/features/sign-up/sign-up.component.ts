@@ -27,6 +27,7 @@ import { StreetValidator } from '@/shared/services/validators/street-validator.s
 import { CepValidator } from '@/shared/services/validators/cep-validator.service';
 import { PhoneValidator } from '@/shared/services/validators/phone-validator.service';
 import { UfValidator } from '@/shared/services/validators/uf-validator.service';
+import { NumericValidator } from '@/shared/services/validators/numeric-validator.service';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 
 import { InputError } from '@/shared/types/input-error.type';
@@ -67,6 +68,7 @@ import { SignUpService } from './services/sign-up.service';
     CepValidator,
     PhoneValidator,
     UfValidator,
+    NumericValidator,
     SignUpService,
   ],
   templateUrl: './sign-up.component.html',
@@ -94,6 +96,7 @@ export class SignUpComponent {
     private cepValidator: CepValidator,
     private phoneValidator: PhoneValidator,
     private ufValidator: UfValidator,
+    private numericValidator: NumericValidator,
     private signUpService: SignUpService,
     private popupService: PopupService,
     private router: Router,
@@ -136,8 +139,7 @@ export class SignUpComponent {
   }
 
   onSubmit() {
-    const { email, name, cpf, phone, cep, city, state, neighborhood, street, number, complement, password } =
-      this.formValues();
+    const { email, name, cpf, phone, cep, city, state, neighborhood, street, number, complement } = this.formValues();
 
     this.requiredValidator.setNext(this.emailValidator);
     this.formValues().email.validation = this.requiredValidator.validate(email.value);
@@ -168,9 +170,6 @@ export class SignUpComponent {
 
     this.formValues().complement.validation = this.complementValidator.validate(complement.value);
 
-    this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
-    this.formValues().password.validation = this.requiredValidator.validate(password.value);
-
     this.requiredValidator.setNext(this.ufValidator);
     this.formValues().state.validation = this.requiredValidator.validate(state.value);
 
@@ -193,6 +192,17 @@ export class SignUpComponent {
   }
 
   confirmPassword() {
+    const { password } = this.formValues();
+
+    this.maxLengthValidator.setMaxLength(4);
+    this.requiredValidator
+      .setNext(this.numericValidator)
+      .setNext(this.minLengthValidator)
+      .setNext(this.maxLengthValidator);
+    this.formValues().password.validation = this.requiredValidator.validate(password.value);
+
+    if (password.validation.error) return;
+
     this.signUpService
       .confirmPassword({
         email: this.formValues().email.value,

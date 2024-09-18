@@ -7,7 +7,7 @@ export class HouseNumberValidator extends BaseValidator {
   override validate(inputValue: string): InputError {
     inputValue = inputValue.trim();
 
-    const isHouseNumberValid = new RegExp(/^[0-9]+[A-Z]?[0-9]*[-/]*[A-Z0-9]*$/).test(inputValue);
+    const isHouseNumberValid = /^[0-9]+[A-Z]?[0-9]*[-/]*[A-Z0-9]*$/.test(inputValue);
 
     if (!isHouseNumberValid)
       return {

@@ -7,7 +7,7 @@ export class ComplementValidator extends BaseValidator {
   override validate(inputValue: string): InputError {
     inputValue = inputValue.trim();
 
-    const isComplementValid = new RegExp(/^[A-Za-z0-9,.:\-'" ]*$/).test(inputValue);
+    const isComplementValid = /^[A-Za-z0-9,.:\-'" ]*$/.test(inputValue);
 
     if (!isComplementValid)
       return {

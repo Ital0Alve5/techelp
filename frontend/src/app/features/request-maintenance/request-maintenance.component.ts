@@ -1,4 +1,4 @@
-import { Component, signal, } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component';
@@ -7,81 +7,39 @@ import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
 import { SelectComponent } from '@/shared/ui/select/select.component';
-import { RequestMaintenanceValidatorService } from '@/shared/services/input/request-maintenance-validator.service';
-import { Validation } from '@/shared/enums/validation.enum';
+import { RequiredValidator } from '@/shared/services/validators/required-validator.service';
+import { MaxLengthValidator } from '@/shared/services/validators/max-length-validator.service';
+import { MinLengthValidator } from '@/shared/services/validators/min-length-validator.service';
+import { formData } from './model/form-data.model';
 
 @Component({
   selector: 'app-request-maintenance',
   standalone: true,
-  imports: [CardComponent,
-            AuthTypeComponent,
-            TextareaComponent,
-            ButtonComponent,
-            UserIcon,
-            LockIcon,
-            SelectComponent,
-            FormsModule],
+  imports: [
+    CardComponent,
+    AuthTypeComponent,
+    TextareaComponent,
+    ButtonComponent,
+    UserIcon,
+    LockIcon,
+    SelectComponent,
+    FormsModule,
+  ],
+  providers: [RequiredValidator, MaxLengthValidator, MinLengthValidator],
   templateUrl: './request-maintenance.component.html',
   styleUrls: ['./request-maintenance.component.scss'],
 })
 export class RequestMaintenanceComponent {
-  formValues = signal({
-    deviceCategory: {
-      value: '',
-      type: 'select',
-      validation: {
-        error: false,
-        message: '',
-      },
-    },
-    deviceDescription: {
-      value: '',
-      type: 'text',
-      validation: {
-        error: false,
-        message: '',
-      },
-    },
-    defectDescription: {
-      value: '',
-      type: 'text',
-      validation: {
-        error: false,
-        message: '',
-      },
-    },
-  });
+  formValues = signal(JSON.parse(JSON.stringify(formData)));
 
-  constructor(private validatorService: RequestMaintenanceValidatorService) {}
+  constructor(
+    private requiredValidator: RequiredValidator,
+    private maxLengthValidator: MaxLengthValidator,
+    private minLengthValidator: MinLengthValidator,
+  ) {}
 
   resetInputs() {
-    this.formValues.update((currentValues) => ({
-      ...currentValues,
-      deviceCategory: {
-        value: '',
-        type: 'select',
-        validation: {
-          error: false,
-          message: '',
-        },
-      },
-      deviceDescription: {
-        value: '',
-        type: 'text',
-        validation: {
-          error: false,
-          message: '',
-        },
-      },
-      defectDescription: {
-        value: '',
-        type: 'text',
-        validation: {
-          error: false,
-          message: '',
-        },
-      },
-    }));
+    this.formValues.update(() => JSON.parse(JSON.stringify(formData)));
   }
 
   sendData() {
@@ -93,58 +51,21 @@ export class RequestMaintenanceComponent {
   }
 
   onSubmit() {
-    const deviceMinLengthValidation = this.validatorService.setValidation(
-      this.formValues().deviceDescription.value,
-      Validation.MinLength,
-      { minLength: 5 }
-    );
+    const { deviceDescription, defectDescription } = this.formValues();
 
-    const deviceMaxLengthValidation = this.validatorService.setValidation(
-      this.formValues().deviceDescription.value,
-      Validation.MaxLength,
-      { maxLength: 50 }
-    );
+    this.minLengthValidator.setMinLength(5);
+    this.maxLengthValidator.setMaxLength(50);
+    this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
+    this.formValues().deviceDescription.validation = this.requiredValidator.validate(deviceDescription.value);
 
-    const defectMinLengthValidation = this.validatorService.setValidation(
-      this.formValues().defectDescription.value,
-      Validation.MinLength,
-      { minLength: 5 }
-    );
+    this.minLengthValidator.setMinLength(5);
+    this.maxLengthValidator.setMaxLength(150);
+    this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
+    this.formValues().defectDescription.validation = this.requiredValidator.validate(defectDescription.value);
 
-    const defectMaxLengthValidation = this.validatorService.setValidation(
-      this.formValues().defectDescription.value,
-      Validation.MaxLength,
-      { maxLength: 150 }
-    );
-
-    const deviceDescriptionValidation = {
-      error: deviceMinLengthValidation.error || deviceMaxLengthValidation.error,
-      message: deviceMinLengthValidation.error
-        ? deviceMinLengthValidation.message
-        : deviceMaxLengthValidation.message
-    };
-
-    const defectDescriptionValidation = {
-      error: defectMinLengthValidation.error || defectMaxLengthValidation.error,
-      message: defectMinLengthValidation.error
-        ? defectMinLengthValidation.message
-        : defectMaxLengthValidation.message
-    };
-
-    const deviceCategoryValidation = {
-      error: !this.formValues().deviceCategory.value,
-      message: !this.formValues().deviceCategory.value ? 'Selecione uma categoria válida' : '',
-    };
-
-
-    this.formValues().deviceDescription.validation = deviceDescriptionValidation;
-    this.formValues().defectDescription.validation = defectDescriptionValidation;
-    this.formValues().deviceCategory.validation = deviceCategoryValidation;
-
-    if (!deviceDescriptionValidation.error && !defectDescriptionValidation.error && !deviceCategoryValidation.error) {
+    if (!deviceDescription.validation.error && !defectDescription.validation.error) {
       this.sendData();
       this.resetInputs();
     }
   }
-
 }

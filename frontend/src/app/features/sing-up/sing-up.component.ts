@@ -7,14 +7,24 @@ import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
-import { Mask } from '@/shared/enums/mask.enum';
 import { CepService } from './services/cep.service';
-import { SignupValidatorService } from '@/shared/services/input/signup-validator.service';
-import { Validation } from '@/shared/enums/validation.enum';
 import { DebounceService } from '@/shared/services/utils/debounce.service';
-import { CheckDatabaseService } from '@/shared/services/input/check-database.service';
 import { SelectComponent } from '@/shared/ui/select/select.component';
-
+import { EmailValidator } from '@/shared/services/validators/email-validator.service';
+import { RequiredValidator } from '@/shared/services/validators/required-validator.service';
+import { MaxLengthValidator } from '@/shared/services/validators/max-length-validator.service';
+import { MinLengthValidator } from '@/shared/services/validators/min-length-validator.service';
+import { CityValidator } from '@/shared/services/validators/city-validator.service';
+import { ComplementValidator } from '@/shared/services/validators/complement-validator.service';
+import { CpfValidator } from '@/shared/services/validators/cpf-validator.service';
+import { HouseNumberValidator } from '@/shared/services/validators/house-number.service';
+import { NameValidator } from '@/shared/services/validators/name-validator.service';
+import { NeighborhoodValidator } from '@/shared/services/validators/neighborhood-validator.service';
+import { StreetValidator } from '@/shared/services/validators/street-validator.service';
+import { CepValidator } from '@/shared/services/validators/cep-validator.service';
+import { PhoneValidator } from '@/shared/services/validators/phone-validator.service';
+import { states } from './constants/states.constant';
+import { formData } from './model/form-data.model';
 @Component({
   selector: 'app-sing-up',
   standalone: true,
@@ -29,139 +39,46 @@ import { SelectComponent } from '@/shared/ui/select/select.component';
     FormsModule,
     SelectComponent,
   ],
-  providers: [CepService],
+  providers: [
+    CepService,
+    EmailValidator,
+    RequiredValidator,
+    MaxLengthValidator,
+    MinLengthValidator,
+    CityValidator,
+    ComplementValidator,
+    CpfValidator,
+    HouseNumberValidator,
+    NameValidator,
+    NeighborhoodValidator,
+    StreetValidator,
+    CepValidator,
+    PhoneValidator,
+  ],
   templateUrl: './sing-up.component.html',
   styleUrl: './sing-up.component.scss',
 })
 export class SingUpComponent {
-  states = [
-    { value: 'acre', label: 'AC' },
-    { value: 'alagoas', label: 'AL' },
-    { value: 'amapa', label: 'AP' },
-    { value: 'amazonas', label: 'AM' },
-    { value: 'bahia', label: 'BA' },
-    { value: 'ceara', label: 'CE' },
-    { value: 'distritoFederal', label: 'DF' },
-    { value: 'espiritoSanto', label: 'ES' },
-    { value: 'goias', label: 'GO' },
-    { value: 'maranhao', label: 'MA' },
-    { value: 'matoGrosso', label: 'MT' },
-    { value: 'matoGrossoDoSul', label: 'MS' },
-    { value: 'minasGerais', label: 'MG' },
-    { value: 'para', label: 'PA' },
-    { value: 'paraiba', label: 'PB' },
-    { value: 'parana', label: 'PR' },
-    { value: 'pernambuco', label: 'PE' },
-    { value: 'piaui', label: 'PI' },
-    { value: 'rioDeJaneiro', label: 'RJ' },
-    { value: 'rioGrandeDoNorte', label: 'RN' },
-    { value: 'rioGrandeDoSul', label: 'RS' },
-    { value: 'rondonia', label: 'RO' },
-    { value: 'roraima', label: 'RR' },
-    { value: 'santaCatarina', label: 'SC' },
-    { value: 'saoPaulo', label: 'SP' },
-    { value: 'sergipe', label: 'SE' },
-    { value: 'tocantins', label: 'TO' },
-  ];
-
-  formValues = signal({
-    email: {
-      value: '',
-      validation: {
-        error: false,
-        message: '',
-      },
-    },
-    name: {
-      value: '',
-      validation: {
-        error: false,
-        message: '',
-      },
-    },
-    cpf: {
-      value: '',
-      validation: {
-        error: false,
-        message: '',
-      },
-      mask: Mask.Cpf,
-    },
-    phone: {
-      value: '',
-      type: 'tel',
-      validation: {
-        error: false,
-        message: '',
-      },
-      mask: Mask.Phone,
-    },
-    cep: {
-      value: '',
-      validation: {
-        error: false,
-        message: '',
-      },
-      mask: Mask.Cep,
-    },
-    state: {
-      value: '',
-      validation: {
-        error: false,
-        message: '',
-      },
-    },
-    city: {
-      value: '',
-      validation: {
-        error: false,
-        message: '',
-      },
-    },
-    neighborhood: {
-      value: '',
-      validation: {
-        error: false,
-        message: '',
-      },
-    },
-    street: {
-      value: '',
-      validation: {
-        error: false,
-        message: '',
-      },
-    },
-    number: {
-      value: '',
-      validation: {
-        error: false,
-        message: '',
-      },
-    },
-    complement: {
-      value: '',
-      validation: {
-        error: false,
-        message: '',
-      },
-    },
-    password: {
-      value: '',
-      validation: {
-        error: false,
-        message: '',
-      },
-    },
-  });
-
+  formValues = signal(JSON.parse(JSON.stringify(formData)));
   isPassConfirmationModalOpen = signal(true);
+  states = states;
 
   constructor(
     private cepService: CepService,
     private debounceService: DebounceService,
-    private checkDatabaseService: CheckDatabaseService,
-    private signupValidatorService: SignupValidatorService,
+    private emailValidator: EmailValidator,
+    private requiredValidator: RequiredValidator,
+    private maxLengthValidator: MaxLengthValidator,
+    private minLengthValidator: MinLengthValidator,
+    private cityValidator: CityValidator,
+    private complementValidator: ComplementValidator,
+    private cpfValidator: CpfValidator,
+    private houseNumberValidator: HouseNumberValidator,
+    private nameValidator: NameValidator,
+    private neighborhoodValidator: NeighborhoodValidator,
+    private streetValidator: StreetValidator,
+    private cepValidator: CepValidator,
+    private phoneValidator: PhoneValidator,
   ) {}
 
   setAddressUsingCep(cep: string) {
@@ -204,91 +121,52 @@ export class SingUpComponent {
   }
 
   onSubmit() {
-    if (this.checkDatabaseService.checkCpf(this.formValues().cpf.value)) {
-      console.log('CPF já usado');
-    }
-    if (this.checkDatabaseService.checkEmail(this.formValues().email.value)) {
-      console.log('email já usado');
-    }
-    const CpfUsed = this.checkDatabaseService.checkCpf(this.formValues().cpf.value);
-    this.formValues().cpf.validation.error = CpfUsed;
-    if (CpfUsed) {
-      this.formValues().cpf.validation.message = 'CPF já está em uso!';
-    }
+    const { email, name, cpf, phone, cep, city, neighborhood, street, number, complement, password } =
+      this.formValues();
 
-    const EmailUsed = this.checkDatabaseService.checkEmail(this.formValues().email.value);
-    this.formValues().email.validation.error = EmailUsed;
-    if (EmailUsed) {
-      this.formValues().email.validation.message = 'E-Mail já está em uso!';
-    }
+    this.requiredValidator.setNext(this.emailValidator);
+    this.formValues().email.validation = this.requiredValidator.validate(email.value);
 
-    const emailValidation = this.signupValidatorService.setValidation(
-      this.formValues().email.value,
-      Validation.Email,
-      {},
-    );
-    this.formValues().email.validation = emailValidation;
+    this.requiredValidator.setNext(this.nameValidator);
+    this.formValues().name.validation = this.requiredValidator.validate(name.value);
 
-    const nameValidation = this.signupValidatorService.setValidation(this.formValues().name.value, Validation.Name, {});
-    this.formValues().name.validation = nameValidation;
+    this.requiredValidator.setNext(this.cpfValidator);
+    this.formValues().cpf.validation = this.requiredValidator.validate(cpf.value);
 
-    const CPFValidation = this.signupValidatorService.setValidation(this.formValues().cpf.value, Validation.CPF, {});
-    this.formValues().cpf.validation = CPFValidation;
+    this.requiredValidator.setNext(this.phoneValidator);
+    this.formValues().phone.validation = this.requiredValidator.validate(phone.value);
 
-    const phoneValidation = this.signupValidatorService.setValidation(
-      this.formValues().phone.value,
-      Validation.Phone,
-      {},
-    );
-    this.formValues().phone.validation = phoneValidation;
+    this.requiredValidator.setNext(this.cepValidator);
+    this.formValues().cep.validation = this.requiredValidator.validate(cep.value);
 
-    const houseNumberValidation = this.signupValidatorService.setValidation(
-      this.formValues().number.value,
-      Validation.HouseNumber,
-      {},
-    );
-    this.formValues().number.validation = houseNumberValidation;
+    this.requiredValidator.setNext(this.cityValidator);
+    this.formValues().city.validation = this.requiredValidator.validate(city.value);
 
-    const complementValidation = this.signupValidatorService.setValidation(
-      this.formValues().complement.value,
-      Validation.Complement,
-      {},
-    );
-    this.formValues().complement.validation = complementValidation;
+    this.requiredValidator.setNext(this.neighborhoodValidator);
+    this.formValues().neighborhood.validation = this.requiredValidator.validate(neighborhood.value);
 
-    const cepValidation = this.signupValidatorService.setValidation(this.formValues().cep.value, Validation.CEP, {});
-    this.formValues().cep.validation = cepValidation;
+    this.requiredValidator.setNext(this.streetValidator);
+    this.formValues().street.validation = this.requiredValidator.validate(street.value);
 
-    const cidadeValidation = this.signupValidatorService.setValidation(
-      this.formValues().city.value,
-      Validation.Cidade,
-      {},
-    );
-    this.formValues().city.validation = cidadeValidation;
+    this.requiredValidator.setNext(this.houseNumberValidator);
+    this.formValues().number.validation = this.requiredValidator.validate(number.value);
 
-    const ruaValidation = this.signupValidatorService.setValidation(this.formValues().street.value, Validation.Rua, {});
-    this.formValues().street.validation = ruaValidation;
+    this.formValues().complement.validation = this.complementValidator.validate(complement.value);
 
-    const bairroValidation = this.signupValidatorService.setValidation(
-      this.formValues().neighborhood.value,
-      Validation.Bairro,
-      {},
-    );
-    this.formValues().neighborhood.validation = bairroValidation;
+    this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
+    this.formValues().password.validation = this.requiredValidator.validate(password.value);
 
     const validForm =
-      !emailValidation.error &&
-      !nameValidation.error &&
-      !CPFValidation.error &&
-      !phoneValidation.error &&
-      !houseNumberValidation.error &&
-      !complementValidation.error &&
-      !ruaValidation.error &&
-      !bairroValidation.error &&
-      !cidadeValidation.error &&
-      !CpfUsed &&
-      !EmailUsed &&
-      !cepValidation.error;
+      !email.validation.error &&
+      !name.validation.error &&
+      !cpf.validation.error &&
+      !phone.validation.error &&
+      !number.validation.error &&
+      !complement.validation.error &&
+      !street.validation.error &&
+      !neighborhood.validation.error &&
+      !city.validation.error &&
+      !cep.validation.error;
 
     if (validForm) {
       this.sendData();
@@ -297,100 +175,7 @@ export class SingUpComponent {
   }
 
   resetInputs() {
-    this.formValues.update((currentValues) => ({
-      ...currentValues,
-      email: {
-        value: '',
-        type: 'text',
-        validation: {
-          error: false,
-          message: '',
-        },
-      },
-      name: {
-        value: '',
-        type: 'text',
-        validation: {
-          error: false,
-          message: '',
-        },
-      },
-      cpf: {
-        value: '',
-        type: 'text',
-        validation: {
-          error: false,
-          message: '',
-        },
-        mask: Mask.Cpf,
-      },
-      phone: {
-        value: '',
-        type: 'tel',
-        validation: {
-          error: false,
-          message: '',
-        },
-        mask: Mask.Phone,
-      },
-      cep: {
-        value: '',
-        type: 'text',
-        validation: {
-          error: false,
-          message: '',
-        },
-        mask: Mask.Cep,
-      },
-      state: {
-        value: '',
-        type: 'text',
-        validation: {
-          error: false,
-          message: '',
-        },
-      },
-      city: {
-        value: '',
-        type: 'text',
-        validation: {
-          error: false,
-          message: '',
-        },
-      },
-      neighborhood: {
-        value: '',
-        type: 'text',
-        validation: {
-          error: false,
-          message: '',
-        },
-      },
-      street: {
-        value: '',
-        type: 'text',
-        validation: {
-          error: false,
-          message: '',
-        },
-      },
-      number: {
-        value: '',
-        type: 'text',
-        validation: {
-          error: false,
-          message: '',
-        },
-      },
-      complement: {
-        value: '',
-        type: 'text',
-        validation: {
-          error: false,
-          message: '',
-        },
-      },
-    }));
+    this.formValues.update(() => JSON.parse(JSON.stringify(formData)));
   }
 
   sendData() {

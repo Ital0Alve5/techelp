@@ -35,7 +35,7 @@ import { InputError } from '@/shared/types/input-error.type';
 import { UserData } from '@/shared/types/user-data.type';
 
 @Component({
-  selector: 'app-sing-up',
+  selector: 'app-sign-up',
   standalone: true,
   imports: [
     CardComponent,
@@ -66,10 +66,10 @@ import { UserData } from '@/shared/types/user-data.type';
     UfValidator,
     SignUpService,
   ],
-  templateUrl: './sing-up.component.html',
-  styleUrl: './sing-up.component.scss',
+  templateUrl: './sign-up.component.html',
+  styleUrl: './sign-up.component.scss',
 })
-export class SingUpComponent {
+export class SignUpComponent {
   formValues = signal(JSON.parse(JSON.stringify(formData)));
   isPassConfirmationModalOpen = signal(true);
   states = states;

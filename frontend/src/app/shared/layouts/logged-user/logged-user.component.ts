@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-
+import { HeaderComponent } from './components/header/header.component';
 @Component({
-  selector: 'app-logged-user',
+  selector: 'logged-user-layout',
   standalone: true,
-  imports: [],
+  imports: [HeaderComponent],
   templateUrl: './logged-user.component.html',
-  styleUrl: './logged-user.component.scss'
+  styleUrl: './logged-user.component.scss',
 })
-export class LoggedUserComponent {
-
-}
+export class LoggedUserComponent {}

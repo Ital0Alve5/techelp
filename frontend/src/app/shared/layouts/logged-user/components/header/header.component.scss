@@ -1,0 +1,43 @@
+@import 'colors';
+
+header {
+  padding: 20px 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    img {
+      width: 70px;
+      height: 70px;
+    }
+
+    span {
+      font-size: 30px;
+      font-weight: 600;
+      color: $neutral-90;
+    }
+  }
+
+  nav {
+    display: flex;
+    gap: 20px;
+
+    a {
+      text-decoration: none;
+      color: $neutral-90;
+    }
+
+    p {
+      color: $neutral-90;
+    }
+
+    exit-icon {
+      display: block;
+    }
+  }
+}

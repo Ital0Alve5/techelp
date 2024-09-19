@@ -4,6 +4,8 @@ import { RouterOutlet } from '@angular/router';
 import { GuestLayout } from '@/shared/layouts/guest/guest.layout';
 import { PopUpComponent } from '@/shared/ui/pop-up/pop-up.component';
 import { LoggedUserComponent } from './shared/layouts/logged-user/logged-user.component';
+import { Authenticator } from './core/auth/authenticator.service';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -13,5 +15,6 @@ import { LoggedUserComponent } from './shared/layouts/logged-user/logged-user.co
   encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
+  constructor(public authenticator: Authenticator) {}
   title = 'angular-app';
 }

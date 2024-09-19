@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
 @import 'colors';
 
 :host {
@@ -5,13 +7,15 @@
   top: 0;
   width: 100%;
   z-index: 10;
+  background-color: $neutral-base;
 }
 
 header {
-  padding: 20px 80px;
+  padding: 14px 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid $neutral-30;
 
   .logo-container {
     display: flex;
@@ -19,14 +23,15 @@ header {
     gap: 10px;
 
     img {
-      width: 70px;
-      height: 70px;
+      width: 50px;
+      height: 50px;
     }
 
     span {
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 500;
-      color: $neutral-90;
+      color: $brand-pink;
+      font-family: 'Permanent Marker', cursive;
     }
   }
 

@@ -1,7 +1,7 @@
 ## Dependências:
 - **Java 21 >**
 - **PostgreSQL**
-- **Node 16 >**
+- **Node 18 >**
 
 ## IDE recomendada:
 - **VSCode**

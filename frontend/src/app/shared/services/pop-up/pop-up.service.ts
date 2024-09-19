@@ -13,10 +13,10 @@ export class PopupService {
 
   removePopUpAfterSomeTime(popUp: PopUp) {
     setTimeout(() => {
-      this.popups = this.popups.filter((popupToBeRemoved) => {
-        return Object.entries(popupToBeRemoved).sort().toString() !== Object.entries(popUp).sort().toString();
-      });
-
+      const index = this.popups.indexOf(popUp);
+      if (index !== -1) {
+        this.popups.splice(index, 1);
+      }
     }, this.milisecondsActive);
   }
 

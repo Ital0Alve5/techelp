@@ -7,8 +7,7 @@ export const loggedUserMock = {
   requests: [
     {
       id: 1,
-      date: '01/09/2024',
-      hour: '13:24',
+      date: '01/09/2024 - 13:14',
       deviceDescription: 'Lorem Ipsum is simply dummy',
       status: 'Orçada',
     },

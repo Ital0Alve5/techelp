@@ -3,7 +3,7 @@
 <td>{{ description() }}</td>
 <td>{{ status() }}</td>
 <td>
-  @switch (status()) {
+  @switch (status().toUpperCase()) {
     @case ('APROVADA') {
       <button app-button>Efetuar manutenção</button>
     }

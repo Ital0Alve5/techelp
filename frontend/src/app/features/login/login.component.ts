@@ -15,6 +15,7 @@ import { RequiredValidator } from '@/shared/services/validators/required-validat
 import { MaxLengthValidator } from '@/shared/services/validators/max-length-validator.service';
 import { MinLengthValidator } from '@/shared/services/validators/min-length-validator.service';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
+import { Authenticator } from '@/core/auth/authenticator.service';
 
 import { InputError } from '@/shared/types/input-error.type';
 import { UserData } from '@/shared/types/api/user-data.type';
@@ -40,6 +41,7 @@ export class LoginComponent {
     private loginService: LoginService,
     private popupService: PopupService,
     private router: Router,
+    private authenticator: Authenticator,
   ) {}
 
   resetInputs() {
@@ -59,6 +61,7 @@ export class LoginComponent {
             message: (response.data as InputError).message,
           });
         } else {
+          this.authenticator.authenticate(true);
           this.router.navigate([`/cliente/${(response.data as UserData).id}/solicitacoes`]);
         }
       });

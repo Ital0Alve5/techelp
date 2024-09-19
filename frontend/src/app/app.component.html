@@ -1,7 +1,10 @@
-<style></style>
-
-<main class="main">
-  <teste-component />
-</main>
-
-<router-outlet />
+<app-pop-up />
+@if (authenticator.checkAuthentication()) {
+  <logged-user-layout>
+    <router-outlet />
+  </logged-user-layout>
+} @else {
+  <guest-layout>
+    <router-outlet />
+  </guest-layout>
+}

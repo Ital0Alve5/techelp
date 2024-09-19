@@ -1,0 +1,23 @@
+<td><button app-button>Abrir</button></td>
+<td>{{ date() }}</td>
+<td>{{ description() }}</td>
+<td>{{ status() }}</td>
+<td>
+  @switch (status()) {
+    @case ('APROVADA') {
+      <button app-button>Efetuar manutenção</button>
+    }
+    @case ('ORÇADA') {
+      <button app-button>Aprovar/Rejeitar</button>
+    }
+    @case ('REJEITADA') {
+      <button app-button>Resgatar</button>
+    }
+    @case ('ARRUMADA') {
+      <button app-button>Pagar</button>
+    }
+    @default {
+      <button app-button>Visualizar</button>
+    }
+  }
+</td>

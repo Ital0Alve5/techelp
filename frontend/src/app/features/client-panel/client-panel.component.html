@@ -1,0 +1,17 @@
+<table>
+  <tr>
+    <th>Visualizar</th>
+    <th>Data/Hora</th>
+    <th>Descrição</th>
+    <th>Estado</th>
+    <th>Ação</th>
+  </tr>
+  @for (request of userData.requests; track request.id) {
+    <tr
+      app-client-table-row
+      [date]="request.date"
+      [description]="request.deviceDescription"
+      [status]="request.status"
+    ></tr>
+  }
+</table>

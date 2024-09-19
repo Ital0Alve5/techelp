@@ -1,0 +1,27 @@
+<div class="general-container">
+  @if (label()) {
+    <label [for]="id()">
+      {{ label() }}
+    </label>
+  }
+  <div class="error-container">
+    <div class="input-container">
+      <ng-content select="[input-icon]"></ng-content>
+      <input
+        [id]="id()"
+        [class.error]="validation()?.error"
+        [value]="value()"
+        [disabled]="disabled()"
+        (input)="onInput($event)"
+        [type]="type()"
+        [placeholder]="placeholder()"
+      />
+      @if (type() === 'password' && isHidden()) {
+        <allow-visibility-icon (click)="toggleHidden(false)" width="14px" color="#9197B3" />
+      } @else if (type() === 'text' && !isHidden()) {
+        <block-visibility-icon (click)="toggleHidden(true)" width="14px" color="#9197B3" />
+      }
+    </div>
+    <p class="errorMessage">{{ validation()?.message }}</p>
+  </div>
+</div>

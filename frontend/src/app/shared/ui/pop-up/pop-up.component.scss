@@ -1,0 +1,30 @@
+@import 'colors';
+
+:host {
+  max-width: 400px;
+  position: fixed;
+  right: 20px;
+  top: 40px;
+  z-index: 999;
+
+  .popUp {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    border-radius: 12px;
+
+    &.error {
+      background-color: $feedback-negative-50;
+      border: 2px solid $feedback-negative-10;
+      color: $neutral-base;
+    }
+
+    &.success {
+      background-color: $feedback-positive-50;
+      border: 2px solid $feedback-positive-10;
+      color: $neutral-base;
+    }
+  }
+}

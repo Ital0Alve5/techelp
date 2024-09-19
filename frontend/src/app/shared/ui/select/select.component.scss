@@ -1,0 +1,120 @@
+@import 'colors';
+@import 'typology';
+
+ul {
+  display: none;
+  list-style: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 9;
+  border: 1px solid $neutral-30;
+  background-color: $neutral-base;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  max-height: 170px;
+  overflow: auto;
+
+  li {
+    padding: 8px 16px;
+    font-size: $size-small;
+    color: $neutral-70;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $neutral-base-hover;
+    }
+  }
+
+  &.open {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.select {
+  background-color: $neutral-10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 8px 16px;
+  border-radius: 24px;
+  border: 1px solid $neutral-30;
+  cursor: pointer;
+
+  &.error {
+    border: 1px solid $feedback-negative-50;
+  }
+
+  &.open {
+    border-radius: 0;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+
+  &.disabled {
+    cursor: default;
+  }
+
+  span {
+    font-size: $size-small;
+    color: $neutral-50;
+  }
+}
+
+.general-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  label {
+    font-size: $size-small;
+    color: $neutral-50;
+  }
+  .error-container {
+    width: 100%;
+
+    .errorMessage {
+      color: $feedback-negative-50;
+      font-size: $size-x-small;
+      margin-top: 4px;
+    }
+  }
+
+  select {
+    width: 100%;
+    padding: 8px 40px 8px 16px;
+    border-radius: 16px;
+    background-color: $neutral-10;
+    border: 1px solid $neutral-30;
+    outline: none;
+    font-size: $size-small;
+    color: $neutral-70;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+
+    &.error {
+      border: 1px solid $feedback-negative-50;
+    }
+  }
+
+  .select-container {
+    position: relative;
+    min-width: 100px;
+
+    &::after {
+      content: '⌵';
+      font-size: 1rem;
+      top: 6px;
+      right: 16px;
+      position: absolute;
+      font-weight: 900;
+      transform: translateY(-1px);
+      pointer-events: none;
+    }
+  }
+}

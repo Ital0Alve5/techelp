@@ -1,0 +1,28 @@
+<div class="general-container">
+  <label [for]="id()">
+    {{ label() }}
+  </label>
+  <div class="error-container">
+    <div class="select-container">
+      <div
+        class="select"
+        (click)="toggleSelect()"
+        [id]="id()"
+        [class.error]="validation()?.error"
+        [class.open]="isOpen()"
+        [class.disabled]="disabled()"
+        (change)="onChange($event)"
+      >
+        <span>{{ value().length > 0 ? value() : placeholder() }}</span>
+        <ul [class.open]="isOpen()">
+          @for (option of options(); track option.label) {
+            <li (click)="onOptionChosen($event)" [value]="option.id">
+              {{ option.label }}
+            </li>
+          }
+        </ul>
+      </div>
+      <p class="errorMessage">{{ validation()?.message }}</p>
+    </div>
+  </div>
+</div>

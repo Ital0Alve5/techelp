@@ -1,0 +1,29 @@
+@import 'colors';
+@import 'typology';
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Sora', sans-serif;
+  box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $neutral-10;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $neutral-30;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: $neutral-50;
+  }
+}
+
+body {
+  background-color: $neutral-5;
+}

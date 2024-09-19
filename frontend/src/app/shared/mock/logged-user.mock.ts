@@ -8,6 +8,7 @@ export const loggedUserMock = {
     {
       id: 1,
       date: '01/09/2024 - 13:14',
+      hour: '13:14',
       deviceDescription: 'Lorem Ipsum is simply dummy',
       status: 'Orçada',
     },

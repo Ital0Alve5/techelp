@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { CpfMaskService } from '@/shared/services/input/masks.service';
+import { Authenticator } from '@/core/auth/authenticator.service';
 import { registeredUsersMock } from '@/shared/mock/registered-users.mock';
 import { InputError } from '@/shared/types/input-error.type';
 import { loggedUserMock } from '@/shared/mock/logged-user.mock';
@@ -24,7 +25,12 @@ type RegisterUserData = {
 
 @Injectable()
 export class SignUpService {
-  constructor(private cpfMaskService: CpfMaskService) {}
+  passwordGenerated: number = 0;
+
+  constructor(
+    private cpfMaskService: CpfMaskService,
+    private authenticator: Authenticator,
+  ) {}
 
   checkRegisteredUser(email: string, cpf: string) {
     if (registeredUsersMock.find((user) => user.email === email)) return false;
@@ -33,7 +39,7 @@ export class SignUpService {
   }
 
   checkPassword(password: string) {
-    if (registeredUsersMock.find((user) => user.password === password)) return true;
+    if (Number.parseInt(password) === this.passwordGenerated) return true;
     return false;
   }
 
@@ -47,25 +53,47 @@ export class SignUpService {
             message: 'Usuário já cadastrado!',
           },
         });
-      else
+      else {
+        this.passwordGenerated = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+        console.log(this.passwordGenerated);
         resolve({
           error: false,
           data: {
-            error: true,
-            message: 'Usuário já cadastrado!',
+            error: false,
+            message: '',
           },
         });
+      }
     });
   }
 
   async confirmPassword(data: RegisterUserData): Promise<Response<InputError> | Response<UserData>> {
     return new Promise((resolve) => {
-      if (this.checkPassword(data.password))
+      if (this.checkPassword(data.password)) {
+        registeredUsersMock.push({
+          cpf: data.CPF.replace(/\D+/g, ''),
+          name: data.name,
+          email: data.email,
+          phone: data.phone.replace(/\D+/g, ''),
+          password: data.password,
+          address: {
+            cep: data.cep,
+            neighborhood: data.bairro,
+            city: data.cidade,
+            state: data.estado,
+            street: data.rua,
+            number: Number.parseInt(data.houseNumber),
+            complement: data.complement,
+          },
+        });
+
+        this.authenticator.authenticate(true);
+
         resolve({
           error: false,
           data: loggedUserMock,
         });
-      else
+      } else {
         resolve({
           error: true,
           data: {
@@ -73,6 +101,7 @@ export class SignUpService {
             message: 'Senha inválida!',
           },
         });
+      }
     });
   }
 }

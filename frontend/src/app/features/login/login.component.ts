@@ -44,10 +44,6 @@ export class LoginComponent {
     private authenticator: Authenticator,
   ) {}
 
-  resetInputs() {
-    this.formValues.update(() => JSON.parse(JSON.stringify(formData)));
-  }
-
   sendData() {
     this.loginService
       .validate({

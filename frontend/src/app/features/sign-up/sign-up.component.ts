@@ -253,6 +253,7 @@ export class SignUpComponent {
             message: (response.data as InputError).message,
           });
         else {
+          
           this.router.navigate([`/cliente/${(response.data as UserData).id}/solicitacoes`]);
         }
       });

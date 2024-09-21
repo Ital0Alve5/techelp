@@ -1,18 +1,19 @@
 import { Component, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'button[app-button]',
+  selector: 'link-as-button',
   standalone: true,
-  imports: [],
-  templateUrl: './button.component.html',
-  styleUrl: './button.component.scss',
+  imports: [RouterLink],
+  templateUrl: './link-as-button.component.html',
+  styleUrl: './link-as-button.component.scss',
   host: {
     '[style.background-color]': 'backgroundColor()',
     '[style.color]': 'textColor()',
   },
 })
-export class ButtonComponent {
+export class LinkAsButtonComponent {
   backgroundColor = input<string>('#4e42ff');
   textColor = input<string>('#ffffff');
-  hoverColor = input<string>('purple-hover');
+  href = input.required<string>();
 }

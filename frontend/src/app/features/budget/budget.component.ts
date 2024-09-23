@@ -26,8 +26,7 @@ export class BudgetComponent {
 
   constructor() {
     maintenanceRequests.forEach((request) => {
-      console.log(request.id);
-      if (request.userId === this.userId) {
+      if (request.userId === this.userId && this.requestId === request.id) {
         this.requestData = {
           deviceDescription: request.deviceDescription,
           deviceCategory: request.deviceCategory,

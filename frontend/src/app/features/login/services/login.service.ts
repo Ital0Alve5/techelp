@@ -10,9 +10,8 @@ export class LoginService {
 
   checkRegisteredUsers(emailInput: string, passwordInput: string): number | null {
     const userFound = registeredUsersMock.find(({ email }) => email === emailInput);
-    if (userFound) {
-      if (userFound.password === passwordInput) return userFound.id;
-    }
+    
+    if (userFound && userFound.password === passwordInput) return userFound.id;
 
     return null;
   }

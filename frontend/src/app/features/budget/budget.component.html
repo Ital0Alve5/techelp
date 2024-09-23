@@ -3,7 +3,7 @@
     <arrow-right-icon width="20px" color="#fff" />
   </a>
   <button backgroundColor="#dc363c" hoverColor="none" app-button>Rejeitar</button>
-  <button backgroundColor="#10855b" hoverColor="none" app-button>Aprovar</button>
+  <button backgroundColor="#10855b" hoverColor="none" app-button (click)="openModal()">Aprovar</button>
 </div>
 <section class="budget-container">
   <p>
@@ -23,15 +23,20 @@
     </li>
     <li>
       <b>Descrição do equipamento:</b>
-      <p>
-        {{ requestData.deviceDescription }}
-      </p>
+      <p>{{ requestData.deviceDescription }}</p>
     </li>
     <li>
       <b>Descrição do defeito:</b>
-      <p>
-        {{ requestData.issueDescription }}
-      </p>
+      <p>{{ requestData.issueDescription }}</p>
     </li>
   </ul>
 </section>
+
+<app-modal [(isHidden)]="!isApprovalModalOpen">
+  <h1>Serviço Aprovado</h1>
+  <br>
+  <p>Serviço aprovado no valor de <span class="price-highlight">R$ {{ requestData.price }}</span></p>
+  <div class="modal-footer">
+    <button app-button (click)="closeModal()" routerLink="/cliente/1/solicitacoes">OK</button>
+  </div>
+</app-modal>

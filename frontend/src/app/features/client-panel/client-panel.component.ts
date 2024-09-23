@@ -24,7 +24,6 @@ export class ClientPanelComponent {
 
   constructor() {
     maintenanceRequests.forEach((request) => {
-      console.log(request.id)
       if (request.userId === this.userId) {
         this.userRequests.push({
           id: request.id,

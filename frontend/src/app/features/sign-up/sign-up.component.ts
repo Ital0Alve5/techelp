@@ -31,7 +31,6 @@ import { NumericValidator } from '@/shared/services/validators/numeric-validator
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 
 import { InputError } from '@/shared/types/input-error.type';
-import { UserData } from '@/shared/types/api/user-data.type';
 
 import { CepService } from './services/cep.service';
 import { states } from './constants/states.constant';
@@ -253,8 +252,7 @@ export class SignUpComponent {
             message: (response.data as InputError).message,
           });
         else {
-          
-          this.router.navigate([`/cliente/${(response.data as UserData).id}/solicitacoes`]);
+          this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);
         }
       });
   }

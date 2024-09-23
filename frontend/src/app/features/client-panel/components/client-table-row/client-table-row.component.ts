@@ -20,4 +20,7 @@ export class ClientTableRowComponent {
     },
   });
   status = input<string>('');
+  id = input.required<number>();
+  userId = input.required<number>();
+
 }

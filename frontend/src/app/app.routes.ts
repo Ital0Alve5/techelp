@@ -27,7 +27,7 @@ export const routes: Routes = [
     component: RequestMaintenanceComponent,
   },
   {
-    path: 'cliente/:userId/orcamento',
+    path: 'cliente/:userId/orcamento/:budgetId',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: BudgetComponent,
   },

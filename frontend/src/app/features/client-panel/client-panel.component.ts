@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { CardComponent } from '@/shared/ui/card/card.component';
 
 import { ClientTableRowComponent } from '@/features/client-panel/components/client-table-row/client-table-row.component';
-import { loggedUserMock } from '@/shared/mock/logged-user.mock';
+import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 @Component({
   selector: 'app-client-panel',
   standalone: true,
@@ -12,7 +12,28 @@ import { loggedUserMock } from '@/shared/mock/logged-user.mock';
   styleUrl: './client-panel.component.scss',
 })
 export class ClientPanelComponent {
-  constructor() {}
+  userRequests: {
+    id: number;
+    userId: number;
+    date: string;
+    deviceDescription: string;
+    currentStatus: string;
+  }[] = [];
 
-  userData = loggedUserMock;
+  userId: number = JSON.parse(localStorage.getItem('userId')!);
+
+  constructor() {
+    maintenanceRequests.forEach((request) => {
+      console.log(request.id)
+      if (request.userId === this.userId) {
+        this.userRequests.push({
+          id: request.id,
+          userId: request.userId,
+          date: request.date,
+          deviceDescription: request.deviceDescription,
+          currentStatus: request.currentStatus,
+        });
+      }
+    });
+  }
 }

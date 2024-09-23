@@ -1,6 +1,7 @@
-export const requests = [
+export const maintenanceRequests = [
   {
     id: 1,
+    userId: 1,
     deviceDescription: 'Lorem Ipsum is simply dummy',
     deviceCategory: 'Notebook',
     issueDescription: 'Tela azul ao ligar, windows é muito ruim',
@@ -43,6 +44,7 @@ export const requests = [
   },
   {
     id: 2,
+    userId: 1,
     deviceDescription: 'hry hey hey hey',
     deviceCategory: 'Notebook',
     issueDescription: 'Quero botar linux',
@@ -85,6 +87,7 @@ export const requests = [
   },
   {
     id: 3,
+    userId: 2,
     deviceDescription: 'io oi oi oio o',
     deviceCategory: 'Notebook',
     issueDescription: 'AAAAAAAAAAA A A AV AAAAAAAAAA',
@@ -127,6 +130,7 @@ export const requests = [
   },
   {
     id: 4,
+    userId: 2,
     deviceDescription: 'k kkkk kkkk kkkkkk',
     deviceCategory: 'Notebook',
     issueDescription: 'oi hkjn kjnkjnknkjn kjjk',

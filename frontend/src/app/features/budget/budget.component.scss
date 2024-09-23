@@ -16,7 +16,7 @@ a {
   box-sizing: content-box;
   border-radius: 100%;
   transition: 1s;
-  
+
   &:hover {
     background: $brand-purple-hover;
   }
@@ -43,6 +43,10 @@ section {
 }
 
 .budget-container {
+  flex-direction: column;
+  justify-content: center;
+  min-width: 580px;
+  
   b {
     color: $brand-purple;
   }

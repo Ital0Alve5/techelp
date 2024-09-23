@@ -8,7 +8,7 @@
       <button app-button>Efetuar manutenção</button>
     }
     @case ('ORÇADA') {
-      <link-as-button href="/cliente/1/orcamento"> Aprovar/Rejeitar</link-as-button>
+      <link-as-button href="/cliente/{{ userId() }}/orcamento/{{ id() }}"> Aprovar/Rejeitar</link-as-button>
     }
     @case ('REJEITADA') {
       <button app-button>Resgatar</button>

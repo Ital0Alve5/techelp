@@ -6,31 +6,31 @@
   <button backgroundColor="#10855b" hoverColor="none" app-button>Aprovar</button>
 </div>
 <section class="budget-container">
-  <p>Serviço avaliado por <b>Ítalo Alves</b> e orçado em:</p>
-  <p class="price">R$ 200,00</p>
+  <p>
+    Serviço avaliado por <b> {{ requestData.employee }}</b> e orçado em:
+  </p>
+  <p class="price">R$ {{ requestData.price }}</p>
 </section>
 <section>
   <ul class="request-description">
     <li>
       <b>Data da solicitação:</b>
-      <p>27/09/1999 às 08:30</p>
+      <p>{{ requestData.date }} às {{ requestData.hour }}</p>
     </li>
     <li>
       <b>Categoria do equipamento:</b>
-      <p>Notebook</p>
+      <p>{{ requestData.deviceCategory }}</p>
     </li>
     <li>
       <b>Descrição do equipamento:</b>
       <p>
-        27/09/1999 às 08:30 cwcwcecwe cwecewcecwe cwecewwcwec wcwecweewc wecwecweewc wecw ecewcwecwec wecwecweewcwec
-        wecwecwcw
+        {{ requestData.deviceDescription }}
       </p>
     </li>
     <li>
       <b>Descrição do defeito:</b>
       <p>
-        27/09/1999 às 08:30 cwcwcecwe cwecewcecwe cwecewwcwec wcwecweewc wecwecweewc wecw ecewcwecwec wecwecweewcwec
-        wecwecwcw
+        {{ requestData.issueDescription }}
       </p>
     </li>
   </ul>

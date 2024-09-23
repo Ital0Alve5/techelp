@@ -9,7 +9,9 @@
     } @else if (router.url.includes('solicitacoes')) {
       <a routerLink="cliente/1/solicitar-manutencao" routerLinkActive="active">Solicitar manutenção</a>
     }
-    <p>Olá, <b>Yasmim</b></p>
+    <p>
+      Olá, <b>{{ userName.split(' ')[0] }}</b>
+    </p>
     <exit-icon width="24px" color="#ff57a7" (click)="onLogout()" />
   </nav>
 </header>

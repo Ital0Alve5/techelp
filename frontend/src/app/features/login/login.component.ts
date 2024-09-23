@@ -18,7 +18,6 @@ import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { Authenticator } from '@/core/auth/authenticator.service';
 
 import { InputError } from '@/shared/types/input-error.type';
-import { UserData } from '@/shared/types/api/user-data.type';
 
 import { LoginService } from './services/login.service';
 import { formData } from './model/form-data.model';
@@ -58,7 +57,7 @@ export class LoginComponent {
           });
         } else {
           this.authenticator.authenticate(true);
-          this.router.navigate([`/cliente/${(response.data as UserData).id}/solicitacoes`]);
+          this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);
         }
       });
   }

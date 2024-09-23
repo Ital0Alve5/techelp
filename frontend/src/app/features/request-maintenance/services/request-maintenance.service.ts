@@ -4,9 +4,7 @@ import { InputError } from '@/shared/types/input-error.type';
 import { Response } from '@/shared/types/api/response.type';
 import { deviceCategories } from '@/shared/mock/device-categories.mock';
 import { Categories } from '../types/categories.type';
-import { loggedUserMock } from '@/shared/mock/logged-user.mock';
-import { UserData } from '@/shared/types/api/user-data.type';
-
+import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 @Injectable()
 export class RequestMaintenanceService {
   constructor() {}
@@ -17,24 +15,40 @@ export class RequestMaintenanceService {
     });
   }
 
-  async send(data: {
-    deviceDescription: string;
-    deviceCategory: string;
-    defectDescription: string;
-  }): Promise<Response<InputError> | Response<UserData>> {
+  async send(
+    userId: number,
+    data: {
+      deviceDescription: string;
+      deviceCategory: string;
+      defectDescription: string;
+    },
+  ): Promise<Response<InputError> | Response<{ userId: number }>> {
     return new Promise((resolve) => {
       if (data) {
-        loggedUserMock.requests.push({
-          id: 1,
+        let id;
+        do {
+          id = Math.floor(Math.random() * 99) + 1;
+        } while (id === 1 || id === 2 || id === 3 || id === 4);
+
+        maintenanceRequests.push({
+          id,
+          userId: userId,
+          deviceDescription: data.deviceDescription,
+          deviceCategory: data.deviceCategory,
+          issueDescription: data.defectDescription,
+          price: '99,90',
           date: '01/09/2024',
           hour: '13:24',
-          deviceDescription: data.deviceDescription,
-          status: 'Aberta',
+          currentStatus: 'Aberta',
+          rejectReason: '',
+          history: [],
         });
-
+        
         resolve({
           error: false,
-          data: loggedUserMock,
+          data: {
+            userId,
+          },
         });
       } else {
         resolve({

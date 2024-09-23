@@ -4,9 +4,7 @@ import { CpfMaskService } from '@/shared/services/input/masks.service';
 import { Authenticator } from '@/core/auth/authenticator.service';
 import { registeredUsersMock } from '@/shared/mock/registered-users.mock';
 import { InputError } from '@/shared/types/input-error.type';
-import { loggedUserMock } from '@/shared/mock/logged-user.mock';
 import { Response } from '@/shared/types/api/response.type';
-import { UserData } from '@/shared/types/api/user-data.type';
 
 type RegisterUserData = {
   email: string;
@@ -67,10 +65,16 @@ export class SignUpService {
     });
   }
 
-  async confirmPassword(data: RegisterUserData): Promise<Response<InputError> | Response<UserData>> {
+  async confirmPassword(data: RegisterUserData): Promise<Response<InputError> | Response<{ userId: number }>> {
     return new Promise((resolve) => {
       if (this.checkPassword(data.password)) {
+        let userId;
+        do {
+          userId = Math.floor(Math.random() * 99) + 1;
+        } while (userId === 1 || userId === 2 || userId === 3);
+
         registeredUsersMock.push({
+          id: userId,
           cpf: data.CPF.replace(/\D+/g, ''),
           name: data.name,
           email: data.email,
@@ -89,9 +93,13 @@ export class SignUpService {
 
         this.authenticator.authenticate(true);
 
+        localStorage.setItem('userId', userId + '');
+
         resolve({
           error: false,
-          data: loggedUserMock,
+          data: {
+            userId,
+          },
         });
       } else {
         resolve({

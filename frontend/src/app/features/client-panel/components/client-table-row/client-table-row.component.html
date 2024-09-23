@@ -14,7 +14,7 @@
       <button app-button>Resgatar</button>
     }
     @case ('ARRUMADA') {
-      <button app-button>Pagar</button>
+      <link-as-button href="/cliente/{{ userId() }}/orcamento/{{ id() }}"> Pagar serviço</link-as-button>
     }
     @default {
       <button app-button>Visualizar</button>

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { requestHistoryMock } from '@/shared/mock/request.mock';
-import { loggedUserMock } from '@/shared/mock/logged-user.mock';
+import { maintenanceRequests } from '../../mock/maintenance-requests.mock';
 
 @Injectable({
   providedIn: 'root',
@@ -9,12 +8,11 @@ export class UpdateRequestStatusService {
   constructor() {}
 
   updateStatus(requestId: number, employee: string, status: string) {
-    const requestHistory = requestHistoryMock.find(({ id }) => id === requestId);
-    const requestSum = loggedUserMock.requests.find(({ id }) => id === requestId);
+    const requestFound = maintenanceRequests.find(({ id }) => id === requestId);
 
-    if (requestHistory && requestSum) {
-      const lastIndex = requestHistory.history.length ? requestHistory.history.length - 1 : 0;
-      const lastStatus = requestHistory.history[lastIndex].toStatus;
+    if (requestFound) {
+      const lastIndex = requestFound.history.length ? requestFound.history.length - 1 : 0;
+      const lastStatus = requestFound.history[lastIndex].toStatus;
 
       const newEntry = {
         date: '00/00/0000',
@@ -24,8 +22,7 @@ export class UpdateRequestStatusService {
         employee,
       };
 
-      requestHistory.history.push(newEntry);
-      requestSum.status = status;
+      requestFound.history.push(newEntry);
     }
   }
 }

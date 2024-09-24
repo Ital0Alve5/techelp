@@ -7,8 +7,12 @@
     <button backgroundColor="#10855b" hoverColor="none" app-button>Aprovar</button>
   } @else if (requestData.currentStatus === 'Arrumada') {
     <app-modal [(isHidden)]="isPaymentConfirmationModalOpen">
-      <p class="modal">Confirmar pagamento de <span class="price-highlight">R${{ requestData.price }}</span>?</p>
-      <div class="buttons">
+      <h2>Confirmação de pagamento</h2>
+      <p class="modal">
+        Confirmar pagamento de <span class="price-highlight">R${{ requestData.price }}</span
+        >?
+      </p>
+      <div class="buttons buttons--modal">
         <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeModal()">Cancelar</button>
         <button backgroundColor="#10855b" hoverColor="none" app-button (click)="confirmPayment()">Continuar</button>
       </div>

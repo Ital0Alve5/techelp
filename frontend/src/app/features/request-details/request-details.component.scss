@@ -42,19 +42,14 @@ section {
   margin-top: 20px;
 }
 
-.budget-container {
+.request-container {
   flex-direction: column;
   justify-content: center;
   min-width: 580px;
-  
+
   b {
     color: $brand-purple;
-  }
-
-  .price {
-    font-size: $size-2x-large;
     font-weight: $weight-bold;
-    color: $brand-purple;
   }
 }
 
@@ -64,6 +59,7 @@ section {
   list-style: none;
   width: 100%;
   gap: 24px;
+
   li {
     display: flex;
     align-items: center;
@@ -72,5 +68,18 @@ section {
     b {
       min-width: 240px;
     }
+  }
+}
+
+.request-history {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  h1 {
+    font-weight: 600;
+    color: $brand-purple;
+    font-size: 20px;
+    align-self: flex-start;
   }
 }

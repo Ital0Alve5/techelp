@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 import { RouterLink } from '@angular/router';
 import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
+import { PopupService } from '@/shared/services/pop-up/pop-up.service';
+import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
 
 @Component({
@@ -15,9 +18,10 @@ import { UpdateRequestStatusService } from '@/shared/services/update-request-sta
   styleUrl: './budget.component.scss',
 })
 export class BudgetComponent {
-  isApprovalModalOpen = false;
+  isApprovalModalOpen = signal(true);
   userId: number = JSON.parse(localStorage.getItem('userId')!);
   requestId: number = Number.parseInt(window.location.pathname.match(/\/orcamento\/(\d+)/)![1]);
+  isPaymentConfirmationModalOpen = signal(true);
   requestData = {
     deviceDescription: '',
     deviceCategory: '',
@@ -29,7 +33,7 @@ export class BudgetComponent {
     currentStatus: ''
   };
 
-  constructor(private updateRequestStatusService: UpdateRequestStatusService) {
+  constructor(private popupService: PopupService, private router: Router, private updateRequestStatusService: UpdateRequestStatusService) {
     maintenanceRequests.forEach((request) => {
       if (request.userId === this.userId && this.requestId === request.id) {
         this.requestData = {
@@ -44,23 +48,36 @@ export class BudgetComponent {
         };
       }
     });
+
   }
 
-  openModal() {
+  openModalPayment() {
+    this.isPaymentConfirmationModalOpen.set(false);
+  }
+
+  closeModalPayment() {
+    this.isPaymentConfirmationModalOpen.set(true);
+  }
+
+  confirmPayment() {
+    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Concluída');
+
+    this.closeModalPayment();
+
+    this.router.navigate([`/cliente/${this.userId}/solicitacoes`]);
+
+    this.popupService.addNewPopUp({
+      type: Status.Success,
+      message: "Pagamento efetuado com sucesso!",
+    });
+  }
+
+  openModalApprove() {
     this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Aprovada');
-  
-    const request = maintenanceRequests.find(
-      (req) => req.userId === this.userId && this.requestId === req.id
-    );
-
-    if (request) {
-      request.currentStatus = 'Aprovada';
-
-      this.isApprovalModalOpen = true;
-    }
+    this.isApprovalModalOpen.set(false);
   }
 
-  closeModal() {
-    this.isApprovalModalOpen = false;
+  closeModalApprove() {
+    this.isApprovalModalOpen.set(true);
   }
 }

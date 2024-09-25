@@ -3,18 +3,18 @@
 <td>{{ description() }}</td>
 <td>{{ status() }}</td>
 <td>
-  @switch (status().toUpperCase()) {
-    @case ('APROVADA') {
-      <button app-button>Efetuar manutenção</button>
+  @switch (status()) {
+    @case ('Aprovada') {
+      <p>Manutenção em andamento</p>
     }
-    @case ('ORÇADA') {
+    @case ('Orçada') {
       <link-as-button href="/cliente/{{ userId() }}/orcamento/{{ id() }}"> Aprovar/Rejeitar</link-as-button>
     }
-    @case ('REJEITADA') {
+    @case ('Rejeitada') {
       <button app-button>Resgatar</button>
     }
-    @case ('ARRUMADA') {
-      <button app-button>Pagar</button>
+    @case ('Arrumada') {
+      <link-as-button href="/cliente/{{ userId() }}/orcamento/{{ id() }}"> Pagar serviço</link-as-button>
     }
     @default {
       <button app-button>Visualizar</button>

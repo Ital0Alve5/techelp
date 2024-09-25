@@ -2,8 +2,23 @@
   <a routerLink="/cliente/{{ userId }}/solicitacoes">
     <arrow-right-icon width="20px" color="#fff" />
   </a>
-  <button backgroundColor="#dc363c" hoverColor="none" app-button>Rejeitar</button>
-  <button backgroundColor="#10855b" hoverColor="none" app-button (click)="openModal()">Aprovar</button>
+  @if (requestData.currentStatus === 'Orçada') {
+    <button backgroundColor="#dc363c" hoverColor="none" app-button>Rejeitar</button>
+    <button backgroundColor="#10855b" hoverColor="none" app-button (click)="openModalApprove()">Aprovar</button>
+  } @else if (requestData.currentStatus === 'Arrumada') {
+    <app-modal [(isHidden)]="isPaymentConfirmationModalOpen">
+      <h2>Confirmação de pagamento</h2>
+      <p class="modal">
+        Confirmar pagamento de <span class="price-highlight">R${{ requestData.price }}</span
+        >?
+      </p>
+      <div class="buttons buttons--modal">
+        <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeModalPayment()">Cancelar</button>
+        <button backgroundColor="#10855b" hoverColor="none" app-button (click)="confirmPayment()">Continuar</button>
+      </div>
+    </app-modal>
+    <button backgroundColor="#10855b" hoverColor="none" app-button (click)="openModalPayment()">Pagar serviço</button>
+  }
 </div>
 <section class="budget-container">
   <p>
@@ -32,11 +47,13 @@
   </ul>
 </section>
 
-<app-modal [(isHidden)]="!isApprovalModalOpen">
+<app-modal [(isHidden)]="isApprovalModalOpen">
   <h1>Serviço Aprovado</h1>
-  <br>
-  <p>Serviço aprovado no valor de <span class="price-highlight">R$ {{ requestData.price }}</span></p>
+  <br />
+  <p>
+    Serviço aprovado no valor de <span class="price-highlight">R$ {{ requestData.price }}</span>
+  </p>
   <div class="modal-footer">
-    <button app-button (click)="closeModal()" routerLink="/cliente/1/solicitacoes">OK</button>
+    <button app-button (click)="closeModalApprove()" routerLink="/cliente/1/solicitacoes">OK</button>
   </div>
 </app-modal>

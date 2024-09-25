@@ -5,7 +5,7 @@
 <td>
   @switch (status()) {
     @case ('Aprovada') {
-      <p style="color: green">Manutenção em andamento</p>
+      <p>Manutenção em andamento</p>
     }
     @case ('Orçada') {
       <link-as-button href="/cliente/{{ userId() }}/orcamento/{{ id() }}"> Aprovar/Rejeitar</link-as-button>

@@ -5,6 +5,7 @@ import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 import { RouterLink } from '@angular/router';
 import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
+import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
 
 @Component({
   selector: 'app-budget',
@@ -17,17 +18,7 @@ export class BudgetComponent {
   isApprovalModalOpen = false;
   userId: number = JSON.parse(localStorage.getItem('userId')!);
   requestId: number = Number.parseInt(window.location.pathname.match(/\/orcamento\/(\d+)/)![1]);
-  requestData: {
-    deviceDescription: string;
-    deviceCategory: string;
-    issueDescription: string;
-    price: string;
-    date: string;
-    hour: string;
-    employee: string;
-    currentStatus: string;
-    history: Array<{ date: string; hour: string; fromStatus: string; toStatus: string; employee: string }>;
-  } = {
+  requestData = {
     deviceDescription: '',
     deviceCategory: '',
     issueDescription: '',
@@ -35,37 +26,10 @@ export class BudgetComponent {
     date: '',
     hour: '',
     employee: '',
-    currentStatus: '',
-    history: []
+    currentStatus: ''
   };
 
-  openModal() {
-    this.requestData.currentStatus = 'Aprovada';
-    this.requestData.history.push({
-      date: '23/09/2024',
-      hour: '20:20',
-      fromStatus: 'Orçada',
-      toStatus: 'Aprovada',
-      employee: 'Um funcionario ai',
-    });
-
-    const requestIndex = maintenanceRequests.findIndex(
-      request => request.id === this.requestId && request.userId === this.userId
-    );
-
-    if (requestIndex !== -1) {
-      maintenanceRequests[requestIndex].currentStatus = this.requestData.currentStatus;
-      maintenanceRequests[requestIndex].history = [...this.requestData.history];
-    }
-
-    this.isApprovalModalOpen = true;
-  }
-
-  closeModal() {
-    this.isApprovalModalOpen = false;
-  }
-
-  constructor() {
+  constructor(private updateRequestStatusService: UpdateRequestStatusService) {
     maintenanceRequests.forEach((request) => {
       if (request.userId === this.userId && this.requestId === request.id) {
         this.requestData = {
@@ -76,10 +40,27 @@ export class BudgetComponent {
           date: request.date,
           hour: request.hour,
           employee: request.history[request.history.length - 1].employee,
-          currentStatus: request.currentStatus,
-          history: [...request.history]
+          currentStatus: request.currentStatus
         };
       }
     });
+  }
+
+  openModal() {
+    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Aprovada');
+  
+    const request = maintenanceRequests.find(
+      (req) => req.userId === this.userId && this.requestId === req.id
+    );
+
+    if (request) {
+      request.currentStatus = 'Aprovada';
+
+      this.isApprovalModalOpen = true;
+    }
+  }
+
+  closeModal() {
+    this.isApprovalModalOpen = false;
   }
 }

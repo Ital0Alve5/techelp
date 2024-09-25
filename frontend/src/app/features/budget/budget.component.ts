@@ -9,19 +9,25 @@ import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
+import { FormsModule } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-budget',
   standalone: true,
-  imports: [ButtonComponent, CardComponent, ArrowRightIcon, RouterLink, ModalComponent],
+  imports: [ButtonComponent, CardComponent, ArrowRightIcon, RouterLink, ModalComponent, FormsModule],
   templateUrl: './budget.component.html',
   styleUrl: './budget.component.scss',
 })
 export class BudgetComponent {
-  isApprovalModalOpen = signal(true);
   userId: number = JSON.parse(localStorage.getItem('userId')!);
   requestId: number = Number.parseInt(window.location.pathname.match(/\/orcamento\/(\d+)/)![1]);
+
   isPaymentConfirmationModalOpen = signal(true);
+  isApprovalModalOpen = signal(true);
+  isRejectModalOpen = signal(true);
+  rejectReason = signal('');
+
   requestData = {
     deviceDescription: '',
     deviceCategory: '',
@@ -30,10 +36,14 @@ export class BudgetComponent {
     date: '',
     hour: '',
     employee: '',
-    currentStatus: ''
+    currentStatus: '',
   };
 
-  constructor(private popupService: PopupService, private router: Router, private updateRequestStatusService: UpdateRequestStatusService) {
+  constructor(
+    private popupService: PopupService,
+    private router: Router,
+    private updateRequestStatusService: UpdateRequestStatusService,
+  ) {
     maintenanceRequests.forEach((request) => {
       if (request.userId === this.userId && this.requestId === request.id) {
         this.requestData = {
@@ -44,11 +54,10 @@ export class BudgetComponent {
           date: request.date,
           hour: request.hour,
           employee: request.history[request.history.length - 1].employee,
-          currentStatus: request.currentStatus
+          currentStatus: request.currentStatus,
         };
       }
     });
-
   }
 
   openModalPayment() {
@@ -68,7 +77,7 @@ export class BudgetComponent {
 
     this.popupService.addNewPopUp({
       type: Status.Success,
-      message: "Pagamento efetuado com sucesso!",
+      message: 'Pagamento efetuado com sucesso!',
     });
   }
 
@@ -79,5 +88,30 @@ export class BudgetComponent {
 
   closeModalApprove() {
     this.isApprovalModalOpen.set(true);
+  }
+
+  openModalReject() {
+    this.isRejectModalOpen.set(false);
+  }
+
+  closeModalReject() {
+    this.isRejectModalOpen.set(true);
+  }
+
+  confirmReject(rejectForm: NgForm) {
+    if (rejectForm.valid) {
+      const rejectionReason = rejectForm.value.rejectReason;
+
+      this.updateRequestStatusService.updateStatus(
+        this.requestId,
+        this.requestData.employee,
+        'Rejeitado',
+        rejectionReason,
+      );
+
+      this.closeModalReject();
+
+      this.router.navigate([`/cliente/${this.userId}/solicitacoes`]);
+    }
   }
 }

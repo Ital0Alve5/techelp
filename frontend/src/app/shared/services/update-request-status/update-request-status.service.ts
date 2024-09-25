@@ -7,7 +7,7 @@ import { maintenanceRequests } from '../../mock/maintenance-requests.mock';
 export class UpdateRequestStatusService {
   constructor() {}
 
-  updateStatus(requestId: number, employee: string, status: string) {
+  updateStatus(requestId: number, employee: string, status: string, rejectReason: string = '') {
     const requestFound = maintenanceRequests.find(({ id }) => id === requestId);
 
     if (requestFound) {
@@ -29,6 +29,8 @@ export class UpdateRequestStatusService {
 
       requestFound.history.push(newEntry);
       requestFound.currentStatus = status;
+
+      requestFound.rejectReason = rejectReason;
     }
   }
 }

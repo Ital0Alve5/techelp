@@ -18,7 +18,7 @@ import { UpdateRequestStatusService } from '@/shared/services/update-request-sta
   styleUrl: './budget.component.scss',
 })
 export class BudgetComponent {
-  isApprovalModalOpen = false;
+  isApprovalModalOpen = signal(true);
   userId: number = JSON.parse(localStorage.getItem('userId')!);
   requestId: number = Number.parseInt(window.location.pathname.match(/\/orcamento\/(\d+)/)![1]);
   isPaymentConfirmationModalOpen = signal(true);
@@ -74,10 +74,10 @@ export class BudgetComponent {
 
   openModalApprove() {
     this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Aprovada');
-    this.isApprovalModalOpen = true;
+    this.isApprovalModalOpen.set(false);
   }
 
   closeModalApprove() {
-    this.isApprovalModalOpen = false;
+    this.isApprovalModalOpen.set(true);
   }
 }

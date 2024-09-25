@@ -26,6 +26,12 @@
         {{ requestData.issueDescription }}
       </p>
     </li>
+    <li>
+      <b>Estado atual:</b>
+      <p>
+        {{ requestData.currentStatus }}
+      </p>
+    </li>
   </ul>
 </section>
 <section class="request-history">
@@ -34,16 +40,14 @@
     <tr>
       <th>Data/Hora</th>
       <th>Funcionário responsável</th>
-      <th>Descrição</th>
-      <th>Estado</th>
       <th>Ação</th>
     </tr>
-    <tr>
-      <td>oioioioio</td>
-      <td>{{ requestData.employee }}</td>
-      <td>oioioioio</td>
-      <td>oioioioio</td>
-      <td>oioioioio</td>
-    </tr>
+    @for (request of requestHistory; track $index) {
+      <tr>
+        <td>{{ request.date }} {{ request.hour }}</td>
+        <td>{{ request.employee }}</td>
+        <td>{{ request.toStatus }}</td>
+      </tr>
+    }
   </table>
 </section>

@@ -4,7 +4,7 @@
   </a>
   @if (requestData.currentStatus === 'Orçada') {
     <button backgroundColor="#dc363c" hoverColor="none" app-button>Rejeitar</button>
-    <button backgroundColor="#10855b" hoverColor="none" app-button>Aprovar</button>
+    <button backgroundColor="#10855b" hoverColor="none" app-button (click)="openModalApprove()">Aprovar</button>
   } @else if (requestData.currentStatus === 'Arrumada') {
     <app-modal [(isHidden)]="isPaymentConfirmationModalOpen">
       <h2>Confirmação de pagamento</h2>
@@ -13,11 +13,11 @@
         >?
       </p>
       <div class="buttons buttons--modal">
-        <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeModal()">Cancelar</button>
+        <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeModalPayment()">Cancelar</button>
         <button backgroundColor="#10855b" hoverColor="none" app-button (click)="confirmPayment()">Continuar</button>
       </div>
     </app-modal>
-    <button backgroundColor="#10855b" hoverColor="none" app-button (click)="openModal()">Pagar serviço</button>
+    <button backgroundColor="#10855b" hoverColor="none" app-button (click)="openModalPayment()">Pagar serviço</button>
   }
 </div>
 <section class="budget-container">
@@ -38,15 +38,22 @@
     </li>
     <li>
       <b>Descrição do equipamento:</b>
-      <p>
-        {{ requestData.deviceDescription }}
-      </p>
+      <p>{{ requestData.deviceDescription }}</p>
     </li>
     <li>
       <b>Descrição do defeito:</b>
-      <p>
-        {{ requestData.issueDescription }}
-      </p>
+      <p>{{ requestData.issueDescription }}</p>
     </li>
   </ul>
 </section>
+
+<app-modal [isHidden]="!isApprovalModalOpen">
+  <h1>Serviço Aprovado</h1>
+  <br />
+  <p>
+    Serviço aprovado no valor de <span class="price-highlight">R$ {{ requestData.price }}</span>
+  </p>
+  <div class="modal-footer">
+    <button app-button (click)="closeModalApprove()" routerLink="/cliente/1/solicitacoes">OK</button>
+  </div>
+</app-modal>

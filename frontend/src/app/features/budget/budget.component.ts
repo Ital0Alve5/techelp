@@ -8,6 +8,7 @@ import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
 
 @Component({
   selector: 'app-budget',
@@ -17,6 +18,7 @@ import { Status } from '@/shared/ui/pop-up/enum/status.enum';
   styleUrl: './budget.component.scss',
 })
 export class BudgetComponent {
+  isApprovalModalOpen = false;
   userId: number = JSON.parse(localStorage.getItem('userId')!);
   requestId: number = Number.parseInt(window.location.pathname.match(/\/orcamento\/(\d+)/)![1]);
   isPaymentConfirmationModalOpen = signal(true);
@@ -28,10 +30,10 @@ export class BudgetComponent {
     date: '',
     hour: '',
     employee: '',
-    currentStatus: '',
+    currentStatus: ''
   };
 
-  constructor(private popupService: PopupService, private router: Router) {
+  constructor(private popupService: PopupService, private router: Router, private updateRequestStatusService: UpdateRequestStatusService) {
     maintenanceRequests.forEach((request) => {
       if (request.userId === this.userId && this.requestId === request.id) {
         this.requestData = {
@@ -42,18 +44,18 @@ export class BudgetComponent {
           date: request.date,
           hour: request.hour,
           employee: request.history[request.history.length - 1].employee,
-          currentStatus: request.currentStatus,
+          currentStatus: request.currentStatus
         };
       }
     });
 
   }
 
-  openModal() {
+  openModalPayment() {
     this.isPaymentConfirmationModalOpen.set(false);
   }
 
-  closeModal() {
+  closeModalPayment() {
     this.isPaymentConfirmationModalOpen.set(true);
   }
 
@@ -78,7 +80,7 @@ export class BudgetComponent {
       }
     });
 
-    this.closeModal();
+    this.closeModalPayment();
 
     this.router.navigate([`/cliente/${this.userId}/solicitacoes`]);
 
@@ -86,5 +88,23 @@ export class BudgetComponent {
       type: Status.Success,
       message: "Pagamento efetuado com sucesso!",
     });
+  }
+
+  openModalApprove() {
+    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Aprovada');
+  
+    const request = maintenanceRequests.find(
+      (req) => req.userId === this.userId && this.requestId === req.id
+    );
+
+    if (request) {
+      request.currentStatus = 'Aprovada';
+
+      this.isApprovalModalOpen = true;
+    }
+  }
+
+  closeModalApprove() {
+    this.isApprovalModalOpen = false;
   }
 }

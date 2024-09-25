@@ -1,20 +1,25 @@
-<td><button app-button>Abrir</button></td>
+<td><link-as-button href="/cliente/{{ userId() }}/solicitacao/{{ id() }}">Abrir</link-as-button></td>
 <td>{{ date() }}</td>
 <td>{{ description() }}</td>
 <td>{{ status() }}</td>
 <td>
-  @switch (status().toUpperCase()) {
-    @case ('APROVADA') {
-      <button app-button>Efetuar manutenção</button>
+  @switch (status()) {
+    @case ('Aprovada') {
+      <p>Manutenção em andamento</p>
     }
-    @case ('ORÇADA') {
+    @case ('Orçada') {
       <link-as-button href="/cliente/{{ userId() }}/orcamento/{{ id() }}"> Aprovar/Rejeitar</link-as-button>
     }
+<<<<<<< HEAD
     @case ('REJEITADA') {
       <link-as-button href="/cliente/{{ userId() }}/resgate/{{ id() }}">Resgatar serviço</link-as-button>
+=======
+    @case ('Rejeitada') {
+      <button app-button>Resgatar</button>
+>>>>>>> cc308fb3cbc5989158ecfab8c1894766c21c9f3f
     }
-    @case ('ARRUMADA') {
-      <button app-button>Pagar</button>
+    @case ('Arrumada') {
+      <link-as-button href="/cliente/{{ userId() }}/orcamento/{{ id() }}"> Pagar serviço</link-as-button>
     }
     @default {
       <button app-button>Visualizar</button>

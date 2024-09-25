@@ -7,22 +7,30 @@ import { maintenanceRequests } from '../../mock/maintenance-requests.mock';
 export class UpdateRequestStatusService {
   constructor() {}
 
-  updateStatus(requestId: number, employee: string, status: string) {
+  updateStatus(requestId: number, employee: string, status: string, rejectReason: string = '') {
     const requestFound = maintenanceRequests.find(({ id }) => id === requestId);
 
     if (requestFound) {
       const lastIndex = requestFound.history.length ? requestFound.history.length - 1 : 0;
       const lastStatus = requestFound.history[lastIndex].toStatus;
 
+      const today = new Date().toLocaleDateString();
+      const time = new Date();
+      const hour = time.getHours().toString().padStart(2, '0');
+      const minute = time.getMinutes().toString().padStart(2, '0');
+
       const newEntry = {
-        date: '00/00/0000',
-        hour: '00:00',
+        date: today,
+        hour: `${hour}:${minute}`,
         fromStatus: lastStatus,
         toStatus: status,
         employee,
       };
 
       requestFound.history.push(newEntry);
+      requestFound.currentStatus = status;
+
+      requestFound.rejectReason = rejectReason;
     }
   }
 }

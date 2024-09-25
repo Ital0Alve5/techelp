@@ -37,20 +37,20 @@ export class RescueComponent {
     private router: Router,
     private updateRequestStatusService: UpdateRequestStatusService
   ) {
-    
-    const request = maintenanceRequests.find(req => req.userId === this.userId && this.requestId === req.id);
-    if (request) {
-      this.requestData = {
-        deviceDescription: request.deviceDescription,
-        deviceCategory: request.deviceCategory,
-        issueDescription: request.issueDescription,
-        price: request.price,
-        date: request.date,
-        hour: request.hour,
-        employee: request.history[request.history.length - 1].employee,
-        currentStatus: request.currentStatus,
-      };
-    }
+    maintenanceRequests.forEach((request) => {
+      if (request.userId === this.userId && this.requestId === request.id) {
+        this.requestData = {
+          deviceDescription: request.deviceDescription,
+          deviceCategory: request.deviceCategory,
+          issueDescription: request.issueDescription,
+          price: request.price,
+          date: request.date,
+          hour: request.hour,
+          employee: request.history[request.history.length - 1].employee,
+          currentStatus: request.currentStatus,
+        };
+      }
+    });
   }
 
   openModal() {
@@ -64,10 +64,19 @@ export class RescueComponent {
   confirmRescue() {
     this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Aprovada');
     
+    const request = maintenanceRequests.find(
+      (req) => req.userId === this.userId && this.requestId === req.id
+    );
+
+    if (request) {
+      request.currentStatus = 'Aprovada';
+      
+      // Exibir o log do histórico atualizado
+      console.log('Histórico atualizado:', JSON.stringify(request.history, null, 2));
+    }
+
     this.closeModal();
-    
     this.router.navigate([`/cliente/${this.userId}/solicitacoes`]);
-    
     this.popupService.addNewPopUp({
       type: Status.Success,
       message: 'Solicitação resgatada com sucesso!',

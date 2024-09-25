@@ -5,7 +5,6 @@
   display: block;
   margin: 0 auto;
   max-width: 1048px;
-  z-index: 99;
 }
 
 a {
@@ -23,15 +22,12 @@ a {
   }
 }
 
-.buttons {
+a {
   display: flex;
   gap: 20px;
   justify-content: flex-end;
   align-items: center;
   margin-top: 20px;
-  &--modal {
-    justify-content: center;
-  }
 }
 
 section {
@@ -46,19 +42,14 @@ section {
   margin-top: 20px;
 }
 
-.budget-container {
+.request-container {
   flex-direction: column;
   justify-content: center;
   min-width: 580px;
 
   b {
     color: $brand-purple;
-  }
-
-  .price {
-    font-size: $size-2x-large;
     font-weight: $weight-bold;
-    color: $brand-purple;
   }
 }
 
@@ -68,6 +59,7 @@ section {
   list-style: none;
   width: 100%;
   gap: 24px;
+
   li {
     display: flex;
     align-items: center;
@@ -79,56 +71,41 @@ section {
   }
 }
 
-.modal {
-  padding: 10px;
-  padding-bottom: 30px;
-  font-size: large;
-}
-
-p.modal {
-  padding-top: 25px;
-}
-
-.price-highlight {
-  color: $feedback-info-50;
-  font-weight: bold;
-}
-
-app-modal {
+.request-history {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  gap: 20px;
 
-  .modal-footer {
-    width: 100%;
-    margin-top: 20px;
-  }
-
-  .modal-footer button {
-    width: 100%;
-    padding: 5px;
-    font-size: 16px;
-  }
-
-  .price-highlight {
-    color: $feedback-info-50;
-    font-weight: bold;
+  h1 {
+    font-weight: 600;
+    color: $brand-purple;
+    font-size: 20px;
+    align-self: flex-start;
   }
 }
 
-.large-textarea {
-  width: 500px;
-  height: 150px;
-  padding: 10px;
-  box-sizing: border-box;
-  resize: none; 
+table {
+  text-align: center;
+  border-collapse: collapse;
+  border-style: hidden;
   width: 100%;
-}
 
-.button--modal {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-top: 10px;
+  tr {
+    transition: 0.5s;
+    border-bottom: 1px solid $neutral-30;
+
+    td {
+      padding: 20px;
+      border-right: 1px solid $neutral-30;
+    }
+
+    th {
+      padding: 10px;
+    }
+
+    &:hover {
+      background-color: $neutral-10;
+      transition: 0.5s;
+    }
+  }
 }

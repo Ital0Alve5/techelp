@@ -14,7 +14,7 @@ import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 })
 export class RequestDetailsComponent {
   userId: number = JSON.parse(localStorage.getItem('userId')!);
-  requestId: number = Number.parseInt(window.location.pathname.match(/\/orcamento\/(\d+)/)![1]);
+  requestId: number = Number.parseInt(window.location.pathname.match(/\/solicitacao\/(\d+)/)![1]);
   requestData = {
     deviceDescription: '',
     deviceCategory: '',

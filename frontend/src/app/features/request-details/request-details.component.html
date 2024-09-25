@@ -1,38 +1,35 @@
 <div class="buttons">
-    <a routerLink="/cliente/{{ userId }}/solicitacoes">
-      <arrow-right-icon width="20px" color="#fff" />
-    </a>
-    <button backgroundColor="#dc363c" hoverColor="none" app-button>Rejeitar</button>
-    <button backgroundColor="#10855b" hoverColor="none" app-button>Aprovar</button>
-  </div>
-  <section class="budget-container">
-    <p>
-      Serviço avaliado por <b> {{ requestData.employee }}</b> e orçado em:
-    </p>
-    <p class="price">R$ {{ requestData.price }}</p>
-  </section>
-  <section>
-    <ul class="request-description">
-      <li>
-        <b>Data da solicitação:</b>
-        <p>{{ requestData.date }} às {{ requestData.hour }}</p>
-      </li>
-      <li>
-        <b>Categoria do equipamento:</b>
-        <p>{{ requestData.deviceCategory }}</p>
-      </li>
-      <li>
-        <b>Descrição do equipamento:</b>
-        <p>
-          {{ requestData.deviceDescription }}
-        </p>
-      </li>
-      <li>
-        <b>Descrição do defeito:</b>
-        <p>
-          {{ requestData.issueDescription }}
-        </p>
-      </li>
-    </ul>
-  </section>
-  
+  <a routerLink="/cliente/{{ userId }}/solicitacoes">
+    <arrow-right-icon width="20px" color="#fff" />
+  </a>
+  <button backgroundColor="#10855b" hoverColor="none" app-button>Aprovar</button>
+</div>
+<section class="budget-container">
+  <p>
+    Serviço avaliado por <b> {{ requestData.employee }}</b>
+  </p>
+</section>
+<section>
+  <ul class="request-description">
+    <li>
+      <b>Data da solicitação:</b>
+      <p>{{ requestData.date }} às {{ requestData.hour }}</p>
+    </li>
+    <li>
+      <b>Categoria do equipamento:</b>
+      <p>{{ requestData.deviceCategory }}</p>
+    </li>
+    <li>
+      <b>Descrição do equipamento:</b>
+      <p>
+        {{ requestData.deviceDescription }}
+      </p>
+    </li>
+    <li>
+      <b>Descrição do defeito:</b>
+      <p>
+        {{ requestData.issueDescription }}
+      </p>
+    </li>
+  </ul>
+</section>

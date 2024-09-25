@@ -60,25 +60,7 @@ export class BudgetComponent {
   }
 
   confirmPayment() {
-    maintenanceRequests.forEach((request) => {
-      if (request.userId === this.userId && this.requestId === request.id) {
-
-        const today = new Date().toLocaleDateString();
-        const time = new Date();
-        const hour = time.getHours().toString().padStart(2, '0');
-        const minute = time.getMinutes().toString().padStart(2, '0');
-
-        request.history.push({
-          date: today,
-          hour: `${hour}:${minute}`,
-          fromStatus: 'Arrumada',
-          toStatus: 'Concluída',
-          employee: 'Heitor',
-        });
-
-        request.currentStatus = "Concluída";
-      }
-    });
+    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Concluída');
 
     this.closeModalPayment();
 
@@ -92,16 +74,7 @@ export class BudgetComponent {
 
   openModalApprove() {
     this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Aprovada');
-  
-    const request = maintenanceRequests.find(
-      (req) => req.userId === this.userId && this.requestId === req.id
-    );
-
-    if (request) {
-      request.currentStatus = 'Aprovada';
-
-      this.isApprovalModalOpen = true;
-    }
+    this.isApprovalModalOpen = true;
   }
 
   closeModalApprove() {

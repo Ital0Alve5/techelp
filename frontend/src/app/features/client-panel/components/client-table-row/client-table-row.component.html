@@ -5,7 +5,7 @@
 <td>
   @switch (status().toUpperCase()) {
     @case ('APROVADA') {
-      <button app-button>Efetuar manutenção</button>
+      <p style="color: green">Manutenção em andamento</p>
     }
     @case ('ORÇADA') {
       <link-as-button href="/cliente/{{ userId() }}/orcamento/{{ id() }}"> Aprovar/Rejeitar</link-as-button>

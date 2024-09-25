@@ -3,7 +3,7 @@
     <arrow-right-icon width="20px" color="#fff" />
   </a>
   @if (requestData.currentStatus === 'Orçada') {
-    <button backgroundColor="#dc363c" hoverColor="none" app-button>Rejeitar</button>
+    <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="openModalReject()">Rejeitar</button>
     <button backgroundColor="#10855b" hoverColor="none" app-button (click)="openModalApprove()">Aprovar</button>
   } @else if (requestData.currentStatus === 'Arrumada') {
     <app-modal [(isHidden)]="isPaymentConfirmationModalOpen">
@@ -56,4 +56,29 @@
   <div class="modal-footer">
     <button app-button (click)="closeModalApprove()" routerLink="/cliente/1/solicitacoes">OK</button>
   </div>
+</app-modal>
+
+<app-modal [(isHidden)]="isRejectModalOpen">
+  <h2>Rejeitar orçamento</h2>
+  <p class="modal">Escreva o motivo de rejeição:</p>
+  <form (ngSubmit)="confirmReject(rejectForm)" #rejectForm="ngForm">
+    <textarea
+      name="rejectReason"
+      class="large-textarea"
+      maxlength="300"
+      placeholder="Motivo da rejeição"
+      required
+      [(ngModel)]="rejectReason"
+    ></textarea>
+    <button
+      type="submit"
+      [disabled]="!rejectForm.valid"
+      class="button--modal"
+      backgroundColor="#10855b"
+      hoverColor="none"
+      app-button
+    >
+      Continuar
+    </button>
+  </form>
 </app-modal>

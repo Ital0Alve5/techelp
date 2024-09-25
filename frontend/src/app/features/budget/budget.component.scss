@@ -116,3 +116,19 @@ app-modal {
     font-weight: bold;
   }
 }
+
+.large-textarea {
+  width: 500px;
+  height: 150px;
+  padding: 10px;
+  box-sizing: border-box;
+  resize: none; 
+  width: 100%;
+}
+
+.button--modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 10px;
+}

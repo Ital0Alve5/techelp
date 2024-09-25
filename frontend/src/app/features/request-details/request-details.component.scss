@@ -83,3 +83,29 @@ section {
     align-self: flex-start;
   }
 }
+
+table {
+  text-align: center;
+  border-collapse: collapse;
+  border-style: hidden;
+  width: 100%;
+
+  tr {
+    transition: 0.5s;
+    border-bottom: 1px solid $neutral-30;
+
+    td {
+      padding: 20px;
+      border-right: 1px solid $neutral-30;
+    }
+
+    th {
+      padding: 10px;
+    }
+
+    &:hover {
+      background-color: $neutral-10;
+      transition: 0.5s;
+    }
+  }
+}

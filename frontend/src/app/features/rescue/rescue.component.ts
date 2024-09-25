@@ -8,13 +8,14 @@ import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
 
 @Component({
   selector: 'app-rescue',
   standalone: true,
   imports: [ButtonComponent, CardComponent, ArrowRightIcon, RouterLink, ModalComponent],
   templateUrl: './rescue.component.html',
-  styleUrl: './rescue.component.scss',
+  styleUrls: ['./rescue.component.scss'],
 })
 export class RescueComponent {
   userId: number = JSON.parse(localStorage.getItem('userId')!);
@@ -31,21 +32,25 @@ export class RescueComponent {
     currentStatus: '',
   };
 
-  constructor(private popupService: PopupService, private router: Router) {
-    maintenanceRequests.forEach((request) => {
-      if (request.userId === this.userId && this.requestId === request.id) {
-        this.requestData = {
-          deviceDescription: request.deviceDescription,
-          deviceCategory: request.deviceCategory,
-          issueDescription: request.issueDescription,
-          price: request.price,
-          date: request.date,
-          hour: request.hour,
-          employee: request.history[request.history.length - 1].employee,
-          currentStatus: request.currentStatus,
-        };
-      }
-    });
+  constructor(
+    private popupService: PopupService,
+    private router: Router,
+    private updateRequestStatusService: UpdateRequestStatusService
+  ) {
+    
+    const request = maintenanceRequests.find(req => req.userId === this.userId && this.requestId === req.id);
+    if (request) {
+      this.requestData = {
+        deviceDescription: request.deviceDescription,
+        deviceCategory: request.deviceCategory,
+        issueDescription: request.issueDescription,
+        price: request.price,
+        date: request.date,
+        hour: request.hour,
+        employee: request.history[request.history.length - 1].employee,
+        currentStatus: request.currentStatus,
+      };
+    }
   }
 
   openModal() {
@@ -57,30 +62,12 @@ export class RescueComponent {
   }
 
   confirmRescue() {
-    maintenanceRequests.forEach((request) => {
-      if (request.userId === this.userId && this.requestId === request.id) {
-        const today = new Date().toLocaleDateString();
-        const time = new Date();
-        const hour = time.getHours().toString().padStart(2, '0');
-        const minute = time.getMinutes().toString().padStart(2, '0');
-
-        request.history.push({
-          date: today,
-          hour: `${hour}:${minute}`,
-          fromStatus: 'Rejeitada',
-          toStatus: 'Aprovada',
-          employee: 'Heitor',
-        });
-
-        request.currentStatus = 'Aprovada';
-
-        console.log('Histórico atualizado:', JSON.stringify(request.history, null, 2));
-
-      }
-    });
-
+    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Aprovada');
+    
     this.closeModal();
+    
     this.router.navigate([`/cliente/${this.userId}/solicitacoes`]);
+    
     this.popupService.addNewPopUp({
       type: Status.Success,
       message: 'Solicitação resgatada com sucesso!',

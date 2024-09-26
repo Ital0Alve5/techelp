@@ -21,4 +21,7 @@ div {
       background-color: $brand-purple-hover;
     }
   }
+  &:hover {
+    transition: 1s;
+  }
 }

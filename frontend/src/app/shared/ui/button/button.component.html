@@ -1,3 +1,4 @@
-<div [class]="hoverColor()">
+<div   (mouseover)="hovered = true"
+(mouseout)="hovered = false">
   <ng-content />
 </div>

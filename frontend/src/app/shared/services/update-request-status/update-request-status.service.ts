@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { maintenanceRequests } from '../../mock/maintenance-requests.mock';
+import { RequestStats } from '@/shared/types/request-status.type';
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +8,7 @@ import { maintenanceRequests } from '../../mock/maintenance-requests.mock';
 export class UpdateRequestStatusService {
   constructor() {}
 
-  updateStatus(requestId: number, employee: string, status: string, rejectReason: string = '') {
+  updateStatus(requestId: number, employee: string, status: RequestStats, rejectReason: string = '') {
     const requestFound = maintenanceRequests.find(({ id }) => id === requestId);
 
     if (requestFound) {

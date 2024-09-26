@@ -69,7 +69,7 @@ export class BudgetComponent {
   }
 
   confirmPayment() {
-    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Concluída');
+    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Paga');
 
     this.closeModalPayment();
 

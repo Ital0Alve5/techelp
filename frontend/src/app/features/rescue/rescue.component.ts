@@ -30,6 +30,7 @@ export class RescueComponent {
     hour: '',
     employee: '',
     currentStatus: '',
+    rejectReason: '',
   };
 
   constructor(
@@ -48,6 +49,7 @@ export class RescueComponent {
           hour: request.hour,
           employee: request.history[request.history.length - 1].employee,
           currentStatus: request.currentStatus,
+          rejectReason: request.rejectReason,
         };
       }
     });

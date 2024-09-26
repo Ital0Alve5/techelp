@@ -105,7 +105,7 @@ export class BudgetComponent {
       this.updateRequestStatusService.updateStatus(
         this.requestId,
         this.requestData.employee,
-        'Rejeitado',
+        'Rejeitada',
         rejectionReason,
       );
 

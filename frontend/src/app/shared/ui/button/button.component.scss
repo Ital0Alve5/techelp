@@ -16,7 +16,12 @@ div {
   cursor: pointer;
   transition: 1s;
 
+  &.purple-hover {
+    &:hover {
+      background-color: $brand-purple-hover;
+    }
+  }
   &:hover {
-    background-color: $brand-purple-hover;
+    transition: 1s;
   }
 }

@@ -1,5 +1,6 @@
 export const registeredUsersMock = [
   {
+    id: 1,
     cpf: '12342514425',
     name: 'Ítalo Alves de Paula e Silva',
     email: 'italo_alves_@outlook.com',
@@ -16,6 +17,7 @@ export const registeredUsersMock = [
     },
   },
   {
+    id: 2,
     cpf: '11092891978',
     name: 'Yasmim Zedelinski Belão Rodrigues',
     email: 'yasmim.zedelinski@gmail.com',
@@ -32,6 +34,7 @@ export const registeredUsersMock = [
     },
   },
   {
+    id: 3,
     cpf: '64666374507',
     name: 'Daniele Terra da Cunha',
     email: 'daniele.cunha@gmail.com',

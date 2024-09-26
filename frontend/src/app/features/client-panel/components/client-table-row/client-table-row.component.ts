@@ -1,11 +1,11 @@
 import { Component, input } from '@angular/core';
 
 import { ButtonComponent } from '@/shared/ui/button/button.component';
-
+import { LinkAsButtonComponent } from '@/shared/ui/link-as-button/link-as-button.component';
 @Component({
   selector: 'tr[app-client-table-row]',
   standalone: true,
-  imports: [ButtonComponent],
+  imports: [ButtonComponent, LinkAsButtonComponent],
   templateUrl: './client-table-row.component.html',
   styleUrl: './client-table-row.component.scss',
 })
@@ -20,4 +20,7 @@ export class ClientTableRowComponent {
     },
   });
   status = input<string>('');
+  id = input.required<number>();
+  userId = input.required<number>();
+
 }

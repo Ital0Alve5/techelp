@@ -19,7 +19,6 @@ import { RequestMaintenanceService } from './services/request-maintenance.servic
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 
 import { InputError } from '@/shared/types/input-error.type';
-import { UserData } from '@/shared/types/api/user-data.type';
 
 import { formData } from './model/form-data.model';
 import { Categories } from './types/categories.type';
@@ -73,7 +72,7 @@ export class RequestMaintenanceComponent implements OnInit {
 
   sendData() {
     this.requestMaintenanceService
-      .send({
+      .send(JSON.parse(localStorage.getItem('userId')!), {
         deviceDescription: this.formValues().deviceDescription.value,
         deviceCategory: this.formValues().deviceCategory.value,
         defectDescription: this.formValues().defectDescription.value,
@@ -85,7 +84,7 @@ export class RequestMaintenanceComponent implements OnInit {
             message: (response.data as InputError).message,
           });
         } else {
-          this.router.navigate([`/cliente/${(response.data as UserData).id}/solicitacoes`]);
+          this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);
         }
       });
   }

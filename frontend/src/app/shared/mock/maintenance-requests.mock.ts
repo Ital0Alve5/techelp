@@ -9,7 +9,7 @@ export const maintenanceRequests = [
     date: '01/09/2024',
     hour: '13:24',
     currentStatus: 'Rejeitada',
-    rejectReason: '',
+    rejectReason: 'preço muito caro',
     history: [
       {
         date: '01/09/2024',

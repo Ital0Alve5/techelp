@@ -74,3 +74,18 @@ section {
 }
 
 
+.budget-container {
+  flex-direction: column;
+  justify-content: center;
+  min-width: 580px;
+
+  b {
+    color: $brand-purple;
+  }
+
+  .price {
+    font-size: $size-2x-large;
+    font-weight: $weight-bold;
+    color: $brand-purple;
+  }
+}

@@ -62,7 +62,7 @@ export class RescueComponent {
   }
 
   confirmRescue() {
-    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Orçada');
+    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Aprovada');
 
     this.closeModal();
     this.router.navigate([`/cliente/${this.userId}/solicitacoes`]);

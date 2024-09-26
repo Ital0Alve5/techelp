@@ -6,6 +6,7 @@ import { ClientPanelComponent } from './features/client-panel/client-panel.compo
 import { RequestMaintenanceComponent } from './features/request-maintenance/request-maintenance.component';
 import { Authenticator } from './core/auth/authenticator.service';
 import { BudgetComponent } from './features/budget/budget.component';
+import { RescueComponent } from './features/rescue/rescue.component';
 import { RequestDetailsComponent } from './features/request-details/request-details.component';
 
 export const routes: Routes = [
@@ -31,6 +32,11 @@ export const routes: Routes = [
     path: 'cliente/:userId/orcamento/:budgetId',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: BudgetComponent,
+  },
+  {
+    path: 'cliente/:userId/resgate/:id',
+    canActivate: [() => inject(Authenticator).checkAuthentication()],
+    component: RescueComponent,
   },
   {
     path: 'cliente/:userId/solicitacao/:requestId',

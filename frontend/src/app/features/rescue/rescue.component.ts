@@ -64,17 +64,6 @@ export class RescueComponent {
   confirmRescue() {
     this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Aprovada');
     
-    const request = maintenanceRequests.find(
-      (req) => req.userId === this.userId && this.requestId === req.id
-    );
-
-    if (request) {
-      request.currentStatus = 'Aprovada';
-      
-      // Exibir o log do histórico atualizado
-      console.log('Histórico atualizado:', JSON.stringify(request.history, null, 2));
-    }
-
     this.closeModal();
     this.router.navigate([`/cliente/${this.userId}/solicitacoes`]);
     this.popupService.addNewPopUp({

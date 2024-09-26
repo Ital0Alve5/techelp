@@ -8,7 +8,7 @@ export const maintenanceRequests = [
     price: '99,90',
     date: '01/09/2024',
     hour: '13:24',
-    currentStatus: 'Rejeitada', //mudar de volta
+    currentStatus: 'Rejeitada',
     rejectReason: '',
     history: [
       {

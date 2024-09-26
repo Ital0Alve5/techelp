@@ -65,7 +65,7 @@ export const maintenanceRequests = [
         date: '05/09/2024',
         hour: '10:00',
         fromStatus: 'Rejeitada',
-        toStatus: 'Aprovada',
+        toStatus: 'Orçada',
         employee: 'Abacaxi da Silva',
       },
 

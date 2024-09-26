@@ -18,7 +18,7 @@ a {
   transition: 1s;
 
   &:hover {
-    background: $brand-purple-hover;
+    background: none;
   }
 }
 
@@ -50,12 +50,6 @@ section {
   b {
     color: $brand-purple;
   }
-
-  .price {
-    font-size: $size-2x-large;
-    font-weight: $weight-bold;
-    color: $brand-purple;
-  }
 }
 
 .request-description {
@@ -82,7 +76,4 @@ section {
   font-size: large;
 }
 
-.price-highlight {
-  color: $feedback-info-50;
-  font-weight: bold;
-}
+

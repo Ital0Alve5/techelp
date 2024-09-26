@@ -10,13 +10,8 @@
     @case ('Orçada') {
       <link-as-button href="/cliente/{{ userId() }}/orcamento/{{ id() }}"> Aprovar/Rejeitar</link-as-button>
     }
-<<<<<<< HEAD
-    @case ('REJEITADA') {
-      <link-as-button href="/cliente/{{ userId() }}/resgate/{{ id() }}">Resgatar serviço</link-as-button>
-=======
     @case ('Rejeitada') {
-      <button app-button>Resgatar</button>
->>>>>>> cc308fb3cbc5989158ecfab8c1894766c21c9f3f
+      <link-as-button href="/cliente/{{ userId() }}/resgate/{{ id() }}">Resgatar serviço</link-as-button>
     }
     @case ('Arrumada') {
       <link-as-button href="/cliente/{{ userId() }}/orcamento/{{ id() }}"> Pagar serviço</link-as-button>

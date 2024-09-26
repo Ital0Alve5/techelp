@@ -6,11 +6,8 @@ import { ClientPanelComponent } from './features/client-panel/client-panel.compo
 import { RequestMaintenanceComponent } from './features/request-maintenance/request-maintenance.component';
 import { Authenticator } from './core/auth/authenticator.service';
 import { BudgetComponent } from './features/budget/budget.component';
-<<<<<<< HEAD
 import { RescueComponent } from './features/rescue/rescue.component';
-=======
 import { RequestDetailsComponent } from './features/request-details/request-details.component';
->>>>>>> cc308fb3cbc5989158ecfab8c1894766c21c9f3f
 
 export const routes: Routes = [
   {
@@ -37,14 +34,13 @@ export const routes: Routes = [
     component: BudgetComponent,
   },
   {
-<<<<<<< HEAD
     path: 'cliente/:userId/resgate/:id',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: RescueComponent,
-=======
+  },
+  {
     path: 'cliente/:userId/solicitacao/:requestId',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: RequestDetailsComponent,
->>>>>>> cc308fb3cbc5989158ecfab8c1894766c21c9f3f
   },
 ];

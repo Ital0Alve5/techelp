@@ -1,4 +1,8 @@
 <div class="authTypes">
-  <a routerLink="/login" routerLinkActive="active" class="loginBtn">Login</a>
+  @if (!employeeLogin) {
+    <a routerLink="/login" routerLinkActive="active" class="loginBtn">Login</a>
+  } @else {
+    <a routerLink="/funcionario/login" routerLinkActive="active" class="loginBtn">Login</a>
+  }
   <a routerLink="/cadastro" routerLinkActive="active" class="signUpBtn">Cadastro</a>
 </div>

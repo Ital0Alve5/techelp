@@ -33,6 +33,7 @@ export class RequestMaintenanceService {
         maintenanceRequests.push({
           id,
           userId: userId,
+          employeeId: 0,
           deviceDescription: data.deviceDescription,
           deviceCategory: data.deviceCategory,
           issueDescription: data.defectDescription,

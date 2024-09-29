@@ -2,6 +2,7 @@ export const maintenanceRequests = [
   {
     id: 1,
     userId: 1,
+    employeeId: 1,
     deviceDescription: 'M-C donalds',
     deviceCategory: 'Notebook',
     issueDescription: 'Tela azul ao ligar, windows é muito ruim',
@@ -45,6 +46,7 @@ export const maintenanceRequests = [
   {
     id: 2,
     userId: 1,
+    employeeId: 1,
     deviceDescription: 'A-hey hey hey hey',
     deviceCategory: 'Notebook',
     issueDescription: 'Quero botar linux',
@@ -88,6 +90,7 @@ export const maintenanceRequests = [
   {
     id: 5,
     userId: 1,
+    employeeId: 1,
     deviceDescription: 'R io de janeiroei laa abla bal',
     deviceCategory: 'Notebook',
     issueDescription: 'Tela azul ao ligar, windows é muito ruim',
@@ -109,6 +112,7 @@ export const maintenanceRequests = [
   {
     id: 6,
     userId: 1,
+    employeeId: 1,
     deviceDescription: 'Indio',
     deviceCategory: 'Notebook',
     issueDescription: ' akjasd daks dasjdjka ',
@@ -130,6 +134,7 @@ export const maintenanceRequests = [
   {
     id: 7,
     userId: 1,
+    employeeId: 1,
     deviceDescription: 'AAAAAAAAAA',
     deviceCategory: 'Celular',
     issueDescription: 'AKNKNAdkndnk',
@@ -151,6 +156,7 @@ export const maintenanceRequests = [
   {
     id: 8,
     userId: 1,
+    employeeId: 1,
     deviceDescription: 'Joao estragou o pc',
     deviceCategory: 'Notebook',
     issueDescription: 'Tela azul ao ligar, windows é muito ruim',
@@ -172,6 +178,7 @@ export const maintenanceRequests = [
   {
     id: 9,
     userId: 1,
+    employeeId: 1,
     deviceDescription: 'Uiiii',
     deviceCategory: 'Notebook',
     issueDescription: 'Tela azul ao ligar, windows é muito ruim',
@@ -193,6 +200,7 @@ export const maintenanceRequests = [
   {
     id: 10,
     userId: 1,
+    employeeId: 1,
     deviceDescription: 'Lorem Ipsum is simply dummy',
     deviceCategory: 'Notebook',
     issueDescription: 'Tela azul ao ligar, windows é muito ruim',
@@ -214,6 +222,7 @@ export const maintenanceRequests = [
   {
     id: 11,
     userId: 1,
+    employeeId: 1,
     deviceDescription: 'Interesting topics fomaasasasgit',
     deviceCategory: 'Notebook',
     issueDescription: 'Tela azul ao ligar, windows é muito ruim',
@@ -235,6 +244,7 @@ export const maintenanceRequests = [
   {
     id: 3,
     userId: 2,
+    employeeId: 1,
     deviceDescription: 'io oi oi oio o',
     deviceCategory: 'Notebook',
     issueDescription: 'AAAAAAAAAAA A A AV AAAAAAAAAA',
@@ -278,6 +288,7 @@ export const maintenanceRequests = [
   {
     id: 4,
     userId: 2,
+    employeeId: 1,
     deviceDescription: 'k kkkk kkkk kkkkkk',
     deviceCategory: 'Notebook',
     issueDescription: 'oi hkjn kjnkjnknkjn kjjk',

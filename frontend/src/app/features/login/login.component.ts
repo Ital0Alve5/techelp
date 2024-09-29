@@ -21,16 +21,19 @@ import { InputError } from '@/shared/types/input-error.type';
 
 import { LoginService } from './services/login.service';
 import { formData } from './model/form-data.model';
+import { EmployeeIDValidator } from '@/shared/services/validators/employee-id-validator.service';
+
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CardComponent, UserIcon, InputComponent, LockIcon, FormsModule, AuthTypeComponent, ButtonComponent],
-  providers: [EmailValidator, RequiredValidator, MaxLengthValidator, MinLengthValidator, LoginService],
+  providers: [EmailValidator, EmployeeIDValidator, RequiredValidator, MaxLengthValidator, MinLengthValidator, LoginService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   formValues = signal(JSON.parse(JSON.stringify(formData)));
+  employeeLogin = location.pathname === '/funcionario/login';
 
   constructor(
     private emailValidator: EmailValidator,
@@ -41,12 +44,14 @@ export class LoginComponent {
     private popupService: PopupService,
     private router: Router,
     private authenticator: Authenticator,
+    private employeeIDValidator : EmployeeIDValidator,
   ) {}
 
   sendData() {
     this.loginService
       .validate({
         email: this.formValues().email.value,
+        employeeID: this.formValues().employeeID.value,
         password: this.formValues().password.value,
       })
       .then((response) => {
@@ -55,6 +60,9 @@ export class LoginComponent {
             type: Status.Error,
             message: (response.data as InputError).message,
           });
+        } else if (this.employeeLogin) {
+          this.authenticator.authenticate(true);
+          this.router.navigate([`/`]);
         } else {
           this.authenticator.authenticate(true);
           this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);
@@ -63,14 +71,23 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    const { email, password } = this.formValues();
+    const { email, employeeID, password } = this.formValues();
+    if(this.employeeLogin){
+      this.requiredValidator.setNext(this.employeeIDValidator);
+      this.formValues().employeeID.validation = this.requiredValidator.validate(employeeID.value);
+    }
 
     this.requiredValidator.setNext(this.emailValidator);
     this.formValues().email.validation = this.requiredValidator.validate(email.value);
 
     this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
     this.formValues().password.validation = this.requiredValidator.validate(password.value);
-
-    if (!email.validation.error && !password.validation.error) this.sendData();
+  
+    if (!this.employeeLogin) {
+      if(!email.validation.error && !password.validation.error) this.sendData();
+    }
+    else {
+      if (!email.validation.error && !password.validation.error && !employeeID.validation.error) this.sendData();
+    }
   }
 }

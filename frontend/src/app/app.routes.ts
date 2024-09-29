@@ -7,6 +7,7 @@ import { RequestMaintenanceComponent } from './features/request-maintenance/requ
 import { Authenticator } from './core/auth/authenticator.service';
 import { BudgetComponent } from './features/budget/budget.component';
 import { RescueComponent } from './features/rescue/rescue.component';
+import { EmployeePanelComponent } from "./features/employee-panel/employee-panel.component"
 import { RequestDetailsComponent } from './features/request-details/request-details.component';
 
 export const routes: Routes = [
@@ -42,5 +43,9 @@ export const routes: Routes = [
     path: 'cliente/:userId/solicitacao/:requestId',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: RequestDetailsComponent,
+  },
+  {
+    path: 'solicitacoes',
+    component: EmployeePanelComponent,
   },
 ];

@@ -4,13 +4,13 @@ import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { LinkAsButtonComponent } from '@/shared/ui/link-as-button/link-as-button.component';
 
 @Component({
-  selector: 'tr[app-client-table-row]',
+  selector: 'tr[app-employee-table-row]',
   standalone: true,
   imports: [ButtonComponent, LinkAsButtonComponent],
-  templateUrl: './client-table-row.component.html',
-  styleUrl: './client-table-row.component.scss',
+  templateUrl: './employee-table-row.component.html',
+  styleUrl: './employee-table-row.component.scss'
 })
-export class ClientTableRowComponent {
+export class EmployeeTableRowComponent {
   date = input<string>('');
   description = input(null, {
     transform: (value: string | null) => {
@@ -23,5 +23,4 @@ export class ClientTableRowComponent {
   status = input<string>('');
   id = input.required<number>();
   userId = input.required<number>();
-
 }

@@ -1,0 +1,23 @@
+<td><link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Abrir</link-as-button></td>
+<td>{{ date() }}</td>
+<td>{{ description() }}</td>
+<td>{{ status() }}</td>
+<td>
+    @switch (status()) {
+      @case ('Aberta') {
+        <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Efetuar Orçamento</link-as-button>
+      }
+      @case ('Aprovada') {
+        <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Efetuar Manutenção</link-as-button>
+      }
+      @case ('Redirecionada') {
+        <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Efetuar Manutenção</link-as-button>
+      }
+      @case ('Paga') {
+        <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Finalizar Solicitação</link-as-button>
+      }
+      @default {
+        <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Visualizar</link-as-button>
+      }
+    }
+  </td>

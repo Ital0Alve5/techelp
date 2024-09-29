@@ -27,7 +27,14 @@ import { EmployeeIDValidator } from '@/shared/services/validators/employee-id-va
   selector: 'app-login',
   standalone: true,
   imports: [CardComponent, UserIcon, InputComponent, LockIcon, FormsModule, AuthTypeComponent, ButtonComponent],
-  providers: [EmailValidator, EmployeeIDValidator, RequiredValidator, MaxLengthValidator, MinLengthValidator, LoginService],
+  providers: [
+    EmailValidator,
+    EmployeeIDValidator,
+    RequiredValidator,
+    MaxLengthValidator,
+    MinLengthValidator,
+    LoginService,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -44,7 +51,7 @@ export class LoginComponent {
     private popupService: PopupService,
     private router: Router,
     private authenticator: Authenticator,
-    private employeeIDValidator : EmployeeIDValidator,
+    private employeeIDValidator: EmployeeIDValidator,
   ) {}
 
   sendData() {
@@ -72,7 +79,7 @@ export class LoginComponent {
 
   onSubmit() {
     const { email, employeeID, password } = this.formValues();
-    if(this.employeeLogin){
+    if (this.employeeLogin) {
       this.requiredValidator.setNext(this.employeeIDValidator);
       this.formValues().employeeID.validation = this.requiredValidator.validate(employeeID.value);
     }
@@ -82,11 +89,10 @@ export class LoginComponent {
 
     this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
     this.formValues().password.validation = this.requiredValidator.validate(password.value);
-  
+
     if (!this.employeeLogin) {
-      if(!email.validation.error && !password.validation.error) this.sendData();
-    }
-    else {
+      if (!email.validation.error && !password.validation.error) this.sendData();
+    } else {
       if (!email.validation.error && !password.validation.error && !employeeID.validation.error) this.sendData();
     }
   }

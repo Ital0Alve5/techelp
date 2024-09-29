@@ -12,14 +12,14 @@ export class LoginService {
 
   checkRegisteredUsers(emailInput: string, passwordInput: string): number | null {
     const userFound = registeredUsersMock.find(({ email }) => email === emailInput);
-    
+
     if (userFound && userFound.password === passwordInput) return userFound.id;
 
     return null;
   }
-  checkRegisteredEmployee(employeeIdInput : string, emailInput: string, passwordInput: string): number | null {
+  checkRegisteredEmployee(employeeIdInput: string, emailInput: string, passwordInput: string): number | null {
     const userFound = registeredEmployee.find(({ id }) => id === parseInt(employeeIdInput));
-    
+
     if (userFound && userFound.password === passwordInput && userFound.email === emailInput) return userFound.id;
 
     return null;
@@ -27,17 +27,16 @@ export class LoginService {
 
   async validate(data: {
     email: string;
-    employeeID?: string,
+    employeeID?: string;
     password: string;
   }): Promise<Response<InputError> | Response<{ userId: number }>> {
-    let wasUserFound : number | null;
+    let wasUserFound: number | null;
 
-    if(data.employeeID){
+    if (data.employeeID) {
       wasUserFound = this.checkRegisteredEmployee(data.employeeID, data.email, data.password);
-    }else {
+    } else {
       wasUserFound = this.checkRegisteredUsers(data.email, data.password);
     }
-
 
     return new Promise((resolve) => {
       if (wasUserFound) {

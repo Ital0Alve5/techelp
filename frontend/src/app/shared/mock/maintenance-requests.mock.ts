@@ -107,7 +107,7 @@ export const maintenanceRequests = [
         toStatus: 'Aberta',
         employee: 'bw',
       },
-    ]
+    ],
   },
   {
     id: 6,
@@ -129,7 +129,7 @@ export const maintenanceRequests = [
         toStatus: 'Aguardando Pagamento',
         employee: 'Fulano de Tal',
       },
-    ]
+    ],
   },
   {
     id: 7,
@@ -151,7 +151,7 @@ export const maintenanceRequests = [
         toStatus: 'Paga',
         employee: 'DUlcio',
       },
-    ]
+    ],
   },
   {
     id: 8,
@@ -173,7 +173,7 @@ export const maintenanceRequests = [
         toStatus: 'Aprovada',
         employee: 'Fulano de Tal',
       },
-    ]
+    ],
   },
   {
     id: 9,
@@ -195,7 +195,7 @@ export const maintenanceRequests = [
         toStatus: 'Rejeitada',
         employee: 'Fulano de Tal',
       },
-    ]
+    ],
   },
   {
     id: 10,
@@ -217,7 +217,7 @@ export const maintenanceRequests = [
         toStatus: 'Finalizada',
         employee: 'Fulano de Tal',
       },
-    ]
+    ],
   },
   {
     id: 11,
@@ -239,7 +239,7 @@ export const maintenanceRequests = [
         toStatus: 'Outros',
         employee: 'Fulano de Tal',
       },
-    ]
+    ],
   },
   {
     id: 3,
@@ -329,5 +329,4 @@ export const maintenanceRequests = [
       },
     ],
   },
-
 ];

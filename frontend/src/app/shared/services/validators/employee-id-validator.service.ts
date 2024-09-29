@@ -3,7 +3,7 @@ import { InputError } from '@/shared/types/input-error.type';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EmployeeIDValidator extends BaseValidator {
   override validate(value: string): InputError {

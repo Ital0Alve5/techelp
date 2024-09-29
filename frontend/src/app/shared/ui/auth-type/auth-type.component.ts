@@ -8,6 +8,5 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './auth-type.component.scss',
 })
 export class AuthTypeComponent {
-  employeeLogin = location.pathname === "/funcionario/login";
-
+  employeeLogin = location.pathname === '/funcionario/login';
 }

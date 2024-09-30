@@ -8,14 +8,13 @@
         <th>Ação</th>
       </tr>
       @for (request of userRequests; track request.id) {
-        <tr
-          app-employee-table-row
+        <tr app-employee-table-row
           [userId]="request.userId"
           [id]="request.id"
           [date]="request.date"
           [description]="request.deviceDescription"
-          [status]="request.currentStatus"
-        ></tr>
+          [status]="request.currentStatus">
+        </tr>
       }
     </table>
   } @else {

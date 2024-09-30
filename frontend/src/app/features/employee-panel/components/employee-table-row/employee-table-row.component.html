@@ -1,7 +1,19 @@
 <td><link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Abrir</link-as-button></td>
 <td>{{ date() }}</td>
 <td>{{ description() }}</td>
-<td>{{ status() }}</td>
+<td>
+  @switch (status()) {
+    @case ('Aberta'){<p class="aberta">Aberta</p>}
+    @case ('Orçada'){<p class="orcada">Orçada</p>}
+    @case ('Rejeitada'){<p class="rejeitada">Rejeitada</p>}
+    @case ('Aprovada'){<p class="aprovada">Aprovada</p>}
+    @case ('Redirecionada'){<p class="redirecionada">Redirecionada</p>}
+    @case ('Aguardando Pagamento'){<p class="aguardando">Aguardando Pagamento</p>}
+    @case ('Paga'){<p class="paga">Paga</p>}
+    @case ('Finalizada'){<p class="finalizada">Finalizada</p>}
+    @case ('Outros'){<p>Outros</p>}
+  }
+</td>
 <td>
     @switch (status()) {
       @case ('Aberta') {

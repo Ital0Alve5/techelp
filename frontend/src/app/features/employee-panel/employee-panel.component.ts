@@ -32,12 +32,36 @@ export class EmployeePanelComponent {
   loadRequests() {
     this.userRequests = this.requestsService
       .getRequest(this.filterStatus)
-      .filter(
-        (request) =>
-          request.userId === this.userId &&
-          (!this.filterStatus || request.currentStatus === this.filterStatus)
-      )
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      .filter((request) => {
+        if (request.currentStatus === 'Redirecionada') {
+          return this.isRequestRedirectionForCurrentUser(request);
+        }
+        return true;
+      })
+      .sort((a, b) => {
+        const dateA = this.parseBrazilianDate(a.date);
+        const dateB = this.parseBrazilianDate(b.date);
+  
+        if (!dateA || !dateB) {
+          return 0;
+        }
+  
+        return dateA.getTime() - dateB.getTime();
+      });
+  }
+  
+  parseBrazilianDate(dateString: string): Date | null {
+    const [day, month, year] = dateString.split('/');
+    if (!day || !month || !year) {
+      return null;
+    }
+    return new Date(Number(year), Number(month) - 1, Number(day));
+  }
+  
+  
+
+  isRequestRedirectionForCurrentUser(request: { userId: number }): boolean {
+    return request.userId === this.userId;
   }
 
   applyFilters(status: RequestStats) {

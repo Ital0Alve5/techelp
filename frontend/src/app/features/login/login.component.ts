@@ -69,13 +69,13 @@ export class LoginComponent {
           });
         } else if (this.employeeLogin) {
           this.authenticator.authenticate(true);
-          this.router.navigate([`/`]);
+          this.router.navigate([`/funcionario/${(response.data as { userId: number }).userId}/solicitacoes`]);
         } else {
           this.authenticator.authenticate(true);
           this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);
         }
       });
-  }
+  }  
 
   onSubmit() {
     const { email, employeeID, password } = this.formValues();

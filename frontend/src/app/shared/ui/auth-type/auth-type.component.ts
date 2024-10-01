@@ -7,4 +7,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './auth-type.component.html',
   styleUrl: './auth-type.component.scss',
 })
-export class AuthTypeComponent {}
+export class AuthTypeComponent {
+  employeeLogin = location.pathname === '/funcionario/login';
+}

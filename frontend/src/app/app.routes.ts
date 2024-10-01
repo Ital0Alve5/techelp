@@ -15,6 +15,10 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
+    path: 'funcionario/login',
+    component: LoginComponent,
+  },
+  {
     path: 'cadastro',
     component: SignUpComponent,
   },

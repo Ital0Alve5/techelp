@@ -9,7 +9,7 @@ import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 export class RequestsService {
   //Devolve array de solicitações. Sem ennhum parametro, devolve todas as solicitações existentes,
   //com os parametros, devolve apenas as solicitações que tem o status ou funcionario envolvido.
-  getRequest(wantedStatus?: RequestStats, wantedEmployee?: string): Requests[] {
+  getRequest(wantedStatus?: RequestStats, wantedEmployeeId?: number): Requests[] {
     let requests: Requests[] = [];
 
     if (wantedStatus) {
@@ -19,14 +19,14 @@ export class RequestsService {
       requests = [...requestsWithStatus];
     }
 
-    if (wantedEmployee) {
-      const requestsWithEmployee: Requests[] = maintenanceRequests.filter(({ history }) =>
-        history.some((record) => record.employee === wantedEmployee),
+    if (wantedEmployeeId) {
+      const requestsWithEmployee: Requests[] = maintenanceRequests.filter(
+        ({ employeeId }) => employeeId === wantedEmployeeId,
       );
       requests = [...requestsWithEmployee];
     }
 
-    if (!wantedEmployee && !wantedStatus) {
+    if (!wantedEmployeeId && !wantedStatus) {
       requests = maintenanceRequests;
     }
 

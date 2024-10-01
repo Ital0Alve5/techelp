@@ -18,7 +18,7 @@ export class LoginService {
     return null;
   }
   checkRegisteredEmployee(employeeIdInput: string, emailInput: string, passwordInput: string): number | null {
-    const userFound = registeredEmployee.find(({ id }) => id === parseInt(employeeIdInput));
+    const userFound = registeredEmployee.find(({ cpf }) => cpf === employeeIdInput);
 
     if (userFound && userFound.password === passwordInput && userFound.email === emailInput) return userFound.id;
 

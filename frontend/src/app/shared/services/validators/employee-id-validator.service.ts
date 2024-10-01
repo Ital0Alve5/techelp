@@ -2,9 +2,7 @@ import { BaseValidator } from '@/shared/models/validator/Validator.model';
 import { InputError } from '@/shared/types/input-error.type';
 import { Injectable } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class EmployeeIDValidator extends BaseValidator {
   override validate(value: string): InputError {
     value = value.trim();

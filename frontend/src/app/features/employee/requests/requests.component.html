@@ -1,24 +1,26 @@
 @if (userRequests.length > 0) {
-  <table>
-    <tr>
-      <th>Visualizar</th>
-      <th>Data/Hora</th>
-      <th>Cliente</th>
-      <th>Descrição do produto</th>
-      <th>Descrição do defeito</th>
-    </tr>
-    @for (request of userRequests; track request.id) {
-      <tr
-        app-employee-table-row
-        [userId]="request.userId"
-        [id]="request.id"
-        [date]="request.date"
-        [issueDescription]="request.issueDescription"
-        [deviceDescription]="request.deviceDescription"
-
-      ></tr>
-    }
-  </table>
+  <app-filters />
+  <div>
+    <table>
+      <tr>
+        <th>Visualizar</th>
+        <th>Data/Hora</th>
+        <th>Cliente</th>
+        <th>Descrição do produto</th>
+        <th>Descrição do defeito</th>
+      </tr>
+      @for (request of userRequests; track request.id) {
+        <tr
+          app-employee-table-row
+          [userId]="request.userId"
+          [id]="request.id"
+          [date]="request.date"
+          [issueDescription]="request.issueDescription"
+          [deviceDescription]="request.deviceDescription"
+        ></tr>
+      }
+    </table>
+  </div>
 } @else {
   <p class="noRequestsYet">Nenhuma solicitação realizada ainda!</p>
 }

@@ -9,6 +9,7 @@ import { BudgetComponent } from './features/budget/budget.component';
 import { RescueComponent } from './features/rescue/rescue.component';
 import { RequestDetailsComponent } from './features/request-details/request-details.component';
 import { RequestsComponent } from './features/employee/requests/requests.component';
+import { MakeBudgetComponent } from './features/make-budget/make-budget.component';
 
 export const routes: Routes = [
   {
@@ -53,4 +54,10 @@ export const routes: Routes = [
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: RequestsComponent,
   },
+  {
+    path: 'funcionario/:employeeId/orcamento/:requestId',
+    canActivate: [() => inject(Authenticator).checkAuthentication()],
+    component: MakeBudgetComponent, 
+  },
+  
 ];

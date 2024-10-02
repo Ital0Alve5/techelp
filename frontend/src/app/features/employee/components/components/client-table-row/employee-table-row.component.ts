@@ -3,6 +3,7 @@ import { Component, input, OnInit } from '@angular/core';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { LinkAsButtonComponent } from '@/shared/ui/link-as-button/link-as-button.component';
 import { ClientsService } from '@/shared/services/clients/clients.service';
+import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 
 @Component({
   selector: 'tr[app-employee-table-row]',

@@ -1,0 +1,14 @@
+<div [hidden]="!isModalVisible()" class="modal">
+  <h3>Registrar Orçamento</h3>
+  <label for="valorOrcamento">Valor do Orçamento:</label>
+  <input type="number" [(ngModel)]="valorOrcamento" id="valorOrcamento" />
+
+  <button (click)="confirmarOrcamento()" class="submit-button">Registrar</button>
+  <button (click)="cancelar()">Cancelar</button>
+</div>
+
+<div [hidden]="!isSubmitted()">
+  <p>Orçamento registrado com sucesso!</p>
+  <p>Valor: {{ solicitacao.orcamento.valor }}</p>
+  <p>Data: {{ solicitacao.orcamento.data | date:'short' }}</p>
+</div>

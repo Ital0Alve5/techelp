@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { inject } from '@angular/core';
+import { inject } from "@angular/clone';
 import { LoginComponent } from './features/login/login.component';
 import { SignUpComponent } from './features/sign-up/sign-up.component';
 import { ClientPanelComponent } from './features/client-panel/client-panel.component';
@@ -9,6 +9,7 @@ import { BudgetComponent } from './features/budget/budget.component';
 import { RescueComponent } from './features/rescue/rescue.component';
 import { EmployeePanelComponent } from "./features/employee-panel/employee-panel.component"
 import { RequestDetailsComponent } from './features/request-details/request-details.component';
+import { RequestsComponent } from './features/employee/requests/requests.component';
 
 export const routes: Routes = [
   {
@@ -49,7 +50,12 @@ export const routes: Routes = [
     component: RequestDetailsComponent,
   },
   {
-    path: 'funcionario/:userId/solicitacoes',
+    path: 'funcionario/:employeeId/solicitacoes/abertas',
+    canActivate: [() => inject(Authenticator).checkAuthentication()],
+    component: RequestsComponent,
+  },
+  {
+    path: 'funcionario/:employeeId/solicitacoes',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: EmployeePanelComponent,
   },

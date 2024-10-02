@@ -1,0 +1,22 @@
+@import 'variables';
+@import 'colors';
+@import 'typology';
+
+td {
+  padding: 20px;
+  border-right: 1px solid $neutral-30;
+}
+
+tr {
+  transition: 0.5s;
+  border-bottom: 1px solid $neutral-30;
+
+  &:hover {
+    background-color: $neutral-30;
+    transition: 0.5s;
+  }
+}
+
+p{
+  color: green;
+}

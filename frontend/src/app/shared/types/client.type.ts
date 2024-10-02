@@ -1,4 +1,4 @@
-type Adress = {
+type Address = {
   cep: string;
   neighborhood: string;
   city: string;
@@ -15,5 +15,5 @@ export type Client = {
   email: string;
   phone: string;
   password: string;
-  address: Adress;
+  address: Address;
 };

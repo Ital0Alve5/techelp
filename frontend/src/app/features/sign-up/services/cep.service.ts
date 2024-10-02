@@ -4,7 +4,7 @@ import axios from 'axios';
 import { InputError } from '@/shared/types/input-error.type';
 import { Viacep } from '../types/viacep.type';
 
-type adressDataType = Promise<
+type addressDataType = Promise<
   | {
       error: boolean;
       data: Viacep;
@@ -14,7 +14,7 @@ type adressDataType = Promise<
 
 @Injectable()
 export class CepService {
-  async getAddressData(cep: string): adressDataType {
+  async getAddressData(cep: string): addressDataType {
     try {
       const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
       if (response.data.erro)

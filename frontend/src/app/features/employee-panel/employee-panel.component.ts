@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-
 import { CardComponent } from '@/shared/ui/card/card.component';
-
 import { EmployeeTableRowComponent } from '@/features/employee-panel/components/employee-table-row/employee-table-row.component';
 import { RequestsService } from '@/shared/services/requests/requests.service';
 import { RequestStats } from '@/shared/types/request-status.type';
@@ -31,7 +29,7 @@ export class EmployeePanelComponent {
 
   loadRequests() {
     this.userRequests = this.requestsService
-      .getRequest(this.filterStatus)
+      .getRequest(this.filterStatus, this.userId)
       .filter((request) => {
         if (request.currentStatus === 'Redirecionada') {
           return this.isRequestRedirectionForCurrentUser(request);
@@ -57,8 +55,6 @@ export class EmployeePanelComponent {
     }
     return new Date(Number(year), Number(month) - 1, Number(day));
   }
-  
-  
 
   isRequestRedirectionForCurrentUser(request: { userId: number }): boolean {
     return request.userId === this.userId;

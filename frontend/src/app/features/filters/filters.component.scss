@@ -1,0 +1,12 @@
+.filters {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+
+  &__buttons,
+  &__date {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+}

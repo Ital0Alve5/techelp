@@ -18,6 +18,7 @@ export class EmployeeTableRowComponent implements OnInit {
   issueDescription = input.required<string>();
   deviceDescription = input.required<string>();
   userName: string | undefined;
+  status = input<string>('');
 
   constructor(private clientsService: ClientsService) {}
 

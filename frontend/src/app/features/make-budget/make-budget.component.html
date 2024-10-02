@@ -9,6 +9,6 @@
 
 <div [hidden]="!isSubmitted()">
   <p>Orçamento registrado com sucesso!</p>
-  <p>Valor: {{ solicitacao.orcamento.valor }}</p>
-  <p>Data: {{ solicitacao.orcamento.data | date:'short' }}</p>
+  <p *ngIf="solicitacao">Valor: {{ solicitacao.price }}</p>
+  <p *ngIf="solicitacao">Data: {{ solicitacao.date | date:'short' }}</p>
 </div>

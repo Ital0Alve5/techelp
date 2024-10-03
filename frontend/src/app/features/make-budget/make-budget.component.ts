@@ -1,89 +1,93 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { ButtonComponent } from '@/shared/ui/button/button.component';
+import { CardComponent } from '@/shared/ui/card/card.component';
+import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
+import { RouterLink } from '@angular/router';
+import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
+import { ModalComponent } from '@/shared/ui/modal/modal.component';
+import { PopupService } from '@/shared/services/pop-up/pop-up.service';
+import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
 import { FormsModule } from '@angular/forms';
-import { RequestsService } from '@/shared/services/requests/requests.service';
-import { CommonModule } from '@angular/common';
-import { Requests } from '@/shared/types/api/maintenance-requests.type';
+import { InputComponent } from '@/shared/ui/input/input.component';
 
 @Component({
   selector: 'app-make-budget',
-  imports: [FormsModule, CommonModule],
   standalone: true,
+  imports: [
+    ButtonComponent,
+    CardComponent,
+    ArrowRightIcon,
+    RouterLink,
+    ModalComponent,
+    FormsModule,
+    InputComponent
+  ],
   templateUrl: './make-budget.component.html',
   styleUrls: ['./make-budget.component.scss'],
-  providers: [RequestsService],
 })
-export class MakeBudgetComponent implements OnInit {
-  solicitacao!: Requests;
-  requestId!: number;
-  showModal: boolean = false;
-  valorOrcamento: number = 0;
-  submitted: boolean = false;
-  funcionarioLogado = { nome: 'Funcionário Exemplo' };
-  notFoundMessage: string = '';
-  successMessage: string = '';
+export class MakeBudgetComponent {
+  userId: number = JSON.parse(localStorage.getItem('userId')!);
+  requestId: number = Number.parseInt(window.location.pathname.match(/\/orcamento\/(\d+)/)![1]);
+  isBudgetConfirmationModalOpen = signal(true);
+  requestData = {
+    deviceDescription: '',
+    deviceCategory: '',
+    issueDescription: '',
+    price: '',
+    date: '',
+    hour: '',
+    employee: '',
+    currentStatus: '',
+  };
+  budgetValue: string = '';
+  validation: { error: boolean; message: string } | undefined;
 
-  constructor(private requestsService: RequestsService) {
-    this.requestId = this.getRequestIdFromUrl();
-  }
-
-  ngOnInit() {
-    this.searchRequest();
-  }
-
-  getRequestIdFromUrl(): number {
-    const pathSegments = location.pathname.split('/');
-    return parseInt(pathSegments[pathSegments.length - 1].trim());
-  }
-
-  searchRequest() {
-    const maintenanceRequests = this.requestsService.getRequest('Aberta');
-    this.solicitacao = maintenanceRequests.find((request) => request.id === this.requestId)!;
-
-    if (!this.solicitacao) {
-      this.notFoundMessage = 'Solicitação não encontrada';
-    } else {
-      this.notFoundMessage = '';
-    }
+  constructor(
+    private popupService: PopupService,
+    private router: Router,
+    private updateRequestStatusService: UpdateRequestStatusService
+  ) {
+    maintenanceRequests.forEach((request) => {
+      if (request.userId === this.userId && this.requestId === request.id) {
+        this.requestData = {
+          deviceDescription: request.deviceDescription,
+          deviceCategory: request.deviceCategory,
+          issueDescription: request.issueDescription,
+          price: request.price,
+          date: request.date,
+          hour: request.hour,
+          employee: request.history[request.history.length - 1].employee,
+          currentStatus: request.currentStatus,
+        };
+      }
+    });
   }
 
   openModal() {
-    if (this.solicitacao?.currentStatus === 'ABERTO') {
-      this.showModal = true;
-      this.submitted = false;
-      this.successMessage = '';
-    }
+    this.isBudgetConfirmationModalOpen.set(false);
   }
 
-  cancelar() {
-    this.showModal = false;
-    this.submitted = false;
-    this.successMessage = '';
+  closeModal() {
+    this.isBudgetConfirmationModalOpen.set(true);
   }
 
-  confirmarOrcamento() {
-    if (this.valorOrcamento) {
-      const orcamento = {
-        valor: this.valorOrcamento,
-        funcionario: this.funcionarioLogado.nome,
-        data: new Date(),
-      };
+  confirmBudget() {
+    const parsedBudget = parseFloat(this.budgetValue); 
 
-      this.solicitacao.currentStatus = 'ORÇADA';
-      this.solicitacao.price = orcamento.valor.toString();
-      console.log('Orçamento registrado:', this.solicitacao);
-      this.successMessage = 'Orçamento registrado com sucesso!';
-      this.submitted = true;
-      this.showModal = false;
+    if (parsedBudget > 0) {
+      this.requestData.price = parsedBudget.toString();
+      this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Orçada');
+
+      this.closeModal();
+      this.router.navigate([`/funcionario/${this.userId}/solicitacoes/abertas`]);
+      this.popupService.addNewPopUp({
+        type: Status.Success,
+        message: 'Orçamento registrado com sucesso!',
+      });
     } else {
-      console.log('Valor de orçamento inválido');
+      this.validation = { error: true, message: 'O valor do orçamento deve ser maior que zero.' };
     }
-  }
-
-  isSubmitted() {
-    return this.submitted;
-  }
-
-  isModalVisible() {
-    return this.showModal;
   }
 }

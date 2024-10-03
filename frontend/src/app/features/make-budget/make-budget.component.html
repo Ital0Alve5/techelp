@@ -7,12 +7,11 @@
   <p><strong>Data:</strong> {{ solicitacao.date }}</p>
   <p><strong>Hora:</strong> {{ solicitacao.hour }}</p>
   <p><strong>Status Atual:</strong> {{ solicitacao.currentStatus }}</p>
-  <p><strong>Motivo de Rejeição:</strong> {{ solicitacao.rejectReason }}</p>
 </div>
 
 <div class="budget-input">
-  <label for="valorOrcamento">Valor do Orçamento:</label>
-  <input type="number" [(ngModel)]="valorOrcamento" id="valorOrcamento" />
+  <label for="valorOrcamento">Valor do Orçamento R$</label>
+  <input type="number" [(ngModel)]="valorOrcamento" id="valorOrcamento" placeholder="Digite o valor" />
 </div>
 
 <button (click)="openModal()">Registrar</button>

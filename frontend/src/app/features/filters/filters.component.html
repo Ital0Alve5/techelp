@@ -1,11 +1,11 @@
 <div class="filters">
   <div class="filters__buttons">
     <p>Filtrar por:</p>
-    <button backgroundColor="#ff57a7" hoverColor="#cc4686" app-button>Abertas hoje</button>
-    <button backgroundColor="#ff57a7" hoverColor="#cc4686" app-button>Todas</button>
+    <button backgroundColor="#ff57a7" hoverColor="#cc4686" app-button (click)="filterBy('today')">Abertas hoje</button>
+    <button backgroundColor="#ff57a7" hoverColor="#cc4686" app-button (click)="filterBy('all')">Todas</button>
   </div>
   <div class="filters__date">
     <p>Escolher período de data de abertura:</p>
-    <input type="date" />
+    <app-date/>
   </div>
 </div>

@@ -13,24 +13,11 @@ import { Requests } from '@/shared/types/api/maintenance-requests.type';
   providers: [RequestsService],
 })
 export class MakeBudgetComponent {
-  @Input() solicitacao: Requests = {
-    id: 0,
-    userId: 0,
-    employeeId: 0,
-    deviceDescription: '',
-    deviceCategory: '',
-    issueDescription: '',
-    price: 'd',
-    date: '',
-    hour: '',
-    currentStatus: '',
-    rejectReason: '',
-    history: [],
-  };
+  @Input() solicitacao!: Requests;
   showModal: boolean = false;
   valorOrcamento: number = 0;
   submitted: boolean = false;
-  funcionarioLogado = { nome: 'Funcionário Exemplo' };
+  funcionarioLogado!: { nome: string };
 
   constructor(private requestsService: RequestsService) {}
 
@@ -61,13 +48,5 @@ export class MakeBudgetComponent {
       this.submitted = true;
       this.showModal = false;
     }
-  }
-
-  isSubmitted() {
-    return this.submitted;
-  }
-
-  isModalVisible() {
-    return this.showModal;
   }
 }

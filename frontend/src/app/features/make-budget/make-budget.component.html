@@ -1,14 +1,29 @@
-<div [hidden]="!isModalVisible()" class="modal">
-  <h3>Registrar Orçamento</h3>
-  <label for="valorOrcamento">Valor do Orçamento:</label>
-  <input type="number" [(ngModel)]="valorOrcamento" id="valorOrcamento" />
-
-  <button (click)="confirmarOrcamento()" class="submit-button">Registrar</button>
-  <button (click)="cancelar()">Cancelar</button>
+<div class="request-details">
+  <h3>Detalhes da Solicitação</h3>
+  <p><strong>ID:</strong> {{ solicitacao.id }}</p>
+  <p><strong>Descrição do Dispositivo:</strong> {{ solicitacao.deviceDescription }}</p>
+  <p><strong>Categoria do Dispositivo:</strong> {{ solicitacao.deviceCategory }}</p>
+  <p><strong>Descrição do Problema:</strong> {{ solicitacao.issueDescription }}</p>
+  <p><strong>Data:</strong> {{ solicitacao.date }}</p>
+  <p><strong>Hora:</strong> {{ solicitacao.hour }}</p>
+  <p><strong>Status Atual:</strong> {{ solicitacao.currentStatus }}</p>
+  <p><strong>Motivo de Rejeição:</strong> {{ solicitacao.rejectReason }}</p>
 </div>
 
-<div [hidden]="!isSubmitted()">
+<div class="budget-input">
+  <label for="valorOrcamento">Valor do Orçamento:</label>
+  <input type="number" [(ngModel)]="valorOrcamento" id="valorOrcamento" />
+</div>
+
+<button (click)="openModal()">Registrar</button>
+
+<div class="modal" [class.visible]="showModal">
+  <h3>Confirmar Orçamento</h3>
+  <p>Você tem certeza que deseja registrar o orçamento de R$ {{ valorOrcamento }}?</p>
+  <button (click)="confirmarOrcamento()" class="submit-button">Confirmar</button>
+  <button (click)="cancelar()" class="cancel-button">Cancelar</button>
+</div>
+
+<div class="success-message" [class.visible]="submitted">
   <p>Orçamento registrado com sucesso!</p>
-  <p *ngIf="solicitacao">Valor: {{ solicitacao.price }}</p>
-  <p *ngIf="solicitacao">Data: {{ solicitacao.date | date:'short' }}</p>
 </div>

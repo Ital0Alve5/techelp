@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonComponent } from '@/shared/ui/button/button.component';
-import { DateComponent } from './components/date/date.component';
+import { DateComponent } from '../date/date.component';
 import { RequestsService } from '@/shared/services/requests/requests.service';
 import { Requests } from '@/shared/types/api/maintenance-requests.type';
 

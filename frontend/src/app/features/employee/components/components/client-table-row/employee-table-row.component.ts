@@ -4,7 +4,7 @@ import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { LinkAsButtonComponent } from '@/shared/ui/link-as-button/link-as-button.component';
 import { ClientsService } from '@/shared/services/clients/clients.service';
 import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
-import { ModalComponent } from "../../../../../shared/ui/modal/modal.component";
+import { ModalComponent } from '../../../../../shared/ui/modal/modal.component';
 
 @Component({
   selector: 'tr[app-employee-table-row]',
@@ -37,24 +37,26 @@ export class EmployeeTableRowComponent implements OnInit {
   userName: string | undefined;
   status = input<string>('');
 
-  constructor(private clientsService: ClientsService, private updateRequestStatusService : UpdateRequestStatusService) {
-  }
+  constructor(
+    private clientsService: ClientsService,
+    private updateRequestStatusService: UpdateRequestStatusService,
+  ) {}
 
   ngOnInit() {
     this.userName = this.clientsService.getClientById(this.userId())?.name;
     console.log(this.userName);
   }
-  openModal(){
+  openModal() {
     this.hideModal.set(false);
   }
 
-  closeModal(){
+  closeModal() {
     this.hideModal.set(true);
   }
 
-  endRequest(){
-    if(this.userName){
-    this.updateRequestStatusService.updateStatus(this.id(), this.userName, 'Finalizada');
+  endRequest() {
+    if (this.userName) {
+      this.updateRequestStatusService.updateStatus(this.id(), this.userName, 'Finalizada');
     }
     this.hideModal.set(true);
   }

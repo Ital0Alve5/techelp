@@ -4,7 +4,7 @@ import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { LinkAsButtonComponent } from '@/shared/ui/link-as-button/link-as-button.component';
 import { Requests } from '@/shared/types/api/maintenance-requests.type';
 import { RequestsService } from '@/shared/services/requests/requests.service';
-import { ModalComponent } from "../../../shared/ui/modal/modal.component";
+import { ModalComponent } from '../../../shared/ui/modal/modal.component';
 
 @Component({
   selector: 'app-requests',
@@ -42,5 +42,4 @@ export class RequestsComponent {
     }
     return new Date(Number(year), Number(month) - 1, Number(day));
   }
-
 }

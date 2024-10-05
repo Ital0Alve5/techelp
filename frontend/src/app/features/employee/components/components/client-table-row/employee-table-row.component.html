@@ -22,10 +22,10 @@
         <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Efetuar Orçamento</link-as-button>
       }
       @case ('Aprovada') {
-        <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Efetuar Manutenção</link-as-button>
+        <link-as-button href="/funcionario/{{ userId() }}/manutencao/{{ id() }}">Efetuar Manutenção</link-as-button>
       }
       @case ('Redirecionada') {
-        <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Efetuar Manutenção</link-as-button>
+        <link-as-button href="/funcionario/{{ userId() }}/manutencao/{{ id() }}">Efetuar Manutenção</link-as-button>
       }
       @case ('Paga') {
         <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Finalizar Solicitação</link-as-button>

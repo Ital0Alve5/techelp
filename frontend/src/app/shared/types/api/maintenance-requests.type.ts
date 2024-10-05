@@ -9,6 +9,7 @@ type requestHistoryMock = {
 export type Requests = {
   id: number;
   userId: number,
+  employeeId: number,
   deviceDescription: string;
   deviceCategory: string;
   issueDescription: string;

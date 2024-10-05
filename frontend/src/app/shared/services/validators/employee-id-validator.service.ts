@@ -7,7 +7,6 @@ export class EmployeeIDValidator extends BaseValidator {
   override validate(value: string): InputError {
     value = value.trim();
     const employeeIdMatch = /^(0|[1-9][0-9]*)$/.test(value);
-    console.log(employeeIdMatch);
 
     if (!employeeIdMatch)
       return {

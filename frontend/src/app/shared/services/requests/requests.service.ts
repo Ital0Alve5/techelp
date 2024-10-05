@@ -3,31 +3,19 @@ import { RequestStats } from '@/shared/types/request-status.type';
 import { Requests } from '@/shared/types/api/maintenance-requests.type';
 import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class RequestsService {
   //Devolve array de solicitações. Sem ennhum parametro, devolve todas as solicitações existentes,
   //com os parametros, devolve apenas as solicitações que tem o status ou funcionario envolvido.
   getRequest(wantedStatus?: RequestStats, wantedEmployeeId?: number): Requests[] {
-    let requests: Requests[] = [];
-
-    if (wantedStatus) {
-      const requestsWithStatus: Requests[] = maintenanceRequests.filter(
-        ({ currentStatus }) => currentStatus === wantedStatus,
-      );
-      requests = [...requestsWithStatus];
-    }
+    let requests: Requests[] = [...maintenanceRequests];
 
     if (wantedEmployeeId) {
-      const requestsWithEmployee: Requests[] = maintenanceRequests.filter(
-        ({ employeeId }) => employeeId === wantedEmployeeId,
-      );
-      requests = [...requestsWithEmployee];
+      requests = requests.filter(({ employeeId }) => employeeId === wantedEmployeeId);
     }
 
-    if (!wantedEmployeeId && !wantedStatus) {
-      requests = maintenanceRequests;
+    if (wantedStatus) {
+      requests = requests.filter(({ currentStatus }) => currentStatus === wantedStatus);
     }
 
     return requests;

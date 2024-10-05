@@ -14,6 +14,7 @@ import { ClientsService } from '@/shared/services/clients/clients.service';
 export class EmployeeTableRowComponent implements OnInit {
   date = input<string>('');
   id = input.required<number>();
+  employeeId = input.required<number>();
   userId = input.required<number>();
   issueDescription = input(null, {
     transform: (value: string | null) => {

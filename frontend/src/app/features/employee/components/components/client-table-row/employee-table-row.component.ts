@@ -15,10 +15,24 @@ export class EmployeeTableRowComponent implements OnInit {
   date = input<string>('');
   id = input.required<number>();
   userId = input.required<number>();
-  issueDescription = input.required<string>();
-  deviceDescription = input.required<string>();
-  employeeId = input.required<number>();
+  issueDescription = input(null, {
+    transform: (value: string | null) => {
+      if (value && value.length > 30) {
+        value = value.slice(0, 30);
+      }
+      return value;
+    },
+  });
+  deviceDescription = input(null, {
+    transform: (value: string | null) => {
+      if (value && value.length > 30) {
+        value = value.slice(0, 30);
+      }
+      return value;
+    },
+  });
   userName: string | undefined;
+  status = input<string>('');
 
   constructor(private clientsService: ClientsService) {}
 

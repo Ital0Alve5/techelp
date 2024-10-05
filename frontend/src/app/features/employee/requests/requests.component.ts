@@ -15,9 +15,31 @@ import { RequestsService } from '@/shared/services/requests/requests.service';
 })
 export class RequestsComponent {
   userId: number = JSON.parse(localStorage.getItem('userId')!);
-  userRequests: Requests[] = this.requestsService.getRequest('Aberta');
+  userRequests: Requests[] = [];
 
   constructor(private requestsService: RequestsService) {
-    console.log(this.userRequests)
+    this.loadRequests();
+  }
+
+  loadRequests() {
+    this.userRequests = this.requestsService.getRequest('Aberta').sort((a, b) => {
+      const dateA = this.parseBrazilianDate(a.date);
+      const dateB = this.parseBrazilianDate(b.date);
+
+      if (!dateA || !dateB) {
+        return 0;
+      }
+
+      return dateA.getTime() - dateB.getTime();
+    });
+    console.log(this.userRequests);
+  }
+
+  parseBrazilianDate(dateString: string): Date | null {
+    const [day, month, year] = dateString.split('/');
+    if (!day || !month || !year) {
+      return null;
+    }
+    return new Date(Number(year), Number(month) - 1, Number(day));
   }
 }

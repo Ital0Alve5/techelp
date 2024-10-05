@@ -6,6 +6,8 @@
       <th>Cliente</th>
       <th>Descrição do produto</th>
       <th>Descrição do defeito</th>
+      <th>Estado</th>
+      <th>Ação</th>
     </tr>
     @for (request of userRequests; track request.id) {
       <tr
@@ -16,7 +18,7 @@
         [issueDescription]="request.issueDescription"
         [deviceDescription]="request.deviceDescription"
         [employeeId]="request.employeeId"
-
+        [status]="request.currentStatus">
       ></tr>
     }
   </table>

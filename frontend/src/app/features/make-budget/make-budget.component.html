@@ -1,0 +1,44 @@
+<div class="buttons">
+  <a routerLink="/funcionario/{{ userId }}/solicitacoes/abertas">
+    <arrow-right-icon width="20px" color="#fff"></arrow-right-icon>
+  </a>
+  <button class="budget-button" app-button (click)="openModal()">Efetuar orçamento</button>
+</div>
+
+<app-modal [(isHidden)]="isBudgetConfirmationModalOpen">
+  <p class="modal">Confirmar orçamento de R$ {{ budgetValue }}?</p>
+  <div class="buttons">
+    <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeModal()">Cancelar</button>
+    <button backgroundColor="#10855b" hoverColor="none" app-button (click)="confirmBudget()">Confirmar</button>
+  </div>
+</app-modal>
+
+<section class="budget-container">
+  <p>
+    Serviço avaliado por <b> {{ requestData.employee }}</b> e orçado em:
+  </p>
+  <p class="price">R$ {{ budgetValue }}</p>
+</section>
+
+<section class="request-description">
+  <ul>
+    <li><b>Data da solicitação:</b> <p>{{ requestData.date }} às {{ requestData.hour }}</p></li>
+    <br>
+    <li><b>Categoria do equipamento:</b> <p>{{ requestData.deviceCategory }}</p></li>
+    <br>
+    <li><b>Descrição do defeito:</b> <p>{{ requestData.issueDescription }}</p></li>
+    <br>
+    <li><b>Descrição do equipamento:</b> <p>{{ requestData.deviceDescription }}</p></li>
+  </ul>
+</section>
+
+<section class="budget-input">
+  <label for="budgetValue">Valor do Orçamento R$</label>
+  <app-input
+    [id]="'budgetValue'"
+    [placeholder]="'Digite o valor'"
+    [(value)]="budgetValue"
+    [validation]="validation"
+    (inputEvent)="budgetValue = $event"
+  ></app-input>
+</section>

@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
 import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 import { registeredUsersMock } from '@/shared/mock/registered-users.mock';
+import { RouterLink } from '@angular/router';
+import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
+import { ButtonComponent } from '@/shared/ui/button/button.component';
+
+
 
 @Component({
   selector: 'app-perform-maintenance',
   standalone: true,
-  imports: [],
+  imports: [RouterLink, ArrowRightIcon, ButtonComponent],
   templateUrl: './perform-maintenance.component.html',
   styleUrl: './perform-maintenance.component.scss',
 })

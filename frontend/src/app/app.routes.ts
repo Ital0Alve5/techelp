@@ -10,6 +10,7 @@ import { RescueComponent } from './features/rescue/rescue.component';
 import { RequestDetailsComponent } from './features/request-details/request-details.component';
 import { RequestsComponent } from './features/employee/requests/requests.component';
 import { MakeBudgetComponent } from './features/make-budget/make-budget.component';
+import { CategoriesComponent } from './features/employee/categories/categories.component';
 
 export const routes: Routes = [
   {
@@ -57,7 +58,11 @@ export const routes: Routes = [
   {
     path: 'funcionario/:employeeId/orcamento/:requestId',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
-    component: MakeBudgetComponent, 
+    component: MakeBudgetComponent,
   },
-  
+  {
+    path: 'funcionario/:employeeId/categorias',
+    canActivate: [() => inject(Authenticator).checkAuthentication()],
+    component: CategoriesComponent,
+  },
 ];

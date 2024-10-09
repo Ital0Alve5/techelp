@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { InputError } from '@/shared/types/input-error.type';
 import { Response } from '@/shared/types/api/response.type';
 import { deviceCategories } from '@/shared/mock/device-categories.mock';
-import { Categories } from '../types/categories.type';
+import { Categorie } from '@/shared/types/categorie.type';
 import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 @Injectable()
 export class RequestMaintenanceService {
   constructor() {}
 
-  async getCategories(): Promise<Categories> {
+  async getCategories(): Promise<Categorie[]> {
     return new Promise((resolve) => {
       resolve(deviceCategories);
     });
@@ -44,7 +44,7 @@ export class RequestMaintenanceService {
           rejectReason: '',
           history: [],
         });
-        
+
         resolve({
           error: false,
           data: {

@@ -21,7 +21,7 @@ import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { InputError } from '@/shared/types/input-error.type';
 
 import { formData } from './model/form-data.model';
-import { Categories } from './types/categories.type';
+import { Categorie } from '@/shared/types/categorie.type';
 @Component({
   selector: 'app-request-maintenance',
   standalone: true,
@@ -48,7 +48,7 @@ import { Categories } from './types/categories.type';
 })
 export class RequestMaintenanceComponent implements OnInit {
   formValues = signal(JSON.parse(JSON.stringify(formData)));
-  deviceCategories: Categories | null = null;
+  deviceCategories: Categorie[] | null = null;
 
   constructor(
     private requiredValidator: RequiredValidator,

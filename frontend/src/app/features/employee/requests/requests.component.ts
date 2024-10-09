@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { EmployeeTableRowComponent } from '../components/components/client-table-row/employee-table-row.component';
+import { EmployeeTableRowComponent } from './components/client-table-row/employee-table-row.component';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { LinkAsButtonComponent } from '@/shared/ui/link-as-button/link-as-button.component';
 import { Requests } from '@/shared/types/api/maintenance-requests.type';

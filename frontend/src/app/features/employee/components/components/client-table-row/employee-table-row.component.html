@@ -55,6 +55,8 @@
 </td>
 <app-modal [(isHidden)]="hideModal">
   <p>Você tem certeza que deseja finalizar esta solicitação?</p>
-  <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeModal()">Cancelar</button>
-  <button backgroundColor="#10855b" hoverColor="none" app-button (click)="endRequest()">Confirmar</button>
+  <div id="buttonsConfirmationModal">
+    <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeModal()">Cancelar</button>
+    <button backgroundColor="#10855b" hoverColor="none" app-button (click)="endRequest()">Confirmar</button>
+  </div>
 </app-modal>

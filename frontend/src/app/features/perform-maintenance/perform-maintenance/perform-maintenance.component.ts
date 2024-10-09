@@ -1,22 +1,28 @@
-import { Component } from '@angular/core';
-import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
+import { Component, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { registeredUsersMock } from '@/shared/mock/registered-users.mock';
+import { registeredEmployee } from '@/shared/mock/registered-employee.mock';
+import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
+import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { RouterLink } from '@angular/router';
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 
-
-
 @Component({
   selector: 'app-perform-maintenance',
   standalone: true,
-  imports: [RouterLink, ArrowRightIcon, ButtonComponent],
+  imports: [CommonModule, FormsModule, RouterLink, ArrowRightIcon, ButtonComponent, ModalComponent],
   templateUrl: './perform-maintenance.component.html',
-  styleUrl: './perform-maintenance.component.scss',
+  styleUrls: ['./perform-maintenance.component.scss'],
 })
 export class PerformMaintenanceComponent {
   employeeId: number = JSON.parse(localStorage.getItem('userId')!);
   requestId: number = Number.parseInt(window.location.pathname.match(/\/manutencao\/(\d+)/)![1]);
+
+  isRedirectModalOpen = signal(true);
+  selectedEmployeeId: number | null = null;
+  registeredEmployees = registeredEmployee;
 
   requestData = {
     deviceDescription: '',
@@ -62,5 +68,22 @@ export class PerformMaintenanceComponent {
         };
       }
     });
+  }
+
+  openRedirectModal() {
+    this.isRedirectModalOpen.set(false);
+  }
+
+  closeRedirectModal() {
+    this.isRedirectModalOpen.set(true);
+  }
+
+  confirmRedirect() {
+    if (this.selectedEmployeeId) {
+      console.log('Manutenção redirecionada para o funcionário ID:', this.selectedEmployeeId);
+      this.closeRedirectModal();
+    } else {
+      console.log('Nenhum funcionário foi selecionado para redirecionamento.');
+    }
   }
 }

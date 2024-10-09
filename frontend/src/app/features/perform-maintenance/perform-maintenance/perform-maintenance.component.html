@@ -1,10 +1,24 @@
 <div class="buttons">
   <a routerLink="/funcionario/{{ employeeId }}/solicitacoes/abertas">
-    <arrow-right-icon width="20px" color="#fff" />
+    <arrow-right-icon width="20px" color="#fff"></arrow-right-icon>
   </a>
-  <button backgroundColor="#4e42ff" hoverColor="none" app-button>Redirecionar Manutenção</button>
+  <button backgroundColor="#4e42ff" hoverColor="none" app-button (click)="openRedirectModal()">Redirecionar Manutenção</button>
   <button backgroundColor="#10855b" hoverColor="none" app-button>Efetuar a manutenção</button>
 </div>
+
+<app-modal [(isHidden)]="isRedirectModalOpen">
+  <p class="modal">Selecione o funcionário para redirecionar a manutenção:</p>
+  <select id="employeeSelect" [(ngModel)]="selectedEmployeeId">
+    @for (employee of registeredEmployees; track employee) {
+      <option [value]="employee.id">{{ employee.name }}</option>
+    }
+  </select>
+  <div class="buttons">
+    <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeRedirectModal()">Cancelar</button>
+    <button backgroundColor="#10855b" hoverColor="none" app-button (click)="confirmRedirect()">Redirecionar</button>
+  </div>
+</app-modal>
+
 <section>
   <ul class="request-description">
     <li>

@@ -1,5 +1,5 @@
 <td>
   {{ categorieLabel() }}
-  <button app-button>Deletar</button>
-  <button app-button>Editar</button>
+  <button app-button (click)="openDeleteCategoryModal()">Deletar</button>
+  <button app-button (click)="openEditCategoryModal()">Editar</button>
 </td>

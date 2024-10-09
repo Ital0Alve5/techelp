@@ -1,13 +1,76 @@
-<button app-button>Nova categoria</button>
+<button app-button (click)="openNewCategoryModal()">Nova categoria</button>
 @if (categories.length > 0) {
   <table>
     <tr>
       <th>Categoria</th>
     </tr>
     @for (categorie of categories; track categorie.id) {
-      <tr app-categorie-table-row [categorieLabel]="categorie.label" [categorieId]="categorie.id"></tr>
+      <tr 
+        app-categorie-table-row 
+        [categorieLabel]="categorie.label" 
+        [categorieId]="categorie.id"
+        (editCategory)="openEditCategoryModal(categorie)"
+        (deleteCategory)="openDeleteCategoryModal(categorie)"
+      ></tr>
     }
   </table>
 } @else {
-  <p class="noRequestsYet">Nenhuma categpria cadastrada!</p>
+  <p class="noRequestsYet">Nenhuma categoria cadastrada!</p>
 }
+
+<div>
+  <app-modal [(isHidden)]="isNewCategoryModalOpen">
+    <h2>Adicionar Nova Categoria</h2>
+    <p class="modal">Digite o nome da nova categoria:</p>
+    <form (ngSubmit)="addNewCategory(categoryForm)" #categoryForm="ngForm">
+      <textarea
+        name="categoryName"
+        class="large-textarea"
+        maxlength="30"
+        placeholder="Nome da nova categoria"
+        required
+        [(ngModel)]="newCategoryName"
+      ></textarea>
+      <br><br>
+      <div class="modalsButton">
+        <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeNewCategoryModal()">Cancelar</button>
+        <button backgroundColor="#10855b" hoverColor="none" type="submit" [disabled]="!categoryForm.valid" app-button>Adicionar</button>
+      </div>
+    </form>
+  </app-modal>
+</div>
+
+<div>
+  <app-modal [(isHidden)]="isEditCategoryModalOpen">
+    <h2>Editar Categoria</h2>
+    <p class="modal">Atualize o nome da categoria:</p>
+    <form (ngSubmit)="updateCategory(editCategoryForm)" #editCategoryForm="ngForm">
+      <textarea
+        name="categoryName"
+        class="large-textarea"
+        maxlength="30"
+        placeholder="Nome da categoria"
+        required
+        [(ngModel)]="selectedCategoryName"
+      ></textarea>
+      <br><br>
+      <div class="modalsButton">
+        <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeEditCategoryModal()">Cancelar</button>
+        <button backgroundColor="#10855b" hoverColor="none" type="submit" [disabled]="!editCategoryForm.valid" app-button>Atualizar</button>
+      </div>
+    </form>
+  </app-modal>
+</div>
+
+<div>
+  <app-modal [(isHidden)]="isDeleteCategoryModalOpen">
+    <h2>A categoria será deletada</h2>
+    <br>
+    <p>Tem certeza que deseja deletar esta categoria?</p>
+    <br>
+    <div class="modalsButton">
+      <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeDeleteCategoryModal()">Cancelar</button>
+      <button backgroundColor="#10855b" hoverColor="none" app-button (click)="deleteCategory()">Deletar</button>
+    </div>
+  </app-modal>
+</div>

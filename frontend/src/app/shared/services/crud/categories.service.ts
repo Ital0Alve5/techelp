@@ -24,22 +24,29 @@ export class CategoriesService {
 
   //Adiciona uma categoria. Passar o nome da categoria por parametro
   addCategory(categoryName: string) {
-    const newId = deviceCategories[deviceCategories.length - 1].id + 1;
+    const newId = deviceCategories.length > 0 ? deviceCategories[deviceCategories.length - 1].id + 1 : 1;
     deviceCategories.push({
       id: newId,
       label: categoryName,
     });
   }
+  
 
   //Remove uma categoria pelo ID
   removeCategory(categoryId: number) {
-    const index = categoryId - 1;
-    deviceCategories.splice(index, 1);
+    const index = deviceCategories.findIndex(category => category.id === categoryId);
+    if (index !== -1) {
+      deviceCategories.splice(index, 1);
+    }
   }
+  
 
   //Atualiza o nome de uma categoria. Deve passar o ID e o novo nome como parametro
   updateCategory(categoryId: number, categoryNewName: string) {
-    const index = categoryId - 1;
-    deviceCategories[index].label = categoryNewName;
+    const index = deviceCategories.findIndex(category => category.id === categoryId);
+    if (index !== -1) {
+      deviceCategories[index].label = categoryNewName;
+    }
   }
+  
 }

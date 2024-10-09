@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Categories } from '@/features/request-maintenance/types/categories.type';
+import { Categorie } from '@/shared/types/categorie.type';
 import { deviceCategories } from '@/shared/mock/device-categories.mock';
 
 @Injectable({
@@ -9,8 +9,8 @@ export class CategoriesService {
   constructor() {}
 
   //Retorna todas categorias. Se passar um id como parametro, retorna apenas a categoria do ID.
-  getCategories(categoryId?: number): Categories {
-    let categories: Categories = [...deviceCategories];
+  getCategories(categoryId?: number): Categorie[] {
+    let categories: Categorie[] = [...deviceCategories];
     if (categoryId) {
       categories = categories.filter(({ id }) => id === categoryId);
     }

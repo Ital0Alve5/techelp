@@ -8,8 +8,8 @@ import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { RouterLink, Router } from '@angular/router';
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
-import { PopupService} from '@/shared/services/pop-up/pop-up.service';
-import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service'; // Importa o serviço de atualização de status
+import { PopupService } from '@/shared/services/pop-up/pop-up.service';
+import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service'; // Serviço de atualização de status
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 
 @Component({
@@ -25,7 +25,8 @@ export class PerformMaintenanceComponent {
 
   isRedirectModalOpen = signal(true);
   selectedEmployeeId: number | null = null;
-  registeredEmployees = registeredEmployee;
+
+  registeredEmployees = registeredEmployee.filter(employee => employee.id !== this.employeeId);
 
   requestData = {
     deviceDescription: '',
@@ -48,9 +49,9 @@ export class PerformMaintenanceComponent {
   constructor(
     private popupService: PopupService,
     private router: Router,
-    private updateRequestStatusService: UpdateRequestStatusService // Adicione o serviço aqui
+    private updateRequestStatusService: UpdateRequestStatusService // Injetando o serviço
   ) {
-    // Inicialização dos dados
+
     maintenanceRequests.forEach((request) => {
       if (request.employeeId === this.employeeId && this.requestId === request.id) {
         this.requestData = {
@@ -89,12 +90,18 @@ export class PerformMaintenanceComponent {
   confirmRedirect() {
     if (this.selectedEmployeeId) {
       this.updateRequestStatusService.updateStatus(this.requestId, String(this.selectedEmployeeId), 'Redirecionada');
-      
+    
       this.closeRedirectModal();
       this.router.navigate([`/funcionario/${this.employeeId}/solicitacoes/abertas`]);
+      
       this.popupService.addNewPopUp({
         type: Status.Success,
         message: 'Manutenção redirecionada com sucesso!',
+      });
+    }else {
+        this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Nenhum funcionário foi selecionado',
       });
     }
   }

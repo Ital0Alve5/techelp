@@ -5,9 +5,12 @@ import { registeredUsersMock } from '@/shared/mock/registered-users.mock';
 import { registeredEmployee } from '@/shared/mock/registered-employee.mock';
 import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
+import { PopupService} from '@/shared/services/pop-up/pop-up.service';
+import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service'; // Importa o serviço de atualização de status
+import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 
 @Component({
   selector: 'app-perform-maintenance',
@@ -42,7 +45,12 @@ export class PerformMaintenanceComponent {
     phone: '',
   };
 
-  constructor() {
+  constructor(
+    private popupService: PopupService,
+    private router: Router,
+    private updateRequestStatusService: UpdateRequestStatusService // Adicione o serviço aqui
+  ) {
+    // Inicialização dos dados
     maintenanceRequests.forEach((request) => {
       if (request.employeeId === this.employeeId && this.requestId === request.id) {
         this.requestData = {
@@ -80,10 +88,14 @@ export class PerformMaintenanceComponent {
 
   confirmRedirect() {
     if (this.selectedEmployeeId) {
-      console.log('Manutenção redirecionada para o funcionário ID:', this.selectedEmployeeId);
+      this.updateRequestStatusService.updateStatus(this.requestId, String(this.selectedEmployeeId), 'Redirecionada');
+      
       this.closeRedirectModal();
-    } else {
-      console.log('Nenhum funcionário foi selecionado para redirecionamento.');
+      this.router.navigate([`/funcionario/${this.employeeId}/solicitacoes/abertas`]);
+      this.popupService.addNewPopUp({
+        type: Status.Success,
+        message: 'Manutenção redirecionada com sucesso!',
+      });
     }
   }
 }

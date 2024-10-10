@@ -8,6 +8,7 @@
 
 <app-modal [(isHidden)]="isRedirectModalOpen">
   <p class="modal">Selecione o funcionário para redirecionar a manutenção:</p>
+  <br>
   <select id="employeeSelect" [(ngModel)]="selectedEmployeeId">
     @for (employee of registeredEmployees; track employee) {
       <option [value]="employee.id">{{ employee.name }}</option>

@@ -42,6 +42,8 @@ export class RequestMaintenanceService {
           hour: '13:24',
           currentStatus: 'Aberta',
           rejectReason: '',
+          maintenanceDescription: '',
+          oritentationToClient: '',
           history: [],
         });
 

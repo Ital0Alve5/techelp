@@ -11,6 +11,7 @@ import { RequestDetailsComponent } from './features/request-details/request-deta
 import { RequestsComponent } from './features/employee/requests/requests.component';
 import { MakeBudgetComponent } from './features/make-budget/make-budget.component';
 import { PerformMaintenanceComponent } from './features/perform-maintenance/perform-maintenance/perform-maintenance.component';
+import { CategoriesComponent } from './features/employee/categories/categories.component';
 
 export const routes: Routes = [
   {
@@ -58,7 +59,12 @@ export const routes: Routes = [
   {
     path: 'funcionario/:employeeId/orcamento/:requestId',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
-    component: MakeBudgetComponent, 
+    component: MakeBudgetComponent,
+  },
+  {
+    path: 'funcionario/:employeeId/categorias',
+    canActivate: [() => inject(Authenticator).checkAuthentication()],
+    component: CategoriesComponent,
   },
   {
     path: 'funcionario/:employeeId/manutencao/:requestId',

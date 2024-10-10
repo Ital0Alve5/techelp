@@ -23,6 +23,7 @@ table {
   width: 100%;
   max-width: 1400px;
 }
+
 tr {
   transition: 0.5s;
   border-bottom: 1px solid $neutral-30;
@@ -31,6 +32,7 @@ tr {
     transition: 0.5s;
   }
 }
+
 th {
   padding: 10px;
   border-right: 1px solid $neutral-30;
@@ -39,4 +41,67 @@ th {
 .noRequestsYet {
   text-align: center;
   font-weight: $weight-bold;
+}
+
+.modal {
+  padding: 10px;
+  padding-bottom: 30px;
+  font-size: large;
+}
+
+p.modal {
+  padding-top: 25px;
+  text-align: left;
+}
+
+
+.price-highlight {
+  color: $feedback-info-50;
+  font-weight: bold;
+}
+
+app-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .modal-footer {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .modal-footer button {
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+  }
+
+  .price-highlight {
+    color: $feedback-info-50;
+    font-weight: bold;
+  }
+}
+
+.large-textarea {
+  width: 500px;
+  height: 45px;
+  padding: 10px;
+  box-sizing: border-box;
+  resize: none; 
+  width: 100%;
+}
+
+.button--modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.modalsButton {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  gap: 5px;
 }

@@ -1,0 +1,13 @@
+<button app-button>Nova categoria</button>
+@if (categories.length > 0) {
+  <table>
+    <tr>
+      <th>Categoria</th>
+    </tr>
+    @for (categorie of categories; track categorie.id) {
+      <tr app-categorie-table-row [categorieLabel]="categorie.label" [categorieId]="categorie.id"></tr>
+    }
+  </table>
+} @else {
+  <p class="noRequestsYet">Nenhuma categoria cadastrada!</p>
+}

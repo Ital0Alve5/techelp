@@ -1,0 +1,44 @@
+<div class="buttons">
+  <a routerLink="/funcionario/{{ employeeId }}/solicitacoes/abertas">
+    <arrow-right-icon width="20px" color="#fff" />
+  </a>
+  <button backgroundColor="#4e42ff" hoverColor="none" app-button>Redirecionar Manutenção</button>
+  <button backgroundColor="#10855b" hoverColor="none" app-button>Efetuar a manutenção</button>
+</div>
+<section>
+  <ul class="request-description">
+    <li>
+      <b>Data da solicitação:</b>
+      <p>{{ requestData.date }} às {{ requestData.hour }}</p>
+    </li>
+    <li>
+      <b>Categoria do equipamento:</b>
+      <p>{{ requestData.deviceCategory }}</p>
+    </li>
+    <li>
+      <b>Descrição do equipamento:</b>
+      <p>{{ requestData.deviceDescription }}</p>
+    </li>
+    <li>
+      <b>Descrição do defeito:</b>
+      <p>{{ requestData.issueDescription }}</p>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <ul class="request-description">
+    <li>
+      <b>Nome do cliente:</b>
+      <p>{{ clientData.name }}</p>
+    </li>
+    <li>
+      <b>E-mail do cliente:</b>
+      <p>{{ clientData.email }}</p>
+    </li>
+    <li>
+      <b>Telefone do cliente:</b>
+      <p>{{ clientData.phone }}</p>
+    </li>
+  </ul>
+</section>

@@ -35,23 +35,23 @@
   }
 </td>
 <td>
-  @switch (status()) {
-    @case ('Aberta') {
-      <button app-button (click)="openModal()">Finalizar Solicitação</button>
+    @switch (status()) {
+      @case ('Aberta') {
+        <button app-button (click)="openModal()">Finalizar Solicitação</button>
+      }
+      @case ('Aprovada') {
+        <link-as-button href="/funcionario/{{ userId() }}/manutencao/{{ id() }}">Efetuar Manutenção</link-as-button>
+      }
+      @case ('Redirecionada') {
+        <link-as-button href="/funcionario/{{ userId() }}/manutencao/{{ id() }}">Efetuar Manutenção</link-as-button>
+      }
+      @case ('Paga') {
+        <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Finalizar Solicitação</link-as-button>
+      }
+      @default {
+        <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Visualizar</link-as-button>
+      }
     }
-    @case ('Aprovada') {
-      <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Efetuar Manutenção</link-as-button>
-    }
-    @case ('Redirecionada') {
-      <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Efetuar Manutenção</link-as-button>
-    }
-    @case ('Paga') {
-      <button app-button (click)="endRequest()">Finalizar Solicitação</button>
-    }
-    @default {
-      <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Visualizar</link-as-button>
-    }
-  }
 </td>
 <app-modal [(isHidden)]="hideModal">
   <p>Você tem certeza que deseja finalizar esta solicitação?</p>

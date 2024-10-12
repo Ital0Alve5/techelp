@@ -19,7 +19,7 @@
 <td>
     @switch (status()) {
       @case ('Aberta') {
-        <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Efetuar Orçamento</link-as-button>
+        <link-as-button href="/funcionario/{{ employeeId() }}/orcamento/{{ id() }}">Efetuar Orçamento</link-as-button>
       }
       @case ('Aprovada') {
         <link-as-button href="/funcionario/{{ userId() }}/manutencao/{{ id() }}">Efetuar Manutenção</link-as-button>

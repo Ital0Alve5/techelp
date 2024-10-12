@@ -22,7 +22,7 @@ export class RequestsComponent {
   }
 
   loadRequests() {
-    this.userRequests = this.requestsService.getRequest('Aprovada').sort((a, b) => {
+    this.userRequests = this.requestsService.getRequest('Aberta').sort((a, b) => {
       const dateA = this.parseBrazilianDate(a.date);
       const dateB = this.parseBrazilianDate(b.date);
 

@@ -1,0 +1,36 @@
+<app-card>
+    <h1>Relatório de vendas</h1>
+    <form (ngSubmit)="onSubmit()">
+        <app-input
+            id="dataComeco"
+            label="Data do começo *"
+            placeholder="Data do começo *"
+            [(value)]="formValues().startDate.value"
+            [type]="'date'"
+            [validation]="formValues().startDate.validation"
+            >
+            <lock-icon input-icon width="14px" color="#9197B3" />
+        </app-input>
+
+        <app-input
+            id="dataFim"
+            label="Data do fim *"
+            placeholder="Data do fim *"
+            [(value)]="formValues().endDate.value"
+            [type]="'date'"
+            [validation]="formValues().endDate.validation"
+            >
+            <lock-icon input-icon width="14px" color="#9197B3" />
+        </app-input>
+        <div class="checkbox">
+            <app-checkbox
+                id="categoria"
+                [value]="formValues().category.value"
+                label="Separado por categorias"
+                (changeEvent)="onCheckboxChange($event)"
+            ></app-checkbox>
+        </div> 
+
+        <button app-button>Mostrar Relatório</button>
+    </form>
+</app-card>

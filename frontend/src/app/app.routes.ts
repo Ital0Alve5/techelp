@@ -12,6 +12,7 @@ import { RequestsComponent } from './features/employee/requests/requests.compone
 import { MakeBudgetComponent } from './features/make-budget/make-budget.component';
 import { PerformMaintenanceComponent } from './features/perform-maintenance/perform-maintenance/perform-maintenance.component';
 import { CategoriesComponent } from './features/employee/categories/categories.component';
+import { RequestRevenueComponent } from './features/request-revenue/request-revenue.component'
 
 export const routes: Routes = [
   {
@@ -70,6 +71,11 @@ export const routes: Routes = [
     path: 'funcionario/:employeeId/manutencao/:requestId',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: PerformMaintenanceComponent, 
+  },
+  {
+    path: 'funcionario/:employeeId/pedir-receita',
+    canActivate: [() => inject(Authenticator).checkAuthentication()],
+    component: RequestRevenueComponent,
   },
   
 ];

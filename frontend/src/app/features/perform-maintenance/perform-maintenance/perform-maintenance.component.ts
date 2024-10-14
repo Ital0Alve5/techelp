@@ -1,26 +1,25 @@
 import { Component, signal } from '@angular/core';
-import { NgForm, FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
+import { registeredUsersMock } from '@/shared/mock/registered-users.mock';
+import { registeredEmployee } from '@/shared/mock/registered-employee.mock';
+import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
+import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { RouterLink, Router } from '@angular/router';
-
-import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
-import { PopupService } from '@/shared/services/pop-up/pop-up.service';
-import { Status } from '@/shared/ui/pop-up/enum/status.enum';
-
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
-import { ModalComponent } from '@/shared/ui/modal/modal.component';
-
-import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
-import { registeredUsersMock } from '@/shared/mock/registered-users.mock';
-import { routes } from '@/app.routes';
+import { PopupService } from '@/shared/services/pop-up/pop-up.service';
+import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+import { RedirectMaintenanceService } from '../services/redirect-maintenance.service';
+import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
 
 @Component({
   selector: 'app-perform-maintenance',
   standalone: true,
-  imports: [RouterLink, ArrowRightIcon, ButtonComponent, ModalComponent, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink, ArrowRightIcon, ButtonComponent, ModalComponent],
   providers: [UpdateRequestStatusService],
   templateUrl: './perform-maintenance.component.html',
-  styleUrl: './perform-maintenance.component.scss',
+  styleUrls: ['./perform-maintenance.component.scss'],
 })
 export class PerformMaintenanceComponent {
   employeeId: number = JSON.parse(localStorage.getItem('userId')!);
@@ -28,6 +27,11 @@ export class PerformMaintenanceComponent {
   isMaintenanceModalHidden = signal(true);
   maintenanceDescription = signal('');
   orientationToClient = signal('');
+
+  isRedirectModalOpen = signal(true);
+  selectedEmployeeId: number | null = null;
+
+  registeredEmployees = registeredEmployee.filter(employee => employee.id !== this.employeeId);
 
   requestData = {
     deviceDescription: '',
@@ -48,9 +52,10 @@ export class PerformMaintenanceComponent {
   };
 
   constructor(
-    private updateRequestStatusService: UpdateRequestStatusService,
     private popupService: PopupService,
     private router: Router,
+    private redirectMaintenanceService: RedirectMaintenanceService,
+    private updateRequestStatusService: UpdateRequestStatusService,
   ) {
     maintenanceRequests.forEach((request) => {
       if (request.employeeId === this.employeeId && this.requestId === request.id) {
@@ -69,7 +74,7 @@ export class PerformMaintenanceComponent {
     });
 
     registeredUsersMock.forEach((client) => {
-      if (client.id == this.requestData.userId) {
+      if (client.id === this.requestData.userId) {
         this.clientData = {
           name: client.name,
           email: client.email,
@@ -77,6 +82,39 @@ export class PerformMaintenanceComponent {
         };
       }
     });
+  }
+
+  openRedirectModal() {
+    this.isRedirectModalOpen.set(false);
+  }
+
+  closeRedirectModal() {
+    this.isRedirectModalOpen.set(true);
+  }
+
+  confirmRedirect() {
+    if (this.selectedEmployeeId && this.selectedEmployeeId !== this.employeeId) {
+      const success = this.redirectMaintenanceService.redirectMaintenance(this.requestId, this.selectedEmployeeId!);
+
+      if (success) {
+        this.closeRedirectModal();
+        this.router.navigate([`/funcionario/${this.employeeId}/solicitacoes/abertas`]);
+        this.popupService.addNewPopUp({
+          type: Status.Success,
+          message: 'Manutenção redirecionada com sucesso!',
+        });
+      } else {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: 'Solicitação de manutenção não encontrada.',
+        });
+      }
+    } else {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Funcionário inválido.',
+      });
+    }
   }
 
   openMaintenanceDetailsModal() {

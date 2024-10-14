@@ -3,7 +3,9 @@
     <arrow-right-icon width="20px" color="#fff" />
   </a>
   <button backgroundColor="#4e42ff" hoverColor="none" app-button>Redirecionar Manutenção</button>
-  <button backgroundColor="#10855b" hoverColor="none" app-button>Efetuar a manutenção</button>
+  <button backgroundColor="#10855b" hoverColor="none" app-button (click)="openMaintenanceDetailsModal()">
+    Efetuar a manutenção
+  </button>
 </div>
 <section>
   <ul class="request-description">
@@ -42,3 +44,37 @@
     </li>
   </ul>
 </section>
+<div>
+  <app-modal [(isHidden)]="isMaintenanceModalHidden">
+    <h2>Detalhes da manuteção</h2>
+    <form (ngSubmit)="confirmMaintenanceDetails(maintenanceDetails)" #maintenanceDetails="ngForm">
+      <label>Descrição da manutenção</label>
+      <textarea
+        name="maintenanceDescription"
+        class="large-textarea"
+        maxlength="300"
+        placeholder="Escreva a descrição da manutenção"
+        required
+        [(ngModel)]="maintenanceDescription"
+      ></textarea>
+      <label>Orientação ao cliente</label>
+      <textarea
+        name="orientationToClient"
+        class="large-textarea"
+        maxlength="300"
+        placeholder="Escreva alguma orientação"
+        [(ngModel)]="orientationToClient"
+      ></textarea>
+      <button
+        type="submit"
+        class="button--modal"
+        backgroundColor="#10855b"
+        hoverColor="none"
+        app-button
+        [disabled]="!maintenanceDetails.valid"
+      >
+        Continuar
+      </button>
+    </form>
+  </app-modal>
+</div>

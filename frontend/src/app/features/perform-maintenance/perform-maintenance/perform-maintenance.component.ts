@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { registeredUsersMock } from '@/shared/mock/registered-users.mock';
 import { registeredEmployee } from '@/shared/mock/registered-employee.mock';
 import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
@@ -11,17 +11,22 @@ import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 import { RedirectMaintenanceService } from '../services/redirect-maintenance.service';
+import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
 
 @Component({
   selector: 'app-perform-maintenance',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, ArrowRightIcon, ButtonComponent, ModalComponent],
+  providers: [UpdateRequestStatusService],
   templateUrl: './perform-maintenance.component.html',
   styleUrls: ['./perform-maintenance.component.scss'],
 })
 export class PerformMaintenanceComponent {
   employeeId: number = JSON.parse(localStorage.getItem('userId')!);
   requestId: number = Number.parseInt(window.location.pathname.match(/\/manutencao\/(\d+)/)![1]);
+  isMaintenanceModalHidden = signal(true);
+  maintenanceDescription = signal('');
+  orientationToClient = signal('');
 
   isRedirectModalOpen = signal(true);
   selectedEmployeeId: number | null = null;
@@ -49,9 +54,9 @@ export class PerformMaintenanceComponent {
   constructor(
     private popupService: PopupService,
     private router: Router,
-    private redirectMaintenanceService: RedirectMaintenanceService, // Usar o serviço de redirecionamento
+    private redirectMaintenanceService: RedirectMaintenanceService,
+    private updateRequestStatusService: UpdateRequestStatusService,
   ) {
-
     maintenanceRequests.forEach((request) => {
       if (request.employeeId === this.employeeId && this.requestId === request.id) {
         this.requestData = {
@@ -69,7 +74,7 @@ export class PerformMaintenanceComponent {
     });
 
     registeredUsersMock.forEach((client) => {
-      if (client.id == this.requestData.userId) {
+      if (client.id === this.requestData.userId) {
         this.clientData = {
           name: client.name,
           email: client.email,
@@ -89,7 +94,6 @@ export class PerformMaintenanceComponent {
 
   confirmRedirect() {
     if (this.selectedEmployeeId && this.selectedEmployeeId !== this.employeeId) {
-  
       const success = this.redirectMaintenanceService.redirectMaintenance(this.requestId, this.selectedEmployeeId!);
 
       if (success) {
@@ -111,5 +115,31 @@ export class PerformMaintenanceComponent {
         message: 'Nenhum funcionário foi selecionado ou tentativa de redirecionar para si mesmo.',
       });
     }
+  }
+
+  openMaintenanceDetailsModal() {
+    this.isMaintenanceModalHidden.set(false);
+  }
+
+  confirmMaintenanceDetails(maintenanceDetails: NgForm) {
+    maintenanceRequests.forEach((request) => {
+      if (request.id === this.requestId) {
+        request.maintenanceDescription = maintenanceDetails.form.value.maintenanceDescription;
+        request.orientationToClient = maintenanceDetails.form.value.orientationToClient;
+
+        this.updateRequestStatusService.updateStatus(
+          this.requestId,
+          'Yasmim Alves de Paula e Silva',
+          'Aguardando Pagamento',
+        );
+
+        this.popupService.addNewPopUp({
+          type: Status.Success,
+          message: 'Pagamento efetuado com sucesso!',
+        });
+
+        this.router.navigate([`/funcionario/${this.employeeId}/solicitacoes/abertas`]);
+      }
+    });
   }
 }

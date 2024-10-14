@@ -37,7 +37,7 @@
 <td>
     @switch (status()) {
       @case ('Aberta') {
-        <button app-button (click)="openModal()">Finalizar Solicitação</button>
+        <link-as-button href="/funcionario/{{ userId() }}/orcamento/{{ id() }}">Efetuar Orçamento</link-as-button>
       }
       @case ('Aprovada') {
         <link-as-button href="/funcionario/{{ userId() }}/manutencao/{{ id() }}">Efetuar Manutenção</link-as-button>
@@ -46,7 +46,7 @@
         <link-as-button href="/funcionario/{{ userId() }}/manutencao/{{ id() }}">Efetuar Manutenção</link-as-button>
       }
       @case ('Paga') {
-        <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Finalizar Solicitação</link-as-button>
+        <button app-button (click)="openModal()">Finalizar Solicitação</button>
       }
       @default {
         <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Visualizar</link-as-button>

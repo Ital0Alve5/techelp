@@ -8,8 +8,8 @@ type requestHistoryMock = {
 
 export type Requests = {
   id: number;
-  userId: number,
-  employeeId: number,
+  userId: number;
+  employeeId: number;
   deviceDescription: string;
   deviceCategory: string;
   issueDescription: string;
@@ -18,5 +18,7 @@ export type Requests = {
   hour: string;
   currentStatus: string;
   rejectReason: string;
+  maintenanceDescription: string;
+  oritentationToClient: string;
   history: requestHistoryMock[];
 };

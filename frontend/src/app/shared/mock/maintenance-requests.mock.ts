@@ -11,6 +11,8 @@ export const maintenanceRequests = [
     hour: '13:24',
     currentStatus: 'Rejeitada',
     rejectReason: 'preço muito caro',
+    maintenanceDescription: '',
+    oritentationToClient: '',
     history: [
       {
         date: '01/09/2024',
@@ -55,6 +57,8 @@ export const maintenanceRequests = [
     hour: '13:24',
     currentStatus: 'Orçada',
     rejectReason: '',
+    maintenanceDescription: '',
+    oritentationToClient: '',
     history: [
       {
         date: '01/09/2024',
@@ -99,6 +103,8 @@ export const maintenanceRequests = [
     hour: '13:24',
     currentStatus: 'Aberta',
     rejectReason: '',
+    maintenanceDescription: '',
+    oritentationToClient: '',
     history: [
       {
         date: '01/09/2024',
@@ -121,6 +127,8 @@ export const maintenanceRequests = [
     hour: '13:24',
     currentStatus: 'Aguardando Pagamento',
     rejectReason: '',
+    maintenanceDescription: '',
+    oritentationToClient: '',
     history: [
       {
         date: '01/09/2024',
@@ -143,6 +151,8 @@ export const maintenanceRequests = [
     hour: '13:24',
     currentStatus: 'Paga',
     rejectReason: '',
+    maintenanceDescription: '',
+    oritentationToClient: '',
     history: [
       {
         date: '01/09/2024',
@@ -165,6 +175,8 @@ export const maintenanceRequests = [
     hour: '13:24',
     currentStatus: 'Aprovada',
     rejectReason: '',
+    maintenanceDescription: '',
+    oritentationToClient: '',
     history: [
       {
         date: '01/09/2024',
@@ -187,6 +199,8 @@ export const maintenanceRequests = [
     hour: '13:24',
     currentStatus: 'Rejeitada',
     rejectReason: '',
+    maintenanceDescription: '',
+    oritentationToClient: '',
     history: [
       {
         date: '01/09/2024',
@@ -209,6 +223,8 @@ export const maintenanceRequests = [
     hour: '13:24',
     currentStatus: 'Finalizada',
     rejectReason: '',
+    maintenanceDescription: '',
+    oritentationToClient: '',
     history: [
       {
         date: '01/09/2024',
@@ -231,6 +247,8 @@ export const maintenanceRequests = [
     hour: '13:24',
     currentStatus: 'Outros',
     rejectReason: '',
+    maintenanceDescription: '',
+    oritentationToClient: '',
     history: [
       {
         date: '01/09/2024',
@@ -253,6 +271,8 @@ export const maintenanceRequests = [
     hour: '13:24',
     currentStatus: 'Orçada',
     rejectReason: '',
+    maintenanceDescription: '',
+    oritentationToClient: '',
     history: [
       {
         date: '01/09/2024',
@@ -297,6 +317,8 @@ export const maintenanceRequests = [
     hour: '13:24',
     currentStatus: 'Orçada',
     rejectReason: '',
+    maintenanceDescription: '',
+    oritentationToClient: '',
     history: [
       {
         date: '01/09/2024',

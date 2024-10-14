@@ -1,3 +1,4 @@
-<a [routerLink]="href()">
+<div (mouseover)="hovered = true"
+(mouseout)="hovered = false" [routerLink]="href()">
   <ng-content />
-</a>
+</div>

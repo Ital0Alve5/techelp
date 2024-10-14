@@ -26,7 +26,7 @@ export class RevenueService {
       deviceCategory
     }));
 
-    console.log(result);
+    return result;
   }
 
   private reshapeDate(date: string): string {

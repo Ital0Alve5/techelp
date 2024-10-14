@@ -125,7 +125,7 @@ export class PerformMaintenanceComponent {
     maintenanceRequests.forEach((request) => {
       if (request.id === this.requestId) {
         request.maintenanceDescription = maintenanceDetails.form.value.maintenanceDescription;
-        request.orientationToClient = maintenanceDetails.form.value.orientationToClient;
+        request.oritentationToClient = maintenanceDetails.form.value.orientationToClient;
 
         this.updateRequestStatusService.updateStatus(
           this.requestId,

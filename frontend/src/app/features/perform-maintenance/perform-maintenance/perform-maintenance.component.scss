@@ -54,3 +54,65 @@ a {
     background: $brand-purple-hover;
   }
 }
+
+form {
+  margin-top: 20px;
+
+  textarea {
+    margin-top: 8px;
+  }
+}
+
+.modal {
+  padding: 10px;
+  padding-bottom: 30px;
+  font-size: large;
+}
+
+p.modal {
+  padding-top: 25px;
+}
+
+.price-highlight {
+  color: $feedback-info-50;
+  font-weight: bold;
+}
+
+app-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .modal-footer {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .modal-footer button {
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+  }
+
+  .price-highlight {
+    color: $feedback-info-50;
+    font-weight: bold;
+  }
+}
+
+.large-textarea {
+  width: 500px;
+  height: 150px;
+  padding: 10px;
+  box-sizing: border-box;
+  resize: none;
+  width: 100%;
+}
+
+.button--modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 10px;
+}

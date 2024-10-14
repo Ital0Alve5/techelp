@@ -12,7 +12,8 @@ import { RequestsComponent } from './features/employee/requests/requests.compone
 import { MakeBudgetComponent } from './features/make-budget/make-budget.component';
 import { PerformMaintenanceComponent } from './features/perform-maintenance/perform-maintenance/perform-maintenance.component';
 import { CategoriesComponent } from './features/employee/categories/categories.component';
-import { RequestRevenueComponent } from './features/request-revenue/request-revenue.component'
+import { RequestRevenueComponent } from './features/request-revenue/request-revenue.component';
+import { RevenueComponent } from './features/revenue/revenue.component';
 
 export const routes: Routes = [
   {
@@ -77,5 +78,9 @@ export const routes: Routes = [
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: RequestRevenueComponent,
   },
-  
+  {
+    path: 'funcionario/:employeeId/receita',
+    canActivate: [() => inject(Authenticator).checkAuthentication()],
+    component: RevenueComponent,
+  },
 ];

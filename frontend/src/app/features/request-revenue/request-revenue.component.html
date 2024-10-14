@@ -1,10 +1,11 @@
 <app-card>
     <h1>Relatório de vendas</h1>
+    <p>Filtrar por: </p>
+    <br>
     <form (ngSubmit)="onSubmit()">
         <app-input
             id="dataComeco"
-            label="Data do começo *"
-            placeholder="Data do começo *"
+            label="Data do inicio"
             [(value)]="formValues().startDate.value"
             [type]="'date'"
             [validation]="formValues().startDate.validation"
@@ -14,8 +15,7 @@
 
         <app-input
             id="dataFim"
-            label="Data do fim *"
-            placeholder="Data do fim *"
+            label="Data do fim"
             [(value)]="formValues().endDate.value"
             [type]="'date'"
             [validation]="formValues().endDate.validation"
@@ -25,8 +25,8 @@
         <div class="checkbox">
             <app-checkbox
                 id="categoria"
-                [value]="formValues().category.value"
                 label="Separado por categorias"
+                [value]="formValues().category.value"
                 (changeEvent)="onCheckboxChange($event)"
             ></app-checkbox>
         </div> 

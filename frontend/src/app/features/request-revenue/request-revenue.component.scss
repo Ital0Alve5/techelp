@@ -25,11 +25,9 @@ form {
   flex-direction: column;
   gap: 16px;
 
-  a {
-    font-size: $size-small;
-  }
   .checkbox{
     display: flex;
     gap: 8px;
+    font-size: 10xp;
   }
 }

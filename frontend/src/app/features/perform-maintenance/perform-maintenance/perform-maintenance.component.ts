@@ -112,7 +112,7 @@ export class PerformMaintenanceComponent {
     } else {
       this.popupService.addNewPopUp({
         type: Status.Error,
-        message: 'Nenhum funcionário foi selecionado ou tentativa de redirecionar para si mesmo.',
+        message: 'Funcionário inválido.',
       });
     }
   }

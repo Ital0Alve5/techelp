@@ -43,6 +43,7 @@ export class MakeBudgetComponent {
   };
   budgetValue: string = '';
   validation: { error: boolean; message: string } | undefined;
+  maxBudgetLength: number = 4;
 
   constructor(
     private popupService: PopupService,
@@ -74,7 +75,7 @@ export class MakeBudgetComponent {
   }
 
   confirmBudget() {
-    const parsedBudget = parseFloat(this.budgetValue); 
+    const parsedBudget = parseFloat(this.budgetValue || '0');
 
     if (parsedBudget > 0) {
       this.requestData.price = parsedBudget.toString();
@@ -88,6 +89,23 @@ export class MakeBudgetComponent {
       });
     } else {
       this.validation = { error: true, message: 'O valor do orçamento deve ser maior que zero.' };
+    }
+  }
+
+  formatBudgetValue(value: string): string {
+    if (!value) return '0,00';
+    const parsedValue = parseFloat(value);
+    return isNaN(parsedValue) ? '0,00' : parsedValue.toFixed(2).replace('.', ',');
+  }
+
+  handleBudgetInput(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value.replace(/[^0-9]/g, '');
+
+    if (value.length <= this.maxBudgetLength) {
+      this.budgetValue = value;
+    } else {
+      this.budgetValue = value.substring(0, this.maxBudgetLength);
     }
   }
 }

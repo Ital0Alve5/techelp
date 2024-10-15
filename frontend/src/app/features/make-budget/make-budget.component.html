@@ -6,7 +6,7 @@
 </div>
 
 <app-modal [(isHidden)]="isBudgetConfirmationModalOpen">
-  <p class="modal">Confirmar orçamento de R$ {{ budgetValue }}?</p>
+  <p class="modal">Confirmar orçamento de R$ {{ formatBudgetValue(budgetValue) }}</p>
   <div class="buttons">
     <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeModal()">Cancelar</button>
     <button backgroundColor="#10855b" hoverColor="none" app-button (click)="confirmBudget()">Confirmar</button>
@@ -17,7 +17,7 @@
   <p>
     Serviço avaliado por <b> {{ requestData.employee }}</b> e orçado em:
   </p>
-  <p class="price">R$ {{ budgetValue }}</p>
+  <p class="price">R$ {{ formatBudgetValue(budgetValue) }}</p>
 </section>
 
 <section class="request-description">
@@ -39,6 +39,6 @@
     [placeholder]="'Digite o valor'"
     [(value)]="budgetValue"
     [validation]="validation"
-    (inputEvent)="budgetValue = $event"
+    (input)="handleBudgetInput($event)"
   ></app-input>
 </section>

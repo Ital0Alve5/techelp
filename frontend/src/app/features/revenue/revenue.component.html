@@ -1,11 +1,23 @@
-@if(userRequests.length > 0) {
+<div #content id="content">
+    <h2>Receita por {{categoryRevenue ? "Categoria" : "Data"}}</h2>
+    <p>Desde {{begginingDate}} até {{endingDate}}</p>
+@if(revenues.length > 0) {
     <table>
         <tr>
-            <th>Data</th>
-            <th>Categoria</th>
+            <th>{{categoryRevenue ? "Categoria" : "Data"}}</th>
             <th>Valor</th>
         </tr>
+        
+        @for (revenue of revenues; track $index){
+            <tr revenue-table-row [label]="categoryRevenue? revenue.deviceCategory : revenue.date" [value]="revenue.price"></tr>
+        }
+
     </table>
 } @else {
-    <p class="noRequestsYet">Nenhum pagamento nesse periodo !</p>
+    <p class="noRequestsYet">Nenhum pagamento realizado!</p>
   }
+</div>
+
+@if(revenues.length > 0){
+<button app-button (click)="generatePdf()">Gerar pdf</button>
+}

@@ -28,8 +28,8 @@ export class RequestRevenueComponent {
     this.router.navigate([`/funcionario/${idValue}/receita`]);
   }
 
-  onCheckboxChange(newValue: boolean) {
-    this.formValues().category.value = newValue;
-    this.formValues.set({ ...this.formValues() });
-  }
+  // onCheckboxChange(newValue: boolean) {
+  //   this.formValues().category.value = newValue;
+  //   this.formValues.set({ ...this.formValues() });
+  // }
 }

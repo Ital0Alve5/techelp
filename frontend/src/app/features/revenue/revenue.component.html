@@ -18,6 +18,8 @@
   }
 </div>
 
-@if(revenues.length > 0){
-<button app-button (click)="generatePdf()">Gerar pdf</button>
-}
+<div class="button-container">
+    @if(revenues.length > 0){
+    <button app-button (click)="generatePdf()">Gerar pdf</button>
+    }
+</div>

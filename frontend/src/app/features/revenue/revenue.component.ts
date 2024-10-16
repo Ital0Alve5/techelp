@@ -1,7 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { Requests } from '@/shared/types/api/maintenance-requests.type';
 import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
 import { RevenueService } from '@/shared/services/revenue/revenue.service';
 import { RevenueTableRowComponent } from './components/revenue-table-row/revenue-table-row.component';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
@@ -24,20 +22,24 @@ export class RevenueComponent {
   categoryRevenue = location.pathname === '/funcionario/login';
 
   constructor(private revenueService : RevenueService){
-    // if(this.categoryRevenue){
 
-   // } else {
       this.revenues = revenueService.getRevenues();
-    // }
   }
 
-  generatePdf(){
-        const pdf = new jsPDF('p','pt','a4');
-      
-        pdf.html(this.el.nativeElement, {
-          callback: (pdf) => {
-            pdf.save('exportedContent.pdf');
-          }
-        })
-  }  
+  generatePdf() {
+    const pdf = new jsPDF('p', 'pt', 'a4');
+  
+    pdf.html(this.el.nativeElement, {
+      callback: (pdf) => {
+        pdf.save('exportedContent.pdf');
+      },
+      x: 10,
+      y: 10, 
+      autoPaging: 'text',
+      html2canvas: {
+        scale: 0.61
+      }
+    });
+  }
+   
 }

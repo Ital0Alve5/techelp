@@ -14,7 +14,6 @@
   background-color: $neutral-base;
 }
 
-
 table {
   text-align: center;
   color: $neutral-70;
@@ -28,7 +27,7 @@ table {
 tr {
   transition: 0.5s;
   border-bottom: 1px solid $neutral-30;
-  
+
   &:hover {
     background-color: $neutral-10;
     transition: 0.5s;

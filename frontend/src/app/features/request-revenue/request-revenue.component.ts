@@ -27,9 +27,4 @@ export class RequestRevenueComponent {
     const idValue = this.employeeId();
     this.router.navigate([`/funcionario/${idValue}/receita`]);
   }
-
-  // onCheckboxChange(newValue: boolean) {
-  //   this.formValues().category.value = newValue;
-  //   this.formValues.set({ ...this.formValues() });
-  // }
 }

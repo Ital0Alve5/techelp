@@ -1,36 +1,28 @@
 <app-card>
-    <h1>Relatório de vendas</h1>
-    <p>Filtrar por: </p>
-    <br>
-    <form (ngSubmit)="onSubmit()">
-        <app-input
-            id="dataComeco"
-            label="Data do inicio"
-            [(value)]="formValues().startDate.value"
-            [type]="'date'"
-            [validation]="formValues().startDate.validation"
-            >
-            <lock-icon input-icon width="14px" color="#9197B3" />
-        </app-input>
+  <h1>Relatório de vendas</h1>
+  <p>Filtrar por:</p>
+  <br />
+  <form (ngSubmit)="onSubmit()">
+    <app-input
+      id="dataComeco"
+      label="Data do inicio"
+      [(value)]="formValues().startDate.value"
+      [type]="'date'"
+      [validation]="formValues().startDate.validation"
+    >
+      <lock-icon input-icon width="14px" color="#9197B3" />
+    </app-input>
 
-        <app-input
-            id="dataFim"
-            label="Data do fim"
-            [(value)]="formValues().endDate.value"
-            [type]="'date'"
-            [validation]="formValues().endDate.validation"
-            >
-            <lock-icon input-icon width="14px" color="#9197B3" />
-        </app-input>
-        <!-- <div class="checkbox">
-            <app-checkbox
-                id="categoria"
-                label="Separado por categorias"
-                [value]="formValues().category.value"
-                (changeEvent)="onCheckboxChange($event)"
-            ></app-checkbox>
-        </div>  -->
+    <app-input
+      id="dataFim"
+      label="Data do fim"
+      [(value)]="formValues().endDate.value"
+      [type]="'date'"
+      [validation]="formValues().endDate.validation"
+    >
+      <lock-icon input-icon width="14px" color="#9197B3" />
+    </app-input>
 
-        <button app-button>Mostrar Relatório</button>
-    </form>
+    <button app-button>Mostrar Relatório</button>
+  </form>
 </app-card>

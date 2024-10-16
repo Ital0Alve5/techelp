@@ -71,7 +71,7 @@ export const routes: Routes = [
   {
     path: 'funcionario/:employeeId/manutencao/:requestId',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
-    component: PerformMaintenanceComponent, 
+    component: PerformMaintenanceComponent,
   },
   {
     path: 'funcionario/:employeeId/pedir-receita',

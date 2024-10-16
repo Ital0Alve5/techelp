@@ -12,18 +12,27 @@ import { ButtonComponent } from '@/shared/ui/button/button.component';
 })
 export class RevenueComponent {
   @ViewChild('content',{static: false}) el!: ElementRef;
-  revenues: {
+  revenuesByDate: {
     date : string,
-    price :string,
-    deviceCategory:string
-  }[];
+    price : number
+  }[] = [];
+
+  revenuesByCategory:{
+    deviceCategory: string,
+    price: number
+  }[] = [];
+
   begginingDate = '01/01/2024';
   endingDate = '14/10/2024';
   categoryRevenue = location.pathname === '/funcionario/login';
 
   constructor(private revenueService : RevenueService){
-
-      this.revenues = revenueService.getRevenues();
+    
+    if(this.categoryRevenue){
+      this.revenuesByCategory = revenueService.getRevenuesByCategory();
+    } else {
+      this.revenuesByDate = revenueService.getRevenuesByDate();
+    }
   }
 
   generatePdf() {

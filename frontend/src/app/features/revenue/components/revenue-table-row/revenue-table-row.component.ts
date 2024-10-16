@@ -9,6 +9,6 @@ import { Component, input } from '@angular/core';
 })
 export class RevenueTableRowComponent {
   label = input<string>('');
-  value = input<string>('');
+  value = input<number>(0);
 
 }

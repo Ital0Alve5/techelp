@@ -1,16 +1,22 @@
 <div #content id="content">
     <h2>Receita por {{categoryRevenue ? "Categoria" : "Data"}}</h2>
     <p>Desde {{begginingDate}} até {{endingDate}}</p>
-@if(revenues.length > 0) {
+@if(revenuesByCategory.length > 0 || revenuesByDate.length > 0) {
     <table>
         <tr>
             <th>{{categoryRevenue ? "Categoria" : "Data"}}</th>
             <th>Valor</th>
         </tr>
-        
-        @for (revenue of revenues; track $index){
-            <tr revenue-table-row [label]="categoryRevenue? revenue.deviceCategory : revenue.date" [value]="revenue.price"></tr>
-        }
+        @if(categoryRevenue){
+             @for (revenue of revenuesByCategory; track $index){
+                <tr revenue-table-row [label]="revenue.deviceCategory" [value]="revenue.price"></tr>
+            }
+         }
+         @else {
+            @for (revenue of revenuesByDate; track $index){
+                <tr revenue-table-row [label]="revenue.date" [value]="revenue.price"></tr>
+            }
+         }
 
     </table>
 } @else {
@@ -19,7 +25,7 @@
 </div>
 
 <div class="button-container">
-    @if(revenues.length > 0){
+    @if(revenuesByCategory.length > 0 || revenuesByDate.length > 0){
     <button app-button (click)="generatePdf()">Gerar pdf</button>
     }
 </div>

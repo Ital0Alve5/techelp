@@ -24,7 +24,28 @@ export class RequestRevenueComponent {
   constructor(private router: Router) {}
 
   onSubmit() {
+    this.validateDate();
     const idValue = this.employeeId();
     this.router.navigate([`/funcionario/${idValue}/receita`]);
+  }
+
+  validateDate() {
+    const todayDate = new Date();
+    const startDate = new Date(this.formValues().startDate.value);
+    const endDate = new Date(this.formValues().endDate.value);
+
+    if (startDate > todayDate) {
+      this.formValues().startDate.value = this.formatDate(todayDate);
+    }
+    if (endDate > todayDate) {
+      this.formValues().endDate.value = this.formatDate(todayDate);
+    }
+  }
+
+  private formatDate(date: Date): string {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
   }
 }

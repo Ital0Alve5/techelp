@@ -1,6 +1,13 @@
-<a routerLink="/cliente/{{ userId }}/solicitacoes">
-  <arrow-right-icon width="20px" color="#fff" />
-</a>
+@if (router.url.includes('cliente')){
+  <a routerLink="/cliente/{{ userId }}/solicitacoes">
+    <arrow-right-icon width="20px" color="#fff" />
+  </a>
+} @else if (router.url.includes('funcionario')){
+  <a routerLink="/funcionario/{{ userId }}/solicitacoes">
+    <arrow-right-icon width="20px" color="#fff" />
+  </a>
+}
+
 <section>
   <ul class="request-description">
     <li>

@@ -83,4 +83,9 @@ export const routes: Routes = [
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: RevenueComponent,
   },
+  {
+    path: 'funcionario/:employeeId/receita/categoria',
+    canActivate: [() => inject(Authenticator).checkAuthentication()],
+    component: RevenueComponent,
+  },
 ];

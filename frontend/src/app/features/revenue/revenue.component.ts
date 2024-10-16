@@ -22,9 +22,7 @@ export class RevenueComponent {
     price: number
   }[] = [];
 
-  begginingDate = '01/01/2024';
-  endingDate = '14/10/2024';
-  categoryRevenue = location.pathname === '/funcionario/login';
+  categoryRevenue = location.pathname.endsWith('/receita/categoria');
 
   constructor(private revenueService : RevenueService){
     

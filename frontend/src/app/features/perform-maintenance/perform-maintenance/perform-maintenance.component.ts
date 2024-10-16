@@ -12,11 +12,11 @@ import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 import { RedirectMaintenanceService } from '../services/redirect-maintenance.service';
 import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
-
+import { SelectComponent } from '@/shared/ui/select/select.component';
 @Component({
   selector: 'app-perform-maintenance',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, ArrowRightIcon, ButtonComponent, ModalComponent],
+  imports: [CommonModule, FormsModule, RouterLink, ArrowRightIcon, ButtonComponent, ModalComponent, SelectComponent],
   providers: [UpdateRequestStatusService],
   templateUrl: './perform-maintenance.component.html',
   styleUrls: ['./perform-maintenance.component.scss'],
@@ -30,8 +30,13 @@ export class PerformMaintenanceComponent {
 
   isRedirectModalOpen = signal(true);
   selectedEmployeeId: number | null = null;
+  value = signal<string>('');
 
-  registeredEmployees = registeredEmployee.filter(employee => employee.id !== this.employeeId);
+  registeredEmployees = registeredEmployee.filter((employee) => employee.id !== this.employeeId);
+  sanitizedRegisteredEmployees: {
+    id: number;
+    label: string;
+  }[] = [];
 
   requestData = {
     deviceDescription: '',
@@ -82,6 +87,10 @@ export class PerformMaintenanceComponent {
         };
       }
     });
+
+    this.registeredEmployees.forEach((employee) => {
+      this.sanitizedRegisteredEmployees.push({ id: employee.id, label: employee.name });
+    });
   }
 
   openRedirectModal() {
@@ -93,8 +102,8 @@ export class PerformMaintenanceComponent {
   }
 
   confirmRedirect() {
-    if (this.selectedEmployeeId && this.selectedEmployeeId !== this.employeeId) {
-      const success = this.redirectMaintenanceService.redirectMaintenance(this.requestId, this.selectedEmployeeId!);
+    if (this.selectedEmployeeId) {
+      const success = this.redirectMaintenanceService.redirectMaintenance(this.requestId, this.selectedEmployeeId);
 
       if (success) {
         this.closeRedirectModal();

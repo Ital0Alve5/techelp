@@ -8,7 +8,7 @@ import { InputError } from '@/shared/types/input-error.type';
   styleUrls: ['./select.component.scss'],
 })
 export class SelectComponent implements OnChanges {
-  value = model<string>('');
+  value = model<string | number>('');
 
   id = input<string>('');
   label = input<string>('');

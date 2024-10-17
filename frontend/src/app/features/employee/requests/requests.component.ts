@@ -43,4 +43,8 @@ export class RequestsComponent {
     }
     return new Date(Number(year), Number(month) - 1, Number(day));
   }
+
+  updateRequests(filteredRequests: Requests[]) {
+    this.userRequests = filteredRequests;
+  }
 }

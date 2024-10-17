@@ -4,6 +4,7 @@
 
 :host {
   align-self: center;
+  max-height: 100%;
 }
 
 div {
@@ -25,7 +26,6 @@ table {
   border-collapse: collapse;
   border-style: hidden;
   width: 100%;
-  max-width: 1400px;
 }
 tr {
   transition: 0.5s;

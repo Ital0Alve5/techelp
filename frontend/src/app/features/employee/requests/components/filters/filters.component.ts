@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonComponent } from '@/shared/ui/button/button.component';
@@ -14,8 +14,7 @@ import { Requests } from '@/shared/types/api/maintenance-requests.type';
   styleUrl: './filters.component.scss',
 })
 export class FiltersComponent implements OnInit {
-  requests: Requests[] = [];
-  filteredRequests: Requests[] = [];
+  filters = output<Requests[]>();
 
   constructor(
     private router: Router,
@@ -24,8 +23,6 @@ export class FiltersComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.requests = this.requestsService.getRequest();
-
     this.route.queryParams.subscribe((params) => {
       const filter = params['filter'];
 
@@ -50,11 +47,10 @@ export class FiltersComponent implements OnInit {
   }
 
   filterToday() {
-    const today = new Date().toISOString().split('T')[0];
-    this.filteredRequests = this.requests.filter((req) => req.date === today);
+    this.filters.emit(this.requestsService.filterToday());
   }
 
   filterAll() {
-    this.filteredRequests = this.requests;
+    this.filters.emit(this.requestsService.filterAll());
   }
 }

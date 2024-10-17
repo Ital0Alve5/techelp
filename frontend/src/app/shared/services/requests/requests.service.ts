@@ -20,4 +20,17 @@ export class RequestsService {
 
     return requests;
   }
+
+  filterAll() {
+    const requests: Requests[] = [...maintenanceRequests];
+
+    return requests;
+  }
+
+  filterToday() {
+    const requests: Requests[] = [...maintenanceRequests];
+
+    const today = new Date().toISOString().split('T')[0];
+    return requests.filter((req) => req.date === today);
+  }
 }

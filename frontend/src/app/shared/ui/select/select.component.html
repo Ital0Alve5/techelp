@@ -13,7 +13,7 @@
         [class.disabled]="disabled()"
         (change)="onChange($event)"
       >
-        <span>{{ value().length > 0 ? value() : placeholder() }}</span>
+        <span>{{ value() ? value() : placeholder() }}</span>
         <ul [class.open]="isOpen()">
           @for (option of options(); track option.label) {
             <li (click)="onOptionChosen($event)" [value]="option.id">

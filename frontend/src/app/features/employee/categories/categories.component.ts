@@ -5,11 +5,13 @@ import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CategoriesService } from '@/shared/services/crud/categories.service';
+import { RouterLink } from '@angular/router';
+import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CategorieTableRowComponent, ButtonComponent, ModalComponent, FormsModule],
+  imports: [CategorieTableRowComponent, ButtonComponent, ModalComponent, FormsModule, RouterLink, ArrowRightIcon],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })

@@ -20,4 +20,32 @@ export class RequestsService {
 
     return requests;
   }
+
+  filterAll() {
+    const requests: Requests[] = [...maintenanceRequests];
+
+    return requests;
+  }
+
+  isDateInRange(date: string, startDate: string, endDate: string): boolean {
+    function parseDate(date: string): Date {
+      const [day, month, year] = date.split('/').map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    return parseDate(date) >= parseDate(startDate) && parseDate(date) <= parseDate(endDate);
+  }
+
+  filterToday() {
+    const requests: Requests[] = [...maintenanceRequests];
+
+    const today = new Date().toISOString().split('T')[0];
+    return requests.filter((req) => req.date === today);
+  }
+
+  filterByDate(dates: { startDate: string; endDate: string }) {
+    const requests: Requests[] = [...maintenanceRequests];
+
+    return requests.filter((req) => this.isDateInRange(req.date, dates.startDate, dates.endDate));
+  }
 }

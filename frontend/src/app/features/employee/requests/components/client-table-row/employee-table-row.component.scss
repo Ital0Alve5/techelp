@@ -18,35 +18,59 @@ tr {
 }
 
 .aberta {
-  color: gray;
+  background-color: gray;
+  color: white; 
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .orcada {
-  color: brown;
+  background-color: rgb(123, 75, 30);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .rejeitada {
-  color: red;
+  background-color: red;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .aprovada {
-  color: yellow;
+  background-color: yellow;
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .redirecionada {
-  color: purple;
+  background-color: purple;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .aguardando {
-  color: blue;
+  background-color: blue;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .paga {
-  color: orange;
+  background-color: orange;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .finalizada {
-  color: green;
+  background-color: green;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 #buttonsConfirmationModal {

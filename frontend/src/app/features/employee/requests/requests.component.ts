@@ -4,13 +4,14 @@ import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { LinkAsButtonComponent } from '@/shared/ui/link-as-button/link-as-button.component';
 import { Requests } from '@/shared/types/api/maintenance-requests.type';
 import { RequestsService } from '@/shared/services/requests/requests.service';
+import { FiltersComponent } from '@/features/employee/requests/components/filters/filters.component';
 import { ModalComponent } from '../../../shared/ui/modal/modal.component';
 
 @Component({
   selector: 'app-requests',
   standalone: true,
   providers: [RequestsService],
-  imports: [EmployeeTableRowComponent, ButtonComponent, LinkAsButtonComponent, ModalComponent],
+  imports: [EmployeeTableRowComponent, ButtonComponent, LinkAsButtonComponent, FiltersComponent, ModalComponent],
   templateUrl: './requests.component.html',
   styleUrl: './requests.component.scss',
 })
@@ -41,5 +42,9 @@ export class RequestsComponent {
       return null;
     }
     return new Date(Number(year), Number(month) - 1, Number(day));
+  }
+
+  updateRequests(filteredRequests: Requests[]) {
+    this.userRequests = filteredRequests;
   }
 }

@@ -69,7 +69,7 @@ export class LoginComponent {
           });
         } else if (this.employeeLogin) {
           this.authenticator.authenticate(true);
-          this.router.navigate([`/funcionario/${(response.data as { userId: number }).userId}/solicitacoes/abertas`]);
+          this.router.navigate([`/funcionario/${(response.data as { userId: number }).userId}/solicitacoes`]);
         } else {
           this.authenticator.authenticate(true);
           this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);

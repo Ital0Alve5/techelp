@@ -1,7 +1,25 @@
 <div>
   <label for="startDate">Início:</label>
-  <input id="startDate" type="date" (change)="onDateChange()" />
+  <input
+    id="startDate"
+    type="date"
+    #startDate
+    (change)="
+      onDateChange({
+        startDate: startDate.value,
+      })
+    "
+  />
 
   <label for="endDate">Fim:</label>
-  <input id="endDate" type="date" (change)="onDateChange()" />
+  <input
+    id="endDate"
+    type="date"
+    #endDate
+    (change)="
+      onDateChange({
+        endDate: endDate.value,
+      })
+    "
+  />
 </div>

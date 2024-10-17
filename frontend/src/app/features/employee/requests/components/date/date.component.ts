@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 
 @Component({
   selector: 'app-date',
@@ -8,12 +8,21 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './date.component.scss',
 })
 export class DateComponent {
-  startDate: string | null = null;
-  endDate: string | null = null;
+  date = new Date();
+  startDate = signal('');
+  endDate = signal(`${this.date.getDate()}/${this.date.getMonth() + 1}/${this.date.getFullYear()}`);
+  dateRangeSelected = output<{ startDate: string; endDate: string }>();
 
-  @Output() dateRangeSelected = new EventEmitter<{ startDate: string | null; endDate: string | null }>();
+  onDateChange($event: { startDate: string } | { endDate: string }) {
+    if ('startDate' in $event) {
+      const [year, month, day] = $event.startDate.split('-');
+      this.startDate.set(`${day}/${month}/${year}`);
+    } else {
+      const [year, month, day] = $event.endDate.split('-');
+      this.endDate.set(`${day}/${month}/${year}`);
+    }
 
-  onDateChange() {
-    this.dateRangeSelected.emit({ startDate: this.startDate, endDate: this.endDate });
+    if (this.startDate() && this.endDate())
+      this.dateRangeSelected.emit({ startDate: this.startDate(), endDate: this.endDate() });
   }
 }

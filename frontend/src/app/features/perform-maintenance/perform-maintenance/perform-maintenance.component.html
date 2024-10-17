@@ -1,0 +1,100 @@
+<div class="buttons">
+  <a routerLink="/funcionario/{{ employeeId }}/solicitacoes/abertas">
+    <arrow-right-icon width="20px" color="#fff"></arrow-right-icon>
+  </a>
+  <button backgroundColor="#4e42ff" hoverColor="none" app-button (click)="openRedirectModal()">
+    Redirecionar Manutenção
+  </button>
+  <button backgroundColor="#10855b" hoverColor="none" app-button (click)="openMaintenanceDetailsModal()">
+    Efetuar a manutenção
+  </button>
+</div>
+
+<app-modal [(isHidden)]="isRedirectModalOpen">
+  <p class="modal">Selecione o funcionário para redirecionar a manutenção:</p>
+  <br />
+  <app-select
+    id="employeeSelect"
+    label=""
+    placeholder="Selecione o funcionário"
+    [options]="sanitizedRegisteredEmployees!"
+    [(value)]="selectedEmployeeId!"
+  ></app-select>
+
+  <div class="buttons">
+    <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeRedirectModal()">Cancelar</button>
+    <button backgroundColor="#10855b" hoverColor="none" app-button (click)="confirmRedirect()">Redirecionar</button>
+  </div>
+</app-modal>
+
+<section>
+  <ul class="request-description">
+    <li>
+      <b>Data da solicitação:</b>
+      <p>{{ requestData.date }} às {{ requestData.hour }}</p>
+    </li>
+    <li>
+      <b>Categoria do equipamento:</b>
+      <p>{{ requestData.deviceCategory }}</p>
+    </li>
+    <li>
+      <b>Descrição do equipamento:</b>
+      <p>{{ requestData.deviceDescription }}</p>
+    </li>
+    <li>
+      <b>Descrição do defeito:</b>
+      <p>{{ requestData.issueDescription }}</p>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <ul class="request-description">
+    <li>
+      <b>Nome do cliente:</b>
+      <p>{{ clientData.name }}</p>
+    </li>
+    <li>
+      <b>E-mail do cliente:</b>
+      <p>{{ clientData.email }}</p>
+    </li>
+    <li>
+      <b>Telefone do cliente:</b>
+      <p>{{ clientData.phone }}</p>
+    </li>
+  </ul>
+</section>
+<div>
+  <app-modal [(isHidden)]="isMaintenanceModalHidden">
+    <h2>Detalhes da manuteção</h2>
+    <form (ngSubmit)="confirmMaintenanceDetails(maintenanceDetails)" #maintenanceDetails="ngForm">
+      <label>Descrição da manutenção</label>
+      <textarea
+        name="maintenanceDescription"
+        class="large-textarea"
+        maxlength="300"
+        placeholder="Escreva a descrição da manutenção"
+        required
+        [(ngModel)]="maintenanceDescription"
+      ></textarea>
+      <label>Orientação ao cliente</label>
+      <textarea
+        name="orientationToClient"
+        class="large-textarea"
+        maxlength="300"
+        placeholder="Escreva alguma orientação"
+        [(ngModel)]="orientationToClient"
+      ></textarea>
+      <button
+        type="submit"
+        class="button--modal"
+        backgroundColor="#10855b"
+        hoverColor="none"
+        app-button
+        [disabled]="!maintenanceDetails.valid"
+      >
+        Continuar
+      </button>
+    </form>
+  </app-modal>
+</div>

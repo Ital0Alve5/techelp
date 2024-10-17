@@ -4,21 +4,21 @@
 :host {
   border-radius: 24px;
   border: none;
-  padding: 12px 0;
+}
 
-  a {
-    text-decoration: none;
-    color: $neutral-base;
-    font-size: $size-base;
-    width: 100%;
-    padding: 12px 18px;
-    border-radius: 24px;
-    border: none;
-    cursor: pointer;
+div {
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: 24px;
+  border: none;
+  color: $neutral-base;
+  font-size: $size-base;
+  cursor: pointer;
+  transition: 1s;
+  background-color: $brand-purple;
+
+  &:hover {
+    background-color: $brand-purple-hover;
     transition: 1s;
-
-    &:hover {
-      background-color: $brand-purple-hover;
-    }
   }
 }

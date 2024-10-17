@@ -1,0 +1,62 @@
+<td><link-as-button href="/cliente/{{ userId() }}/solicitacao/{{ id() }}">Abrir</link-as-button></td>
+<td>{{ date() }}</td>
+<td>{{ userName }}</td>
+<td>{{ deviceDescription() }}</td>
+<td>{{ issueDescription() }}</td>
+<td>
+  @switch (status()) {
+    @case ('Aberta') {
+      <p class="aberta">Aberta</p>
+    }
+    @case ('Orçada') {
+      <p class="orcada">Orçada</p>
+    }
+    @case ('Rejeitada') {
+      <p class="rejeitada">Rejeitada</p>
+    }
+    @case ('Aprovada') {
+      <p class="aprovada">Aprovada</p>
+    }
+    @case ('Redirecionada') {
+      <p class="redirecionada">Redirecionada</p>
+    }
+    @case ('Aguardando Pagamento') {
+      <p class="aguardando">Aguardando Pagamento</p>
+    }
+    @case ('Paga') {
+      <p class="paga">Paga</p>
+    }
+    @case ('Finalizada') {
+      <p class="finalizada">Finalizada</p>
+    }
+    @case ('Outros') {
+      <p>Outros</p>
+    }
+  }
+</td>
+<td>
+  @switch (status()) {
+    @case ('Aberta') {
+      <link-as-button href="/funcionario/{{ userId() }}/orcamento/{{ id() }}">Efetuar Orçamento</link-as-button>
+    }
+    @case ('Aprovada') {
+      <link-as-button href="/funcionario/{{ userId() }}/manutencao/{{ id() }}">Efetuar Manutenção</link-as-button>
+    }
+    @case ('Redirecionada') {
+      <link-as-button href="/funcionario/{{ userId() }}/manutencao/{{ id() }}">Efetuar Manutenção</link-as-button>
+    }
+    @case ('Paga') {
+      <button app-button (click)="openModal()">Finalizar Solicitação</button>
+    }
+    @default {
+      <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Visualizar</link-as-button>
+    }
+  }
+</td>
+<app-modal [(isHidden)]="hideModal">
+  <p>Você tem certeza que deseja finalizar esta solicitação?</p>
+  <div id="buttonsConfirmationModal">
+    <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeModal()">Cancelar</button>
+    <button backgroundColor="#10855b" hoverColor="none" app-button (click)="endRequest()">Confirmar</button>
+  </div>
+</app-modal>

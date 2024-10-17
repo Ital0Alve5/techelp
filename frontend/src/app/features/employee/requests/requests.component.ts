@@ -1,24 +1,23 @@
 import { Component } from '@angular/core';
-
-import { EmployeeTableRowComponent } from '../components/components/client-table-row/employee-table-row.component';
+import { EmployeeTableRowComponent } from './components/client-table-row/employee-table-row.component';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { LinkAsButtonComponent } from '@/shared/ui/link-as-button/link-as-button.component';
 import { Requests } from '@/shared/types/api/maintenance-requests.type';
 import { RequestsService } from '@/shared/services/requests/requests.service';
 import { FiltersComponent } from '@/features/employee/requests/components/filters/filters.component';
+import { ModalComponent } from '../../../shared/ui/modal/modal.component';
 
 @Component({
   selector: 'app-requests',
   standalone: true,
   providers: [RequestsService],
-  imports: [EmployeeTableRowComponent, ButtonComponent, LinkAsButtonComponent, FiltersComponent],
+  imports: [EmployeeTableRowComponent, ButtonComponent, LinkAsButtonComponent, FiltersComponent, ModalComponent],
   templateUrl: './requests.component.html',
   styleUrl: './requests.component.scss',
 })
 export class RequestsComponent {
   userId: number = JSON.parse(localStorage.getItem('userId')!);
   userRequests: Requests[] = [];
-
   constructor(private requestsService: RequestsService) {
     this.loadRequests();
   }

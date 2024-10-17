@@ -16,4 +16,6 @@ export class LinkAsButtonComponent {
   backgroundColor = input<string>('#4e42ff');
   textColor = input<string>('#ffffff');
   href = input.required<string>();
+  public hovered : boolean = false;
+  hoverColor = input<string>('purple-hover');
 }

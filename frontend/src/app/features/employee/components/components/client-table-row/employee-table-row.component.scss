@@ -17,6 +17,34 @@ tr {
   }
 }
 
-p{
+.aberta {
+  color: gray;
+}
+
+.orcada {
+  color: brown;
+}
+
+.rejeitada {
+  color: red;
+}
+
+.aprovada {
+  color: yellow;
+}
+
+.redirecionada {
+  color: purple;
+}
+
+.aguardando {
+  color: blue;
+}
+
+.paga {
+  color: orange;
+}
+
+.finalizada {
   color: green;
 }

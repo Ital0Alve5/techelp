@@ -52,6 +52,11 @@ export const routes: Routes = [
     component: RequestDetailsComponent,
   },
   {
+    path: 'funcionario/:userId/solicitacao/:requestId',
+    canActivate: [() => inject(Authenticator).checkAuthentication()],
+    component: RequestDetailsComponent,
+  },
+  {
     path: 'funcionario/:employeeId/solicitacoes',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: RequestsComponent,

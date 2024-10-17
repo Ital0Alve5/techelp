@@ -1,0 +1,15 @@
+<table>
+  <tr>
+    <th>Funcionário</th>
+  </tr>
+  @for (employee of employeeService.getAllEmployees(); track employee.id) {
+    @if (employee.id !== userId) {
+      <tr
+        app-employees-table-row
+        [employeeId]="employee.id"
+        [employeeLabel]="employee.name"
+        (deleteEmployee)="deleteEmployee($event)"
+      ></tr>
+    }
+  }
+</table>

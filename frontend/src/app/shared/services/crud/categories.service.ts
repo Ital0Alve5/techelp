@@ -30,7 +30,7 @@ export class CategoriesService {
       label: categoryName,
     });
   }
-  
+
 
   //Remove uma categoria pelo ID
   removeCategory(categoryId: number) {
@@ -39,7 +39,7 @@ export class CategoriesService {
       deviceCategories.splice(index, 1);
     }
   }
-  
+
 
   //Atualiza o nome de uma categoria. Deve passar o ID e o novo nome como parametro
   updateCategory(categoryId: number, categoryNewName: string) {
@@ -48,5 +48,5 @@ export class CategoriesService {
       deviceCategories[index].label = categoryNewName;
     }
   }
-  
+
 }

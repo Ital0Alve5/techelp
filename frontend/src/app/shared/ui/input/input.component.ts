@@ -42,14 +42,11 @@ export class InputComponent {
     this.inputEvent.emit(this.value());
   }
 
-  toggleHidden(shouldBeHidden: boolean) {
-    this.isHidden.set(shouldBeHidden);
+  toggleHidden() {
+    this.isHidden.set(!this.isHidden());
 
-    if (this.isHidden() && this.type() === 'password') {
-      this.type.set('password');
-    } else if (this.type() !== 'date') {
-      this.type.set('text');
-    }
+    if (this.isHidden()) this.type.set('password');
+    else this.type.set('text');
   }
 
   applyMask(value: string) {

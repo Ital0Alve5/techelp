@@ -213,9 +213,7 @@ export class SignUpComponent {
       !cep.validation.error &&
       !state.validation.error;
 
-    if (validForm) {
-      this.sendData();
-    }
+    if (validForm) this.sendData();
   }
 
   confirmPassword() {

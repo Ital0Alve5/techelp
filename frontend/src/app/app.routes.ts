@@ -79,7 +79,6 @@ export const routes: Routes = [
     path: 'funcionario/:employeeId/manutencao/:requestId',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: PerformMaintenanceComponent,
-<<<<<<< Updated upstream
   },
   {
     path: 'funcionario/:employeeId/funcionarios',
@@ -100,7 +99,5 @@ export const routes: Routes = [
     path: 'funcionario/:employeeId/receita/categoria',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: RevenueComponent,
-=======
->>>>>>> Stashed changes
   },
 ];

@@ -2,17 +2,16 @@
   <h1>Bem-vindo de volta!</h1>
   <app-auth-type></app-auth-type>
   <form (ngSubmit)="onSubmit()">
-
-    @if (employeeLogin){
-    <app-input
-      id="employeeID"
-      label="Registro de funcionário"
-      placeholder="Digite seu registro de funcionário *"
-      [(value)]="formValues().employeeID.value"
-      [type]="formValues().employeeID.type"
-      [validation]="formValues().employeeID.validation"
-    ></app-input>
-  } 
+    @if (isEmployeeLogin) {
+      <app-input
+        id="employeeID"
+        label="Registro de funcionário"
+        placeholder="Digite seu registro de funcionário *"
+        [(value)]="formValues().employeeID.value"
+        [type]="formValues().employeeID.type"
+        [validation]="formValues().employeeID.validation"
+      ></app-input>
+    }
     <app-input
       id="email"
       label="E-mail"
@@ -23,7 +22,7 @@
     >
       <user-icon input-icon width="14px" color="#9197B3" />
     </app-input>
-  
+
     <app-input
       id="senha"
       label="Senha"
@@ -35,7 +34,6 @@
       <lock-icon input-icon width="14px" color="#9197B3" />
     </app-input>
 
-    <a href="#">Esqueci minha senha</a>
     <button app-button>Entrar</button>
   </form>
 </app-card>

@@ -8,8 +8,6 @@ import { Response } from '@/shared/types/api/response.type';
 
 @Injectable()
 export class LoginService {
-  constructor() {}
-
   checkRegisteredUsers(emailInput: string, passwordInput: string): number | null {
     const userFound = registeredUsersMock.find(({ email }) => email === emailInput);
 
@@ -39,15 +37,7 @@ export class LoginService {
     }
 
     return new Promise((resolve) => {
-      if (wasUserFound) {
-        localStorage.setItem('userId', wasUserFound + '');
-        resolve({
-          error: false,
-          data: {
-            userId: wasUserFound,
-          },
-        });
-      } else
+      if (!wasUserFound) {
         resolve({
           error: true,
           data: {
@@ -55,6 +45,17 @@ export class LoginService {
             message: 'Dados inválidos',
           },
         });
+
+        return;
+      }
+
+      localStorage.setItem('userId', wasUserFound + '');
+      resolve({
+        error: false,
+        data: {
+          userId: wasUserFound,
+        },
+      });
     });
   }
 }

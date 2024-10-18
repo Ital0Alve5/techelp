@@ -4,8 +4,6 @@ import { Injectable } from '@angular/core';
 export class Authenticator {
   private isAuthenticated: boolean = false;
 
-  constructor() {}
-
   checkAuthentication() {
     return this.isAuthenticated;
   }

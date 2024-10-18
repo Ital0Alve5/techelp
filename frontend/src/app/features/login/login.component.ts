@@ -40,7 +40,7 @@ import { EmployeeIDValidator } from '@/shared/services/validators/employee-id-va
 })
 export class LoginComponent {
   formValues = signal(JSON.parse(JSON.stringify(formData)));
-  employeeLogin = location.pathname === '/funcionario/login';
+  isEmployeeLogin = location.pathname === '/funcionario/login';
 
   constructor(
     private emailValidator: EmailValidator,
@@ -67,33 +67,34 @@ export class LoginComponent {
             type: Status.Error,
             message: (response.data as InputError).message,
           });
-        } else if (this.employeeLogin) {
-          this.authenticator.authenticate(true);
-          this.router.navigate([`/funcionario/${(response.data as { userId: number }).userId}/solicitacoes`]);
-        } else {
-          this.authenticator.authenticate(true);
-          this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);
+
+          return;
         }
+
+        this.authenticator.authenticate(true);
+        this.router.navigate([
+          `/${this.isEmployeeLogin ? 'funcionario' : 'cliente'}/${(response.data as { userId: number }).userId}/solicitacoes`,
+        ]);
       });
   }
 
   onSubmit() {
     const { email, employeeID, password } = this.formValues();
-    if (this.employeeLogin) {
-      this.requiredValidator.setNext(this.employeeIDValidator);
-      this.formValues().employeeID.validation = this.requiredValidator.validate(employeeID.value);
-    }
 
     this.requiredValidator.setNext(this.emailValidator);
     this.formValues().email.validation = this.requiredValidator.validate(email.value);
 
+    this.maxLengthValidator.setMaxLength(4)
     this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
     this.formValues().password.validation = this.requiredValidator.validate(password.value);
 
-    if (!this.employeeLogin) {
+    if (!this.isEmployeeLogin) {
       if (!email.validation.error && !password.validation.error) this.sendData();
-    } else {
-      if (!email.validation.error && !password.validation.error && !employeeID.validation.error) this.sendData();
+      return;
     }
+
+    this.requiredValidator.setNext(this.employeeIDValidator);
+    this.formValues().employeeID.validation = this.requiredValidator.validate(employeeID.value);
+    if (!email.validation.error && !password.validation.error && !employeeID.validation.error) this.sendData();
   }
 }

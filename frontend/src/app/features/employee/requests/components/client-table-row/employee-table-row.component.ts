@@ -1,4 +1,4 @@
-import { Component, input, OnInit, output, signal } from '@angular/core';
+import { Component, input, OnInit, signal } from '@angular/core';
 
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { LinkAsButtonComponent } from '@/shared/ui/link-as-button/link-as-button.component';

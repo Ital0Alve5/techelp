@@ -1,0 +1,11 @@
+@import 'variables';
+@import 'colors';
+@import 'typology';
+
+td {
+  padding: 20px;
+}
+
+td:first-child {
+  border-right: 1px solid $neutral-30;
+}

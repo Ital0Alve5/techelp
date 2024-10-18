@@ -13,6 +13,8 @@ import { MakeBudgetComponent } from './features/make-budget/make-budget.componen
 import { PerformMaintenanceComponent } from './features/perform-maintenance/perform-maintenance/perform-maintenance.component';
 import { CategoriesComponent } from './features/employee/categories/categories.component';
 import { EmployeesListingComponent } from './features/employee/employees-listing/employees-listing.component';
+import { RequestRevenueComponent } from './features/request-revenue/request-revenue.component';
+import { RevenueComponent } from './features/revenue/revenue.component';
 
 export const routes: Routes = [
   {
@@ -53,6 +55,11 @@ export const routes: Routes = [
     component: RequestDetailsComponent,
   },
   {
+    path: 'funcionario/:userId/solicitacao/:requestId',
+    canActivate: [() => inject(Authenticator).checkAuthentication()],
+    component: RequestDetailsComponent,
+  },
+  {
     path: 'funcionario/:employeeId/solicitacoes',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: RequestsComponent,
@@ -76,5 +83,20 @@ export const routes: Routes = [
     path: 'funcionario/:employeeId/funcionarios',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: EmployeesListingComponent,
+  },
+  {
+    path: 'funcionario/:employeeId/pedir-receita',
+    canActivate: [() => inject(Authenticator).checkAuthentication()],
+    component: RequestRevenueComponent,
+  },
+  {
+    path: 'funcionario/:employeeId/receita',
+    canActivate: [() => inject(Authenticator).checkAuthentication()],
+    component: RevenueComponent,
+  },
+  {
+    path: 'funcionario/:employeeId/receita/categoria',
+    canActivate: [() => inject(Authenticator).checkAuthentication()],
+    component: RevenueComponent,
   },
 ];

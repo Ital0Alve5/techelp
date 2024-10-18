@@ -1,4 +1,3 @@
-<td><link-as-button href="/cliente/{{ userId() }}/solicitacao/{{ id() }}">Abrir</link-as-button></td>
 <td>{{ date() }}</td>
 <td>{{ userName }}</td>
 <td>{{ deviceDescription() }}</td>
@@ -49,7 +48,7 @@
       <button app-button (click)="openModal()">Finalizar Solicitação</button>
     }
     @default {
-      <link-as-button href="/funcionario/{{ userId() }}/solicitacao/{{ id() }}">Visualizar</link-as-button>
+      <link-as-button href="/cliente/{{ userId() }}/solicitacao/{{ id() }}">Visualizar</link-as-button>
     }
   }
 </td>

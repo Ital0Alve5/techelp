@@ -3,17 +3,11 @@
 @import 'typology';
 
 :host {
-  margin-top: 50px;
-  align-self: center;
-  max-height: 100%;
-}
-
-div {
   align-self: center;
   width: 100%;
   overflow: auto;
   max-height: 50%;
-  max-width: 1400px;
+  max-width: 1000px;
   border: 1px solid $neutral-30;
   border-radius: 20px;
   padding: 30px;
@@ -27,21 +21,44 @@ table {
   border-collapse: collapse;
   border-style: hidden;
   width: 100%;
+  max-width: 1400px;
 }
+
 tr {
   transition: 0.5s;
   border-bottom: 1px solid $neutral-30;
+
   &:hover {
     background-color: $neutral-10;
     transition: 0.5s;
   }
 }
+
+tr:last-child {
+  border-bottom: none;
+}
+
 th {
   padding: 10px;
+}
+
+th:first-child {
+  width: 50%;
   border-right: 1px solid $neutral-30;
 }
 
 .noRequestsYet {
   text-align: center;
   font-weight: $weight-bold;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+h2 {
+  margin-bottom: 30px;
+  text-align: center;
 }

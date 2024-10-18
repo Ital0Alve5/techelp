@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
+
 
 interface RequestHistory {
   date: string;
@@ -35,7 +36,7 @@ export class RequestDetailsComponent {
   };
   requestHistory: RequestHistory[] = [];
 
-  constructor() {
+  constructor(public router: Router,) {
     const request = maintenanceRequests.find(
       (request) => request.userId === this.userId && request.id === this.requestId,
     );

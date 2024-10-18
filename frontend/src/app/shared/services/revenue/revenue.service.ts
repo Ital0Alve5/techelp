@@ -49,7 +49,7 @@ export class RevenueService {
 
       return {
         deviceCategory: category.label,
-        totalPrice: totalPrice,
+        price: totalPrice,
       };
     });
 

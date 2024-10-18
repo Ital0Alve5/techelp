@@ -17,6 +17,7 @@ import { RequestRevenueComponent } from './features/request-revenue/request-reve
 import { RevenueComponent } from './features/revenue/revenue.component';
 
 export const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginComponent,
@@ -78,6 +79,7 @@ export const routes: Routes = [
     path: 'funcionario/:employeeId/manutencao/:requestId',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: PerformMaintenanceComponent,
+<<<<<<< Updated upstream
   },
   {
     path: 'funcionario/:employeeId/funcionarios',
@@ -98,5 +100,7 @@ export const routes: Routes = [
     path: 'funcionario/:employeeId/receita/categoria',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: RevenueComponent,
+=======
+>>>>>>> Stashed changes
   },
 ];

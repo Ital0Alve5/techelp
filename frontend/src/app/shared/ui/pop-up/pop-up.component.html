@@ -1,4 +1,4 @@
-@for (popUp of popUpService.getPopUpList(); track popUp.message) {
+@for (popUp of popUpList(); track popUp.message) {
   <div class="popUp" [class.error]="popUp.type === status.Error" [class.success]="popUp.type === status.Success">
     @switch (popUp.type) {
       @case (status.Error) {

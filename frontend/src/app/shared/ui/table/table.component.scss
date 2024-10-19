@@ -61,11 +61,12 @@ table {
 td {
   padding: 12px 15px;
   text-align: left;
+
   &.actions {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 8px;
   }
 }
 

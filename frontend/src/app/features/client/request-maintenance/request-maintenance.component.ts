@@ -41,7 +41,6 @@ import { Categorie } from '@/shared/types/categorie.type';
     MinLengthValidator,
     DeviceCategoryValidator,
     RequestMaintenanceService,
-    PopupService,
   ],
   templateUrl: './request-maintenance.component.html',
   styleUrls: ['./request-maintenance.component.scss'],
@@ -85,6 +84,11 @@ export class RequestMaintenanceComponent implements OnInit {
           });
         } else {
           this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);
+          
+          this.popupService.addNewPopUp({
+            type: Status.Success,
+            message: 'Solicitação de manutenção enviada!',
+          });
         }
       });
   }

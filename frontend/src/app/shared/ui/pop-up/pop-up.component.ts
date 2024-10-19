@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 
@@ -14,6 +14,7 @@ import { Status } from './enum/status.enum';
 })
 export class PopUpComponent {
   status = Status;
+  popUpList = signal(this.popUpService.getPopUpList());
 
-  constructor(public popUpService: PopupService) {}
+  constructor(private popUpService: PopupService) {}
 }

@@ -2,22 +2,35 @@ import { Injectable } from '@angular/core';
 import { RequestStats } from '@/shared/types/request-status.type';
 import { Requests } from '@/shared/types/api/maintenance-requests.type';
 import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
-
+import { ClientRequests } from '@/features/client/requests-table/types/client-requests.type';
 @Injectable()
 export class RequestsService {
+  sortDateDescendingOrder(requests: ClientRequests[]) {
+    return requests.sort((request, previousRequest) => {
+      const formattedRequestDate = `${request.date} ${request.hour}`;
+      const formatPreviousRequestDate = `${previousRequest.date} ${previousRequest.hour}`;
+
+      if (formattedRequestDate > formatPreviousRequestDate) return -1;
+      else if (formattedRequestDate < formatPreviousRequestDate) return 1;
+      else return 0;
+    });
+  }
+
   getRequestsByClientId(clientId: number) {
-    return maintenanceRequests
-      .filter((request) => request.userId === clientId)
-      .map((request) => {
-        return {
-          id: request.id,
-          userId: request.userId,
-          date: request.date,
-          hour: request.hour,
-          deviceDescription: request.deviceDescription,
-          currentStatus: request.currentStatus,
-        };
-      });
+    return this.sortDateDescendingOrder(
+      maintenanceRequests
+        .filter((request) => request.userId === clientId)
+        .map((request) => {
+          return {
+            id: request.id,
+            userId: request.userId,
+            date: request.date,
+            hour: request.hour,
+            deviceDescription: request.deviceDescription,
+            currentStatus: request.currentStatus,
+          };
+        }),
+    );
   }
   //Devolve array de solicitações. Sem ennhum parametro, devolve todas as solicitações existentes,
   //com os parametros, devolve apenas as solicitações que tem o status ou funcionario envolvido.

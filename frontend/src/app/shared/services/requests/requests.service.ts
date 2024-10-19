@@ -5,6 +5,19 @@ import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 
 @Injectable()
 export class RequestsService {
+  getRequestsByClientId(clientId: number) {
+    return maintenanceRequests
+      .filter((request) => request.userId === clientId)
+      .map((request) => {
+        return {
+          id: request.id,
+          userId: request.userId,
+          date: request.date,
+          deviceDescription: request.deviceDescription,
+          currentStatus: request.currentStatus,
+        };
+      });
+  }
   //Devolve array de solicitações. Sem ennhum parametro, devolve todas as solicitações existentes,
   //com os parametros, devolve apenas as solicitações que tem o status ou funcionario envolvido.
   getRequest(wantedStatus?: RequestStats, wantedEmployeeId?: number): Requests[] {

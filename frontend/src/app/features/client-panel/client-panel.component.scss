@@ -3,40 +3,59 @@
 @import 'typology';
 
 :host {
-  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  overflow: auto;
-  max-height: 50%;
-  max-width: 1400px;
-  border: 1px solid $neutral-30;
-  border-radius: 20px;
-  padding: 30px;
-  background-color: $neutral-base;
-}
-
-table {
-  text-align: center;
-  color: $neutral-70;
-  font-size: $size-base;
-  border-collapse: collapse;
-  border-style: hidden;
-  width: 100%;
-  max-width: 1400px;
-}
-tr {
-  transition: 0.5s;
-  border-bottom: 1px solid $neutral-30;
-  &:hover {
-    background-color: $neutral-10;
-    transition: 0.5s;
-  }
-}
-th {
-  padding: 10px;
-  border-right: 1px solid $neutral-30;
 }
 
 .noRequestsYet {
   text-align: center;
   font-weight: $weight-bold;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  background-color: white;
+  overflow: hidden;
+  font-size: 14px;
+  color: $neutral-70;
+  -webkit-box-shadow: 0px 3px 15px -10px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 3px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 3px 15px -10px rgba(0, 0, 0, 0.75);
+
+  thead {
+    background-color: $brand-purple;
+
+    th {
+      padding: 12px 15px;
+      text-align: left;
+      color: #fff;
+      font-weight: 400;
+    }
+  }
+
+  tbody {
+    tr {
+      &:nth-child(even) {
+        background-color: $neutral-15;
+
+        &:hover {
+          background-color: $neutral-20;
+        }
+      }
+
+      &:nth-child(odd) {
+        &:hover {
+          background-color: $neutral-15;
+        }
+      }
+
+      &:hover {
+        background-color: #f1f3f7;
+      }
+    }
+  }
 }

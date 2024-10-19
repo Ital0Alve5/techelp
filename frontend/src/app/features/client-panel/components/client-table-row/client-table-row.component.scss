@@ -1,22 +1,58 @@
 @import 'variables';
 @import 'colors';
-@import 'typology';
 
 td {
-  padding: 20px;
-  border-right: 1px solid $neutral-30;
-}
-
-tr {
-  transition: 0.5s;
-  border-bottom: 1px solid $neutral-30;
-
-  &:hover {
-    background-color: $neutral-30;
-    transition: 0.5s;
+  padding: 12px 15px;
+  text-align: left;
+  &.actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
 }
 
-p{
-  color: green;
+allow-visibility-icon {
+  cursor: pointer;
+}
+
+waiting-icon {
+  display: inline-block;
+}
+
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 160px;
+  background-color: #4b4b4b;
+  color: #fff;
+  text-align: center;
+  padding: 8px;
+  border-radius: 4px;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tooltip-text::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #4b4b4b transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }

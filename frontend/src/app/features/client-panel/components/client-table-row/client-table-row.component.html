@@ -1,12 +1,21 @@
-<td><link-as-button href="/cliente/{{ userId() }}/solicitacao/{{ id() }}">Abrir</link-as-button></td>
+<!-- <td><link-as-button href="/cliente/{{ userId() }}/solicitacao/{{ id() }}">Abrir</link-as-button></td> -->
 <td>{{ date() }}</td>
 <td>{{ description() }}</td>
 <td>{{ status() }}</td>
-<td>
+<td class="actions">
+  <allow-visibility-icon width="20px" color="#9197B3" (click)="onViewRequestDetails()" />
+
   @switch (status()) {
     @case ('Aprovada') {
-      <p>Manutenção em andamento</p>
+      <!-- <waiting-icon width="16px" color="#9197B3" /> -->
+
+      <div class="tooltip-container">
+        <waiting-icon width="16px" color="#9197B3" />
+        <span class="tooltip-text">Manutenção em andamento</span>
+      </div>
+      <!-- <p>Manutenção em andamento</p> -->
     }
+    <!--
     @case ('Orçada') {
       <link-as-button href="/cliente/{{ userId() }}/orcamento/{{ id() }}"> Aprovar/Rejeitar</link-as-button>
     }
@@ -15,9 +24,6 @@
     }
     @case ('Arrumada') {
       <link-as-button href="/cliente/{{ userId() }}/orcamento/{{ id() }}"> Pagar serviço</link-as-button>
-    }
-    @default {
-      <link-as-button href="/cliente/{{ userId() }}/solicitacao/{{ id() }}">Visualizar</link-as-button>
-    }
+    } -->
   }
 </td>

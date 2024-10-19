@@ -10,14 +10,14 @@ import { AllowVisibilityIcon } from '@/shared/ui/icons/allow-visibility.icon';
 import { WaitingIcon } from '@/shared/ui/icons/waiting.icon';
 
 @Component({
-  selector: 'app-client-panel',
+  selector: 'app-client-requests-table',
   standalone: true,
   imports: [CardComponent, AllowVisibilityIcon, TableComponent, WaitingIcon],
   providers: [RequestsService],
-  templateUrl: './client-panel.component.html',
-  styleUrl: './client-panel.component.scss',
+  templateUrl: './requests-table.component.html',
+  styleUrl: './requests-table.component.scss',
 })
-export class ClientPanelComponent {
+export class ClientRequestsTableComponent {
   userId: number = JSON.parse(localStorage.getItem('userId')!);
   requests: ClientRequests[] = this.requestsService.getRequestsByClientId(this.userId);
 

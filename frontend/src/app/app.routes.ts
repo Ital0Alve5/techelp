@@ -6,7 +6,7 @@ import { ClientRequestsTableComponent } from './features/client/requests-table/r
 import { RequestMaintenanceComponent } from './features/client/request-maintenance/request-maintenance.component';
 import { Authenticator } from './core/auth/authenticator.service';
 import { BudgetComponent } from './features/client/budget/budget.component';
-import { RescueComponent } from './features/rescue/rescue.component';
+import { RedeemComponent } from './features/client/redeem/redeem.component';
 import { RequestDetailsComponent } from './features/request-details/request-details.component';
 import { RequestsComponent } from './features/employee/requests/requests.component';
 import { MakeBudgetComponent } from './features/make-budget/make-budget.component';
@@ -48,7 +48,7 @@ export const routes: Routes = [
   {
     path: 'cliente/:userId/resgate/:id',
     canActivate: [() => inject(Authenticator).checkAuthentication()],
-    component: RescueComponent,
+    component: RedeemComponent,
   },
   {
     path: 'cliente/:userId/solicitacao/:requestId',

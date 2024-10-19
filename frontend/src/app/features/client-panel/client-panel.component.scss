@@ -1,6 +1,6 @@
+@import 'typology';
 @import 'variables';
 @import 'colors';
-@import 'typology';
 
 :host {
   display: flex;
@@ -9,53 +9,73 @@
   width: 100%;
 }
 
+app-table {
+  width: 100%;
+}
+
+button {
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+p {
+  color: $feedback-warning-50;
+}
+
 .noRequestsYet {
   text-align: center;
   font-weight: $weight-bold;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  border-radius: 8px;
-  background-color: white;
-  overflow: hidden;
-  font-size: 14px;
-  color: $neutral-70;
-  -webkit-box-shadow: 0px 3px 15px -10px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 3px 15px -10px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 3px 15px -10px rgba(0, 0, 0, 0.75);
+allow-visibility-icon {
+  cursor: pointer;
+}
 
-  thead {
-    background-color: $brand-purple;
+.checkBudgetButton {
+  border: 1px solid $feedback-positive-50;
+  color: $feedback-positive-50;
+}
 
-    th {
-      padding: 12px 15px;
-      text-align: left;
-      color: #fff;
-      font-weight: 400;
-    }
-  }
+.payServiceButton {
+  border: 1px solid $feedback-info-50;
+  color: $feedback-info-50;
+}
 
-  tbody {
-    tr {
-      &:nth-child(even) {
-        background-color: $neutral-15;
+.redeemRequestButton {
+  border: 1px solid $feedback-negative-90;
+  color: $feedback-negative-90;
+}
 
-        &:hover {
-          background-color: $neutral-20;
-        }
-      }
+.aberta {
+  color: gray;
+}
 
-      &:nth-child(odd) {
-        &:hover {
-          background-color: $neutral-15;
-        }
-      }
+.orcada {
+  color: rgb(123, 75, 30);
+}
 
-      &:hover {
-        background-color: #f1f3f7;
-      }
-    }
-  }
+.rejeitada {
+  color: red;
+}
+
+.aprovada {
+  color: rgb(197, 197, 10);
+}
+
+.redirecionada {
+  color: purple;
+}
+
+.aguardando {
+  color: blue;
+}
+
+.paga {
+  color: orange;
+}
+
+.finalizada {
+  color: green;
 }

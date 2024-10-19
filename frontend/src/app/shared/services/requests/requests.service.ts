@@ -13,6 +13,7 @@ export class RequestsService {
           id: request.id,
           userId: request.userId,
           date: request.date,
+          hour: request.hour,
           deviceDescription: request.deviceDescription,
           currentStatus: request.currentStatus,
         };

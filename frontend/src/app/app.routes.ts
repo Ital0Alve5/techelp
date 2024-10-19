@@ -7,7 +7,7 @@ import { RequestMaintenanceComponent } from './features/client/request-maintenan
 import { Authenticator } from './core/auth/authenticator.service';
 import { BudgetComponent } from './features/client/budget/budget.component';
 import { RedeemComponent } from './features/client/redeem/redeem.component';
-import { RequestDetailsComponent } from './features/request-details/request-details.component';
+import { RequestDetailsComponent } from './features/client/request-details/request-details.component';
 import { RequestsComponent } from './features/employee/requests/requests.component';
 import { MakeBudgetComponent } from './features/make-budget/make-budget.component';
 import { PerformMaintenanceComponent } from './features/perform-maintenance/perform-maintenance/perform-maintenance.component';

@@ -1,39 +1,39 @@
 @if (router.url.includes('cliente')) {
   <a routerLink="/cliente/{{ userId }}/solicitacoes">
-  <arrow-right-icon width="20px" color="#fff" />
-</a>
+    <arrow-right-icon width="20px" color="#fff" />
+  </a>
 }
 @if (router.url.includes('funcionario')) {
   <a routerLink="/funcionario/{{ userId }}/solicitacoes">
-  <arrow-right-icon width="20px" color="#fff" />
-</a>
+    <arrow-right-icon width="20px" color="#fff" />
+  </a>
 }
 <section>
   <ul class="request-description">
     <li>
       <b>Data da solicitação:</b>
-      <p>{{ requestData.date }} às {{ requestData.hour }}</p>
+      <p>{{ requestData().date }} às {{ requestData().hour }}</p>
     </li>
     <li>
       <b>Categoria do equipamento:</b>
-      <p>{{ requestData.deviceCategory }}</p>
+      <p>{{ requestData().deviceCategory }}</p>
     </li>
     <li>
       <b>Descrição do equipamento:</b>
       <p>
-        {{ requestData.deviceDescription }}
+        {{ requestData().deviceDescription }}
       </p>
     </li>
     <li>
       <b>Descrição do defeito:</b>
       <p>
-        {{ requestData.issueDescription }}
+        {{ requestData().issueDescription }}
       </p>
     </li>
     <li>
       <b>Estado atual:</b>
       <p>
-        {{ requestData.currentStatus }}
+        {{ requestData().currentStatus }}
       </p>
     </li>
   </ul>
@@ -46,7 +46,7 @@
       <th>Funcionário responsável</th>
       <th>Ação</th>
     </tr>
-    @for (request of requestHistory; track $index) {
+    @for (request of requestData().history; track $index) {
       <tr>
         <td>{{ request.date }} {{ request.hour }}</td>
         <td>{{ request.employee }}</td>

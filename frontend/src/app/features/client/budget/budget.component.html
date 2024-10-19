@@ -2,46 +2,46 @@
   <a routerLink="/cliente/{{ userId }}/solicitacoes">
     <arrow-right-icon width="20px" color="#fff" />
   </a>
-  @if (requestData.currentStatus === 'Orçada') {
-    <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="openModalReject()">Rejeitar</button>
-    <button backgroundColor="#10855b" hoverColor="none" app-button (click)="openModalApprove()">Aprovar</button>
-  } @else if (requestData.currentStatus === 'Arrumada') {
-    <button backgroundColor="#10855b" hoverColor="none" app-button (click)="openModalPayment()">Pagar serviço</button>
+  @if (requestData().currentStatus === 'Orçada') {
+    <button backgroundColor="#dc363c" app-button (click)="openModalReject()">Rejeitar</button>
+    <button backgroundColor="#10855b" app-button (click)="openModalApprove()">Aprovar</button>
+  } @else if (requestData().currentStatus === 'Arrumada') {
+    <button backgroundColor="#10855b" app-button (click)="openModalPayment()">Pagar serviço</button>
   }
 </div>
 <section class="budget-container">
   <p>
-    Serviço avaliado por <b> {{ requestData.employee }}</b> e orçado em:
+    Serviço avaliado por <b> {{ requestData().employee }}</b> e orçado em:
   </p>
-  <p class="price">R$ {{ requestData.price }}</p>
+  <p class="price">R$ {{ requestData().price }}</p>
 </section>
 <section>
   <ul class="request-description">
     <li>
       <b>Data da solicitação:</b>
-      <p>{{ requestData.date }} às {{ requestData.hour }}</p>
+      <p>{{ requestData().date }} às {{ requestData().hour }}</p>
     </li>
     <li>
       <b>Categoria do equipamento:</b>
-      <p>{{ requestData.deviceCategory }}</p>
+      <p>{{ requestData().deviceCategory }}</p>
     </li>
     <li>
       <b>Descrição do equipamento:</b>
-      <p>{{ requestData.deviceDescription }}</p>
+      <p>{{ requestData().deviceDescription }}</p>
     </li>
     <li>
       <b>Descrição do defeito:</b>
-      <p>{{ requestData.issueDescription }}</p>
+      <p>{{ requestData().issueDescription }}</p>
     </li>
   </ul>
 </section>
 
 <div>
   <app-modal [(isHidden)]="isApprovalModalOpen">
-    <h1>Serviço Aprovado</h1>
+    <p class="modal-title">Serviço Aprovado</p>
     <br />
     <p>
-      Serviço aprovado no valor de <span class="price-highlight">R$ {{ requestData.price }}</span>
+      Serviço aprovado no valor de <span class="price-highlight">R$ {{ requestData().price }}</span>
     </p>
     <div class="modal-footer">
       <button app-button (click)="closeModalApprove()" routerLink="/cliente/1/solicitacoes">OK</button>
@@ -51,7 +51,7 @@
 
 <div>
   <app-modal [(isHidden)]="isRejectModalOpen">
-    <h2>Rejeitar orçamento</h2>
+    <p class="modal-title">Rejeitar orçamento</p>
     <p class="modal">Escreva o motivo de rejeição:</p>
     <form (ngSubmit)="confirmReject(rejectForm)" #rejectForm="ngForm">
       <textarea
@@ -67,7 +67,6 @@
         [disabled]="!rejectForm.valid"
         class="button--modal"
         backgroundColor="#10855b"
-        hoverColor="none"
         app-button
       >
         Continuar
@@ -80,12 +79,12 @@
   <app-modal [(isHidden)]="isPaymentConfirmationModalOpen">
     <h2>Confirmação de pagamento</h2>
     <p class="modal">
-      Confirmar pagamento de <span class="price-highlight">R${{ requestData.price }}</span
+      Confirmar pagamento de <span class="price-highlight">R${{ requestData().price }}</span
       >?
     </p>
     <div class="buttons buttons--modal">
-      <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeModalPayment()">Cancelar</button>
-      <button backgroundColor="#10855b" hoverColor="none" app-button (click)="confirmPayment()">Continuar</button>
+      <button backgroundColor="#dc363c" app-button (click)="closeModalPayment()">Cancelar</button>
+      <button backgroundColor="#10855b" app-button (click)="confirmPayment()">Continuar</button>
     </div>
   </app-modal>
 </div>

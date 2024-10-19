@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { GuestLayout } from '@/shared/layouts/guest/guest.layout';
 import { PopUpComponent } from '@/shared/ui/pop-up/pop-up.component';
 import { LoggedUserComponent } from './shared/layouts/logged-user/logged-user.component';
-import { BudgetComponent } from './features/budget/budget.component';
+import { BudgetComponent } from './features/client/budget/budget.component';
 import { Authenticator } from './core/auth/authenticator.service';
 
 @Component({

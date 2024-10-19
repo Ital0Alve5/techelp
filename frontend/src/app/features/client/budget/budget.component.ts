@@ -1,21 +1,23 @@
 import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { FormsModule, NgForm } from '@angular/forms';
+
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
-import { RouterLink } from '@angular/router';
-import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
-import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+
+import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
-import { FormsModule } from '@angular/forms';
-import { NgForm } from '@angular/forms';
+import { BudgetService } from './services/budget.service';
 
 @Component({
   selector: 'app-budget',
   standalone: true,
   imports: [ButtonComponent, CardComponent, ArrowRightIcon, RouterLink, ModalComponent, FormsModule],
+  providers: [BudgetService],
   templateUrl: './budget.component.html',
   styleUrl: './budget.component.scss',
 })
@@ -28,37 +30,14 @@ export class BudgetComponent {
   isRejectModalOpen = signal(true);
   rejectReason = signal('');
 
-  requestData = {
-    deviceDescription: '',
-    deviceCategory: '',
-    issueDescription: '',
-    price: '',
-    date: '',
-    hour: '',
-    employee: '',
-    currentStatus: '',
-  };
+  requestData = signal(this.budgetService.getBudgetByRequestId(this.requestId));
 
   constructor(
     private popupService: PopupService,
     private router: Router,
     private updateRequestStatusService: UpdateRequestStatusService,
-  ) {
-    maintenanceRequests.forEach((request) => {
-      if (request.userId === this.userId && this.requestId === request.id) {
-        this.requestData = {
-          deviceDescription: request.deviceDescription,
-          deviceCategory: request.deviceCategory,
-          issueDescription: request.issueDescription,
-          price: request.price,
-          date: request.date,
-          hour: request.hour,
-          employee: request.history[request.history.length - 1].employee,
-          currentStatus: request.currentStatus,
-        };
-      }
-    });
-  }
+    private budgetService: BudgetService,
+  ) {}
 
   openModalPayment() {
     this.isPaymentConfirmationModalOpen.set(false);
@@ -69,7 +48,7 @@ export class BudgetComponent {
   }
 
   confirmPayment() {
-    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Paga');
+    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData().employee, 'Paga');
 
     this.closeModalPayment();
 
@@ -82,7 +61,7 @@ export class BudgetComponent {
   }
 
   openModalApprove() {
-    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Aprovada');
+    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData().employee, 'Aprovada');
     this.isApprovalModalOpen.set(false);
   }
 
@@ -99,19 +78,19 @@ export class BudgetComponent {
   }
 
   confirmReject(rejectForm: NgForm) {
-    if (rejectForm.valid) {
-      const rejectionReason = rejectForm.value.rejectReason;
+    if (!rejectForm.valid) return;
 
-      this.updateRequestStatusService.updateStatus(
-        this.requestId,
-        this.requestData.employee,
-        'Rejeitada',
-        rejectionReason,
-      );
+    const rejectionReason = rejectForm.value.rejectReason;
 
-      this.closeModalReject();
+    this.updateRequestStatusService.updateStatus(
+      this.requestId,
+      this.requestData().employee,
+      'Rejeitada',
+      rejectionReason,
+    );
 
-      this.router.navigate([`/cliente/${this.userId}/solicitacoes`]);
-    }
+    this.closeModalReject();
+
+    this.router.navigate([`/cliente/${this.userId}/solicitacoes`]);
   }
 }

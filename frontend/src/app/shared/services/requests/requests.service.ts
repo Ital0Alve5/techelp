@@ -5,6 +5,34 @@ import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 import { ClientRequests } from '@/features/client/requests-table/types/client-requests.type';
 @Injectable()
 export class RequestsService {
+
+  updateStatus(requestId: number, employee: string, status: RequestStats, rejectReason: string = '') {
+    const requestFound = maintenanceRequests.find(({ id }) => id === requestId);
+
+    if (!requestFound) return;
+
+    const lastIndex = requestFound.history.length ? requestFound.history.length - 1 : 0;
+    const lastStatus = requestFound.history[lastIndex].toStatus;
+
+    const today = new Date().toLocaleDateString();
+    const time = new Date();
+    const hour = time.getHours().toString().padStart(2, '0');
+    const minute = time.getMinutes().toString().padStart(2, '0');
+
+    const newEntry = {
+      date: today,
+      hour: `${hour}:${minute}`,
+      fromStatus: lastStatus,
+      toStatus: status,
+      employee,
+    };
+
+    requestFound.history.push(newEntry);
+    requestFound.currentStatus = status;
+
+    requestFound.rejectReason = rejectReason;
+  }
+
   sortDateDescendingOrder(requests: ClientRequests[] | Requests[]): ClientRequests[] | Requests[] {
     return requests.sort((request, previousRequest) => {
       const formattedRequestDate = `${request.date} ${request.hour}`;

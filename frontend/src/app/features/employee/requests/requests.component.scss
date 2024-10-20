@@ -12,23 +12,76 @@ allow-visibility-icon {
   cursor: pointer;
 }
 
-div {
-  align-self: center;
-  width: 100%;
-  overflow: auto;
-  max-height: 50%;
-  max-width: 1400px;
-  border: 1px solid $neutral-30;
-  border-radius: 20px;
-  padding: 30px;
-  background-color: $neutral-base;
+.noRequestsYet {
+  text-align: center;
+  font-weight: $weight-bold;
 }
 
 app-table {
   width: 100%;
 }
 
-.noRequestsYet {
-  text-align: center;
-  font-weight: $weight-bold;
+.makeBudget {
+  border: 1px solid $feedback-positive-50;
+  color: $feedback-positive-50;
+}
+
+.makeMaintenance {
+  border: 1px solid $feedback-info-50;
+  color: $feedback-info-50;
+}
+
+.finishRequest {
+  border: 1px solid $feedback-negative-90;
+  color: $feedback-negative-90;
+}
+
+.aberta {
+  color: gray;
+}
+
+.orcada {
+  color: rgb(123, 75, 30);
+}
+
+.rejeitada {
+  color: red;
+}
+
+.aprovada {
+  color: rgb(197, 197, 10);
+}
+
+.redirecionada {
+  color: purple;
+}
+
+.aguardando {
+  color: blue;
+}
+
+.paga {
+  color: orange;
+}
+
+.finalizada {
+  color: green;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
+
+  .cancelButton {
+    background-color: $feedback-negative-50;
+    color: #fff;
+  }
+
+  .confirmButton {
+    background-color: $feedback-positive-50;
+    color: #fff;
+  }
 }

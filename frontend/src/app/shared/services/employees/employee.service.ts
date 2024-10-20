@@ -4,11 +4,13 @@ import { Employee } from '@/shared/types/employee.type';
 
 @Injectable()
 export class EmployeeService {
+  getEmployeeById(employeeId: number): Employee {
+    return registeredEmployee.filter((employee) => employee.id === employeeId)[0];
+  }
+
   getAllEmployees(): Employee[] {
     return registeredEmployee;
   }
-
-  
 
   addNewEmployee(newEmployee: Omit<Employee, 'id'>): Employee[] {
     registeredEmployee.push({ ...newEmployee, id: Math.random() * (100 - 7) + 7 });

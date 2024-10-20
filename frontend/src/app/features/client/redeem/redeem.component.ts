@@ -8,14 +8,14 @@ import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
-import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
+import { RequestsService } from '@/shared/services/requests/requests.service';
 import { RedeemService } from './services/redeem.service';
 
 @Component({
   selector: 'app-redeem',
   standalone: true,
   imports: [ButtonComponent, CardComponent, ArrowRightIcon, RouterLink, ModalComponent],
-  providers: [RedeemService],
+  providers: [RequestsService],
   templateUrl: './redeem.component.html',
   styleUrls: ['./redeem.component.scss'],
 })
@@ -28,7 +28,7 @@ export class RedeemComponent {
   constructor(
     private popupService: PopupService,
     private router: Router,
-    private updateRequestStatusService: UpdateRequestStatusService,
+    private requestsService: RequestsService,
     private redeemService: RedeemService,
   ) {}
 
@@ -41,7 +41,7 @@ export class RedeemComponent {
   }
 
   confirmRedeem() {
-    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData().employee, 'Aprovada');
+    this.requestsService.updateStatus(this.requestId, this.requestData().employee, 'Aprovada');
 
     this.closeModal();
 

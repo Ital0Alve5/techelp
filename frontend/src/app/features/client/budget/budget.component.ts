@@ -10,14 +10,13 @@ import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
-import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
 import { BudgetService } from './services/budget.service';
-
+import { RequestsService } from '@/shared/services/requests/requests.service';
 @Component({
   selector: 'app-budget',
   standalone: true,
   imports: [ButtonComponent, CardComponent, ArrowRightIcon, RouterLink, ModalComponent, FormsModule],
-  providers: [BudgetService],
+  providers: [BudgetService, RequestsService],
   templateUrl: './budget.component.html',
   styleUrl: './budget.component.scss',
 })
@@ -35,7 +34,8 @@ export class BudgetComponent {
   constructor(
     private popupService: PopupService,
     private router: Router,
-    private updateRequestStatusService: UpdateRequestStatusService,
+    private requestsService: RequestsService,
+
     private budgetService: BudgetService,
   ) {}
 
@@ -48,7 +48,7 @@ export class BudgetComponent {
   }
 
   confirmPayment() {
-    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData().employee, 'Paga');
+    this.requestsService.updateStatus(this.requestId, this.requestData().employee, 'Paga');
 
     this.closeModalPayment();
 
@@ -61,7 +61,7 @@ export class BudgetComponent {
   }
 
   openModalApprove() {
-    this.updateRequestStatusService.updateStatus(this.requestId, this.requestData().employee, 'Aprovada');
+    this.requestsService.updateStatus(this.requestId, this.requestData().employee, 'Aprovada');
     this.isApprovalModalOpen.set(false);
   }
 
@@ -82,7 +82,7 @@ export class BudgetComponent {
 
     const rejectionReason = rejectForm.value.rejectReason;
 
-    this.updateRequestStatusService.updateStatus(
+    this.requestsService.updateStatus(
       this.requestId,
       this.requestData().employee,
       'Rejeitada',

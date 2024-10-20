@@ -11,13 +11,13 @@ import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 import { RedirectMaintenanceService } from '../services/redirect-maintenance.service';
-import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
 import { SelectComponent } from '@/shared/ui/select/select.component';
+import { RequestsService } from '@/shared/services/requests/requests.service';
 @Component({
   selector: 'app-perform-maintenance',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, ArrowRightIcon, ButtonComponent, ModalComponent, SelectComponent],
-  providers: [UpdateRequestStatusService],
+  providers: [RequestsService],
   templateUrl: './perform-maintenance.component.html',
   styleUrls: ['./perform-maintenance.component.scss'],
 })
@@ -60,7 +60,7 @@ export class PerformMaintenanceComponent {
     private popupService: PopupService,
     private router: Router,
     private redirectMaintenanceService: RedirectMaintenanceService,
-    private updateRequestStatusService: UpdateRequestStatusService,
+    private requestsService: RequestsService
   ) {
     maintenanceRequests.forEach((request) => {
       if (request.employeeId === this.employeeId && this.requestId === request.id) {
@@ -136,7 +136,7 @@ export class PerformMaintenanceComponent {
         request.maintenanceDescription = maintenanceDetails.form.value.maintenanceDescription;
         request.oritentationToClient = maintenanceDetails.form.value.orientationToClient;
 
-        this.updateRequestStatusService.updateStatus(
+        this.requestsService.updateStatus(
           this.requestId,
           'Yasmim Alves de Paula e Silva',
           'Aguardando Pagamento',

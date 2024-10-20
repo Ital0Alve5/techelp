@@ -8,22 +8,14 @@ import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
-import { UpdateRequestStatusService } from '@/shared/services/update-request-status/update-request-status.service';
 import { FormsModule } from '@angular/forms';
 import { InputComponent } from '@/shared/ui/input/input.component';
-
+import { RequestsService } from '@/shared/services/requests/requests.service';
 @Component({
   selector: 'app-make-budget',
   standalone: true,
-  imports: [
-    ButtonComponent,
-    CardComponent,
-    ArrowRightIcon,
-    RouterLink,
-    ModalComponent,
-    FormsModule,
-    InputComponent
-  ],
+  imports: [ButtonComponent, CardComponent, ArrowRightIcon, RouterLink, ModalComponent, FormsModule, InputComponent],
+  providers: [RequestsService],
   templateUrl: './make-budget.component.html',
   styleUrls: ['./make-budget.component.scss'],
 })
@@ -48,7 +40,7 @@ export class MakeBudgetComponent {
   constructor(
     private popupService: PopupService,
     private router: Router,
-    private updateRequestStatusService: UpdateRequestStatusService
+    private requestsService: RequestsService,
   ) {
     maintenanceRequests.forEach((request) => {
       if (request.userId === this.userId && this.requestId === request.id) {
@@ -79,7 +71,7 @@ export class MakeBudgetComponent {
 
     if (parsedBudget > 0) {
       this.requestData.price = parsedBudget.toString();
-      this.updateRequestStatusService.updateStatus(this.requestId, this.requestData.employee, 'Orçada');
+      this.requestsService.updateStatus(this.requestId, this.requestData.employee, 'Orçada');
 
       this.closeModal();
       this.router.navigate([`/funcionario/${this.userId}/solicitacoes/abertas`]);

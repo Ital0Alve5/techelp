@@ -3,9 +3,13 @@
 @import 'typology';
 
 :host {
-  margin-top: 50px;
-  align-self: center;
-  max-height: 100%;
+  margin: auto;
+  width: 100%;
+}
+
+allow-visibility-icon {
+  display: inline-block;
+  cursor: pointer;
 }
 
 div {
@@ -20,25 +24,8 @@ div {
   background-color: $neutral-base;
 }
 
-table {
-  text-align: center;
-  color: $neutral-70;
-  font-size: $size-base;
-  border-collapse: collapse;
-  border-style: hidden;
+app-table {
   width: 100%;
-}
-tr {
-  transition: 0.5s;
-  border-bottom: 1px solid $neutral-30;
-  &:hover {
-    background-color: $neutral-10;
-    transition: 0.5s;
-  }
-}
-th {
-  padding: 10px;
-  border-right: 1px solid $neutral-30;
 }
 
 .noRequestsYet {

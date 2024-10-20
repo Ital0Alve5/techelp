@@ -4,6 +4,7 @@
     id="startDate"
     type="date"
     #startDate
+    [max]="startDateMax()"
     (change)="
       onDateChange({
         startDate: startDate.value,
@@ -16,6 +17,8 @@
     id="endDate"
     type="date"
     #endDate
+    [value]="date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()"
+    [max]="date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()"
     (change)="
       onDateChange({
         endDate: endDate.value,

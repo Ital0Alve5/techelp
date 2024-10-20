@@ -5,7 +5,7 @@ import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 import { ClientRequests } from '@/features/client/requests-table/types/client-requests.type';
 @Injectable()
 export class RequestsService {
-  sortDateDescendingOrder(requests: ClientRequests[]) {
+  sortDateDescendingOrder(requests: ClientRequests[] | Requests[]): ClientRequests[] | Requests[] {
     return requests.sort((request, previousRequest) => {
       const formattedRequestDate = `${request.date} ${request.hour}`;
       const formatPreviousRequestDate = `${previousRequest.date} ${previousRequest.hour}`;
@@ -32,7 +32,7 @@ export class RequestsService {
         }),
     );
   }
-  //Devolve array de solicitações. Sem ennhum parametro, devolve todas as solicitações existentes,
+  //Devolve array de solicitações. Sem nennhum parametro, devolve todas as solicitações existentes,
   //com os parametros, devolve apenas as solicitações que tem o status ou funcionario envolvido.
   getRequest(wantedStatus?: RequestStats, wantedEmployeeId?: number): Requests[] {
     let requests: Requests[] = [...maintenanceRequests];
@@ -45,13 +45,32 @@ export class RequestsService {
       requests = requests.filter(({ currentStatus }) => currentStatus === wantedStatus);
     }
 
-    return requests;
+    return this.sortDateDescendingOrder(requests) as Requests[];
   }
 
   filterAll() {
     const requests: Requests[] = [...maintenanceRequests];
 
     return requests;
+  }
+
+  filterToday() {
+    const requests: Requests[] = [...maintenanceRequests];
+
+    const today = new Date().toISOString().split('T')[0];
+    return requests.filter((req) => req.date === today && req.currentStatus === 'Aberta');
+  }
+
+  filterOpenRequests() {
+    const requests: Requests[] = [...maintenanceRequests];
+
+    return requests.filter((req) => req.currentStatus === 'Aberta');
+  }
+
+  filterByDate(dates: { startDate: string; endDate: string }) {
+    const requests: Requests[] = [...maintenanceRequests];
+
+    return requests.filter((req) => this.isDateInRange(req.date, dates.startDate, dates.endDate));
   }
 
   isDateInRange(date: string, startDate: string, endDate: string): boolean {
@@ -61,18 +80,5 @@ export class RequestsService {
     }
 
     return parseDate(date) >= parseDate(startDate) && parseDate(date) <= parseDate(endDate);
-  }
-
-  filterToday() {
-    const requests: Requests[] = [...maintenanceRequests];
-
-    const today = new Date().toISOString().split('T')[0];
-    return requests.filter((req) => req.date === today);
-  }
-
-  filterByDate(dates: { startDate: string; endDate: string }) {
-    const requests: Requests[] = [...maintenanceRequests];
-
-    return requests.filter((req) => this.isDateInRange(req.date, dates.startDate, dates.endDate));
   }
 }

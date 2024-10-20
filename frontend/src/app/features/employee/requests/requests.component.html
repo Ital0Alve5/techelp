@@ -1,7 +1,9 @@
-<app-filters (filters)="updateRequests($event)" />
-@if (userRequests.length > 0) {
-  <table>
-    <tr>
+<app-filters (filters)="handleFilter($event)" />
+
+@if (userRequests().length > 0) {
+  <app-table>
+    <tr table-titles>
+      <th></th>
       <th>Data/Hora</th>
       <th>Cliente</th>
       <th>Descrição do produto</th>
@@ -9,19 +11,50 @@
       <th>Estado</th>
       <th>Ação</th>
     </tr>
-    @for (request of userRequests; track request.id) {
-      <tr
-        app-employee-table-row
-        [userId]="request.userId"
-        [id]="request.id"
-        [date]="request.date"
-        [issueDescription]="request.issueDescription"
-        [deviceDescription]="request.deviceDescription"
-        [status]="request.currentStatus"
-        [employeeId]="request.employeeId"
-      ></tr>
+
+    @for (request of userRequests(); track request.id) {
+      <tr table-data>
+        <td><allow-visibility-icon width="16px" color="#9197B3" /></td>
+        <td>{{ request.date }} {{ request.hour }}</td>
+        <td>sdd</td>
+        <td>
+          {{
+            request.deviceDescription.length > 30
+              ? request.deviceDescription.slice(0, 30) + '...'
+              : request.deviceDescription
+          }}
+        </td>
+        <td>
+          {{
+            request.issueDescription.length > 30
+              ? request.issueDescription.slice(0, 30) + '...'
+              : request.issueDescription
+          }}
+        </td>
+        <td [class]="request.currentStatus.toLocaleLowerCase().replace('ç', 'c')">
+          {{ request.currentStatus }}
+        </td>
+
+        <td class="actions">
+          @switch (request.currentStatus) {
+            @case ('Aprovada') {
+              <p>Manutenção em andamento</p>
+              <waiting-icon width="14px" color="#fd9519" />
+            }
+            @case ('Orçada') {
+              <button class="checkBudgetButton">Aprovar/Rejeitar</button>
+            }
+            @case ('Rejeitada') {
+              <button class="redeemRequestButton">Resgatar serviço</button>
+            }
+            @case ('Arrumada') {
+              <button class="payServiceButton">Pagar serviço</button>
+            }
+          }
+        </td>
+      </tr>
     }
-  </table>
+  </app-table>
 } @else {
   <p class="noRequestsYet">Nenhuma solicitação realizada ainda!</p>
 }

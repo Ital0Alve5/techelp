@@ -105,7 +105,7 @@ export class RequestsComponent {
 
     this.hideModal.set(true);
 
-    this.router.navigate([`/funcionario/${this.userId}/orcamento/${this.requestId()}`]);
+    this.router.navigate([`/funcionario/${this.userId}/solicitacoes}`]);
 
     this.popupService.addNewPopUp({
       type: Status.Success,

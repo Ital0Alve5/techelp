@@ -32,7 +32,9 @@ export class FiltersComponent implements OnInit {
     ) {
       this.filterOpen();
     } else if (this.filterType() === 'data') this.filterByDate();
-    else this.filterToday();
+    else if (this.filterType() === 'hoje') this.filterToday();
+    else if (this.filterType() === 'todas') this.filterAll();
+    else this.filterOpen();
   }
 
   isFilterTypes(value: string): value is FilterTypes {

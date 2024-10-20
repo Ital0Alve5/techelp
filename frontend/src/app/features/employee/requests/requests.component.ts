@@ -14,10 +14,11 @@ import { AllowVisibilityIcon } from '@/shared/ui/icons/allow-visibility.icon';
 
 import { EmployeeTableRowComponent } from './components/client-table-row/employee-table-row.component';
 import { FiltersResponse } from './components/filters/types/filters-response.type';
+import { ClientsService } from '@/shared/services/clients/clients.service';
 @Component({
   selector: 'app-requests',
   standalone: true,
-  providers: [RequestsService],
+  providers: [RequestsService, ClientsService],
   imports: [
     EmployeeTableRowComponent,
     ButtonComponent,
@@ -35,7 +36,10 @@ export class RequestsComponent {
   userId: number = JSON.parse(localStorage.getItem('userId')!);
   userRequests = signal(this.requestsService.getRequest('Aberta'));
 
-  constructor(private requestsService: RequestsService) {}
+  constructor(
+    private requestsService: RequestsService,
+    private clientsService: ClientsService,
+  ) {}
 
   handleFilter(filterSelected: FiltersResponse) {
     const type = typeof filterSelected === 'string' ? filterSelected : filterSelected.type;
@@ -60,5 +64,11 @@ export class RequestsComponent {
           }),
         );
     }
+  }
+
+  getClientName(userId: number) {
+    const name = this.clientsService.getClientById(userId)?.name;
+    const splittedName = name?.split(' ');
+    return `${splittedName?.[0]} ${splittedName?.[1]}`;
   }
 }

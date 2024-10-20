@@ -3,26 +3,20 @@
   <input
     id="startDate"
     type="date"
-    #startDate
-    [max]="startDateMax()"
-    (change)="
-      onDateChange({
-        startDate: startDate.value,
-      })
-    "
+    #startDateElement
+    [max]="endDate()"
+    [value]="startDate()"
+    (change)="onStartDateFiltered(startDateElement.value)"
   />
 
   <label for="endDate">Fim:</label>
   <input
     id="endDate"
     type="date"
-    #endDate
-    [value]="date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()"
-    [max]="date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()"
-    (change)="
-      onDateChange({
-        endDate: endDate.value,
-      })
-    "
+    #endDateElement
+    [value]="endDate()"
+    [max]="currentDate()"
+    [min]="startDate()"
+    (change)="onEndDateFiltered(endDateElement.value)"
   />
 </div>

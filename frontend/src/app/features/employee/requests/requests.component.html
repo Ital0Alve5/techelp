@@ -1,4 +1,4 @@
-<app-filters (filters)="handleFilter($event)" />
+<app-filters (onFilter)="handleFilter($event)" />
 
 @if (userRequests().length > 0) {
   <app-table>

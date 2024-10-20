@@ -7,6 +7,12 @@
   </div>
   <div class="filters__date">
     <p>Escolher período de data de abertura:</p>
-    <app-date (dateRangeSelected)="filterByDate($event)" />
+    <app-date
+      [currentDate]="currentDate"
+      [startDate]="startDate() || ''"
+      [endDate]="endDate() || ''"
+      (startDateFiltered)="setStartDate($event)"
+      (endDateFiltered)="setEndDate($event)"
+    />
   </div>
 </div>

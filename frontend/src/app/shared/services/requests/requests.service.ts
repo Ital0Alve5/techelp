@@ -5,7 +5,6 @@ import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 import { ClientRequests } from '@/features/client/requests-table/types/client-requests.type';
 @Injectable()
 export class RequestsService {
-
   updateStatus(requestId: number, employee: string, status: RequestStats, rejectReason: string = '') {
     const requestFound = maintenanceRequests.find(({ id }) => id === requestId);
 
@@ -59,6 +58,10 @@ export class RequestsService {
           };
         }),
     );
+  }
+
+  getRequestById(requestId: number): Requests | undefined {
+    return maintenanceRequests.find((request) => request.id === requestId);
   }
   //Devolve array de solicitações. Sem nennhum parametro, devolve todas as solicitações existentes,
   //com os parametros, devolve apenas as solicitações que tem o status ou funcionario envolvido.

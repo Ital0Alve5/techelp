@@ -10,10 +10,11 @@ import { InputError } from '@/shared/types/input-error.type';
 export class SelectComponent implements OnChanges {
   value = model<string | number>('');
 
+  textValue = signal('');
   id = input<string>('');
   label = input<string>('');
   placeholder = input.required<string>();
-  options = input<{ id: number; label: string }[]>([]);
+  options = input<({ id: number; [key: string]: unknown } & ({ name: string } | { label: string }))[]>([]);
   validation = input<InputError>();
   disabled = input<boolean>();
   isOpen = signal<boolean>(false);
@@ -28,11 +29,10 @@ export class SelectComponent implements OnChanges {
     this.isOpen.set(!this.isOpen());
   }
 
-  onChange(event: Event) {
-    this.value.set((event.target as HTMLSelectElement).value);
-  }
+  onOptionChosen(chosenOption: { [key: string]: unknown; id: number } & ({ name: string } | { label: string })) {
+    this.value.set(chosenOption.id);
 
-  onOptionChosen(event: Event) {
-    this.value.set((event.target as HTMLElement).innerText);
+    if ('label' in chosenOption) this.textValue.set(chosenOption.label as string);
+    else if ('name' in chosenOption) this.textValue.set(chosenOption.name as string);
   }
 }

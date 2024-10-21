@@ -1,13 +1,9 @@
 <div class="buttons">
-  <a routerLink="/funcionario/{{ employeeId }}/solicitacoes/abertas">
+  <a routerLink="/funcionario/{{ employeeId }}/solicitacoes">
     <arrow-right-icon width="20px" color="#fff"></arrow-right-icon>
   </a>
-  <button backgroundColor="#4e42ff" hoverColor="none" app-button (click)="openRedirectModal()">
-    Redirecionar Manutenção
-  </button>
-  <button backgroundColor="#10855b" hoverColor="none" app-button (click)="openMaintenanceDetailsModal()">
-    Efetuar a manutenção
-  </button>
+  <button backgroundColor="#4e42ff" app-button (click)="openRedirectModal()">Redirecionar Manutenção</button>
+  <button backgroundColor="#10855b" app-button (click)="openMaintenanceDetailsModal()">Efetuar a manutenção</button>
 </div>
 
 <app-modal [(isHidden)]="isRedirectModalOpen">
@@ -16,14 +12,14 @@
   <app-select
     id="employeeSelect"
     label=""
-    placeholder="Selecione o funcionário"
-    [options]="sanitizedRegisteredEmployees!"
+    placeholder="Nome do funcionário"
+    [options]="registeredEmployees!"
     [(value)]="selectedEmployeeId!"
   ></app-select>
 
   <div class="buttons">
-    <button backgroundColor="#dc363c" hoverColor="none" app-button (click)="closeRedirectModal()">Cancelar</button>
-    <button backgroundColor="#10855b" hoverColor="none" app-button (click)="confirmRedirect()">Redirecionar</button>
+    <button class="cancelButton" (click)="closeRedirectModal()">Cancelar</button>
+    <button class="confirmButton" (click)="confirmRedirect()">Redirecionar</button>
   </div>
 </app-modal>
 
@@ -74,8 +70,8 @@
         class="large-textarea"
         maxlength="300"
         placeholder="Escreva a descrição da manutenção"
-        required
         [(ngModel)]="maintenanceDescription"
+        required
       ></textarea>
       <label>Orientação ao cliente</label>
       <textarea
@@ -84,12 +80,12 @@
         maxlength="300"
         placeholder="Escreva alguma orientação"
         [(ngModel)]="orientationToClient"
+
       ></textarea>
       <button
         type="submit"
         class="button--modal"
         backgroundColor="#10855b"
-        hoverColor="none"
         app-button
         [disabled]="!maintenanceDetails.valid"
       >

@@ -10,7 +10,7 @@ import { RedeemComponent } from './features/client/redeem/redeem.component';
 import { RequestDetailsComponent } from './features/client/request-details/request-details.component';
 import { RequestsComponent } from './features/employee/requests/requests.component';
 import { MakeBudgetComponent } from './features/make-budget/make-budget.component';
-import { PerformMaintenanceComponent } from './features/perform-maintenance/perform-maintenance/perform-maintenance.component';
+import { PerformMaintenanceComponent } from './features/employee/perform-maintenance/perform-maintenance.component';
 import { CategoriesComponent } from './features/employee/categories/categories.component';
 import { EmployeesListingComponent } from './features/employee/employees-listing/employees-listing.component';
 import { RequestRevenueComponent } from './features/request-revenue/request-revenue.component';

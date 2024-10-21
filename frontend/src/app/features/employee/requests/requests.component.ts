@@ -90,7 +90,7 @@ export class RequestsComponent {
   }
 
   onFinishRequest() {
-    const employeeName = this.employeeService.getEmployeeById(this.userId);
+    const employeeName = this.employeeService.getEmployeeById(this.userId)!;
 
     if (this.requestId() <= -1) {
       this.popupService.addNewPopUp({

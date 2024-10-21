@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component';
 import { CardComponent } from '@/shared/ui/card/card.component';
@@ -26,7 +26,16 @@ import { EmployeeIDValidator } from '@/shared/services/validators/employee-id-va
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CardComponent, UserIcon, InputComponent, LockIcon, FormsModule, AuthTypeComponent, ButtonComponent],
+  imports: [
+    CardComponent,
+    UserIcon,
+    InputComponent,
+    LockIcon,
+    FormsModule,
+    AuthTypeComponent,
+    ButtonComponent,
+    RouterLink,
+  ],
   providers: [
     EmailValidator,
     EmployeeIDValidator,
@@ -84,7 +93,7 @@ export class LoginComponent {
     this.requiredValidator.setNext(this.emailValidator);
     this.formValues().email.validation = this.requiredValidator.validate(email.value);
 
-    this.maxLengthValidator.setMaxLength(4)
+    this.maxLengthValidator.setMaxLength(4);
     this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
     this.formValues().password.validation = this.requiredValidator.validate(password.value);
 

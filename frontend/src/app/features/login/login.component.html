@@ -36,4 +36,10 @@
 
     <button app-button>Entrar</button>
   </form>
+
+  @if (isEmployeeLogin) {
+    <a routerLink="/login"> Sou cliente </a>
+  } @else {
+    <a routerLink="/funcionario/login"> Sou funcionário </a>
+  }
 </app-card>

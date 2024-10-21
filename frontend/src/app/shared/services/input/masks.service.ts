@@ -73,30 +73,23 @@ export class CurrencyMaskService extends InputMaskModel {
   }
 
   override apply(inputValue: string): string {
-    // Remove tudo que não seja número
     let numericValue = inputValue.replace(/\D/g, '');
 
-    // Se for vazio, retorna R$ 0,00
     if (numericValue.length === 0) {
       return 'R$ 0,00';
     }
 
-    // Garante que sempre haja pelo menos 3 dígitos (1 para a parte inteira e 2 para os centavos)
     while (numericValue.length < 3) {
       numericValue = '0' + numericValue;
     }
 
-    // Adiciona os centavos (últimos dois dígitos)
-    const cents = numericValue.slice(-2); // Os dois últimos são os centavos
-    const integerPart = numericValue.slice(0, -2); // Parte inteira
+    const cents = numericValue.slice(-2);
+    const integerPart = numericValue.slice(0, -2);
 
-    // Remove zeros à esquerda da parte inteira
     const integerPartWithoutLeadingZeros = integerPart.replace(/^0+/, '') || '0';
 
-    // Formata a parte inteira com pontos de milhar
     const formattedIntegerPart = integerPartWithoutLeadingZeros.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-    // Retorna o valor final formatado como moeda (R$ X.XXX,XX)
     return `R$ ${formattedIntegerPart},${cents}`;
   }
 }

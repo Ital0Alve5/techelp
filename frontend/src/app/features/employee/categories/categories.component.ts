@@ -1,6 +1,5 @@
 import { Component, signal } from '@angular/core';
 import { Categorie } from '@/shared/types/categorie.type';
-import { CategorieTableRowComponent } from './components/categorie-table-row/categorie-table-row.component';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { FormsModule } from '@angular/forms';
@@ -20,7 +19,6 @@ import { MinLengthValidator } from '@/shared/services/validators/min-length-vali
   selector: 'app-categories',
   standalone: true,
   imports: [
-    CategorieTableRowComponent,
     ButtonComponent,
     ModalComponent,
     FormsModule,

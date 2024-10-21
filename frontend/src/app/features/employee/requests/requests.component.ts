@@ -53,7 +53,7 @@ export class RequestsComponent {
 
     switch (type) {
       case 'todas':
-        this.userRequests.set(this.requestsService.filterAll());
+        this.userRequests.set(this.requestsService.filterAll(this.userId));
         break;
       case 'hoje':
         this.userRequests.set(this.requestsService.filterToday());
@@ -65,7 +65,7 @@ export class RequestsComponent {
         if (!filterSelected.data) return;
 
         this.userRequests.set(
-          this.requestsService.filterByDate({
+          this.requestsService.filterByDate(this.userId, {
             startDate: filterSelected.data.startDate,
             endDate: filterSelected.data.endDate,
           }),

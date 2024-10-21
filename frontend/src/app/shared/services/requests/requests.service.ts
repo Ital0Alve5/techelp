@@ -68,6 +68,10 @@ export class RequestsService {
   getRequest(wantedStatus?: RequestStats, wantedEmployeeId?: number): Requests[] {
     let requests: Requests[] = [...maintenanceRequests];
 
+    console.log(requests);
+
+    console.log(wantedEmployeeId);
+
     if (wantedEmployeeId) {
       requests = requests.filter(({ employeeId }) => employeeId === wantedEmployeeId);
     }
@@ -79,10 +83,12 @@ export class RequestsService {
     return this.sortDateDescendingOrder(requests) as Requests[];
   }
 
-  filterAll() {
-    const requests: Requests[] = [...maintenanceRequests];
-
-    return requests;
+  filterAll(employeeId: number) {
+    return maintenanceRequests.filter((request) => {
+      if (request.currentStatus !== 'Redirecionada') return true;
+      else if (request.employeeId === employeeId) return true;
+      return false;
+    });
   }
 
   filterToday() {
@@ -98,10 +104,8 @@ export class RequestsService {
     return requests.filter((req) => req.currentStatus === 'Aberta');
   }
 
-  filterByDate(dates: { startDate: string; endDate: string }) {
-    const requests: Requests[] = [...maintenanceRequests];
-
-    return requests.filter((req) => this.isDateInRange(req.date, dates.startDate, dates.endDate));
+  filterByDate(employeeId: number, dates: { startDate: string; endDate: string }) {
+    return this.filterAll(employeeId).filter((req) => this.isDateInRange(req.date, dates.startDate, dates.endDate));
   }
 
   isDateInRange(date: string, startDate: string, endDate: string): boolean {

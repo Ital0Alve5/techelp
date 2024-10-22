@@ -10,6 +10,7 @@
       [type]="'date'"
       [validation]="formValues().startDate.validation"
       (change)="validateDate()"
+      [max]="formValues().endDate.value || currentDate"
     >
       <lock-icon input-icon width="14px" color="#9197B3" />
     </app-input>
@@ -21,6 +22,8 @@
       [type]="'date'"
       [validation]="formValues().endDate.validation"
       (change)="validateDate()"
+      [min]="formValues().startDate.value"
+      [max]="currentDate"
     >
       <lock-icon input-icon width="14px" color="#9197B3" />
     </app-input>

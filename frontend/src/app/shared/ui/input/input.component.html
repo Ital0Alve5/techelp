@@ -13,6 +13,8 @@
         (input)="onInput($event)"
         [type]="type()"
         [placeholder]="placeholder()"
+        [max]="max()"
+        [min]="min()"
       />
 
       @if (type() === 'password' && isHidden()) {

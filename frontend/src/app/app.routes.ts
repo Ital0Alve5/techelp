@@ -13,7 +13,7 @@ import { MakeBudgetComponent } from './features/employee/make-budget/make-budget
 import { PerformMaintenanceComponent } from './features/employee/perform-maintenance/perform-maintenance.component';
 import { CategoriesComponent } from './features/employee/categories/categories.component';
 import { EmployeesListingComponent } from './features/employee/employees-listing/employees-listing.component';
-import { RequestRevenueComponent } from './features/request-revenue/request-revenue.component';
+import { RequestRevenueComponent } from './features/employee/request-revenue/request-revenue.component';
 import { RevenueComponent } from './features/revenue/revenue.component';
 
 export const routes: Routes = [

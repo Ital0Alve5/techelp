@@ -25,6 +25,9 @@ export class InputComponent {
   validation = input<InputError>();
   mask = input<Mask>();
   disabled = input<boolean>();
+  max = input<string>();
+  min = input<string>();
+
   inputEvent = output<string>();
 
   isHidden = signal<boolean>(true);

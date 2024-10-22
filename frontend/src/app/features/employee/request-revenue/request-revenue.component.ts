@@ -21,6 +21,9 @@ export class RequestRevenueComponent {
   employeeId = input.required<number>();
   formValues = signal(JSON.parse(JSON.stringify(formData)));
 
+  date = new Date();
+  currentDate = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${this.date.getDate()}`;
+
   constructor(private router: Router) {}
 
   onSubmit() {

@@ -10,7 +10,7 @@ export abstract class BaseValidator implements IValidator {
 
   setNext(validator: IValidator): IValidator {
     this.nextValidator = validator;
-    
+
     return validator;
   }
 

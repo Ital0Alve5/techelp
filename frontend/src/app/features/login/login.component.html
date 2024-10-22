@@ -1,8 +1,13 @@
 <app-card>
-  <h1>Bem-vindo de volta!</h1>
+  @if (isEmployeeLogin) {
+    <h1>Logue como funcionário!</h1>
+  } @else {
+    <h1>Bem-vindo de volta!</h1>
+  }
+
   <app-auth-type></app-auth-type>
   <form (ngSubmit)="onSubmit()">
-    @if (isEmployeeLogin) {
+    <!-- @if (isEmployeeLogin) {
       <app-input
         id="employeeID"
         label="Registro de funcionário"
@@ -11,7 +16,7 @@
         [type]="formValues().employeeID.type"
         [validation]="formValues().employeeID.validation"
       ></app-input>
-    }
+    } -->
     <app-input
       id="email"
       label="E-mail"

@@ -102,13 +102,10 @@ export class CategoriesComponent {
   }
 
   deleteCategory() {
-    if (!(this.selectedCategoryData().id > 0)) return;
-
-    this.categoriesService.removeCategory(this.selectedCategoryData().id);
-    this.categories = this.categoriesService.getCategories();
-
-    this.selectedCategoryData().id = -1;
-    this.closeDeleteCategoryModal();
+    if (!this.selectedCategoryData().id.id) return
+      this.categoriesService.removeCategory(this.selectedCategoryId()!);
+      this.categories = this.categoriesService.getCategories();
+      this.closeDeleteCategoryModal();
   }
 
   validateNewCategory() {

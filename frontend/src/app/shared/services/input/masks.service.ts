@@ -93,3 +93,23 @@ export class CurrencyMaskService extends InputMaskModel {
     return `R$ ${formattedIntegerPart},${cents}`;
   }
 }
+
+@Injectable({ providedIn: 'root' })
+export class DateMaskService extends InputMaskModel {
+  constructor() {
+    super();
+  }
+
+  override apply(inputValue: string): string {
+    inputValue = inputValue.replace(/\D/g, '');
+
+    const day = inputValue.substring(0, 2);
+    const month = inputValue.substring(2, 4);
+    const year = inputValue.substring(4, 8);
+
+    if (inputValue.length > 2 && inputValue.length <= 4) inputValue = day + '/' + month;
+    else if (inputValue.length > 4) inputValue = day + '/' + month + '/' + year;
+
+    return inputValue;
+  }
+}

@@ -21,8 +21,6 @@ import { InputError } from '@/shared/types/input-error.type';
 
 import { LoginService } from './services/login.service';
 import { formData } from './model/form-data.model';
-import { EmployeeIDValidator } from '@/shared/services/validators/employee-id-validator.service';
-
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -36,14 +34,7 @@ import { EmployeeIDValidator } from '@/shared/services/validators/employee-id-va
     ButtonComponent,
     RouterLink,
   ],
-  providers: [
-    EmailValidator,
-    EmployeeIDValidator,
-    RequiredValidator,
-    MaxLengthValidator,
-    MinLengthValidator,
-    LoginService,
-  ],
+  providers: [EmailValidator, RequiredValidator, MaxLengthValidator, MinLengthValidator, LoginService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -60,16 +51,17 @@ export class LoginComponent {
     private popupService: PopupService,
     private router: Router,
     private authenticator: Authenticator,
-    private employeeIDValidator: EmployeeIDValidator,
   ) {}
 
   sendData() {
     this.loginService
-      .validate({
-        email: this.formValues().email.value,
-        employeeID: this.formValues().employeeID.value,
-        password: this.formValues().password.value,
-      })
+      .validate(
+        {
+          email: this.formValues().email.value,
+          password: this.formValues().password.value,
+        },
+        this.isEmployeeLogin,
+      )
       .then((response) => {
         if (response.error) {
           this.popupService.addNewPopUp({
@@ -88,7 +80,7 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    const { email, employeeID, password } = this.formValues();
+    const { email, password } = this.formValues();
 
     this.requiredValidator.setNext(this.emailValidator);
     this.formValues().email.validation = this.requiredValidator.validate(email.value);
@@ -102,8 +94,6 @@ export class LoginComponent {
       return;
     }
 
-    this.requiredValidator.setNext(this.employeeIDValidator);
-    this.formValues().employeeID.validation = this.requiredValidator.validate(employeeID.value);
-    if (!email.validation.error && !password.validation.error && !employeeID.validation.error) this.sendData();
+    if (!email.validation.error && !password.validation.error) this.sendData();
   }
 }

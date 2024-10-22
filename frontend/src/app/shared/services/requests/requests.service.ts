@@ -68,10 +68,6 @@ export class RequestsService {
   getRequest(wantedStatus?: RequestStats, wantedEmployeeId?: number): Requests[] {
     let requests: Requests[] = [...maintenanceRequests];
 
-    console.log(requests);
-
-    console.log(wantedEmployeeId);
-
     if (wantedEmployeeId) {
       requests = requests.filter(({ employeeId }) => employeeId === wantedEmployeeId);
     }

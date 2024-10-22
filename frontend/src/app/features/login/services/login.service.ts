@@ -15,23 +15,25 @@ export class LoginService {
 
     return null;
   }
-  checkRegisteredEmployee(employeeIdInput: string, emailInput: string, passwordInput: string): number | null {
-    const userFound = registeredEmployee.find(({ cpf }) => cpf === employeeIdInput);
+  checkRegisteredEmployee(emailInput: string, passwordInput: string): number | null {
+    const userFound = registeredEmployee.find(({ email }) => email === emailInput);
 
     if (userFound && userFound.password === passwordInput && userFound.email === emailInput) return userFound.id;
 
     return null;
   }
 
-  async validate(data: {
-    email: string;
-    employeeID?: string;
-    password: string;
-  }): Promise<Response<InputError> | Response<{ userId: number }>> {
+  async validate(
+    data: {
+      email: string;
+      password: string;
+    },
+    isEmployee?: boolean,
+  ): Promise<Response<InputError> | Response<{ userId: number }>> {
     let wasUserFound: number | null;
 
-    if (data.employeeID) {
-      wasUserFound = this.checkRegisteredEmployee(data.employeeID, data.email, data.password);
+    if (isEmployee) {
+      wasUserFound = this.checkRegisteredEmployee(data.email, data.password);
     } else {
       wasUserFound = this.checkRegisteredUsers(data.email, data.password);
     }

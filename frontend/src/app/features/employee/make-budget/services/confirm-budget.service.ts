@@ -12,7 +12,6 @@ export class confirmBudgetService {
 
     this.requestsService.updateStatus(request.id, employeeName, 'Orçada');
 
-    console.log(request);
     return true;
   }
 }

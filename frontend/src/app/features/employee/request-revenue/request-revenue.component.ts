@@ -7,6 +7,8 @@ import { CardComponent } from '@/shared/ui/card/card.component';
 import { InputComponent } from '@/shared/ui/input/input.component';
 import { CheckboxComponent } from '@/shared/ui/checkbox/checkbox.component';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
+import { RequiredValidator } from '@/shared/services/validators/required-validator.service';
+import { DateValidator } from '@/shared/services/validators/date-validator.service';
 
 import { formData } from './model/form-data.model';
 
@@ -14,6 +16,7 @@ import { formData } from './model/form-data.model';
   selector: 'app-request-revenue',
   standalone: true,
   imports: [FormsModule, LockIcon, CardComponent, InputComponent, CheckboxComponent, ButtonComponent],
+  providers: [RequiredValidator, DateValidator],
   templateUrl: './request-revenue.component.html',
   styleUrl: './request-revenue.component.scss',
 })
@@ -24,31 +27,34 @@ export class RequestRevenueComponent {
   date = new Date();
   currentDate = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${this.date.getDate()}`;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private requiredValidator: RequiredValidator,
+    private dateValidator: DateValidator,
+  ) {}
 
   onSubmit() {
-    this.validateDate();
-    const idValue = this.employeeId();
-    this.router.navigate([`/funcionario/${idValue}/receita`]);
+    if (!this.validateDate()) return;
+
+    this.router.navigate([`/funcionario/${this.employeeId()}/receita`]);
   }
 
   validateDate() {
-    const todayDate = new Date();
-    const startDate = new Date(this.formValues().startDate.value);
-    const endDate = new Date(this.formValues().endDate.value);
+    const { startDate, endDate } = this.formValues();
 
-    if (startDate > todayDate) {
-      this.formValues().startDate.value = this.formatDate(todayDate);
-    }
-    if (endDate > todayDate) {
-      this.formValues().endDate.value = this.formatDate(todayDate);
-    }
+    this.requiredValidator.setNext(this.dateValidator);
+    this.formValues().startDate.validation = this.requiredValidator.validate(this.formmatDate(startDate.value));
+
+    this.requiredValidator.setNext(this.dateValidator);
+    this.formValues().endDate.validation = this.requiredValidator.validate(this.formmatDate(endDate.value));
+
+    const isValidForm = !startDate.validation.error && !endDate.validation.error;
+
+    return isValidForm;
   }
 
-  private formatDate(date: Date): string {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${year}-${month}-${day}`;
+  formmatDate(date: string) {
+    const [year, month, day] = date.split('-');
+    return `${day}/${month}/${year}`;
   }
 }

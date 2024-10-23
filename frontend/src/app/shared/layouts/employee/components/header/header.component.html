@@ -1,0 +1,21 @@
+<header>
+  <div class="logo-container">
+    <img src="assets/img/logo.png" alt="logo" />
+    <span>Techelp</span>
+  </div>
+  <nav>
+    @if (router.url.includes('cliente')) {
+      @if (router.url.includes('solicitar')) {
+        <a routerLink="cliente/{{userId}}/solicitacoes" routerLinkActive="active">Consultar solicitações</a>
+      } @else if (router.url.includes('solicitacoes')) {
+        <a routerLink="cliente/{{userId}}/solicitar-manutencao" routerLinkActive="active">Solicitar manutenção</a>
+      }
+    } @else if (router.url.includes('funcionario')) {
+      <a routerLink="funcionario/{{userId}}/categorias" routerLinkActive="active">Consultar categorias</a>
+    }
+    <p>
+      Olá, <b>{{ userName.split(' ')[0] }}</b>
+    </p>
+    <exit-icon width="24px" color="#ff57a7" (click)="onLogout()" />
+  </nav>
+</header>

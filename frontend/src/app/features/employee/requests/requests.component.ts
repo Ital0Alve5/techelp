@@ -65,7 +65,7 @@ export class RequestsComponent {
         if (!filterSelected.data) return;
 
         this.userRequests.set(
-          this.requestsService.filterByDate(this.userId, {
+          this.requestsService.filterByRequestsByDateAndEmployee(this.userId, {
             startDate: filterSelected.data.startDate,
             endDate: filterSelected.data.endDate,
           }),

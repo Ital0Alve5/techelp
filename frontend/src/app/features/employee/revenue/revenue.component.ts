@@ -1,36 +1,48 @@
-import { Component, ElementRef, viewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { RevenueService } from '@/shared/services/revenue/revenue.service';
-import { RevenueTableRowComponent } from './components/revenue-table-row/revenue-table-row.component';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
+import { TableComponent } from '@/shared/ui/table/table.component';
+import { CurrencyMaskService } from '@/shared/services/input/masks.service';
+import { RouterLink } from '@angular/router';
+import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
+import { RequestsService } from '@/shared/services/requests/requests.service';
 @Component({
   selector: 'app-revenue',
   standalone: true,
-  imports: [RevenueTableRowComponent, ButtonComponent],
+  imports: [ButtonComponent, TableComponent, RouterLink, ArrowRightIcon],
+  providers: [CurrencyMaskService, RevenueService, RequestsService],
   templateUrl: './revenue.component.html',
   styleUrl: './revenue.component.scss',
 })
 export class RevenueComponent {
-  revenuesByDate: {
-    date: string;
-    price: number;
-  }[] = [];
+  userId: number = JSON.parse(localStorage.getItem('userId')!);
+  urlParams = new URLSearchParams(location.search);
+  startDate = this.urlParams.get('startDate');
+  endDate = this.urlParams.get('endDate');
+  isCategory = location.pathname.endsWith('/receita/categoria');
 
-  revenuesByCategory: {
-    deviceCategory: string;
-    price: number;
-  }[] = [];
+  revenuesByDate =
+    this.startDate && this.endDate
+      ? this.revenueService.getRevenuesByDate(this.startDate, this.endDate)
+      : this.revenueService.getRevenuesByDate();
 
-  categoryRevenue = location.pathname.endsWith('/receita/categoria');
+  revenuesByCategory = this.isCategory ? this.revenueService.getRevenuesByCategory() : [];
 
-  constructor(private revenueService: RevenueService) {
-    if (this.categoryRevenue) {
-      this.revenuesByCategory = revenueService.getRevenuesByCategory();
-    } else {
-      this.revenuesByDate = revenueService.getRevenuesByDate();
-    }
-  }
+  constructor(
+    private revenueService: RevenueService,
+    public currencyMaskService: CurrencyMaskService,
+  ) {}
 
   generatePdf() {
+    const header = document.querySelector('header');
+    const button = document.querySelector('button');
+
+    header!.style.visibility = 'hidden';
+    button!.style.visibility = 'hidden';
+
     window.print();
+
+    header!.style.visibility = 'visible';
+    button!.style.visibility = 'visible';
   }
 }

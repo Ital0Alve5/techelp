@@ -1,22 +1,45 @@
-<div #content id="content">
-  <h2>Receita por {{ categoryRevenue ? 'Categoria' : 'Data' }}</h2>
+<div class="buttons">
+  <a routerLink="/funcionario/{{ userId }}/pedir-receita">
+    <arrow-right-icon width="20px" color="#fff"></arrow-right-icon>
+  </a>
+</div>
+<div id="printable-area">
+  <h2>Receita por {{ revenuesByCategory.length > 0 ? 'Categoria' : 'Data' }}</h2>
 
-  @if (revenuesByCategory.length > 0 || revenuesByDate.length > 0) {
-    <table>
-      <tr>
-        <th>{{ categoryRevenue ? 'Categoria' : 'Data' }}</th>
+  @if (!this.isCategory && revenuesByDate.length > 0) {
+    <app-table>
+      <tr table-titles>
+        <th>Data</th>
         <th>Valor</th>
       </tr>
-      @if (categoryRevenue) {
-        @for (revenue of revenuesByCategory; track $index) {
-          <tr revenue-table-row [label]="revenue.deviceCategory" [value]="revenue.price"></tr>
-        }
-      } @else {
-        @for (revenue of revenuesByDate; track $index) {
-          <tr revenue-table-row [label]="revenue.date" [value]="revenue.price"></tr>
-        }
+      @for (revenue of revenuesByDate; track $index) {
+        <tr table-data>
+          <td>
+            {{ revenue.date }}
+          </td>
+          <td>
+            {{ currencyMaskService.apply(revenue.price + '') }}
+          </td>
+        </tr>
       }
-    </table>
+    </app-table>
+  } @else if (revenuesByCategory.length > 0) {
+    <app-table>
+      <tr table-titles>
+        <th>Categoria</th>
+        <th>Valor</th>
+      </tr>
+      @for (revenue of revenuesByCategory; track $index) {
+        <tr table-data>
+          <td>
+            {{ revenue.deviceCategory }}
+          </td>
+          <td>
+            {{ currencyMaskService.apply(revenue.price + '') }}
+          </td>
+        </tr>
+      }
+    </app-table>
   } @else {
     <p class="noRequestsYet">Nenhum pagamento realizado!</p>
   }
@@ -24,6 +47,6 @@
 
 <div class="button-container">
   @if (revenuesByCategory.length > 0 || revenuesByDate.length > 0) {
-    <button app-button (click)="generatePdf()">Gerar pdf</button>
+    <button (click)="generatePdf()">Exportar como pdf</button>
   }
 </div>

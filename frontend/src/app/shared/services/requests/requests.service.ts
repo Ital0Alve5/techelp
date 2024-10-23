@@ -88,28 +88,31 @@ export class RequestsService {
   }
 
   filterToday() {
-    const requests: Requests[] = [...maintenanceRequests];
-
     const today = new Date().toISOString().split('T')[0];
-    return requests.filter((req) => req.date === today && req.currentStatus === 'Aberta');
+    return maintenanceRequests.filter((req) => req.date === today && req.currentStatus === 'Aberta');
   }
 
   filterOpenRequests() {
-    const requests: Requests[] = [...maintenanceRequests];
-
-    return requests.filter((req) => req.currentStatus === 'Aberta');
+    return maintenanceRequests.filter((req) => req.currentStatus === 'Aberta');
   }
 
-  filterByDate(employeeId: number, dates: { startDate: string; endDate: string }) {
+  filterRequestsByDateInterval(startDate: string, endDate: string) {
+    return maintenanceRequests.filter((request) => this.isDateInRange(request.date, startDate, endDate));
+  }
+
+  filterByRequestsByDateAndEmployee(employeeId: number, dates: { startDate: string; endDate: string }) {
     return this.filterAll(employeeId).filter((req) => this.isDateInRange(req.date, dates.startDate, dates.endDate));
   }
 
   isDateInRange(date: string, startDate: string, endDate: string): boolean {
-    function parseDate(date: string): Date {
-      const [day, month, year] = date.split('/').map(Number);
-      return new Date(year, month - 1, day);
+    function parseData(date: string) {
+      if (date.includes('/')) {
+        const [day, month, year] = date.split('/');
+        return `${year}-${month}-${day}`;
+      }
+      return date;
     }
 
-    return parseDate(date) >= parseDate(startDate) && parseDate(date) <= parseDate(endDate);
+    return parseData(date) >= parseData(startDate) && parseData(date) <= parseData(endDate);
   }
 }

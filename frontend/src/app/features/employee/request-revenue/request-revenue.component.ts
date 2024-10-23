@@ -23,6 +23,7 @@ import { formData } from './model/form-data.model';
 export class RequestRevenueComponent {
   employeeId = input.required<number>();
   formValues = signal(JSON.parse(JSON.stringify(formData)));
+  isCategory = signal(true);
 
   date = new Date();
   currentDate = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${this.date.getDate()}`;
@@ -34,9 +35,18 @@ export class RequestRevenueComponent {
   ) {}
 
   onSubmit() {
-    if (!this.validateDate()) return;
+    if (!this.isCategory && !this.validateDate()) return;
 
-    this.router.navigate([`/funcionario/${this.employeeId()}/receita`]);
+    const params = this.isCategory()
+      ? {}
+      : {
+          queryParams: {
+            startDate: this.formValues().startDate.value,
+            endDate: this.formValues().endDate.value,
+          },
+        };
+
+    this.router.navigate([`/funcionario/${this.employeeId()}/receita${this.isCategory() ? '/categoria' : ''}`], params);
   }
 
   validateDate() {
@@ -56,5 +66,13 @@ export class RequestRevenueComponent {
   formmatDate(date: string) {
     const [year, month, day] = date.split('-');
     return `${day}/${month}/${year}`;
+  }
+
+  chooseCategory() {
+    this.isCategory.set(true);
+  }
+
+  chooseDate() {
+    this.isCategory.set(false);
   }
 }

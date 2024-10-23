@@ -100,4 +100,5 @@ export const routes: Routes = [
     canActivate: [() => inject(Authenticator).checkAuthentication()],
     component: RevenueComponent,
   },
+  // { path: '**', component: PageNotFoundComponent },
 ];

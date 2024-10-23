@@ -1,7 +1,13 @@
 <app-card>
   <h1>Relatório de vendas</h1>
-  <p>Filtrar por:</p>
-  <br />
+  <div class="chooseFilter">
+    <p>Filtrar por:</p>
+
+    <div class="options">
+      <div (click)="chooseCategory()" [class]="isCategory() ? 'active' : ''">Categoria</div>
+      <div (click)="chooseDate()" [class]="!isCategory() ? 'active' : ''">data</div>
+    </div>
+  </div>
   <form (ngSubmit)="onSubmit()">
     <app-input
       id="dataComeco"
@@ -11,6 +17,7 @@
       [validation]="formValues().startDate.validation"
       (change)="validateDate()"
       [max]="formValues().endDate.value || currentDate"
+      [disabled]="isCategory()"
     >
       <lock-icon input-icon width="14px" color="#9197B3" />
     </app-input>
@@ -24,6 +31,7 @@
       (change)="validateDate()"
       [min]="formValues().startDate.value"
       [max]="currentDate"
+      [disabled]="isCategory()"
     >
       <lock-icon input-icon width="14px" color="#9197B3" />
     </app-input>

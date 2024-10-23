@@ -3,48 +3,32 @@
 @import 'typology';
 
 :host {
-  align-self: center;
   width: 100%;
-  overflow: auto;
-  max-height: 50%;
-  max-width: 1000px;
-  border: 1px solid $neutral-30;
-  border-radius: 20px;
-  padding: 30px;
-  background-color: $neutral-base;
+  max-width: 500px;
 }
 
-table {
-  text-align: center;
-  color: $neutral-70;
-  font-size: $size-base;
-  border-collapse: collapse;
-  border-style: hidden;
-  width: 100%;
-  max-width: 1400px;
-}
+.buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
 
-tr {
-  transition: 0.5s;
-  border-bottom: 1px solid $neutral-30;
-
-  &:hover {
-    background-color: $neutral-10;
-    transition: 0.5s;
+  a {
+    width: 20px;
+    margin-right: auto;
+    transform: translateY(8px);
+    background: $brand-purple;
+    padding: 6px 8px 1px 8px;
+    box-sizing: content-box;
+    border-radius: 100%;
+    transition: 1s;
   }
 }
 
-tr:last-child {
-  border-bottom: none;
-}
-
-th {
-  padding: 10px;
-}
-
-th:first-child {
-  width: 50%;
-  border-right: 1px solid $neutral-30;
+app-table {
+  display: flex;
+  margin-top: 30px;
 }
 
 .noRequestsYet {
@@ -61,4 +45,39 @@ th:first-child {
 h2 {
   margin-bottom: 30px;
   text-align: center;
+}
+
+#printable-area {
+  margin-top: 40px;
+}
+
+@media print {
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #4e42ff !important;
+    print-color-adjust: exact;
+
+    color: white;
+  }
+}
+
+button {
+  background-color: $feedback-positive-50;
+  color: #fff;
+  padding: 8px 16px;
+  flex: 1;
+  cursor: pointer;
+  border: none;
+  font-size: medium;
 }

@@ -14,7 +14,7 @@ import { PerformMaintenanceComponent } from './features/employee/perform-mainten
 import { CategoriesComponent } from './features/employee/categories/categories.component';
 import { EmployeesListingComponent } from './features/employee/employees-listing/employees-listing.component';
 import { RequestRevenueComponent } from './features/employee/request-revenue/request-revenue.component';
-import { RevenueComponent } from './features/revenue/revenue.component';
+import { RevenueComponent } from './features/employee/revenue/revenue.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },

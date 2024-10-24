@@ -191,7 +191,7 @@ export const maintenanceRequests = [
     currentStatus: 'Paga',
     rejectReason: '',
     maintenanceDescription: 'Mudei o mousepad para outro e começou a funcionar',
-    oritentationToClient: '',
+    oritentationToClient: 'Mudei o mousepad para outro e começou a funcionar',
     history: [
       {
         date: '10/07/2024',
@@ -236,7 +236,7 @@ export const maintenanceRequests = [
     currentStatus: 'Finalizada',
     rejectReason: '',
     maintenanceDescription: 'Mudei o mousepad para outro e começou a funcionar',
-    oritentationToClient: '',
+    oritentationToClient: 'Mudei o mousepad para outro e começou a funcionar',
     history: [
       {
         date: '10/07/2024',
@@ -287,8 +287,8 @@ export const maintenanceRequests = [
     hour: '18:30',
     currentStatus: 'Finalizada',
     rejectReason: 'Não vale a pena arrumar.',
-    maintenanceDescription: '',
-    oritentationToClient: '',
+    maintenanceDescription: 'Mudei o mousepad para outro e começou a funcionar',
+    oritentationToClient: 'Mudei o mousepad para outro e começou a funcionar',
     history: [
       {
         date: '10/07/2024',
@@ -339,8 +339,8 @@ export const maintenanceRequests = [
     hour: '19:00',
     currentStatus: 'Finalizada',
     rejectReason: '',
-    maintenanceDescription: '',
-    oritentationToClient: '',
+    maintenanceDescription: 'Mudei o mousepad para outro e começou a funcionar',
+    oritentationToClient: 'Mudei o mousepad para outro e começou a funcionar',
     history: [
       {
         date: '10/07/2024',

@@ -18,18 +18,12 @@ export class EmployeeService {
 
   checkIfEmployeeExists(employeeToCheck: Partial<{ id: number; email: string }>): boolean {
     if (employeeToCheck.id && this.getEmployeeById(employeeToCheck.id)) return true;
-    // else if (employeeToCheck.cpf) {
-    //   return Boolean(registeredEmployee.find((employee) => employee.cpf === employeeToCheck.cpf));
-    // }
 
     return Boolean(registeredEmployee.find((employee) => employee.email === employeeToCheck.email));
   }
 
   addNewEmployee(newEmployee: Omit<Employee, 'id'>): boolean {
-    if (
-      // this.checkIfEmployeeExists({ cpf: newEmployee.cpf }) ||
-      this.checkIfEmployeeExists({ email: newEmployee.email })
-    ) {
+    if (this.checkIfEmployeeExists({ email: newEmployee.email })) {
       return false;
     }
 
@@ -39,10 +33,9 @@ export class EmployeeService {
   }
 
   updateEmployeeById(employeeId: number, data: Partial<Employee>): boolean {
-    if (
-      // (data.cpf && this.checkIfEmployeeExists({ cpf: data.cpf })) ||
-      (data.email && this.checkIfEmployeeExists({ email: data.email }))
-    ) {
+    const employee = this.getEmployeeById(employeeId)!
+
+    if (data.email && (employee.email !== data.email) && this.checkIfEmployeeExists({ email: data.email })) {
       return false;
     }
 

@@ -84,7 +84,7 @@ export class RequestMaintenanceComponent implements OnInit {
           });
         } else {
           this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);
-          
+
           this.popupService.addNewPopUp({
             type: Status.Success,
             message: 'Solicitação de manutenção enviada!',
@@ -95,6 +95,7 @@ export class RequestMaintenanceComponent implements OnInit {
 
   onSubmit() {
     const { deviceDescription, defectDescription, deviceCategory } = this.formValues();
+
 
     this.minLengthValidator.setMinLength(5);
     this.maxLengthValidator.setMaxLength(50);
@@ -108,6 +109,7 @@ export class RequestMaintenanceComponent implements OnInit {
 
     this.requiredValidator.setNext(this.deviceCategoryValidator);
     this.formValues().deviceCategory.validation = this.requiredValidator.validate(deviceCategory.value);
+
 
     if (
       !deviceDescription.validation.error &&

@@ -18,7 +18,7 @@ export class SelectComponent implements OnChanges {
   validation = input<InputError>();
   disabled = input<boolean>();
   isOpen = signal<boolean>(false);
-
+  
   ngOnChanges(changes: SimpleChanges) {
     if (changes['disabled']?.currentValue) this.isOpen.set(false);
   }

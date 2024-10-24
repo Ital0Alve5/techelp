@@ -1,8 +1,12 @@
 <app-pop-up />
-@if (authenticator.checkAuthentication()) {
+@if (authenticator.checkAuthentication(false) && !authenticator.getIsEmployee()) {
   <logged-user-layout>
     <router-outlet />
   </logged-user-layout>
+} @else if (authenticator.checkAuthentication(false) && authenticator.getIsEmployee()) {
+  <employee-layout>
+    <router-outlet />
+  </employee-layout>
 } @else {
   <guest-layout>
     <router-outlet />

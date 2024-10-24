@@ -73,6 +73,9 @@ export class LoginComponent {
         }
 
         this.authenticator.authenticate(true);
+
+        if (this.isEmployeeLogin) this.authenticator.setIsEmployee(true);
+
         this.router.navigate([
           `/${this.isEmployeeLogin ? 'funcionario' : 'cliente'}/${(response.data as { userId: number }).userId}/solicitacoes`,
         ]);

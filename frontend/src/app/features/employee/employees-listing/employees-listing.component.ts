@@ -99,6 +99,8 @@ export class EmployeesListingComponent {
 
   closeDeleteEmployeeModal() {
     this.isDeleteEmployeeModalOpen.set(true);
+    this.clearSelectedEmployee();
+    this.closeEditEmployeeModal();
   }
 
   addNewEmployee() {
@@ -146,11 +148,11 @@ export class EmployeesListingComponent {
   }
 
   clearSelectedEmployee() {
-    this.selectedEmployeeData.set(formData);
+    this.selectedEmployeeData.set(JSON.parse(JSON.stringify(formData)));
   }
 
   clearNewEmployee() {
-    this.newEmployeeData.set(formData);
+    this.newEmployeeData.set(JSON.parse(JSON.stringify(formData)));
   }
 
   deleteEmployee() {

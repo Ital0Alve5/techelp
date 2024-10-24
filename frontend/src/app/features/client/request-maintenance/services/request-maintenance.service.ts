@@ -65,4 +65,8 @@ export class RequestMaintenanceService {
       });
     });
   }
+
+  getCategoryLabelById(categoryId: number) {
+    return deviceCategories.find((category) => category.id === categoryId);
+  }
 }

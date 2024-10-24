@@ -15,7 +15,7 @@ import { RedeemService } from './services/redeem.service';
   selector: 'app-redeem',
   standalone: true,
   imports: [ButtonComponent, CardComponent, ArrowRightIcon, RouterLink, ModalComponent],
-  providers: [RequestsService],
+  providers: [RequestsService, RedeemService],
   templateUrl: './redeem.component.html',
   styleUrls: ['./redeem.component.scss'],
 })

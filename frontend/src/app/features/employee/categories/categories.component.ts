@@ -45,9 +45,6 @@ export class CategoriesComponent {
   isEditCategoryModalOpen = signal(true);
   isDeleteCategoryModalOpen = signal(true);
 
-  selectedCategoryId = signal<number | null>(null);
-  selectedCategoryName = signal('');
-
   constructor(
     private categoriesService: CategoriesService,
     private requiredValidator: RequiredValidator,
@@ -102,8 +99,8 @@ export class CategoriesComponent {
   }
 
   deleteCategory() {
-    if (!this.selectedCategoryData().id.id) return
-      this.categoriesService.removeCategory(this.selectedCategoryId()!);
+    if (this.selectedCategoryData().id < 0) return
+      this.categoriesService.removeCategory(this.selectedCategoryData().id!);
       this.categories = this.categoriesService.getCategories();
       this.closeDeleteCategoryModal();
   }

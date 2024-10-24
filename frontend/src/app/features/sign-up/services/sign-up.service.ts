@@ -45,7 +45,7 @@ export class SignUpService {
     return new Promise((resolve) => {
       if (this.checkRegisteredUser(data.email, data.cpf)) {
         this.passwordGenerated = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-
+        console.log(this.passwordGenerated)
         resolve({
           error: false,
           data: {
@@ -53,7 +53,6 @@ export class SignUpService {
             message: '',
           },
         });
-
         return;
       }
 

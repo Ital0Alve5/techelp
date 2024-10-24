@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class Authenticator {
-  private isAuthenticated: boolean = true;
-  private isEmployee: boolean = true;
+  private isAuthenticated: boolean = false;
+  private isEmployee: boolean = false;
 
   checkAuthentication(isEmployee: boolean) {
     if (!isEmployee) return this.isAuthenticated;

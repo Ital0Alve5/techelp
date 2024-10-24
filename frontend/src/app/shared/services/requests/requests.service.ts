@@ -5,13 +5,14 @@ import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 import { ClientRequests } from '@/features/client/requests-table/types/client-requests.type';
 @Injectable()
 export class RequestsService {
+
   updateStatus(requestId: number, employee: string, status: RequestStats, rejectReason: string = '') {
     const requestFound = maintenanceRequests.find(({ id }) => id === requestId);
 
     if (!requestFound) return;
 
     const lastIndex = requestFound.history.length ? requestFound.history.length - 1 : 0;
-    const lastStatus = requestFound.history[lastIndex].toStatus;
+    const lastStatus = lastIndex > 0 ? requestFound.history[lastIndex].toStatus : '';
 
     const today = new Date().toLocaleDateString();
     const time = new Date();
@@ -30,6 +31,11 @@ export class RequestsService {
     requestFound.currentStatus = status;
 
     requestFound.rejectReason = rejectReason;
+  }
+
+  assignEmployeeToRequest(requestId: number, employeeId: number) {
+    const request = this.getRequestById(requestId)!;
+    request.employeeId = employeeId;
   }
 
   sortDateDescendingOrder(requests: ClientRequests[] | Requests[]): ClientRequests[] | Requests[] {
@@ -81,8 +87,9 @@ export class RequestsService {
 
   filterAll(employeeId: number) {
     return maintenanceRequests.filter((request) => {
-      if (request.currentStatus !== 'Redirecionada') return true;
-      else if (request.employeeId === employeeId) return true;
+      if (request.employeeId === null || (request.currentStatus !== 'Redirecionada' && request.employeeId === employeeId)) {
+        return true;
+      }
       return false;
     });
   }

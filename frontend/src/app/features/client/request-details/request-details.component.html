@@ -38,20 +38,22 @@
     </li>
   </ul>
 </section>
-<section class="request-history">
-  <h1>Histórico da solicitação:</h1>
-  <table>
-    <tr>
-      <th>Data/Hora</th>
-      <th>Funcionário responsável</th>
-      <th>Ação</th>
-    </tr>
-    @for (request of requestData().history; track $index) {
+@if (requestData().history.length > 0) {
+  <section class="request-history">
+    <h1>Histórico da solicitação:</h1>
+    <table>
       <tr>
-        <td>{{ request.date }} {{ request.hour }}</td>
-        <td>{{ request.employee }}</td>
-        <td>{{ request.toStatus }}</td>
+        <th>Data/Hora</th>
+        <th>Funcionário responsável</th>
+        <th>Ação</th>
       </tr>
-    }
-  </table>
-</section>
+      @for (request of requestData().history; track $index) {
+        <tr>
+          <td>{{ request.date }} {{ request.hour }}</td>
+          <td>{{ request.employee }}</td>
+          <td>{{ request.toStatus }}</td>
+        </tr>
+      }
+    </table>
+  </section>
+}

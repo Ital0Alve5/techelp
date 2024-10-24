@@ -54,7 +54,7 @@ export class MakeBudgetComponent {
   confirmBudget() {
     const success = this.confirmBudgetService.confirmBudget(
       this.requestData,
-      this.employee.name,
+      this.employee,
       this.budgetData().value,
     );
 

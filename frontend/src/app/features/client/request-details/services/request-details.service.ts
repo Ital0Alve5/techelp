@@ -14,9 +14,9 @@ export class RequestDetailsService {
           issueDescription: request.issueDescription,
           date: request.date,
           hour: request.hour,
-          employee: request.history[request.history.length - 1].employee,
+          employee: request.history.length > 0 ? request.history[request.history.length - 1].employee : null,
           currentStatus: request.currentStatus,
-          history: request.history
+          history: request.history,
         };
       })?.[0];
   }

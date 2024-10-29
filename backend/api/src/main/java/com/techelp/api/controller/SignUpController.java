@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.techelp.api.model.Client;
+import com.techelp.api.model.ClientModel;
 import com.techelp.api.service.SignUpService;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -18,7 +18,7 @@ public class SignUpController {
 	private SignUpService signUpService;
 
 	@PostMapping("/signUp")
-	public Client addNewClient(@RequestBody Client client) {
+	public ClientModel addNewClient(@RequestBody ClientModel client) {
 		return this.signUpService.addClient(client);
 	}
 

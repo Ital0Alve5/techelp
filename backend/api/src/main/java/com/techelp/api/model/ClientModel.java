@@ -3,32 +3,59 @@ package com.techelp.api.model;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Component
 @Scope("prototype")
 @Entity
-public class Client {
+@Table(name = "Client")
+public class ClientModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
+    @Column(nullable = false, unique = true)
     private String cpf;
+
+    @Column(nullable = false, unique = false)
     private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = true, unique = false)
     private String phone;
+
+    @Column(nullable = false, unique = false)
     private String password;
+
+    @Column(nullable = false, unique = false)
     private String cep;
+
+    @Column(nullable = false, unique = false)
     private String neighborhood;
+
+    @Column(nullable = false, unique = false)
     private String city;
+
+    @Column(nullable = false, unique = false)
     private String state;
+
+    @Column(nullable = false, unique = false)
     private String street;
+
+    @Column(nullable = false, unique = false)
     private String number;
+
+    @Column(nullable = false, unique = false)
     private String complement;
 
-    public Client(
+    public ClientModel(
             String cpf,
             String name,
             String email,

@@ -13,7 +13,7 @@ public class SignUpService {
     private ClientRepository clientRepository;
 
     public ClientModel addClient(ClientModel client){
-        return this.clientRepository.save(client);
+        return clientRepository.save(client);
     }
     
 }

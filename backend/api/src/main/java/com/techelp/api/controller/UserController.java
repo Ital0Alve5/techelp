@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.techelp.api.dtos.EmailDto;
+import com.techelp.api.dto.EmailDto;
 import com.techelp.api.service.EmailService;
 
 @RestController

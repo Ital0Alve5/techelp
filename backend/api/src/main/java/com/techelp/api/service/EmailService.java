@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import com.techelp.api.dtos.EmailDto;
+import com.techelp.api.dto.EmailDto;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

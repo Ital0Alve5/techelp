@@ -3,6 +3,8 @@ package com.techelp.api.model;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.techelp.api.dto.ClientDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,11 +12,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Component
 @Scope("prototype")
 @Entity
 @Table(name = "Client")
-public class ClientModel {
+@Getter
+@Setter
+public class ClientModel extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -25,14 +32,8 @@ public class ClientModel {
     @Column(nullable = false, unique = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
-    private String email;
-
     @Column(nullable = true, unique = false)
     private String phone;
-
-    @Column(nullable = false, unique = false)
-    private String password;
 
     @Column(nullable = false, unique = false)
     private String cep;
@@ -55,6 +56,10 @@ public class ClientModel {
     @Column(nullable = false, unique = false)
     private String complement;
 
+    public ClientModel() {
+        super();
+    }
+
     public ClientModel(
             String cpf,
             String name,
@@ -68,11 +73,12 @@ public class ClientModel {
             String street,
             String number,
             String complement) {
+
+        super(email, password);
+
         this.cpf = cpf;
         this.name = name;
-        this.email = email;
         this.phone = phone;
-        this.password = password;
         this.cep = cep;
         this.neighborhood = neighborhood;
         this.city = city;
@@ -82,107 +88,19 @@ public class ClientModel {
         this.complement = complement;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getCpf() {
-        return this.cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return this.phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getCep() {
-        return this.cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public String getNeighborhood() {
-        return this.neighborhood;
-    }
-
-    public void setNeighborhood(String neighborhood) {
-        this.neighborhood = neighborhood;
-    }
-
-    public String getCity() {
-        return this.city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return this.state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getStreet() {
-        return this.street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getNumber() {
-        return this.number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public String getComplement() {
-        return this.complement;
-    }
-
-    public void setComplement(String complement) {
-        this.complement = complement;
+    static public ClientModel fromDto(ClientDto clientDto) {
+        return new ClientModel(
+                clientDto.cpf(),
+                clientDto.name(),
+                clientDto.email(),
+                clientDto.phone(),
+                clientDto.password(),
+                clientDto.cep(),
+                clientDto.neighborhood(),
+                clientDto.city(),
+                clientDto.state(),
+                clientDto.street(),
+                clientDto.number(),
+                clientDto.complement());
     }
 }

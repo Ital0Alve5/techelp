@@ -8,23 +8,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
-
 @MappedSuperclass
 @Getter
 @Setter
 public class User implements UserDetails {
 
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "E-mail não pode estar vazio")
-    @Email(message = "E-mail inválido")
     private String email;
 
     @Column(nullable = false, unique = false)
-    @NotBlank(message = "Senha não pode estar vazio")
     private String password;
 
     public User() {

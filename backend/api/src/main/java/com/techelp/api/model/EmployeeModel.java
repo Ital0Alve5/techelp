@@ -29,7 +29,7 @@ public class EmployeeModel extends User {
     private String password;
 
     @Column(nullable = false, unique = false)
-    @NotBlank(message = "")
+    @NotBlank(message = "Data de nascimento não pode estar vazia")
     private String datebirth;
 
     public EmployeeModel(

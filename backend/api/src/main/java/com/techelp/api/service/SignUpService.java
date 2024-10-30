@@ -12,6 +12,9 @@ import com.techelp.api.security.service.JwtTokenService;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,15 +28,11 @@ public class SignUpService {
     private final JwtTokenService tokenService;
 
     public ResponseEntity<SignUpResponse> addClient(ClientDto client) {
-        if (!this.checkIfUserExistsByEmail(client)) {
-            ErrorResponse error = new ErrorResponse("Email já cadastrado.", HttpStatus.BAD_REQUEST.value());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-        } else if (!this.checkIfUserExistsByCpf(client)) {
-            ErrorResponse error = new ErrorResponse("CPF já cadastrado.", HttpStatus.BAD_REQUEST.value());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-        } else if (!this.checkPasswordConfirmation(client)) {
-            ErrorResponse error = new ErrorResponse("As senhas não são iguais.", HttpStatus.BAD_REQUEST.value());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+
+        ResponseEntity<SignUpResponse> hasErrors = this.validate(client);
+
+        if (hasErrors != null) {
+            return hasErrors;
         }
 
         ClientModel clientModel = ClientModel.fromDto(client);
@@ -48,6 +47,35 @@ public class SignUpService {
         String token = tokenService.generateToken(clientModel, "client");
 
         return ResponseEntity.ok(new AuthResponse(clientModel.getId(), clientModel.getName(), token));
+    }
+
+    private ResponseEntity<SignUpResponse> validate(ClientDto client) {
+
+        Map<String, String> errors = new HashMap<>();
+
+        if (!this.checkIfUserExistsByEmail(client)) {
+            errors.put("email", "E-mail já cadastrado.");
+        }
+
+        if (!this.checkIfUserExistsByCpf(client)) {
+            errors.put("cpf", "CPF já cadastrado.");
+        }
+
+        if (!this.isValidCpf(client.cpf())) {
+            errors.put("cpf", "CPF é inválido.");
+        }
+
+        if (!this.checkPasswordConfirmation(client)) {
+            errors.put("password", "As senhas não são iguais.");
+        }
+
+        if (!errors.isEmpty()) {
+            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),
+                    errors);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+
+        return null;
     }
 
     public Boolean checkIfUserExistsByEmail(ClientDto client) {
@@ -69,6 +97,41 @@ public class SignUpService {
         }
 
         return value.replaceAll("[^0-9]", "");
+    }
+
+    private boolean isValidCpf(String cpf) {
+        cpf = this.removeNonNumeric(cpf);
+
+        if (cpf == null || cpf.length() != 11 || cpf.chars().distinct().count() == 1) {
+            return false;
+        }
+
+        try {
+            int[] cpfArray = new int[11];
+            for (int i = 0; i < 11; i++) {
+                cpfArray[i] = Character.getNumericValue(cpf.charAt(i));
+            }
+
+            int sum1 = 0;
+            for (int i = 0; i < 9; i++) {
+                sum1 += cpfArray[i] * (10 - i);
+            }
+            int firstCheckDigit = (sum1 * 10) % 11;
+            if (firstCheckDigit == 10)
+                firstCheckDigit = 0;
+
+            int sum2 = 0;
+            for (int i = 0; i < 10; i++) {
+                sum2 += cpfArray[i] * (11 - i);
+            }
+            int secondCheckDigit = (sum2 * 10) % 11;
+            if (secondCheckDigit == 10)
+                secondCheckDigit = 0;
+
+            return firstCheckDigit == cpfArray[9] && secondCheckDigit == cpfArray[10];
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
 }

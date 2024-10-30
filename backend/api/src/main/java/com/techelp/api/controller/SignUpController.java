@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techelp.api.dto.ClientDto;
-import com.techelp.api.dto.response.AuthResponse;
 import com.techelp.api.dto.response.SignUpResponse;
 import com.techelp.api.service.SignUpService;
 

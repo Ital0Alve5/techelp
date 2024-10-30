@@ -80,6 +80,8 @@ public class ClientModel {
     @NotBlank(message = "Complemento não pode estar vazio")
     private String complement;
 
+    public ClientModel() {
+    }
     public ClientModel(
             String cpf,
             String name,

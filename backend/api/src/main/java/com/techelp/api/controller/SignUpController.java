@@ -22,7 +22,7 @@ public class SignUpController {
 
 	@PostMapping("/signUp")
 	public ResponseEntity<ClientModel> addNewClient(@RequestBody @Valid ClientModel client) {
-		return ResponseEntity.ok(this.signUpService.addClient(client));
+		return ResponseEntity.ok(signUpService.addClient(client));
 	}
 
 	@GetMapping("/")

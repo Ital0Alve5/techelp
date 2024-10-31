@@ -13,14 +13,18 @@ import com.techelp.api.service.TempPasswordService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Optional;
+
+import java.util.Base64;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -68,9 +72,6 @@ public class SignUpController {
 		}
 	}
 
-	/*
-	 * api/signUp?tempPassword=9999
-	 */
 	@PostMapping("/signUp")
 	public ResponseEntity<ApiResponse> addNewClient(@RequestParam String tempPassword,
 			@RequestBody @Valid ClientDto clientDto) {
@@ -85,7 +86,25 @@ public class SignUpController {
 
 		try {
 			ApiResponse response = signUpService.addClient(clientDto, tempPassword);
-			return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+			if (response instanceof SuccessResponse<?> successResponse) {
+
+
+				String token = successResponse.data().map(Object::toString).orElse(null);
+				String encodedToken = Base64.getUrlEncoder().encodeToString(token.getBytes());
+
+				return ResponseEntity.status(HttpStatus.CREATED)
+						.header(HttpHeaders.SET_COOKIE, ResponseCookie.from("jwt", encodedToken)
+								.path("/")
+								.httpOnly(true)
+								.secure(true)
+								.sameSite("Strict")
+								.build()
+								.toString())
+						.body(response);
+			}
+
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		} catch (ValidationException ex) {
 			ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),
 					ex.getErrors());

@@ -25,9 +25,9 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse> checkClient(@RequestBody LoginDto loginModel) {
+    public ResponseEntity<ApiResponse> checkClient(@RequestBody LoginDto loginDto) {
         try {
-            Map<String, Object> authData = loginService.checkClient(loginModel);
+            Map<String, Object> authData = loginService.checkClient(loginDto);
             SuccessResponse<Map<String, Object>> successResponse = new SuccessResponse<>(HttpStatus.OK.value(),
                     "Login realizado com sucesso", Optional.of(authData));
             return ResponseEntity.ok(successResponse);

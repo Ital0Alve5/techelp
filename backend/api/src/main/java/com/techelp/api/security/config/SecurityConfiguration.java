@@ -33,7 +33,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .requestMatchers(HttpMethod.GET, "/").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/signUp").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/sendpassword").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/sendPassword").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/validateClient").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/funcionario/login").permitAll()

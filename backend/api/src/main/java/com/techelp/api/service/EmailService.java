@@ -6,14 +6,22 @@ import java.nio.charset.StandardCharsets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.techelp.api.dto.EmailDto;
+import com.techelp.api.dto.response.ApiResponse;
+import com.techelp.api.dto.response.ErrorResponse1;
+import com.techelp.api.dto.response.SuccessResponse;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class EmailService {
@@ -24,7 +32,7 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String sender;
 
-    public String sendPasswordEmail(EmailDto user) {
+    public ResponseEntity<ApiResponse> sendPasswordEmail(EmailDto user) {
         try {
             String[] nameParts = user.name().split(" ");
             String firstName = nameParts[0];
@@ -44,9 +52,16 @@ public class EmailService {
 
             javaMailSender.send(mimeMessage);
 
-            return "E-mail enviado com sucesso!";
+            @SuppressWarnings("rawtypes")
+            SuccessResponse successResponse = new SuccessResponse<>(HttpStatus.CREATED.value(),
+                    "E-mail enviado com sucesso!", Optional.empty());
+            return ResponseEntity.status(HttpStatus.CREATED.value()).body(successResponse);
+
         } catch (MessagingException | IOException e) {
-            return "Erro ao enviar e-mail: " + e.getLocalizedMessage();
+            ErrorResponse1 errorResponse = new ErrorResponse1("Erro de serviço", HttpStatus.BAD_REQUEST.value(),
+                    Map.of(
+                            "emailSender", "Erro ao enviar e-mail!"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
 

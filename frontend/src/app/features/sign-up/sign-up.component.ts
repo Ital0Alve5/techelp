@@ -30,8 +30,6 @@ import { UfValidator } from '@/shared/services/validators/uf-validator.service';
 import { NumericValidator } from '@/shared/services/validators/numeric-validator.service';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 
-import { InputError } from '@/shared/types/input-error.type';
-
 import { CepService } from './services/cep.service';
 import { states } from './constants/states.constant';
 import { formData } from './model/form-data.model';
@@ -228,48 +226,73 @@ export class SignUpComponent {
 
     if (password.validation.error) return;
 
-    this.signUpService
-      .confirmPassword({
-        email: this.formValues().email.value,
-        name: this.formValues().name.value,
-        CPF: this.formValues().cpf.value,
-        phone: this.formValues().phone.value,
-        houseNumber: this.formValues().number.value,
-        complement: this.formValues().complement.value,
-        cep: this.formValues().cep.value,
-        rua: this.formValues().street.value,
-        bairro: this.formValues().neighborhood.value,
-        cidade: this.formValues().city.value,
-        estado: this.formValues().state.value,
-        password: this.formValues().password.value,
-      })
-      .then((response) => {
-        if (response.error)
-          this.popupService.addNewPopUp({
-            type: Status.Error,
-            message: (response.data as InputError).message,
-          });
-        else {
-          this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);
-        }
-      });
+    // this.signUpService
+    //   .confirmPassword({
+    //     email: this.formValues().email.value,
+    //     name: this.formValues().name.value,
+    //     CPF: this.formValues().cpf.value,
+    //     phone: this.formValues().phone.value,
+    //     houseNumber: this.formValues().number.value,
+    //     complement: this.formValues().complement.value,
+    //     cep: this.formValues().cep.value,
+    //     rua: this.formValues().street.value,
+    //     bairro: this.formValues().neighborhood.value,
+    //     cidade: this.formValues().city.value,
+    //     estado: this.formValues().state.value,
+    //     password: this.formValues().password.value,
+    //   })
+    //   .then((response) => {
+    //     if (response.error)
+    //       this.popupService.addNewPopUp({
+    //         type: Status.Error,
+    //         message: (response.data as InputError).message,
+    //       });
+    //     else {
+    //       this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);
+    //     }
+    //   });
   }
 
-  sendData() {
-    this.signUpService
-      .validate({
+  async sendData() {
+    console.log(
+      await this.signUpService.validate({
         email: this.formValues().email.value,
         cpf: this.formValues().cpf.value,
-      })
-      .then((response) => {
-        if (response.error) {
-          this.popupService.addNewPopUp({
-            type: Status.Error,
-            message: (response.data as InputError).message,
-          });
-        } else {
-          this.isPassConfirmationModalOpen.set(false);
-        }
+        name: this.formValues().name.value,
+        phone: this.formValues().phone.value,
+        cep: this.formValues().cep.value,
+        state: this.formValues().state.value,
+        city: this.formValues().city.value,
+        neighborhood: this.formValues().neighborhood.value,
+        street: this.formValues().street.value,
+        number: this.formValues().number.value,
+        complement: this.formValues().complement.value,
+      }),
+    );
+
+    const isValid = await this.signUpService.validate({
+      email: this.formValues().email.value,
+      cpf: this.formValues().cpf.value,
+      name: this.formValues().name.value,
+      phone: this.formValues().phone.value,
+      cep: this.formValues().cep.value,
+      state: this.formValues().state.value,
+      city: this.formValues().city.value,
+      neighborhood: this.formValues().neighborhood.value,
+      street: this.formValues().street.value,
+      number: this.formValues().number.value,
+      complement: this.formValues().complement.value,
+    });
+
+    if (isValid?.data && 'errors' in isValid.data) {
+      Object.values(isValid.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
       });
+    } else {
+      this.isPassConfirmationModalOpen.set(false);
+    }
   }
 }

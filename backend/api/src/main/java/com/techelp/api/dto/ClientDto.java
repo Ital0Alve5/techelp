@@ -10,7 +10,6 @@ public record ClientDto(
                 int id,
                 @NotBlank(message = "E-mail não pode estar vazio") @Email(message = "E-mail inválido!") String email,
                 @Pattern(regexp = "^[0-9]{4}$", message = "A senha deve ser um número de 4 dígitos!") @NotBlank(message = "Senha não pode estar vazia!") String password,
-                @Pattern(regexp = "^[0-9]{4}$", message = "A senha deve ser um número de 4 dígitos!") @NotBlank(message = "Confirmação de senha não pode estar vazia!") String confirmPassword,
                 @CPF(message = "CPF inválido!") @NotBlank(message = "CPF não pode estar vazio!") String cpf,
                 @Pattern(regexp = "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ'\\s]+$", message = "Nome aceita apenas letras!") @NotBlank(message = "Nome não pode estar vazio!") String name,
                 @Pattern(regexp = "^(?:\\+55\\s?)?(?:\\(?\\d{2}\\)?\\s?)?\\d{4,5}[-\\s]?\\d{4}$", message = "Telefone inválido!") @NotBlank(message = "Telefone não pode estar vazio!") String phone,

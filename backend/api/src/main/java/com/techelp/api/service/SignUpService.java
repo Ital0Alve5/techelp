@@ -65,10 +65,6 @@ public class SignUpService {
             errors.put("cpf", "CPF é inválido.");
         }
 
-        if (!this.checkPasswordConfirmation(client)) {
-            errors.put("password", "As senhas não são iguais.");
-        }
-
         if (!errors.isEmpty()) {
             ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),
                     errors);
@@ -85,10 +81,6 @@ public class SignUpService {
     public Boolean checkIfUserExistsByCpf(ClientDto client) {
 
         return clientRepository.findByCpf(this.removeNonNumeric(client.cpf())).isEmpty();
-    }
-
-    private Boolean checkPasswordConfirmation(ClientDto clientDto) {
-        return clientDto.password().equals(clientDto.confirmPassword());
     }
 
     private String removeNonNumeric(String value) {

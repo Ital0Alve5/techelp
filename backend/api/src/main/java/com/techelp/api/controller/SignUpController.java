@@ -22,14 +22,7 @@ public class SignUpController {
 
 	@PostMapping("/signUp")
 	public ResponseEntity<SignUpResponse> addNewClient(@RequestBody @Valid ClientDto client) {
-
 		return signUpService.addClient(client);
-
-		// ClientModel newClient = clientRepository.findByEmail(client).get();
-
-		// if(passwordEncoder.matches(newClient.getPassword(), client.getPassword())){
-		// String token = tokenService.generateToken(newClient, "client");
-		// }
 	}
 
 	@GetMapping("/")

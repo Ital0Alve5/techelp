@@ -1,11 +1,11 @@
-package com.techelp.api.model;
+package com.techelp.api.dto;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public class LoginModel {
+public class LoginDto {
 
     @Column(nullable = false, unique = true)
     @NotBlank(message = "E-mail não pode estar vazio")
@@ -17,12 +17,12 @@ public class LoginModel {
     @NotBlank(message = "Senha não pode estar vazio")
     private String password;
 
-    public LoginModel(String email, String password) {
+    public LoginDto(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    public LoginModel() {
+    public LoginDto() {
     }
 
     public @NotBlank(message = "E-mail não pode estar vazio") @Email(message = "E-mail inválido") String getEmail() {

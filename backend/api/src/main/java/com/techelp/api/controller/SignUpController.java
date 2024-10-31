@@ -27,6 +27,11 @@ public class SignUpController {
 		return signUpService.addClient(client);
 	}
 
+	@PostMapping("/validateClient")
+	public ResponseEntity<SignUpResponse> validateClient(@RequestBody @Valid ClientDto client) {
+		return signUpService.validate(client);
+	}
+
 	@GetMapping("/")
 	public String teste() {
 		return "Isso aqui é um teste do Ítaloooooooo";

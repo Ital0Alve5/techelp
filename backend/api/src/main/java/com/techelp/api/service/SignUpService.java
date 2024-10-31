@@ -49,7 +49,7 @@ public class SignUpService {
         return ResponseEntity.ok(new AuthResponse(clientModel.getId(), clientModel.getName(), token));
     }
 
-    private ResponseEntity<SignUpResponse> validate(ClientDto client) {
+    public ResponseEntity<SignUpResponse> validate(ClientDto client) {
 
         Map<String, String> errors = new HashMap<>();
 

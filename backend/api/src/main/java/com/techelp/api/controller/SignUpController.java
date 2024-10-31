@@ -11,7 +11,6 @@ import com.techelp.api.service.EmailService;
 import com.techelp.api.service.SignUpService;
 import com.techelp.api.service.TempPasswordService;
 
-import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 

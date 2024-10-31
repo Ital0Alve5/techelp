@@ -24,7 +24,6 @@ public class SignUpController {
 
 	@PostMapping("/signUp")
 	public ResponseEntity<SignUpResponse> addNewClient(@RequestBody @Valid ClientDto client) {
-
 		return signUpService.addClient(client);
 	}
 

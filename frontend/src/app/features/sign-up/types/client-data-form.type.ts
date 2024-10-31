@@ -10,4 +10,5 @@ export type ClientDataForm = {
   street: string;
   number: string;
   complement: string;
+  password?: string;
 };

@@ -3,9 +3,9 @@ package com.techelp.api.service;
 import org.springframework.stereotype.Service;
 
 import com.techelp.api.dto.ClientDto;
-import com.techelp.api.dto.response.AuthResponse;
-import com.techelp.api.dto.response.ErrorResponse;
-import com.techelp.api.dto.response.SignUpResponse;
+import com.techelp.api.dto.response.ApiResponse;
+import com.techelp.api.dto.response.SuccessResponse;
+import com.techelp.api.exception.ValidationException;
 import com.techelp.api.model.ClientModel;
 import com.techelp.api.repository.ClientRepository;
 import com.techelp.api.security.service.JwtTokenService;
@@ -14,9 +14,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
@@ -27,103 +26,81 @@ public class SignUpService {
     private final ClientRepository clientRepository;
     private final JwtTokenService tokenService;
 
-    public ResponseEntity<SignUpResponse> addClient(ClientDto client) {
+    public ApiResponse addClient(ClientDto client, String password) {
+        Map<String, String> validationErrors = validate(client);
 
-        ResponseEntity<SignUpResponse> hasErrors = this.validate(client);
-
-        if (hasErrors != null) {
-            return hasErrors;
+        if (!validationErrors.isEmpty()) {
+            throw new ValidationException("Erro de validação", validationErrors);
         }
 
         ClientModel clientModel = ClientModel.fromDto(client);
-
-        clientModel.setPassword(passwordEncoder.encode(clientModel.getPassword()));
-        clientModel.setCep(this.removeNonNumeric(client.cep()));
-        clientModel.setPhone(this.removeNonNumeric(client.phone()));
-        clientModel.setCpf(this.removeNonNumeric(client.cpf()));
+        clientModel.setPassword(passwordEncoder.encode(password));
+        clientModel.setCep(removeNonNumeric(client.cep()));
+        clientModel.setPhone(removeNonNumeric(client.phone()));
+        clientModel.setCpf(removeNonNumeric(client.cpf()));
 
         clientRepository.save(clientModel);
 
         String token = tokenService.generateToken(clientModel, "client");
+        AuthData authData = new AuthData(clientModel.getId(), clientModel.getName(), token);
 
-        return ResponseEntity.ok(new AuthResponse(clientModel.getId(), clientModel.getName(), token));
+        return new SuccessResponse<>(201, "Usuário criado com sucesso", Optional.of(authData));
     }
 
-    public ResponseEntity<SignUpResponse> validate(ClientDto client) {
-
+    public Map<String, String> validate(ClientDto client) {
         Map<String, String> errors = new HashMap<>();
 
-        if (!this.checkIfUserExistsByEmail(client)) {
+        if (!checkIfUserExistsByEmail(client)) {
             errors.put("email", "E-mail já cadastrado.");
         }
-
-        if (!this.checkIfUserExistsByCpf(client)) {
+        if (!checkIfUserExistsByCpf(client)) {
             errors.put("cpf", "CPF já cadastrado.");
         }
-
-        if (!this.isValidCpf(client.cpf())) {
+        if (!isValidCpf(client.cpf())) {
             errors.put("cpf", "CPF é inválido.");
         }
 
-        if (!errors.isEmpty()) {
-            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),
-                    errors);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-        }
-
-        return null;
+        return errors;
     }
 
-    public Boolean checkIfUserExistsByEmail(ClientDto client) {
+    private Boolean checkIfUserExistsByEmail(ClientDto client) {
         return clientRepository.findByEmail(client.email()).isEmpty();
     }
 
-    public Boolean checkIfUserExistsByCpf(ClientDto client) {
-
-        return clientRepository.findByCpf(this.removeNonNumeric(client.cpf())).isEmpty();
+    private Boolean checkIfUserExistsByCpf(ClientDto client) {
+        return clientRepository.findByCpf(removeNonNumeric(client.cpf())).isEmpty();
     }
 
     private String removeNonNumeric(String value) {
-        if (value == null) {
-            return null;
-        }
-
-        return value.replaceAll("[^0-9]", "");
+        return value != null ? value.replaceAll("[^0-9]", "") : null;
     }
 
     private boolean isValidCpf(String cpf) {
-        cpf = this.removeNonNumeric(cpf);
-
-        if (cpf == null || cpf.length() != 11 || cpf.chars().distinct().count() == 1) {
+        cpf = removeNonNumeric(cpf);
+        if (cpf == null || cpf.length() != 11 || cpf.chars().distinct().count() == 1)
             return false;
-        }
 
         try {
-            int[] cpfArray = new int[11];
-            for (int i = 0; i < 11; i++) {
-                cpfArray[i] = Character.getNumericValue(cpf.charAt(i));
-            }
-
-            int sum1 = 0;
-            for (int i = 0; i < 9; i++) {
-                sum1 += cpfArray[i] * (10 - i);
-            }
-            int firstCheckDigit = (sum1 * 10) % 11;
-            if (firstCheckDigit == 10)
-                firstCheckDigit = 0;
-
-            int sum2 = 0;
-            for (int i = 0; i < 10; i++) {
-                sum2 += cpfArray[i] * (11 - i);
-            }
-            int secondCheckDigit = (sum2 * 10) % 11;
-            if (secondCheckDigit == 10)
-                secondCheckDigit = 0;
-
-            return firstCheckDigit == cpfArray[9] && secondCheckDigit == cpfArray[10];
+            int[] cpfArray = cpf.chars().map(Character::getNumericValue).toArray();
+            return validateCpfDigits(cpfArray);
         } catch (NumberFormatException e) {
             return false;
         }
     }
 
+    private boolean validateCpfDigits(int[] cpfArray) {
+        int firstCheckDigit = calculateCpfDigit(cpfArray, 10);
+        int secondCheckDigit = calculateCpfDigit(cpfArray, 11);
+        return firstCheckDigit == cpfArray[9] && secondCheckDigit == cpfArray[10];
+    }
+
+    private int calculateCpfDigit(int[] cpfArray, int multiplier) {
+        int sum = 0;
+        for (int i = 0; i < multiplier - 1; i++)
+            sum += cpfArray[i] * (multiplier - i);
+        return (sum * 10) % 11 == 10 ? 0 : (sum * 10) % 11;
+    }
+
+    private record AuthData(int id, String name, String token) {
+    }
 }

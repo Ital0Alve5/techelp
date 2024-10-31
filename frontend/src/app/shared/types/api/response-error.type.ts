@@ -1,5 +1,5 @@
 export type ResponseError = {
-  message: string;
   status: number;
+  message: string;
   errors: { [field: string]: string };
 };

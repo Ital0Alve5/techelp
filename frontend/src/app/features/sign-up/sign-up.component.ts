@@ -214,7 +214,7 @@ export class SignUpComponent {
     if (validForm) this.sendData();
   }
 
-  confirmPassword() {
+  async confirmPassword() {
     const { password } = this.formValues();
 
     this.maxLengthValidator.setMaxLength(4);
@@ -226,50 +226,39 @@ export class SignUpComponent {
 
     if (password.validation.error) return;
 
-    // this.signUpService
-    //   .confirmPassword({
-    //     email: this.formValues().email.value,
-    //     name: this.formValues().name.value,
-    //     CPF: this.formValues().cpf.value,
-    //     phone: this.formValues().phone.value,
-    //     houseNumber: this.formValues().number.value,
-    //     complement: this.formValues().complement.value,
-    //     cep: this.formValues().cep.value,
-    //     rua: this.formValues().street.value,
-    //     bairro: this.formValues().neighborhood.value,
-    //     cidade: this.formValues().city.value,
-    //     estado: this.formValues().state.value,
-    //     password: this.formValues().password.value,
-    //   })
-    //   .then((response) => {
-    //     if (response.error)
-    //       this.popupService.addNewPopUp({
-    //         type: Status.Error,
-    //         message: (response.data as InputError).message,
-    //       });
-    //     else {
-    //       this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);
-    //     }
-    //   });
+    const success = await this.signUpService.createNewClient({
+      email: this.formValues().email.value,
+      password: this.formValues().password.value,
+      name: this.formValues().name.value,
+      cpf: this.formValues().cpf.value,
+      phone: this.formValues().phone.value,
+      number: this.formValues().number.value,
+      complement: this.formValues().complement.value,
+      cep: this.formValues().cep.value,
+      street: this.formValues().street.value,
+      neighborhood: this.formValues().neighborhood.value,
+      city: this.formValues().city.value,
+      state: this.formValues().state.value,
+    });
+
+
+    if (success?.data && 'errors' in success.data) {
+      Object.values(success.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+    } else {
+      console.log('deu certo')
+      // this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);
+
+    }
+
+    console.log(success);
   }
 
   async sendData() {
-    console.log(
-      await this.signUpService.validate({
-        email: this.formValues().email.value,
-        cpf: this.formValues().cpf.value,
-        name: this.formValues().name.value,
-        phone: this.formValues().phone.value,
-        cep: this.formValues().cep.value,
-        state: this.formValues().state.value,
-        city: this.formValues().city.value,
-        neighborhood: this.formValues().neighborhood.value,
-        street: this.formValues().street.value,
-        number: this.formValues().number.value,
-        complement: this.formValues().complement.value,
-      }),
-    );
-
     const isValid = await this.signUpService.validate({
       email: this.formValues().email.value,
       cpf: this.formValues().cpf.value,
@@ -291,8 +280,24 @@ export class SignUpComponent {
           message: error,
         });
       });
-    } else {
-      this.isPassConfirmationModalOpen.set(false);
-    }
+    } else await this.sendPasswordByEmail();
+  }
+
+  async sendPasswordByEmail() {
+    const emailWasSent = await this.signUpService.sendPasswordByEmail({
+      email: this.formValues().email.value,
+      name: this.formValues().name.value,
+    });
+
+    console.log(emailWasSent);
+
+    if (emailWasSent?.data && 'errors' in emailWasSent.data) {
+      Object.values(emailWasSent.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+    } else this.isPassConfirmationModalOpen.set(false);
   }
 }

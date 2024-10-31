@@ -7,7 +7,6 @@ import axios, { AxiosResponse } from 'axios';
 import { ResponseError } from '@/shared/types/api/response-error.type';
 import { ClientDataForm } from '../types/client-data-form.type';
 import { ResponseSuccess } from '@/shared/types/api/response-success.type';
-
 @Injectable()
 export class SignUpService {
   passwordGenerated: number = 0;
@@ -26,6 +25,37 @@ export class SignUpService {
   checkPassword(password: string) {
     if (Number.parseInt(password) === this.passwordGenerated) return true;
     return false;
+  }
+
+  async createNewClient(data: ClientDataForm): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axios.post('http://localhost:8080/api/signUp', data);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
+  }
+
+  async sendPasswordByEmail(data: {
+    email: string;
+    name: string;
+  }): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axios.post('http://localhost:8080/api/sendPassword', data);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
   }
 
   async validate(data: ClientDataForm): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {

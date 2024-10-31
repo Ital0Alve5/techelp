@@ -14,9 +14,9 @@ import com.techelp.api.service.SignUpService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin
 public class SignUpController {
 	private final SignUpService signUpService;
 
@@ -24,12 +24,6 @@ public class SignUpController {
 	public ResponseEntity<SignUpResponse> addNewClient(@RequestBody @Valid ClientDto client) {
 
 		return signUpService.addClient(client);
-
-		// ClientModel newClient = clientRepository.findByEmail(client).get();
-
-		// if(passwordEncoder.matches(newClient.getPassword(), client.getPassword())){
-		// String token = tokenService.generateToken(newClient, "client");
-		// }
 	}
 
 	@GetMapping("/")

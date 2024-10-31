@@ -11,6 +11,7 @@ import { UserIcon } from '@/shared/ui/icons/user.icon';
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
 import { SelectComponent } from '@/shared/ui/select/select.component';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+import { LoadingScreenComponent } from '@/shared/ui/loading-screen/loading-screen.component';
 
 import { DebounceService } from '@/shared/services/utils/debounce.service';
 import { EmailValidator } from '@/shared/services/validators/email-validator.service';
@@ -48,6 +49,7 @@ import { SignUpService } from './services/sign-up.service';
     LockIcon,
     FormsModule,
     SelectComponent,
+    LoadingScreenComponent,
   ],
   providers: [
     CepService,
@@ -74,6 +76,7 @@ import { SignUpService } from './services/sign-up.service';
 export class SignUpComponent {
   formValues = signal(JSON.parse(JSON.stringify(formData)));
   isPassConfirmationModalOpen = signal(true);
+  isLoading = signal(true);
   states = states;
 
   constructor(
@@ -241,21 +244,30 @@ export class SignUpComponent {
       state: this.formValues().state.value,
     });
 
+    if (!success?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
 
-    if (success?.data && 'errors' in success.data) {
+    if ('errors' in success.data) {
       Object.values(success.data.errors).forEach((error) => {
         this.popupService.addNewPopUp({
           type: Status.Error,
           message: error,
         });
       });
-    } else {
-      console.log('deu certo')
-      // this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);
-
+      return;
     }
 
-    console.log(success);
+    this.popupService.addNewPopUp({
+      type: Status.Success,
+      message: success.data.message,
+    });
+
+    this.router.navigate([`/cliente/${success.data.data!['id']}/solicitacoes`]);
   }
 
   async sendData() {
@@ -273,31 +285,66 @@ export class SignUpComponent {
       complement: this.formValues().complement.value,
     });
 
-    if (isValid?.data && 'errors' in isValid.data) {
+    if (!isValid?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in isValid.data) {
       Object.values(isValid.data.errors).forEach((error) => {
         this.popupService.addNewPopUp({
           type: Status.Error,
           message: error,
         });
       });
-    } else await this.sendPasswordByEmail();
+      return;
+    }
+
+    this.popupService.addNewPopUp({
+      type: Status.Success,
+      message: isValid!.data.message,
+    });
+
+    await this.sendPasswordByEmail();
   }
 
   async sendPasswordByEmail() {
+    this.isLoading.set(false);
+
     const emailWasSent = await this.signUpService.sendPasswordByEmail({
       email: this.formValues().email.value,
       name: this.formValues().name.value,
     });
 
-    console.log(emailWasSent);
+    this.isLoading.set(true);
 
-    if (emailWasSent?.data && 'errors' in emailWasSent.data) {
+    if (!emailWasSent?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in emailWasSent.data) {
       Object.values(emailWasSent.data.errors).forEach((error) => {
         this.popupService.addNewPopUp({
           type: Status.Error,
           message: error,
         });
       });
-    } else this.isPassConfirmationModalOpen.set(false);
+      return;
+    }
+
+    console.log(emailWasSent?.data);
+    this.popupService.addNewPopUp({
+      type: Status.Success,
+      message: emailWasSent.data.message,
+    });
+
+    this.isPassConfirmationModalOpen.set(false);
   }
 }

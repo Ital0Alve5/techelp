@@ -32,7 +32,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .requestMatchers(HttpMethod.GET, "/").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/signUp").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/signUp").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/sendpassword").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/funcionario/login").permitAll()
                         .anyRequest().authenticated())

@@ -22,22 +22,22 @@ public class EmailService {
     private JavaMailSender javaMailSender;
 
     @Value("${spring.mail.username}")
-    private String remetente;
+    private String sender;
 
-    public String enviarEmailSenha(EmailDto user) {
+    public String sendPasswordEmail(EmailDto user) {
         try {
             String[] nameParts = user.name().split(" ");
             String firstName = nameParts[0];
             String subject = "Requisição de nova senha para " + firstName + "!";
-            String novaSenha = NewPasswordService.generateNewRandomPassword();
+            String newPassword = NewPasswordService.generateNewRandomPassword();
             String template = loadPasswordTemplateEmail();
             template = template.replace("#{name}", user.name());
-            template = template.replace("#{password}", novaSenha);
+            template = template.replace("#{password}", newPassword);
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
-            helper.setFrom(remetente);
+            helper.setFrom(sender);
             helper.setTo(user.email());
             helper.setSubject(subject);
             helper.setText(template, true);

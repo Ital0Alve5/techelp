@@ -12,16 +12,16 @@ import com.techelp.api.dto.EmailDto;
 import com.techelp.api.service.EmailService;
 
 @RestController
-@RequestMapping("/api/users")
-public class UserController {
+@RequestMapping("/api")
+public class SendPasswordController {
 
     @Autowired
     private EmailService emailService;
 
-    @PostMapping("/signup")
+    @PostMapping("/sendpassword")
     @ResponseStatus(HttpStatus.CREATED)
     public String registerUser(@RequestBody EmailDto emailDto) {
-		return emailService.enviarEmailSenha(emailDto);
+		return emailService.sendPasswordEmail(emailDto);
     }
 
 }

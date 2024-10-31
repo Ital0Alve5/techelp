@@ -53,7 +53,7 @@ public class ClientModel extends User {
     @Column(nullable = false, unique = false)
     private String number;
 
-    @Column(nullable = false, unique = false)
+    @Column(nullable = true, unique = false)
     private String complement;
 
     public ClientModel() {

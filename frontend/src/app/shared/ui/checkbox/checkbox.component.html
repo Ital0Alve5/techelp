@@ -1,11 +1,11 @@
 <div class="checkbox-container">
   @if (label()) {
-    <label [for]="id" class="checkbox-label">{{ label() }}</label>
+    <label [for]="id()" class="checkbox-label">{{ label() }}</label>
   }
-  <input 
+  <input
     id="id()"
-    type="checkbox" 
-    [checked]="value()" 
-    (change)="onCheckboxChange($event)" 
+    type="checkbox"
+    [checked]="value()"
+    (change)="onCheckboxChange($event)"
   />
 </div>

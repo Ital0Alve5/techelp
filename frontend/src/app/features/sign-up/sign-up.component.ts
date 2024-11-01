@@ -267,7 +267,7 @@ export class SignUpComponent {
       message: success.data.message,
     });
 
-    this.router.navigate([`/cliente/${success.data.data!['id']}/solicitacoes`]);
+    this.router.navigate([`/cliente/${success.data.data!['clientId']}/solicitacoes`]);
   }
 
   async sendData() {
@@ -339,7 +339,6 @@ export class SignUpComponent {
       return;
     }
 
-    console.log(emailWasSent?.data);
     this.popupService.addNewPopUp({
       type: Status.Success,
       message: emailWasSent.data.message,

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, signal, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { GuestLayout } from '@/shared/layouts/guest/guest.layout';
@@ -6,7 +6,7 @@ import { PopUpComponent } from '@/shared/ui/pop-up/pop-up.component';
 import { LoggedUserComponent } from './shared/layouts/logged-user/logged-user.component';
 import { EmployeeComponent } from './shared/layouts/employee/employee.component';
 import { BudgetComponent } from './features/client/budget/budget.component';
-import { Authenticator } from './core/auth/authenticator.service';
+import { AuthService } from './core/auth/auth-service.service';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +17,8 @@ import { Authenticator } from './core/auth/authenticator.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
-  constructor(public authenticator: Authenticator) {}
   title = 'angular-app';
+  userType = signal(this.authService.getUserType());
+
+  constructor(private authService: AuthService) {}
 }

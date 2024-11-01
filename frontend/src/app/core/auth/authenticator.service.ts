@@ -1,25 +1,27 @@
-import { Injectable } from '@angular/core';
+import { CanActivateFn } from '@angular/router';
+import { AuthService } from './auth-service.service';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
-export class Authenticator {
-  private isAuthenticated: boolean = false;
-  private isEmployee: boolean = false;
+export const authGuard: CanActivateFn = (route) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-  checkAuthentication(isEmployee: boolean) {
-    if (!isEmployee) return this.isAuthenticated;
+  return authService.isAuthenticated().pipe(
+    map((isAuthenticated) => {
+      const path = route.routeConfig?.path || '';
 
-    return this.isAuthenticated && this.isEmployee;
-  }
-
-  setIsEmployee(isEmployee: boolean) {
-    this.isEmployee = isEmployee;
-  }
-
-  getIsEmployee() {
-    return this.isEmployee;
-  }
-
-  authenticate(auth: boolean) {
-    return (this.isAuthenticated = auth);
-  }
-}
+      if (!isAuthenticated || !authService.isUserTypeAllowed(path)) {
+        router.navigate(['/login']);
+        return false;
+      }
+      return true;
+    }),
+    catchError(() => {
+      router.navigate(['/login']);
+      return of(false);
+    }),
+  );
+};

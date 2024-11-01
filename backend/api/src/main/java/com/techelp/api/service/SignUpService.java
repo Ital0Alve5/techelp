@@ -3,8 +3,7 @@ package com.techelp.api.service;
 import org.springframework.stereotype.Service;
 
 import com.techelp.api.dto.ClientDto;
-import com.techelp.api.dto.response.ApiResponse;
-import com.techelp.api.dto.response.SuccessResponse;
+import com.techelp.api.dto.response.AuthData;
 import com.techelp.api.exception.ValidationException;
 import com.techelp.api.model.ClientModel;
 import com.techelp.api.repository.ClientRepository;
@@ -14,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -26,7 +24,7 @@ public class SignUpService {
     private final ClientRepository clientRepository;
     private final JwtTokenService tokenService;
 
-    public ApiResponse addClient(ClientDto client, String password) {
+    public AuthData addClient(ClientDto client, String password) {
         Map<String, String> validationErrors = validate(client);
 
         if (!validationErrors.isEmpty()) {
@@ -43,8 +41,8 @@ public class SignUpService {
 
         String token = tokenService.generateToken(clientModel, "client");
         AuthData authData = new AuthData(clientModel.getId(), clientModel.getName(), token);
-
-        return new SuccessResponse<>(201, "Usuário criado com sucesso", Optional.of(authData));
+        
+        return authData;
     }
 
     public Map<String, String> validate(ClientDto client) {
@@ -99,8 +97,5 @@ public class SignUpService {
         for (int i = 0; i < multiplier - 1; i++)
             sum += cpfArray[i] * (multiplier - i);
         return (sum * 10) % 11 == 10 ? 0 : (sum * 10) % 11;
-    }
-
-    private record AuthData(int id, String name, String token) {
     }
 }

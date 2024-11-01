@@ -20,7 +20,6 @@ public class JwtTokenService {
     public String generateToken(User userDetails, String userType) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-
             return JWT.create()
                     .withIssuer(ISSUER)
                     .withIssuedAt(creationDate())
@@ -33,7 +32,7 @@ public class JwtTokenService {
         }
     }
 
-    public String validateTokenString(String token) {
+    public String validateTokenAndRetrieveSubject(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
             return JWT.require(algorithm)
@@ -42,7 +41,7 @@ public class JwtTokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException exception) {
-            return null;
+            return null;  
         }
     }
 

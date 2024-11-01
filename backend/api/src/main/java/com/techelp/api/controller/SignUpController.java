@@ -3,6 +3,7 @@ package com.techelp.api.controller;
 import com.techelp.api.dto.ClientDto;
 import com.techelp.api.dto.EmailDto;
 import com.techelp.api.dto.response.ApiResponse;
+import com.techelp.api.dto.response.AuthData;
 import com.techelp.api.dto.response.ErrorResponse;
 import com.techelp.api.dto.response.SuccessResponse;
 import com.techelp.api.exception.InvalidTempPasswordException;
@@ -16,15 +17,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Optional;
-
-import java.util.Base64;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -85,26 +82,13 @@ public class SignUpController {
 		}
 
 		try {
-			ApiResponse response = signUpService.addClient(clientDto, tempPassword);
+			AuthData response = signUpService.addClient(clientDto, tempPassword);
 
-			if (response instanceof SuccessResponse<?> successResponse) {
-
-
-				String token = successResponse.data().map(Object::toString).orElse(null);
-				String encodedToken = Base64.getUrlEncoder().encodeToString(token.getBytes());
-
-				return ResponseEntity.status(HttpStatus.CREATED)
-						.header(HttpHeaders.SET_COOKIE, ResponseCookie.from("jwt", encodedToken)
-								.path("/")
-								.httpOnly(true)
-								.secure(true)
-								.sameSite("Strict")
-								.build()
-								.toString())
-						.body(response);
-			}
-
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.header(HttpHeaders.AUTHORIZATION, "Bearer " + response.token())
+					.body(new SuccessResponse<>(HttpStatus.CREATED.value(),
+							"Cadastro realizado com sucesso", Optional.of(Map.of("clientId", response.id(),
+									"clientName", response.name(), "token", response.token()))));
 		} catch (ValidationException ex) {
 			ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),
 					ex.getErrors());

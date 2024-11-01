@@ -7,7 +7,6 @@ import com.techelp.api.repository.EmployeeRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
-
-import java.util.Base64;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -34,12 +31,14 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        var token = this.recoverToken(request);
+        
+        String token = recoverToken(request);
+
         if (token != null) {
-            var loginEmail = jwtTokenService.validateTokenString(token);
+            String loginEmail = jwtTokenService.validateTokenAndRetrieveSubject(token);
 
             if (loginEmail != null) {
-                String userType = jwtTokenService.getUserTypeFromToken(token); // Tipo do usuário (client ou employee)
+                String userType = jwtTokenService.getUserTypeFromToken(token);
 
                 if ("client".equals(userType)) {
                     ClientModel client = clientRepository.findByEmail(loginEmail)
@@ -64,23 +63,12 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
 
     private String recoverToken(HttpServletRequest request) {
-        var authHeader = request.getHeader("Authorization");
+        String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
             return authHeader.replace("Bearer ", "");
         }
 
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("jwt".equals(cookie.getName())) {
-                    String base64Token = cookie.getValue();
-                    byte[] decodedBytes = Base64.getDecoder().decode(base64Token);
-                    return new String(decodedBytes);
-                }
-            }
-        }
-
-        return null; 
+        return null;
     }
 }

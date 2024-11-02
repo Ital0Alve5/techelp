@@ -1,8 +1,12 @@
 package com.techelp.api.model;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techelp.api.dto.ClientDto;
 
 import jakarta.persistence.Column;
@@ -10,6 +14,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import lombok.Getter;
@@ -52,6 +57,11 @@ public class ClientModel extends User {
 
     @Column(nullable = true, unique = false)
     private String complement;
+
+    @OneToMany(mappedBy = "client")
+    @JsonBackReference
+    @JsonIgnore
+    private List<MaintenanceRequestModel> maintenanceRequests;
 
     public ClientModel() {
         super();

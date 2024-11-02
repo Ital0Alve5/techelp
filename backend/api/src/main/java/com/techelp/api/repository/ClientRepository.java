@@ -12,4 +12,7 @@ public interface ClientRepository extends JpaRepository<ClientModel, Integer> {
     Optional<ClientModel> findByEmail(String email);
 
     Optional<ClientModel> findByCpf(String cpf);
+
+    Optional<ClientModel> findById(int id);
+
 }

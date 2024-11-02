@@ -1,7 +1,5 @@
 package com.techelp.api.model;
 
-import java.util.List;
-
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -19,34 +16,27 @@ import lombok.Setter;
 @Component
 @Scope("prototype")
 @Entity
-@Table(name = "Employee")
+@Table(name = "Category")
 @Getter
 @Setter
-public class EmployeeModel extends User {
+public class CategoryModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(nullable = false, unique = false)
-    @NotBlank(message = "Senha não pode estar vazio")
-    private String password;
+    @Column(nullable = false, unique = true)
+    @NotBlank(message = "Nome não pode estar vazio")
+    private String name;
 
     @Column(nullable = false, unique = false)
-    @NotBlank(message = "Data de nascimento não pode estar vazia")
-    private String birthdate;
+    private Boolean is_active;
 
-    @OneToMany(mappedBy = "employee")
-    private List<HistoryModel> historyRecords;
-
-    public EmployeeModel() {
-        super();
+    public CategoryModel() {
     }
 
-    public EmployeeModel(
-            String name,
-            String email,
-            String password) {
-
-        super(email, password, name);
+    public CategoryModel(
+            String name, Boolean is_active) {
+        this.name = name;
+        this.is_active = is_active;
     }
 }

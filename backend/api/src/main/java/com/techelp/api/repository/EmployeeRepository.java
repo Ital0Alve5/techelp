@@ -10,4 +10,7 @@ import com.techelp.api.model.EmployeeModel;
 @Repository
 public interface EmployeeRepository extends JpaRepository<EmployeeModel, Integer> {
     Optional<EmployeeModel> findByEmail(String email);
+
+    Optional<EmployeeModel> findById(int id);
+
 }

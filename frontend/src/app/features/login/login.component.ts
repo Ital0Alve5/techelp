@@ -82,7 +82,7 @@ export class LoginComponent {
     });
 
     this.router.navigate([
-      `/${this.isEmployeeLogin ? 'funcionario' : 'cliente'}/${success.data.data!['clientId']}/solicitacoes`,
+      `/${this.isEmployeeLogin ? 'funcionario' : 'cliente'}/${success.data.data![this.isEmployeeLogin ? 'employeeId' : 'clientId']}/solicitacoes`,
     ]);
   }
 

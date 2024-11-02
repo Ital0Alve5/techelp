@@ -20,6 +20,7 @@ export class LoginService {
       });
 
       localStorage.setItem('token', response.data.data.token);
+      localStorage.setItem('userId', response.data.data[isEmployee ? 'employeeId' : 'clientId']);
 
       return response;
     } catch (error) {

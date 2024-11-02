@@ -1,4 +1,4 @@
-import { Component, signal, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { GuestLayout } from '@/shared/layouts/guest/guest.layout';
@@ -18,7 +18,7 @@ import { AuthService } from './core/auth/auth-service.service';
 })
 export class AppComponent {
   title = 'angular-app';
-  userType = signal(this.authService.getUserType());
+  userType = this.authService.getUserType();
 
   constructor(private authService: AuthService) {}
 }

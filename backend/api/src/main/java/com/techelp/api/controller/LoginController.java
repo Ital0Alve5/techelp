@@ -17,17 +17,24 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api")
 @CrossOrigin
 public class LoginController {
 
     @Autowired
     private LoginService loginService;
 
-    @PostMapping
-    public ResponseEntity<ApiResponse> checkClient(@RequestBody LoginDto loginDto) {
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse> checkUser(@RequestBody LoginDto loginDto) {
         try {
-            Map<String, Object> authData = loginService.checkClient(loginDto);
+            Map<String, Object> authData = null;
+
+            if (loginDto.getUserType().equals("client")) {
+                authData = loginService.checkClient(loginDto);
+            } else if (loginDto.getUserType().equals("employee")) {
+                authData = loginService.checkEmployee(loginDto);
+            }
+
             SuccessResponse<Map<String, Object>> successResponse = new SuccessResponse<>(HttpStatus.OK.value(),
                     "Login realizado com sucesso", Optional.of(authData));
             return ResponseEntity.ok(successResponse);

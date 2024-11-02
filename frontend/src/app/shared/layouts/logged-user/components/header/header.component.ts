@@ -5,7 +5,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ExitIcon } from '@/shared/ui/icons/exit.icon';
 import { AuthService } from '@/core/auth/auth-service.service';
 
-import { registeredUsersMock } from '@/shared/mock/registered-users.mock';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -15,16 +14,12 @@ import { registeredUsersMock } from '@/shared/mock/registered-users.mock';
 })
 export class HeaderComponent {
   userId: number = JSON.parse(localStorage.getItem('userId')!);
-  userName: string = '';
+  userName: string = this.authService.getUserName()() || '';
 
   constructor(
     public router: Router,
     private authService: AuthService,
-  ) {
-    registeredUsersMock.forEach((user) => {
-      if (user.id === this.userId) this.userName = user.name;
-    });
-  }
+  ) {}
 
   onLogout() {
     this.authService.logout();

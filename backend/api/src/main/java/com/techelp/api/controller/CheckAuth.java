@@ -33,12 +33,16 @@ public class CheckAuth {
 
         if (token != null) {
             try {
-                String loginEmail = jwtTokenService.validateTokenAndRetrieveSubject(token);
+                String loginEmail = jwtTokenService.validateTokenAndRetrieveEmail(token);
                 if (loginEmail != null) {
                     String userType = jwtTokenService.getUserTypeFromToken(token);
+                    String userName = jwtTokenService.getUserNameFromToken(token);
+
                     response.put("authenticated", true);
                     response.put("userType", userType);
+                    response.put("userName", userName);
                     response.put("email", loginEmail);
+
                     return ResponseEntity.ok(response);
                 }
             } catch (Exception e) {

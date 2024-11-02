@@ -30,13 +30,17 @@ public class EmployeeModel extends User {
 
     @Column(nullable = false, unique = false)
     @NotBlank(message = "Data de nascimento não pode estar vazia")
-    private String datebirth;
+    private String birthdate;
+
+    public EmployeeModel() {
+        super();
+    }
 
     public EmployeeModel(
             String name,
             String email,
             String password) {
-        super(email, password);
-        this.password = password;
+
+        super(email, password, name);
     }
 }

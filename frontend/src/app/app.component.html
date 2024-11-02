@@ -1,5 +1,5 @@
 <app-pop-up />
-@if (userType() !== 'employee') {
+@if (userType() === 'client') {
   <logged-user-layout>
     <router-outlet />
   </logged-user-layout>

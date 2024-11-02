@@ -25,23 +25,24 @@ public class JwtTokenService {
                     .withIssuedAt(creationDate())
                     .withExpiresAt(expirationDate())
                     .withSubject(userDetails.getUsername())
-                    .withClaim("userType", userType) 
+                    .withClaim("userType", userType)
+                    .withClaim("email", userDetails.getEmail())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
             throw new JWTCreationException("Erro ao gerar token.", exception);
         }
     }
 
-    public String validateTokenAndRetrieveSubject(String token) {
+    public String validateTokenAndRetrieveEmail(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
             return JWT.require(algorithm)
                     .withIssuer(ISSUER)
                     .build()
                     .verify(token)
-                    .getSubject();
+                    .getClaim("email").asString();
         } catch (JWTVerificationException exception) {
-            return null;  
+            return null;
         }
     }
 
@@ -52,7 +53,20 @@ public class JwtTokenService {
                     .withIssuer(ISSUER)
                     .build()
                     .verify(token)
-                    .getClaim("userType").asString(); 
+                    .getClaim("userType").asString();
+        } catch (JWTVerificationException exception) {
+            throw new JWTVerificationException("Token inválido ou expirado.");
+        }
+    }
+
+    public String getUserNameFromToken(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+            return JWT.require(algorithm)
+                    .withIssuer(ISSUER)
+                    .build()
+                    .verify(token)
+                    .getSubject();
         } catch (JWTVerificationException exception) {
             throw new JWTVerificationException("Token inválido ou expirado.");
         }

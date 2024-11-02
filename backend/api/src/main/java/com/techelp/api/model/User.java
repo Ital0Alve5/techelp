@@ -8,8 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+
 @MappedSuperclass
 @Getter
 @Setter
@@ -21,12 +23,18 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = false)
     private String password;
 
+    @Column(nullable = false, unique = false)
+    @NotBlank(message = "Nome não pode estar vazio")
+    private String name;
+
     public User() {
     }
 
-    public User(String email, String password) {
+    public User(String email, String password, String name) {
         this.email = email;
         this.password = password;
+        this.name = name;
+
     }
 
     @Override
@@ -41,6 +49,10 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
+        return name;
+    }
+
+    public String getEmail() {
         return email;
     }
 

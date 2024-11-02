@@ -1,43 +1,31 @@
 package com.techelp.api.dto;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class LoginDto {
 
-    @Column(nullable = false, unique = true)
-    @NotBlank(message = "E-mail não pode estar vazio")
+    @NotBlank(message = "E-mail não pode estar vazio!")
     @Email(message = "E-mail inválido")
     private String email;
 
-    @Column(nullable = false, unique = false)
     @Pattern(regexp = "^\\d{4}$", message = "A senha deve ser um número de 4 dígitos!")
-    @NotBlank(message = "Senha não pode estar vazio")
+    @NotBlank(message = "Senha não pode estar vazia!")
     private String password;
 
-    public LoginDto(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
+    private String userType;
 
     public LoginDto() {
     }
 
-    public @NotBlank(message = "E-mail não pode estar vazio") @Email(message = "E-mail inválido") String getEmail() {
-        return email;
-    }
-
-    public void setEmail(@NotBlank(message = "E-mail não pode estar vazio") @Email(message = "E-mail inválido") String email) {
+    public LoginDto(String email, String password, String userType) {
         this.email = email;
-    }
-
-    public @Pattern(regexp = "^\\d{4}$", message = "A senha deve ser um número de 4 dígitos!") @NotBlank(message = "Senha não pode estar vazio") String getPassword() {
-        return password;
-    }
-
-    public void setPassword(@Pattern(regexp = "^\\d{4}$", message = "A senha deve ser um número de 4 dígitos!") @NotBlank(message = "Senha não pode estar vazio") String password) {
         this.password = password;
+        this.userType = userType;
     }
 }

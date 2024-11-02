@@ -29,9 +29,6 @@ public class ClientModel extends User {
     @Column(nullable = false, unique = true)
     private String cpf;
 
-    @Column(nullable = false, unique = false)
-    private String name;
-
     @Column(nullable = true, unique = false)
     private String phone;
 
@@ -53,7 +50,7 @@ public class ClientModel extends User {
     @Column(nullable = false, unique = false)
     private String number;
 
-    @Column(nullable = false, unique = false)
+    @Column(nullable = true, unique = false)
     private String complement;
 
     public ClientModel() {
@@ -74,10 +71,9 @@ public class ClientModel extends User {
             String number,
             String complement) {
 
-        super(email, password);
+        super(email, password, name);
 
         this.cpf = cpf;
-        this.name = name;
         this.phone = phone;
         this.cep = cep;
         this.neighborhood = neighborhood;

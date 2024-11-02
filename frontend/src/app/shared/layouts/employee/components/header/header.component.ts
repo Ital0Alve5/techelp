@@ -3,8 +3,7 @@ import { Router } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 import { ExitIcon } from '@/shared/ui/icons/exit.icon';
-import { Authenticator } from '@/core/auth/authenticator.service';
-import { registeredUsersMock } from '@/shared/mock/registered-users.mock';
+import { AuthService } from '@/core/auth/auth-service.service';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -14,19 +13,15 @@ import { registeredUsersMock } from '@/shared/mock/registered-users.mock';
 })
 export class HeaderComponent {
   userId: number = JSON.parse(localStorage.getItem('userId')!);
-  userName: string = '';
+  userName: string = this.authService.getUserName()() || '';
 
   constructor(
     public router: Router,
-    private authenticator: Authenticator,
-  ) {
-    registeredUsersMock.forEach((user) => {
-      if (user.id === this.userId) this.userName = user.name;
-    });
-  }
+    private authService: AuthService,
+  ) {}
 
   onLogout() {
-    this.authenticator.authenticate(false);
+    this.authService.logout();
     this.router.navigate([`/login`]);
   }
 }

@@ -1,8 +1,5 @@
 package com.techelp.api.service;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -15,43 +12,45 @@ import com.techelp.api.dto.EmailDto;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
+import java.io.IOException;
+
 @Service
 public class EmailService {
 
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Autowired
+    private TempPasswordService tempPasswordService;
+
     @Value("${spring.mail.username}")
     private String sender;
 
-    public String sendPasswordEmail(EmailDto user) {
-        try {
-            String[] nameParts = user.name().split(" ");
-            String firstName = nameParts[0];
-            String subject = "Requisição de nova senha para " + firstName + "!";
-            String newPassword = NewPasswordService.generateNewRandomPassword();
-            String template = loadPasswordTemplateEmail();
-            template = template.replace("#{name}", user.name());
-            template = template.replace("#{password}", newPassword);
+    public String sendPasswordEmail(EmailDto emailData) throws MessagingException, IOException {
+        String newPassword = tempPasswordService.createAndAssociateTempPassword(emailData.email());
 
-            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+        String[] nameParts = emailData.name().split(" ");
+        String firstName = nameParts[0];
+        String subject = "Requisição de nova senha para " + firstName + "!";
+        String template = loadPasswordTemplateEmail();
+        template = template.replace("#{name}", emailData.name());
+        template = template.replace("#{password}", newPassword);
 
-            helper.setFrom(sender);
-            helper.setTo(user.email());
-            helper.setSubject(subject);
-            helper.setText(template, true);
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
-            javaMailSender.send(mimeMessage);
+        helper.setFrom(sender);
+        helper.setTo(emailData.email());
+        helper.setSubject(subject);
+        helper.setText(template, true);
 
-            return "E-mail enviado com sucesso!";
-        } catch (MessagingException | IOException e) {
-            return "Erro ao enviar e-mail: " + e.getLocalizedMessage();
-        }
+        javaMailSender.send(mimeMessage);
+
+        return newPassword;
     }
 
     private String loadPasswordTemplateEmail() throws IOException {
         ClassPathResource resource = new ClassPathResource("emailTemplates/templateSenha.html");
-        return new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+        return new String(resource.getInputStream().readAllBytes());
     }
 }

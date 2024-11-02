@@ -9,38 +9,32 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Component
 @Scope("prototype")
 @Entity
-@Table(name = "Employee")
+@Table(name = "temp_password")
 @Getter
 @Setter
-public class EmployeeModel extends User {
+public class TempPassword {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(nullable = false, unique = false)
-    @NotBlank(message = "Senha não pode estar vazio")
+    @Column(nullable = false, unique = true)
     private String password;
 
     @Column(nullable = false, unique = false)
-    @NotBlank(message = "Data de nascimento não pode estar vazia")
-    private String birthdate;
+    private String email; 
 
-    public EmployeeModel() {
-        super();
+    public TempPassword(String password, String email) {
+        this.password = password;
+        this.email = email;
     }
 
-    public EmployeeModel(
-            String name,
-            String email,
-            String password) {
-
-        super(email, password, name);
-    }
+    public TempPassword() {}
 }

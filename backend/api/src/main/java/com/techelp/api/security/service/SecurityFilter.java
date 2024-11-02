@@ -31,29 +31,31 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        var token = this.recoverToken(request);
-        var loginEmail = jwtTokenService.validateTokenString(token);
+        
+        String token = recoverToken(request);
 
-        if (loginEmail != null) {
+        if (token != null) {
+            String loginEmail = jwtTokenService.validateTokenAndRetrieveEmail(token);
 
-            String userType = jwtTokenService.getUserTypeFromToken(token); // Tipo do usuário (client ou employee)
+            if (loginEmail != null) {
+                String userType = jwtTokenService.getUserTypeFromToken(token);
 
-            if ("client".equals(userType)) {
-                ClientModel client = clientRepository.findByEmail(loginEmail)
-                        .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-                var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_CLIENT"));
-                var authentication = new UsernamePasswordAuthenticationToken(client, null, authorities);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                if ("client".equals(userType)) {
+                    ClientModel client = clientRepository.findByEmail(loginEmail)
+                            .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                    var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_CLIENT"));
+                    var authentication = new UsernamePasswordAuthenticationToken(client, null, authorities);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            } else if ("employee".equals(userType)) {
-                EmployeeModel employee = employeeRepository.findByEmail(loginEmail)
-                        .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
-                var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_EMPLOYEE"));
-                var authentication = new UsernamePasswordAuthenticationToken(employee, null,
-                        authorities);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else {
-                throw new RuntimeException("Usuário inválido.");
+                } else if ("employee".equals(userType)) {
+                    EmployeeModel employee = employeeRepository.findByEmail(loginEmail)
+                            .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+                    var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_EMPLOYEE"));
+                    var authentication = new UsernamePasswordAuthenticationToken(employee, null, authorities);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else {
+                    throw new RuntimeException("Usuário inválido.");
+                }
             }
         }
 
@@ -61,9 +63,12 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
 
     private String recoverToken(HttpServletRequest request) {
-        var authHeader = request.getHeader("Authorization");
-        if (authHeader == null)
-            return null;
-        return authHeader.replace("Bearer ", "");
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.replace("Bearer ", "");
+        }
+
+        return null;
     }
 }

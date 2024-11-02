@@ -15,9 +15,6 @@ import { RequiredValidator } from '@/shared/services/validators/required-validat
 import { MaxLengthValidator } from '@/shared/services/validators/max-length-validator.service';
 import { MinLengthValidator } from '@/shared/services/validators/min-length-validator.service';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
-import { Authenticator } from '@/core/auth/authenticator.service';
-
-import { InputError } from '@/shared/types/input-error.type';
 
 import { LoginService } from './services/login.service';
 import { formData } from './model/form-data.model';
@@ -50,36 +47,43 @@ export class LoginComponent {
     private loginService: LoginService,
     private popupService: PopupService,
     private router: Router,
-    private authenticator: Authenticator,
   ) {}
 
-  sendData() {
-    this.loginService
-      .validate(
-        {
-          email: this.formValues().email.value,
-          password: this.formValues().password.value,
-        },
-        this.isEmployeeLogin,
-      )
-      .then((response) => {
-        if (response.error) {
-          this.popupService.addNewPopUp({
-            type: Status.Error,
-            message: (response.data as InputError).message,
-          });
+  async sendData() {
+    const success = await this.loginService.validate(
+      {
+        email: this.formValues().email.value,
+        password: this.formValues().password.value,
+      },
+      this.isEmployeeLogin,
+    );
 
-          return;
-        }
-
-        this.authenticator.authenticate(true);
-
-        if (this.isEmployeeLogin) this.authenticator.setIsEmployee(true);
-
-        this.router.navigate([
-          `/${this.isEmployeeLogin ? 'funcionario' : 'cliente'}/${(response.data as { userId: number }).userId}/solicitacoes`,
-        ]);
+    if (!success?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
       });
+      return;
+    }
+
+    if ('errors' in success.data) {
+      Object.values(success.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+
+    this.popupService.addNewPopUp({
+      type: Status.Success,
+      message: success.data.message,
+    });
+
+    this.router.navigate([
+      `/${this.isEmployeeLogin ? 'funcionario' : 'cliente'}/${success.data.data![this.isEmployeeLogin ? 'employeeId' : 'clientId']}/solicitacoes`,
+    ]);
   }
 
   onSubmit() {

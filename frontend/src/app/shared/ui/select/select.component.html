@@ -14,7 +14,7 @@
       >
         <span>{{ textValue() || value() || placeholder() }}</span>
         <ul [class.open]="isOpen()">
-          @for (option of options(); track option.label) {
+          @for (option of options(); track $index) {
             <li (click)="onOptionChosen(option)" [value]="option.id">
               {{ option.label || option.name }}
             </li>

@@ -6,6 +6,12 @@ import { deviceCategories } from '@/shared/mock/device-categories.mock';
 @Injectable()
 export class DeviceCategoryValidator extends BaseValidator {
   override validate(inputValue: string): InputError {
+    if (inputValue !== 'string')
+      return {
+        error: false,
+        message: '',
+      };
+
     inputValue = inputValue.trim();
 
     const isCategoryValid = deviceCategories.find((categories) => {

@@ -38,9 +38,14 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryModel>> getAllCategories() {
+    public ResponseEntity<ApiResponse> getAllCategories() {
         List<CategoryModel> categories = categoryService.getAllCategories();
-        return ResponseEntity.ok(categories);
+
+        SuccessResponse<Map<String, List<CategoryModel>>> successResponse = new SuccessResponse<>(HttpStatus.OK.value(),
+                "Categorias listadas!", Optional.of(
+                        Map.of("deviceCategories", categories)));
+
+        return ResponseEntity.ok(successResponse);
     }
 
     @GetMapping("/{id}")

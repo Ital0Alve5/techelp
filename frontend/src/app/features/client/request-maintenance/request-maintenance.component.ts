@@ -18,10 +18,8 @@ import { DeviceCategoryValidator } from '@/shared/services/validators/device-cat
 import { RequestMaintenanceService } from './services/request-maintenance.service';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 
-import { InputError } from '@/shared/types/input-error.type';
-
 import { formData } from './model/form-data.model';
-import { Categorie } from '@/shared/types/categorie.type';
+import { Categorie } from './types/categorie.type';
 @Component({
   selector: 'app-request-maintenance',
   standalone: true,
@@ -47,7 +45,7 @@ import { Categorie } from '@/shared/types/categorie.type';
 })
 export class RequestMaintenanceComponent implements OnInit {
   formValues = signal(JSON.parse(JSON.stringify(formData)));
-  deviceCategories: Categorie[] | null = null;
+  deviceCategories = signal<Categorie[]>([]);
 
   constructor(
     private requiredValidator: RequiredValidator,
@@ -60,42 +58,81 @@ export class RequestMaintenanceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.requestMaintenanceService.getCategories().then((response) => {
-      this.deviceCategories = response;
-    });
+    this.getCategories();
+  }
+
+  async getCategories() {
+    const success = await this.requestMaintenanceService.getCategories();
+
+    if (!success?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in success.data) {
+      Object.values(success.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+
+    const maintenanceRequestsList = success.data.data?.['deviceCategories'] as unknown;
+
+    if (Array.isArray(maintenanceRequestsList)) {
+      this.deviceCategories.set(maintenanceRequestsList as Categorie[]);
+    } else {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Formato inesperado da lista de categorias.',
+      });
+    }
   }
 
   resetInputs() {
     this.formValues.update(() => JSON.parse(JSON.stringify(formData)));
   }
 
-  sendData() {
-    this.requestMaintenanceService
-      .send(JSON.parse(localStorage.getItem('userId')!), {
-        deviceDescription: this.formValues().deviceDescription.value,
-        deviceCategory: this.formValues().deviceCategory.value,
-        defectDescription: this.formValues().defectDescription.value,
-      })
-      .then((response) => {
-        if (response.error) {
-          this.popupService.addNewPopUp({
-            type: Status.Error,
-            message: (response.data as InputError).message,
-          });
-        } else {
-          this.router.navigate([`/cliente/${(response.data as { userId: number }).userId}/solicitacoes`]);
+  async sendData() {
+    const response = await this.requestMaintenanceService.send({
+      deviceDescription: this.formValues().deviceDescription.value,
+      categoryId: this.formValues().deviceCategory.value,
+      issueDescription: this.formValues().issueDescription.value,
+    });
 
-          this.popupService.addNewPopUp({
-            type: Status.Success,
-            message: 'Solicitação de manutenção enviada!',
-          });
-        }
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
       });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+
+    this.popupService.addNewPopUp({
+      type: Status.Success,
+      message: response.data.message,
+    });
+
+    this.router.navigate([`/cliente/${localStorage.getItem('userId')}/solicitacoes`]);
   }
 
   onSubmit() {
-    const { deviceDescription, defectDescription, deviceCategory } = this.formValues();
-
+    const { deviceDescription, issueDescription, deviceCategory } = this.formValues();
 
     this.minLengthValidator.setMinLength(5);
     this.maxLengthValidator.setMaxLength(50);
@@ -105,17 +142,12 @@ export class RequestMaintenanceComponent implements OnInit {
     this.minLengthValidator.setMinLength(5);
     this.maxLengthValidator.setMaxLength(150);
     this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
-    this.formValues().defectDescription.validation = this.requiredValidator.validate(defectDescription.value);
+    this.formValues().issueDescription.validation = this.requiredValidator.validate(issueDescription.value);
 
     this.requiredValidator.setNext(this.deviceCategoryValidator);
     this.formValues().deviceCategory.validation = this.requiredValidator.validate(deviceCategory.value);
 
-
-    if (
-      !deviceDescription.validation.error &&
-      !defectDescription.validation.error &&
-      !deviceCategory.validation.error
-    ) {
+    if (!deviceDescription.validation.error && !issueDescription.validation.error && !deviceCategory.validation.error) {
       this.sendData();
       this.resetInputs();
     }

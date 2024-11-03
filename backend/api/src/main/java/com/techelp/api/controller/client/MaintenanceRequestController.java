@@ -28,7 +28,6 @@ public class MaintenanceRequestController {
     @Autowired
     private JwtTokenService jwtTokenService;
 
-    // Extrai o email do token JWT
     private String extractEmailFromToken(String authHeader) {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);

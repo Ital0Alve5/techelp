@@ -17,5 +17,4 @@ public class MaintenanceRequestDto {
     private String lastEmployee; 
     private String date; 
     private String hour;
-
 }

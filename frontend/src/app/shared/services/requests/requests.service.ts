@@ -49,22 +49,22 @@ export class RequestsService {
     });
   }
 
-  getRequestsByClientId(clientId: number) {
-    return this.sortDateDescendingOrder(
-      maintenanceRequests
-        .filter((request) => request.userId === clientId)
-        .map((request) => {
-          return {
-            id: request.id,
-            userId: request.userId,
-            date: request.date,
-            hour: request.hour,
-            deviceDescription: request.deviceDescription,
-            currentStatus: request.currentStatus,
-          };
-        }),
-    );
-  }
+  // getRequestsByClientId(clientId: number) {
+  //   return this.sortDateDescendingOrder(
+  //     maintenanceRequests
+  //       .filter((request) => request.userId === clientId)
+  //       .map((request) => {
+  //         return {
+  //           id: request.id,
+  //           userId: request.userId,
+  //           date: request.date,
+  //           hour: request.hour,
+  //           deviceDescription: request.deviceDescription,
+  //           currentStatus: request.currentStatus,
+  //         };
+  //       }),
+  //   );
+  // }
 
   getRequestById(requestId: number): Requests | undefined {
     return maintenanceRequests.find((request) => request.id === requestId);

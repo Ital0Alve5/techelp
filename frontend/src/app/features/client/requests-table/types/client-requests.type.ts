@@ -1,3 +1,13 @@
-import { Requests } from '@/shared/types/api/maintenance-requests.type';
-
-export type ClientRequests = Pick<Requests, 'id' | 'userId' | 'date' | 'hour' | 'deviceDescription' | 'currentStatus'>;
+export type ClientRequests = {
+  clientId: number;
+  categoryId: number;
+  deviceDescription: string;
+  issueDescription: string;
+  budget: number | null;
+  orientation: string | null;
+  rejectReason: string | null;
+  status: string;
+  lastEmployee: string | null;
+  date: string;
+  hour: string;
+};

@@ -7,6 +7,7 @@ import com.techelp.api.dto.response.ApiResponse;
 import com.techelp.api.dto.response.ErrorResponse;
 import com.techelp.api.dto.response.SuccessResponse;
 import com.techelp.api.exception.ValidationException;
+import com.techelp.api.security.service.JwtTokenService;
 import com.techelp.api.service.MaintenanceRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,11 +25,30 @@ public class MaintenanceRequestController {
 
     @Autowired
     private MaintenanceRequestService maintenanceRequestService;
+    @Autowired
+    private JwtTokenService jwtTokenService;
+
+    // Extrai o email do token JWT
+    private String extractEmailFromToken(String authHeader) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            return jwtTokenService.validateTokenAndRetrieveEmail(token);
+        }
+        return null;
+    }
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse> createRequest(@RequestBody MaintenanceRequestDto requestDto) {
+    public ResponseEntity<ApiResponse> createRequest(@RequestBody MaintenanceRequestDto requestDto,
+            @RequestHeader(name = "Authorization") String authHeader) {
+        String email = extractEmailFromToken(authHeader);
+
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
+        }
+
         try {
-            MaintenanceRequestDto createdRequest = maintenanceRequestService.createRequest(requestDto);
+            MaintenanceRequestDto createdRequest = maintenanceRequestService.createRequest(requestDto, email);
             SuccessResponse<MaintenanceRequestDto> successResponse = new SuccessResponse<>(
                     HttpStatus.CREATED.value(), "Solicitação de manutenção criada com sucesso",
                     Optional.of(createdRequest));
@@ -63,9 +83,17 @@ public class MaintenanceRequestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse> getRequestById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse> getRequestById(@PathVariable int id,
+            @RequestHeader(name = "Authorization") String authHeader) {
+        String email = extractEmailFromToken(authHeader);
+
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
+        }
+
         try {
-            MaintenanceRequestDto request = maintenanceRequestService.getRequestById(id);
+            MaintenanceRequestDto request = maintenanceRequestService.getRequestByIdAndEmail(id, email);
             SuccessResponse<MaintenanceRequestDto> successResponse = new SuccessResponse<>(
                     HttpStatus.OK.value(), "Solicitação de manutenção encontrada", Optional.of(request));
             return ResponseEntity.ok(successResponse);
@@ -77,25 +105,48 @@ public class MaintenanceRequestController {
     }
 
     @GetMapping("/{id}/history")
-    public ResponseEntity<ApiResponse> getRequestHistory(@PathVariable int id) {
-        List<HistoryDto> historyRecords = maintenanceRequestService.getRequestHistory(id);
+    public ResponseEntity<ApiResponse> getRequestHistory(@PathVariable int id,
+            @RequestHeader(name = "Authorization") String authHeader) {
+        String email = extractEmailFromToken(authHeader);
 
-        if (historyRecords.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ErrorResponse("Erro na busca por histórico!", HttpStatus.NOT_FOUND.value(), Map.of("history", "Solicitação de manutenção, não existe!")));
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
         }
 
-        SuccessResponse<List<HistoryDto>> successResponse = new SuccessResponse<>(
-                HttpStatus.OK.value(), "Histórico da solicitação encontrado!", Optional.of(historyRecords));
-        return ResponseEntity.ok(successResponse);
+        try {
+            List<HistoryDto> historyRecords = maintenanceRequestService.getRequestHistoryByEmail(id, email);
+
+            if (historyRecords.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ErrorResponse("Erro na busca por histórico!", HttpStatus.NOT_FOUND.value(),
+                                Map.of("history", "Solicitação de manutenção não encontrada para o usuário.")));
+            }
+
+            SuccessResponse<List<HistoryDto>> successResponse = new SuccessResponse<>(
+                    HttpStatus.OK.value(), "Histórico da solicitação encontrado!", Optional.of(historyRecords));
+            return ResponseEntity.ok(successResponse);
+        } catch (ValidationException ex) {
+            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.NOT_FOUND.value(),
+                    ex.getErrors());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
     }
 
-    @GetMapping("/client/{clientId}")
-    public ResponseEntity<ApiResponse> getRequestsByClient(@PathVariable int clientId) {
+    @GetMapping("/client")
+    public ResponseEntity<ApiResponse> getRequestsByClient(@RequestHeader(name = "Authorization") String authHeader) {
+        String email = extractEmailFromToken(authHeader);
+
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
+        }
+
         try {
-            List<MaintenanceRequestDto> requests = maintenanceRequestService.getRequestsByClient(clientId);
-            SuccessResponse<List<MaintenanceRequestDto>> successResponse = new SuccessResponse<>(
-                    HttpStatus.OK.value(), "Lista de solicitações do cliente", Optional.of(requests));
+            List<MaintenanceRequestDto> requests = maintenanceRequestService.getRequestsByClientEmail(email);
+            SuccessResponse<Map<String, List<MaintenanceRequestDto>>> successResponse = new SuccessResponse<>(
+                    HttpStatus.OK.value(), "Lista de solicitações do cliente",
+                    Optional.of(Map.of("maintenanceRequestsList", requests)));
             return ResponseEntity.ok(successResponse);
         } catch (ValidationException ex) {
             ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.NOT_FOUND.value(),

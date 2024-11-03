@@ -10,5 +10,8 @@ import com.techelp.api.model.DeviceModel;
 @Repository
 public interface MaintenanceRequestRepository extends JpaRepository<MaintenanceRequestModel, Integer> {
     List<MaintenanceRequestModel> findByClient(ClientModel client);
+
     List<MaintenanceRequestModel> findByDevice(DeviceModel device);
+
+    List<MaintenanceRequestModel> findByClientEmail(String email);
 }

@@ -7,9 +7,9 @@ import { ResponseSuccess } from '@/shared/types/api/response-success.type';
 
 @Injectable()
 export class RequestsService {
-  async getRequestsByClientId(clientId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+  async getRequests(): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      const response = await axiosConfig(`http://localhost:8080/api/maintenance-requests/client/${clientId}`);
+      const response = await axiosConfig('/api/maintenance-requests/client');
 
       return response;
     } catch (error) {

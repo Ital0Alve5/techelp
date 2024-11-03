@@ -32,7 +32,7 @@ export class ClientRequestsTableComponent {
   }
 
   async getRequestsById() {
-    const success = await this.requestsService.getRequestsByClientId(this.userId);
+    const success = await this.requestsService.getRequests();
 
     if (!success?.data) {
       this.popupService.addNewPopUp({

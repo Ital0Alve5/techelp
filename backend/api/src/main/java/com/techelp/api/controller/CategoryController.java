@@ -1,4 +1,4 @@
-package com.techelp.api.controller.employee;
+package com.techelp.api.controller;
 
 import com.techelp.api.dto.response.ApiResponse;
 import com.techelp.api.dto.response.ErrorResponse;

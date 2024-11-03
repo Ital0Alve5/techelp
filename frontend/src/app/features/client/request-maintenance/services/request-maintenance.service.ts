@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { deviceCategories } from '@/shared/mock/device-categories.mock';
 import axios, { AxiosResponse } from 'axios';
 import axiosConfig from '@/axios.config';
 
@@ -41,9 +40,5 @@ export class RequestMaintenanceService {
         throw error;
       }
     }
-  }
-
-  getCategoryLabelById(categoryId: number) {
-    return deviceCategories.find((category) => category.id === categoryId);
   }
 }

@@ -50,7 +50,7 @@ public class MaintenanceRequestController {
         try {
             MaintenanceRequestDto createdRequest = maintenanceRequestService.createRequest(requestDto, email);
             SuccessResponse<MaintenanceRequestDto> successResponse = new SuccessResponse<>(
-                    HttpStatus.CREATED.value(), "Solicitação de manutenção criada com sucesso",
+                    HttpStatus.CREATED.value(), "Solicitação criada com sucesso",
                     Optional.of(createdRequest));
             return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
         } catch (ValidationException ex) {

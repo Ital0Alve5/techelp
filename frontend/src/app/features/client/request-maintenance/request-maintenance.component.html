@@ -5,7 +5,8 @@
       id="deviceCategory"
       label="Categoria do Equipamento"
       placeholder="Selecione a categoria *"
-      [options]="deviceCategories!"
+      [options]="deviceCategories()"
+      [getId]="true"
       [(value)]="formValues().deviceCategory.value"
       [validation]="formValues().deviceCategory.validation"
     ></app-select>
@@ -19,11 +20,11 @@
     ></app-textarea>
 
     <app-textarea
-      id="defectDescription"
+      id="issueDescription"
       label="Descrição do Defeito"
       placeholder="Descreva o defeito *"
-      [(value)]="formValues().defectDescription.value"
-      [validation]="formValues().defectDescription.validation"
+      [(value)]="formValues().issueDescription.value"
+      [validation]="formValues().issueDescription.validation"
     />
 
     <button app-button>Enviar Solicitação</button>

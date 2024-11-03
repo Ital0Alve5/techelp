@@ -31,8 +31,6 @@ export class SelectComponent implements OnChanges {
   }
 
   onOptionChosen(chosenOption: { [key: string]: unknown; id: number } & ({ name: string } | { label: string })) {
-    if (this.getId()) this.value.set(chosenOption.id);
-
     if ('label' in chosenOption) {
       this.value.set(chosenOption.label as string);
       this.textValue.set(chosenOption.label as string);
@@ -40,5 +38,7 @@ export class SelectComponent implements OnChanges {
       this.value.set(chosenOption.name as string);
       this.textValue.set(chosenOption.name as string);
     }
+
+    if (this.getId()) this.value.set(chosenOption.id);
   }
 }

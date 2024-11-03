@@ -15,7 +15,7 @@ export const formData = {
       message: '',
     },
   },
-  defectDescription: {
+  issueDescription: {
     value: '',
     type: 'text',
     validation: {

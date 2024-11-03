@@ -1,4 +1,4 @@
-package com.techelp.api.controller.employee;
+package com.techelp.api.controller;
 
 import com.techelp.api.dto.response.ApiResponse;
 import com.techelp.api.dto.response.ErrorResponse;
@@ -38,9 +38,14 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryModel>> getAllCategories() {
+    public ResponseEntity<ApiResponse> getAllCategories() {
         List<CategoryModel> categories = categoryService.getAllCategories();
-        return ResponseEntity.ok(categories);
+
+        SuccessResponse<Map<String, List<CategoryModel>>> successResponse = new SuccessResponse<>(HttpStatus.OK.value(),
+                "Categorias listadas!", Optional.of(
+                        Map.of("deviceCategories", categories)));
+
+        return ResponseEntity.ok(successResponse);
     }
 
     @GetMapping("/{id}")

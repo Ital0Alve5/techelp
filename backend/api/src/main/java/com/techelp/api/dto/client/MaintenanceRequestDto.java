@@ -8,6 +8,7 @@ import lombok.Setter;
 public class MaintenanceRequestDto {
     private int id;
     private int categoryId;
+    private String categoryName;
     private String deviceDescription;
     private String issueDescription;
     private Double budget;

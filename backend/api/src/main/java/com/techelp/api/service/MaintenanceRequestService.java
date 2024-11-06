@@ -96,8 +96,8 @@ public class MaintenanceRequestService {
 
         public List<MaintenanceRequestDto> getAllRequests() {
                 return maintenanceRequestRepository.findAll().stream()
-                .map(this::toMaintenanceRequestDto)
-                .collect(Collectors.toList());
+                                .map(this::toMaintenanceRequestDto)
+                                .collect(Collectors.toList());
         }
 
         public MaintenanceRequestDto getRequestByIdAndEmail(int id, String email) {
@@ -152,6 +152,7 @@ public class MaintenanceRequestService {
                 MaintenanceRequestDto dto = new MaintenanceRequestDto();
 
                 dto.setId(request.getId());
+                dto.setCategoryName(request.getDevice().getCategory().getName());
 
                 dto.setCategoryId(request.getDevice().getCategory().getId());
                 dto.setDeviceDescription(request.getDevice().getDevice_description());

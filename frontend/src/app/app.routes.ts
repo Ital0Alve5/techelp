@@ -30,32 +30,32 @@ export const routes: Routes = [
     component: SignUpComponent,
   },
   {
-    path: 'cliente/:userId/solicitacoes',
+    path: 'cliente/solicitacoes',
     canActivate: [authGuard],
     component: ClientRequestsTableComponent,
   },
   {
-    path: 'cliente/:userId/solicitar-manutencao',
+    path: 'cliente/solicitar-manutencao',
     canActivate: [authGuard],
     component: RequestMaintenanceComponent,
   },
   {
-    path: 'cliente/:userId/orcamento/:budgetId',
+    path: 'cliente/orcamento/:budgetId',
     canActivate: [authGuard],
     component: BudgetComponent,
   },
   {
-    path: 'cliente/:userId/resgate/:id',
+    path: 'cliente/resgate/:id',
     canActivate: [authGuard],
     component: RedeemComponent,
   },
   {
-    path: 'cliente/:userId/solicitacao/:requestId',
+    path: 'cliente/solicitacao/:requestId',
     canActivate: [authGuard],
     component: RequestDetailsComponent,
   },
   {
-    path: 'funcionario/:userId/solicitacao/:requestId',
+    path: 'funcionario/solicitacao/:requestId',
     canActivate: [authGuard],
     component: RequestDetailsComponent,
   },

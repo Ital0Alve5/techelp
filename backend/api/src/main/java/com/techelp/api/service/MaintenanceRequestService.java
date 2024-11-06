@@ -151,7 +151,9 @@ public class MaintenanceRequestService {
         public MaintenanceRequestDto toMaintenanceRequestDto(MaintenanceRequestModel request) {
                 MaintenanceRequestDto dto = new MaintenanceRequestDto();
 
-                dto.setClientId(request.getClient().getId());
+                dto.setId(request.getId());
+                dto.setCategoryName(request.getDevice().getCategory().getName());
+
                 dto.setCategoryId(request.getDevice().getCategory().getId());
                 dto.setDeviceDescription(request.getDevice().getDevice_description());
                 dto.setIssueDescription(request.getDevice().getIssue_description());

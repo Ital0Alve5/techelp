@@ -20,7 +20,6 @@ import { ClientRequests } from './types/client-requests.type';
   styleUrl: './requests-table.component.scss',
 })
 export class ClientRequestsTableComponent {
-  userId: number = JSON.parse(localStorage.getItem('userId')!);
   requests = signal<ClientRequests[]>([]);
 
   constructor(

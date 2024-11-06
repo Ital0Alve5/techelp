@@ -13,7 +13,6 @@ import { AuthService } from '@/core/auth/auth-service.service';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  userId: number = JSON.parse(localStorage.getItem('userId')!);
   userName: string = this.authService.getUserName()() || '';
 
   constructor(

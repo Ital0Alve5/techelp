@@ -29,6 +29,9 @@ public class MaintenanceRequestModel {
     private DeviceModel device;
 
     @Column(nullable = true)
+    private String status; 
+
+    @Column(nullable = true)
     private Double budget;
 
     @Column(nullable = true)

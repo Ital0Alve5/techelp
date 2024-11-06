@@ -43,16 +43,45 @@ public class HistoryService {
     }
 
     public List<HistoryDto> getLatestHistoryByStatus(Integer statusId) {
-        List<HistoryModel> historyModels = historyRepository.findLatestHistoryByStatusNative(statusId);
+        List<Object[]> results = historyRepository.findLatestHistoryByStatusNative(statusId);
 
-        return historyModels.stream().map(history -> {
+        return results.stream().map(result -> {
             HistoryDto dto = new HistoryDto();
-            dto.setStatusId(history.getStatus() != null ? history.getStatus().getId() : -1);
-            dto.setEmployeeId(history.getEmployee() != null ? history.getEmployee().getId() : -1);
-            dto.setMaintenanceRequestId(
-                    history.getMaintenanceRequest() != null ? history.getMaintenanceRequest().getId() : -1);
+            dto.setDate(result[0] != null ? result[0].toString() : "");
+            dto.setClientName(result[1] != null ? result[1].toString() : "");
+            dto.setDeviceDescription(result[2] != null ? result[2].toString() : "");
+            dto.setDeviceIssueDescription(result[3] != null ? result[3].toString() : "");
+            dto.setStatusName(result[4] != null ? result[4].toString() : "");
 
-            dto.setDate(history.getDate() != null ? history.getDate().toString() : "");
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    public List<HistoryDto> getLatestHistoryByStatusToday(Integer statusId) {
+        List<Object[]> results = historyRepository.findLatestHistoryByStatusToday(statusId);
+
+        return results.stream().map(result -> {
+            HistoryDto dto = new HistoryDto();
+            dto.setDate(result[0] != null ? result[0].toString() : "");
+            dto.setClientName(result[1] != null ? result[1].toString() : "");
+            dto.setDeviceDescription(result[2] != null ? result[2].toString() : "");
+            dto.setDeviceIssueDescription(result[3] != null ? result[3].toString() : "");
+            dto.setStatusName(result[4] != null ? result[4].toString() : "");
+
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    public List<HistoryDto> getAllRequests() {
+        List<Object[]> results = historyRepository.findAllRequests();
+
+        return results.stream().map(result -> {
+            HistoryDto dto = new HistoryDto();
+            dto.setDate(result[0] != null ? result[0].toString() : "");
+            dto.setClientName(result[1] != null ? result[1].toString() : "");
+            dto.setDeviceDescription(result[2] != null ? result[2].toString() : "");
+            dto.setDeviceIssueDescription(result[3] != null ? result[3].toString() : "");
+            dto.setStatusName(result[4] != null ? result[4].toString() : "");
 
             return dto;
         }).collect(Collectors.toList());

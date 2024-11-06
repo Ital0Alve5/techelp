@@ -1,19 +1,31 @@
 package com.techelp.api.service;
 
-import com.techelp.api.dto.client.AssignEmployeeDto;
-import com.techelp.api.dto.client.HistoryDto;
-import com.techelp.api.dto.client.MaintenanceRequestDto;
-import com.techelp.api.exception.ValidationException;
-import com.techelp.api.model.*;
-import com.techelp.api.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.techelp.api.dto.client.AssignEmployeeDto;
+import com.techelp.api.dto.client.HistoryDto;
+import com.techelp.api.dto.client.MaintenanceRequestDto;
+import com.techelp.api.exception.ValidationException;
+import com.techelp.api.model.CategoryModel;
+import com.techelp.api.model.ClientModel;
+import com.techelp.api.model.DeviceModel;
+import com.techelp.api.model.EmployeeModel;
+import com.techelp.api.model.HistoryModel;
+import com.techelp.api.model.MaintenanceRequestModel;
+import com.techelp.api.model.StatusModel;
+import com.techelp.api.repository.CategoryRepository;
+import com.techelp.api.repository.ClientRepository;
+import com.techelp.api.repository.DeviceRepository;
+import com.techelp.api.repository.HistoryRepository;
+import com.techelp.api.repository.MaintenanceRequestRepository;
+import com.techelp.api.repository.StatusRepository;
 
 @Service
 public class MaintenanceRequestService {

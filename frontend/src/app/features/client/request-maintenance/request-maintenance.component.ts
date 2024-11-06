@@ -128,7 +128,7 @@ export class RequestMaintenanceComponent implements OnInit {
       message: response.data.message,
     });
 
-    this.router.navigate([`/cliente/${localStorage.getItem('userId')}/solicitacoes`]);
+    this.router.navigate([`/cliente/solicitacoes`]);
   }
 
   onSubmit() {

@@ -48,7 +48,6 @@ public class LoginService {
 
         String token = tokenService.generateToken(foundClient, "client");
         return Map.of(
-                "clientId", foundClient.getId(),
                 "email", foundClient.getEmail(),
                 "name", foundClient.getName(),
                 "token", token);

@@ -1,5 +1,5 @@
 export type ClientRequests = {
-  clientId: number;
+  id: number;
   categoryId: number;
   deviceDescription: string;
   issueDescription: string;

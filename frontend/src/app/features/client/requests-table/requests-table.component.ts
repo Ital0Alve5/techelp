@@ -54,10 +54,7 @@ export class ClientRequestsTableComponent {
 
     const maintenanceRequestsList = success.data.data?.['maintenanceRequestsList'] as unknown;
 
-    if (
-      Array.isArray(maintenanceRequestsList) &&
-      maintenanceRequestsList.every((item) => typeof item === 'object' && 'clientId' in item)
-    ) {
+    if (Array.isArray(maintenanceRequestsList) && maintenanceRequestsList.every((item) => typeof item === 'object')) {
       this.requests.set(maintenanceRequestsList as ClientRequests[]);
     } else {
       this.popupService.addNewPopUp({
@@ -68,18 +65,18 @@ export class ClientRequestsTableComponent {
   }
 
   onViewRequestDetails(requestId: number) {
-    this.router.navigate([`/cliente/${this.userId}/solicitacao/${requestId}`]);
+    this.router.navigate([`/cliente/solicitacao/${requestId}`]);
   }
 
   onCheckBudget(requestId: number) {
-    this.router.navigate([`/cliente/${this.userId}/orcamento/${requestId}`]);
+    this.router.navigate([`/cliente/orcamento/${requestId}`]);
   }
 
   onRedeemRequest(requestId: number) {
-    this.router.navigate([`/cliente/${this.userId}/resgate/${requestId}`]);
+    this.router.navigate([`/cliente/resgate/${requestId}`]);
   }
 
   onPayService(requestId: number) {
-    this.router.navigate([`/cliente/${this.userId}/orcamento/${requestId}`]);
+    this.router.navigate([`/cliente/orcamento/${requestId}`]);
   }
 }

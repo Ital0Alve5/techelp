@@ -213,6 +213,26 @@ public class MaintenanceRequestService {
                 return toMaintenanceRequestDto(request);
         }
 
+        public MaintenanceRequestDto rejectRequest(int requestId, String rejectReason) {
+                MaintenanceRequestModel request = maintenanceRequestRepository.findById(requestId)
+                        .orElseThrow(() -> new ValidationException("Erro de validação", Map.of("id", "Solicitação não encontrada")));
+            
+                request.setReject_reason(rejectReason);
+                maintenanceRequestRepository.save(request);
+            
+                StatusModel rejectedStatus = statusRepository.findByName("Rejeitada")
+                        .orElseThrow(() -> new ValidationException("Erro de validação", Map.of("status", "Status 'Rejeitada' não encontrado")));
+            
+                HistoryModel historyEntry = new HistoryModel();
+                historyEntry.setMaintenanceRequest(request);
+                historyEntry.setStatus(rejectedStatus);
+                historyEntry.setDate(LocalDateTime.now());
+            
+                historyRepository.save(historyEntry);
+            
+                return toMaintenanceRequestDto(request);
+        }    
+
         // --------------------- employee -----------------------
 
         public List<MaintenanceRequestDto> getAllRequestsOfEmployee(String email) {

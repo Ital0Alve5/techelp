@@ -36,6 +36,9 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/api/validateClient").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/funcionario/login").permitAll()
+                        .requestMatchers("/api/client/**").hasAuthority("ROLE_CLIENT")
+                        .requestMatchers("/api/employee/**").hasAuthority("ROLE_EMPLOYEE")
+
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

@@ -12,6 +12,7 @@ import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { BudgetService } from './services/budget.service';
 import { RequestsService } from '@/shared/services/requests/requests.service';
+import { ClientRequests } from '../requests-table/types/client-requests.type';
 
 @Component({
   selector: 'app-budget',
@@ -22,7 +23,6 @@ import { RequestsService } from '@/shared/services/requests/requests.service';
   styleUrl: './budget.component.scss',
 })
 export class BudgetComponent implements OnInit {
-  userId: number = JSON.parse(localStorage.getItem('userId')!);
   requestId: number = Number.parseInt(window.location.pathname.match(/\/orcamento\/(\d+)/)![1]);
 
   isPaymentConfirmationModalOpen = signal(true);
@@ -30,7 +30,19 @@ export class BudgetComponent implements OnInit {
   isRejectModalOpen = signal(true);
   rejectReason = signal('');
 
-  requestData: any = null;  
+  requestData = signal<ClientRequests>({
+    id: 0,
+    categoryName: '',
+    deviceDescription: '',
+    issueDescription: '',
+    budget: 0,
+    orientation: null,
+    rejectReason: null,
+    status: '',
+    lastEmployee: null,
+    date: '',
+    hour: '',
+  });
 
   constructor(
     private popupService: PopupService,
@@ -40,16 +52,30 @@ export class BudgetComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Carrega os dados do orçamento quando o componente é inicializado
-    this.budgetService.getBudgetByRequestId(this.requestId).then((data) => {
-      this.requestData = data;
-    }).catch((error) => {
-      console.error('Erro ao carregar dados do orçamento:', error);
+    this.getRequestDetailsByRequestId();
+  }
+
+  async getRequestDetailsByRequestId() {
+    const success = await this.budgetService.getBudgetByRequestId(this.requestId);
+    if (!success?.data) {
       this.popupService.addNewPopUp({
         type: Status.Error,
-        message: 'Erro ao carregar os dados do orçamento.',
+        message: 'Algo deu errado!',
       });
-    });
+      return;
+    }
+
+    if ('errors' in success.data) {
+      Object.values(success.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+    const maintenanceRequestDetails = success.data.data as unknown;
+    this.requestData.set(maintenanceRequestDetails as ClientRequests);
   }
 
   openModalPayment() {
@@ -61,9 +87,9 @@ export class BudgetComponent implements OnInit {
   }
 
   confirmPayment() {
-    this.requestsService.updateStatus(this.requestId, this.requestData?.employee, 'Paga');
+    // this.requestsService.updateStatus(this.requestId, this.requestData()?.lastEmployee, 'Paga');
     this.closeModalPayment();
-    this.router.navigate([`/cliente/${this.userId}/solicitacoes`]);
+    this.router.navigate([`/cliente/solicitacoes`]);
     this.popupService.addNewPopUp({
       type: Status.Success,
       message: 'Pagamento efetuado com sucesso!',
@@ -71,7 +97,7 @@ export class BudgetComponent implements OnInit {
   }
 
   openModalApprove() {
-    this.requestsService.updateStatus(this.requestId, this.requestData?.employee, 'Aprovada');
+    // this.requestsService.updateStatus(this.requestId, this.requestData()?.lastEmployee, 'Aprovada');
     this.isApprovalModalOpen.set(false);
   }
 
@@ -91,14 +117,11 @@ export class BudgetComponent implements OnInit {
     if (!rejectForm.valid) return;
     const rejectionReason = rejectForm.value.rejectReason;
 
-    this.requestsService.updateStatus(
-      this.requestId,
-      this.requestData?.employee,
-      'Rejeitada',
-      rejectionReason,
-    );
+    console.log(rejectionReason);
+
+    // this.requestsService.updateStatus(this.requestId, this.requestData()?.employee, 'Rejeitada', rejectionReason);
 
     this.closeModalReject();
-    this.router.navigate([`/cliente/${this.userId}/solicitacoes`]);
+    this.router.navigate([`/cliente/solicitacoes`]);
   }
 }

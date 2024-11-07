@@ -7,19 +7,11 @@ import { ResponseSuccess } from '@/shared/types/api/response-success.type';
 
 @Injectable()
 export class BudgetService {
-  async getBudgetByRequestId(requestId: number): Promise<ResponseSuccess | null> {
+  async getBudgetByRequestId(requestId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      
-      const response: AxiosResponse<ResponseSuccess | ResponseError> = await axiosConfig.get(
-        `/api/maintenance-budget/${requestId}`
-      );
+      const response = await axiosConfig(`/api/client/maintenance-requests/${requestId}`);
 
-      if (response.status === 200 && 'data' in response) {
-        return response.data as ResponseSuccess;
-      } else {
-        console.error('Erro na resposta da API:', response);
-        return null;
-      }
+      return response;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         console.error('Erro da API:', error.response.data);

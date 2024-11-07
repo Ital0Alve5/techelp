@@ -189,22 +189,24 @@ public class MaintenanceRequestService {
                 return dto;
         }
 
-        public MaintenanceRequestDto approveRequest(int requestId, MaintenanceRequestDto approvalDto) {
+        public MaintenanceRequestDto approveBudget(int requestId) {
                 MaintenanceRequestModel request = maintenanceRequestRepository.findById(requestId)
                                 .orElseThrow(() -> new ValidationException("Erro de validação",
                                                 Map.of("id", "Solicitação não encontrada")));
 
-                request.setBudget(approvalDto.getBudget());
-                maintenanceRequestRepository.save(request);
-
                 StatusModel approvedStatus = statusRepository.findByName("Aprovada")
                                 .orElseThrow(() -> new ValidationException("Erro de validação",
-                                                Map.of("status", "Status 'Aprovada' não encontrado")));
+                                                Map.of("status", "Status 'Orçada' não encontrado")));
+
+                HistoryModel lastHistoryEntry = historyRepository.findLatestHistoryByRequest(request)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("status", "Último registro no histórico não encontrado")));
 
                 HistoryModel historyEntry = new HistoryModel();
                 historyEntry.setMaintenanceRequest(request);
                 historyEntry.setStatus(approvedStatus);
                 historyEntry.setDate(LocalDateTime.now());
+                historyEntry.setEmployee(lastHistoryEntry.getEmployee());
 
                 historyRepository.save(historyEntry);
 
@@ -233,6 +235,34 @@ public class MaintenanceRequestService {
                 return maintenanceRequestRepository.findOpenRequestsCreatedToday().stream()
                                 .map(this::toMaintenanceRequestDto)
                                 .collect(Collectors.toList());
+        }
+
+        public MaintenanceRequestDto makeBudget(int requestId, String email,
+                        MaintenanceRequestDto maintenanceRequestDto) {
+                EmployeeModel employee = employeeRepository.findByEmail(email)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("email", "Funcionário não encontrado")));
+
+                MaintenanceRequestModel request = maintenanceRequestRepository.findById(requestId)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("id", "Solicitação não encontrada")));
+
+                request.setBudget(maintenanceRequestDto.getBudget());
+                maintenanceRequestRepository.save(request);
+
+                StatusModel budgetedStatus = statusRepository.findByName("Orçada")
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("status", "Status 'Aprovada' não encontrado")));
+
+                HistoryModel historyEntry = new HistoryModel();
+                historyEntry.setEmployee(employee);
+                historyEntry.setMaintenanceRequest(request);
+                historyEntry.setStatus(budgetedStatus);
+                historyEntry.setDate(LocalDateTime.now());
+
+                historyRepository.save(historyEntry);
+
+                return toMaintenanceRequestDto(request);
         }
 
 }

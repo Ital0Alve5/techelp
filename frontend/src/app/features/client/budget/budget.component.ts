@@ -47,7 +47,6 @@ export class BudgetComponent implements OnInit {
   constructor(
     private popupService: PopupService,
     private router: Router,
-    private requestsService: RequestsService,
     private budgetService: BudgetService,
   ) {}
 
@@ -96,8 +95,40 @@ export class BudgetComponent implements OnInit {
     });
   }
 
-  openModalApprove() {
-    // this.requestsService.updateStatus(this.requestId, this.requestData()?.lastEmployee, 'Aprovada');
+  async openModalApprove() {
+    try {
+      const response = await this.budgetService.approveBudget(this.requestId);
+
+      if (!response?.data) {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: `Erro ao aprovar serviço: ${response?.data.message || 'Erro desconhecido'}`,
+        });
+        return;
+      }
+
+      if ('errors' in response.data) {
+        Object.values(response.data.errors).forEach((error) => {
+          this.popupService.addNewPopUp({
+            type: Status.Error,
+            message: error,
+          });
+        });
+        return;
+      }
+
+      this.popupService.addNewPopUp({
+        type: Status.Success,
+        message: `Serviço aprovado: ${response.data.message}`,
+      });
+    } catch (error) {
+      console.error('Erro ao aprovar serviço:', error);
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Erro inesperado ao aprovar o serviço.',
+      });
+    }
+
     this.isApprovalModalOpen.set(false);
   }
 

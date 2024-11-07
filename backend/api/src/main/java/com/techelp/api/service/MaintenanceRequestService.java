@@ -1,18 +1,18 @@
 package com.techelp.api.service;
 
+import com.techelp.api.dto.client.AssignEmployeeDto;
+import com.techelp.api.dto.client.HistoryDto;
+import com.techelp.api.dto.client.MaintenanceRequestDto;
+import com.techelp.api.exception.ValidationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.techelp.api.dto.client.AssignEmployeeDto;
-import com.techelp.api.dto.client.HistoryDto;
-import com.techelp.api.dto.client.MaintenanceRequestDto;
-import com.techelp.api.exception.ValidationException;
 import com.techelp.api.model.CategoryModel;
 import com.techelp.api.model.ClientModel;
 import com.techelp.api.model.DeviceModel;
@@ -189,6 +189,30 @@ public class MaintenanceRequestService {
                 return dto;
         }
 
+        public MaintenanceRequestDto approveBudget(int requestId) {
+                MaintenanceRequestModel request = maintenanceRequestRepository.findById(requestId)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("id", "Solicitação não encontrada")));
+
+                StatusModel approvedStatus = statusRepository.findByName("Aprovada")
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("status", "Status 'Orçada' não encontrado")));
+
+                HistoryModel lastHistoryEntry = historyRepository.findLatestHistoryByRequest(request)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("status", "Último registro no histórico não encontrado")));
+
+                HistoryModel historyEntry = new HistoryModel();
+                historyEntry.setMaintenanceRequest(request);
+                historyEntry.setStatus(approvedStatus);
+                historyEntry.setDate(LocalDateTime.now());
+                historyEntry.setEmployee(lastHistoryEntry.getEmployee());
+
+                historyRepository.save(historyEntry);
+
+                return toMaintenanceRequestDto(request);
+        }
+
         // --------------------- employee -----------------------
 
         public List<MaintenanceRequestDto> getAllRequestsOfEmployee(String email) {
@@ -211,6 +235,34 @@ public class MaintenanceRequestService {
                 return maintenanceRequestRepository.findOpenRequestsCreatedToday().stream()
                                 .map(this::toMaintenanceRequestDto)
                                 .collect(Collectors.toList());
+        }
+
+        public MaintenanceRequestDto makeBudget(int requestId, String email,
+                        MaintenanceRequestDto maintenanceRequestDto) {
+                EmployeeModel employee = employeeRepository.findByEmail(email)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("email", "Funcionário não encontrado")));
+
+                MaintenanceRequestModel request = maintenanceRequestRepository.findById(requestId)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("id", "Solicitação não encontrada")));
+
+                request.setBudget(maintenanceRequestDto.getBudget());
+                maintenanceRequestRepository.save(request);
+
+                StatusModel budgetedStatus = statusRepository.findByName("Orçada")
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("status", "Status 'Aprovada' não encontrado")));
+
+                HistoryModel historyEntry = new HistoryModel();
+                historyEntry.setEmployee(employee);
+                historyEntry.setMaintenanceRequest(request);
+                historyEntry.setStatus(budgetedStatus);
+                historyEntry.setDate(LocalDateTime.now());
+
+                historyRepository.save(historyEntry);
+
+                return toMaintenanceRequestDto(request);
         }
 
 }

@@ -29,7 +29,7 @@ export class RequestMaintenanceService {
     issueDescription: string;
   }): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      const response = await axiosConfig.post('/api/maintenance-requests/create', data);
+      const response = await axiosConfig.post('/api/client/maintenance-requests/create', data);
 
       return response;
     } catch (error) {

@@ -172,4 +172,21 @@ public class MaintenanceRequestService {
                 return dto;
         }
 
+        public MaintenanceRequestDto approveRequest(int requestId) {
+                MaintenanceRequestModel request = maintenanceRequestRepository.findById(requestId)
+                        .orElseThrow(() -> new ValidationException("Erro de validação", Map.of("id", "Solicitação não encontrada")));
+        
+                StatusModel approvedStatus = statusRepository.findByName("Aprovada")
+                        .orElseThrow(() -> new ValidationException("Erro de validação", Map.of("status", "Status 'Aprovada' não encontrado")));
+        
+                HistoryModel historyEntry = new HistoryModel();
+                historyEntry.setMaintenanceRequest(request);
+                historyEntry.setStatus(approvedStatus);
+                historyEntry.setDate(LocalDateTime.now());
+        
+                historyRepository.save(historyEntry);
+        
+                return toMaintenanceRequestDto(request);
+        }
+
 }

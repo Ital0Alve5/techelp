@@ -1,15 +1,16 @@
 package com.techelp.api.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.techelp.api.model.EmployeeModel;
 import com.techelp.api.model.HistoryModel;
 import com.techelp.api.model.MaintenanceRequestModel;
 import com.techelp.api.model.StatusModel;
 import com.techelp.api.repository.HistoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class HistoryService {
@@ -17,7 +18,8 @@ public class HistoryService {
     @Autowired
     private HistoryRepository historyRepository;
 
-    public HistoryModel createHistoryEntry(MaintenanceRequestModel request, EmployeeModel employee, StatusModel status, LocalDateTime date) {
+    public HistoryModel createHistoryEntry(MaintenanceRequestModel request, EmployeeModel employee, StatusModel status,
+            LocalDateTime date) {
         HistoryModel history = new HistoryModel();
         history.setMaintenanceRequest(request);
         history.setEmployee(employee);

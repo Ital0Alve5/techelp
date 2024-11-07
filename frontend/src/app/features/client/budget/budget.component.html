@@ -1,19 +1,19 @@
 <div class="buttons">
-  <a routerLink="/cliente/{{ userId }}/solicitacoes">
+  <a routerLink="/cliente/solicitacoes">
     <arrow-right-icon width="20px" color="#fff" />
   </a>
-  @if (requestData().currentStatus === 'Orçada') {
+  @if (requestData().status === 'Orçada') {
     <button backgroundColor="#dc363c" app-button (click)="openModalReject()">Rejeitar</button>
     <button backgroundColor="#10855b" app-button (click)="openModalApprove()">Aprovar</button>
-  } @else if (requestData().currentStatus === 'Arrumada') {
+  } @else if (requestData().status === 'Arrumada') {
     <button backgroundColor="#10855b" app-button (click)="openModalPayment()">Pagar serviço</button>
   }
 </div>
 <section class="budget-container">
   <p>
-    Serviço avaliado por <b> {{ requestData().employee }}</b> e orçado em:
+    Serviço avaliado por <b> {{ requestData().lastEmployee }}</b> e orçado em:
   </p>
-  <p class="price">R$ {{ requestData().price }}</p>
+  <p class="price">R$ {{ requestData().budget }}</p>
 </section>
 <section>
   <ul class="request-description">
@@ -23,7 +23,7 @@
     </li>
     <li>
       <b>Categoria do equipamento:</b>
-      <p>{{ requestData().deviceCategory }}</p>
+      <p>{{ requestData().categoryName }}</p>
     </li>
     <li>
       <b>Descrição do equipamento:</b>
@@ -41,10 +41,10 @@
     <p class="modal-title">Serviço Aprovado</p>
     <br />
     <p>
-      Serviço aprovado no valor de <span class="price-highlight">R$ {{ requestData().price }}</span>
+      Serviço aprovado no valor de <span class="price-highlight">R$ {{ requestData().budget }}</span>
     </p>
     <div class="modal-footer">
-      <button app-button (click)="closeModalApprove()" routerLink="/cliente/1/solicitacoes">OK</button>
+      <button app-button (click)="closeModalApprove()" routerLink="/cliente/solicitacoes">OK</button>
     </div>
   </app-modal>
 </div>
@@ -79,7 +79,7 @@
   <app-modal [(isHidden)]="isPaymentConfirmationModalOpen">
     <h2>Confirmação de pagamento</h2>
     <p class="modal">
-      Confirmar pagamento de <span class="price-highlight">R${{ requestData().price }}</span
+      Confirmar pagamento de <span class="price-highlight">R${{ requestData().budget }}</span
       >?
     </p>
     <div class="buttons buttons--modal">

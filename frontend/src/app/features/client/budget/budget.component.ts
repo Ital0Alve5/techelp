@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
@@ -12,6 +12,8 @@ import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { BudgetService } from './services/budget.service';
 import { RequestsService } from '@/shared/services/requests/requests.service';
+import { ClientRequests } from '../requests-table/types/client-requests.type';
+
 @Component({
   selector: 'app-budget',
   standalone: true,
@@ -20,8 +22,7 @@ import { RequestsService } from '@/shared/services/requests/requests.service';
   templateUrl: './budget.component.html',
   styleUrl: './budget.component.scss',
 })
-export class BudgetComponent {
-  userId: number = JSON.parse(localStorage.getItem('userId')!);
+export class BudgetComponent implements OnInit {
   requestId: number = Number.parseInt(window.location.pathname.match(/\/orcamento\/(\d+)/)![1]);
 
   isPaymentConfirmationModalOpen = signal(true);
@@ -29,15 +30,52 @@ export class BudgetComponent {
   isRejectModalOpen = signal(true);
   rejectReason = signal('');
 
-  requestData = signal(this.budgetService.getBudgetByRequestId(this.requestId));
+  requestData = signal<ClientRequests>({
+    id: 0,
+    categoryName: '',
+    deviceDescription: '',
+    issueDescription: '',
+    budget: 0,
+    orientation: null,
+    rejectReason: null,
+    status: '',
+    lastEmployee: null,
+    date: '',
+    hour: '',
+  });
 
   constructor(
     private popupService: PopupService,
     private router: Router,
-    private requestsService: RequestsService,
-
     private budgetService: BudgetService,
   ) {}
+
+  ngOnInit(): void {
+    this.getRequestDetailsByRequestId();
+  }
+
+  async getRequestDetailsByRequestId() {
+    const success = await this.budgetService.getBudgetByRequestId(this.requestId);
+    if (!success?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in success.data) {
+      Object.values(success.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+    const maintenanceRequestDetails = success.data.data as unknown;
+    this.requestData.set(maintenanceRequestDetails as ClientRequests);
+  }
 
   openModalPayment() {
     this.isPaymentConfirmationModalOpen.set(false);
@@ -48,20 +86,49 @@ export class BudgetComponent {
   }
 
   confirmPayment() {
-    this.requestsService.updateStatus(this.requestId, this.requestData().employee, 'Paga');
-
+    // this.requestsService.updateStatus(this.requestId, this.requestData()?.lastEmployee, 'Paga');
     this.closeModalPayment();
-
-    this.router.navigate([`/cliente/${this.userId}/solicitacoes`]);
-
+    this.router.navigate([`/cliente/solicitacoes`]);
     this.popupService.addNewPopUp({
       type: Status.Success,
       message: 'Pagamento efetuado com sucesso!',
     });
   }
 
-  openModalApprove() {
-    this.requestsService.updateStatus(this.requestId, this.requestData().employee, 'Aprovada');
+  async openModalApprove() {
+    try {
+      const response = await this.budgetService.approveBudget(this.requestId);
+
+      if (!response?.data) {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: `Erro ao aprovar serviço: ${response?.data.message || 'Erro desconhecido'}`,
+        });
+        return;
+      }
+
+      if ('errors' in response.data) {
+        Object.values(response.data.errors).forEach((error) => {
+          this.popupService.addNewPopUp({
+            type: Status.Error,
+            message: error,
+          });
+        });
+        return;
+      }
+
+      this.popupService.addNewPopUp({
+        type: Status.Success,
+        message: `Serviço aprovado: ${response.data.message}`,
+      });
+    } catch (error) {
+      console.error('Erro ao aprovar serviço:', error);
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Erro inesperado ao aprovar o serviço.',
+      });
+    }
+
     this.isApprovalModalOpen.set(false);
   }
 
@@ -79,18 +146,13 @@ export class BudgetComponent {
 
   confirmReject(rejectForm: NgForm) {
     if (!rejectForm.valid) return;
-
     const rejectionReason = rejectForm.value.rejectReason;
 
-    this.requestsService.updateStatus(
-      this.requestId,
-      this.requestData().employee,
-      'Rejeitada',
-      rejectionReason,
-    );
+    console.log(rejectionReason);
+
+    // this.requestsService.updateStatus(this.requestId, this.requestData()?.employee, 'Rejeitada', rejectionReason);
 
     this.closeModalReject();
-
-    this.router.navigate([`/cliente/${this.userId}/solicitacoes`]);
+    this.router.navigate([`/cliente/solicitacoes`]);
   }
 }

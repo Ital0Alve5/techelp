@@ -1,6 +1,6 @@
 export type ClientRequests = {
-  clientId: number;
-  categoryId: number;
+  id: number;
+  categoryName: string;
   deviceDescription: string;
   issueDescription: string;
   budget: number | null;

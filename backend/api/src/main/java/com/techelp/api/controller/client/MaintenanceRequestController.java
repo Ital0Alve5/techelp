@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/maintenance-requests")
+@RequestMapping("/api")
 @CrossOrigin
 public class MaintenanceRequestController {
 
@@ -37,7 +37,7 @@ public class MaintenanceRequestController {
         return null;
     }
 
-    @PostMapping("/create")
+    @PostMapping("client/maintenance-requests/create")
     public ResponseEntity<ApiResponse> createRequest(@RequestBody MaintenanceRequestDto requestDto,
             @RequestHeader(name = "Authorization") String authHeader) {
         String email = extractEmailFromToken(authHeader);
@@ -60,7 +60,7 @@ public class MaintenanceRequestController {
         }
     }
 
-    @PutMapping("/assign")
+    @PutMapping("client/maintenance-requests/assign")
     public ResponseEntity<ApiResponse> assignEmployeeAndEstimate(@RequestBody AssignEmployeeDto assignDto) {
         try {
             MaintenanceRequestDto updatedRequest = maintenanceRequestService.assignEmployeeAndEstimate(assignDto);
@@ -74,7 +74,7 @@ public class MaintenanceRequestController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/maintenance-requests")
     public ResponseEntity<ApiResponse> getAllRequests() {
         List<MaintenanceRequestDto> requests = maintenanceRequestService.getAllRequests();
         SuccessResponse<List<MaintenanceRequestDto>> successResponse = new SuccessResponse<>(
@@ -82,7 +82,7 @@ public class MaintenanceRequestController {
         return ResponseEntity.ok(successResponse);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("client/maintenance-requests/{id}")
     public ResponseEntity<ApiResponse> getRequestById(@PathVariable int id,
             @RequestHeader(name = "Authorization") String authHeader) {
         String email = extractEmailFromToken(authHeader);
@@ -104,7 +104,7 @@ public class MaintenanceRequestController {
         }
     }
 
-    @GetMapping("/{id}/history")
+    @GetMapping("client/maintenance-requests/{id}/history")
     public ResponseEntity<ApiResponse> getRequestHistory(@PathVariable int id,
             @RequestHeader(name = "Authorization") String authHeader) {
         String email = extractEmailFromToken(authHeader);
@@ -133,7 +133,7 @@ public class MaintenanceRequestController {
         }
     }
 
-    @GetMapping("/client")
+    @GetMapping("client/maintenance-requests")
     public ResponseEntity<ApiResponse> getRequestsByClient(@RequestHeader(name = "Authorization") String authHeader) {
         String email = extractEmailFromToken(authHeader);
 

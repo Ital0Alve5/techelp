@@ -267,7 +267,7 @@ export class SignUpComponent {
       message: success.data.message,
     });
 
-    this.router.navigate([`/cliente/${success.data.data!['clientId']}/solicitacoes`]);
+    this.router.navigate([`/cliente/solicitacoes`]);
   }
 
   async sendData() {

@@ -86,4 +86,29 @@ public class EmployeeMaintenanceRequestController {
         }
     }
 
+    @PutMapping("/employee/maintenance-requests/{id}/make-budget")
+    public ResponseEntity<ApiResponse> makeBudget(
+            @PathVariable int id,
+            @RequestHeader(name = "Authorization") String authHeader,
+            @RequestBody MaintenanceRequestDto approvalDto) {
+        String email = extractEmailFromToken(authHeader);
+
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
+        }
+
+        try {
+            MaintenanceRequestDto approvedRequest = maintenanceRequestService.makeBudget(id, email, approvalDto);
+            SuccessResponse<MaintenanceRequestDto> successResponse = new SuccessResponse<>(
+                    HttpStatus.OK.value(),
+                    String.format("Serviço orçado no Valor R$ %.2f", approvedRequest.getBudget()),
+                    Optional.of(approvedRequest));
+            return ResponseEntity.ok(successResponse);
+        } catch (ValidationException ex) {
+            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),
+                    ex.getErrors());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
 }

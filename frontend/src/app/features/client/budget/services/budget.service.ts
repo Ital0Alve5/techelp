@@ -5,7 +5,6 @@ import axiosConfig from '@/axios.config';
 import { ResponseError } from '@/shared/types/api/response-error.type';
 import { ResponseSuccess } from '@/shared/types/api/response-success.type';
 
-
 @Injectable()
 export class BudgetService {
   async getBudgetByRequestId(requestId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
@@ -24,11 +23,24 @@ export class BudgetService {
     }
   }
 
-  async approveBudget(
-    requestId: number,
-  ): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+  async approveBudget(requestId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
       const response = await axiosConfig.put(`/api/client/maintenance-requests/${requestId}/approve-budget`);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
+  }
+  async rejectBudget(requestId: number, rejectReason: string): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axiosConfig.put(`/api/client/maintenance-requests/${requestId}/reject`, {
+        rejectReason: rejectReason,
+      });
       return response;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

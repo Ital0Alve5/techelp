@@ -82,13 +82,14 @@ export class BudgetComponent {
 
     const rejectionReason = rejectForm.value.rejectReason;
 
-    this.requestsService.updateStatus(
-      this.requestId,
-      this.requestData().employee,
-      'Rejeitada',
-      rejectionReason,
-    );
+    // this.requestsService.updateStatus(
+    //   this.requestId,
+    //   this.requestData().employee,
+    //   'Rejeitada',
+    //   rejectionReason,
+    // );
 
+    this.budgetService.rejectBudget(this.requestId, rejectForm.value.rejectReason);
     this.closeModalReject();
 
     this.router.navigate([`/cliente/${this.userId}/solicitacoes`]);

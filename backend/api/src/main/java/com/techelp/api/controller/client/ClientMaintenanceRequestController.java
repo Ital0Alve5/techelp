@@ -154,11 +154,10 @@ public class ClientMaintenanceRequestController {
         }
     }
 
-    @PutMapping("/client/maintenance-requests/{id}/approve")
-    public ResponseEntity<ApiResponse> approveRequest(
+    @PutMapping("/client/maintenance-requests/{id}/approve-budget")
+    public ResponseEntity<ApiResponse> approveBudget(
             @PathVariable int id,
-            @RequestHeader(name = "Authorization") String authHeader,
-            @RequestBody MaintenanceRequestDto approvalDto) {
+            @RequestHeader(name = "Authorization") String authHeader) {
         String email = extractEmailFromToken(authHeader);
 
         if (email == null) {
@@ -167,7 +166,7 @@ public class ClientMaintenanceRequestController {
         }
 
         try {
-            MaintenanceRequestDto approvedRequest = maintenanceRequestService.approveRequest(id, approvalDto);
+            MaintenanceRequestDto approvedRequest = maintenanceRequestService.approveBudget(id);
             SuccessResponse<MaintenanceRequestDto> successResponse = new SuccessResponse<>(
                     HttpStatus.OK.value(),
                     String.format("Serviço Aprovado no Valor R$ %.2f", approvedRequest.getBudget()),

@@ -9,7 +9,7 @@ import { ResponseSuccess } from '@/shared/types/api/response-success.type';
 export class RequestsService {
   async getRequests(): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      const response = await axiosConfig('/api/maintenance-requests/client');
+      const response = await axiosConfig('/api/client/maintenance-requests');
 
       return response;
     } catch (error) {

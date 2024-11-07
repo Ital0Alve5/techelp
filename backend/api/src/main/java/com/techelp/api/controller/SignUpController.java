@@ -87,7 +87,7 @@ public class SignUpController {
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.header(HttpHeaders.AUTHORIZATION, "Bearer " + response.token())
 					.body(new SuccessResponse<>(HttpStatus.CREATED.value(),
-							"Cadastro realizado com sucesso", Optional.of(Map.of("clientId", response.id(),
+							"Cadastro realizado com sucesso", Optional.of(Map.of(
 									"clientName", response.name(), "token", response.token()))));
 		} catch (ValidationException ex) {
 			ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),

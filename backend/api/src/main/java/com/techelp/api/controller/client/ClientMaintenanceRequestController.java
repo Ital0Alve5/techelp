@@ -2,7 +2,6 @@ package com.techelp.api.controller.client;
 
 import com.techelp.api.dto.client.AssignEmployeeDto;
 import com.techelp.api.dto.client.HistoryDto;
-import com.techelp.api.dto.client.MaintenanceRequestApprovalDto;
 import com.techelp.api.dto.client.MaintenanceRequestDto;
 import com.techelp.api.dto.response.ApiResponse;
 import com.techelp.api.dto.response.ErrorResponse;
@@ -28,7 +27,6 @@ public class ClientMaintenanceRequestController {
     private MaintenanceRequestService maintenanceRequestService;
     @Autowired
     private JwtTokenService jwtTokenService;
-
 
     private String extractEmailFromToken(String authHeader) {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -156,11 +154,11 @@ public class ClientMaintenanceRequestController {
         }
     }
 
-    @PutMapping("/{id}/approve")
+    @PutMapping("/client/maintenance-requests/{id}/approve")
     public ResponseEntity<ApiResponse> approveRequest(
             @PathVariable int id,
             @RequestHeader(name = "Authorization") String authHeader,
-            @RequestBody MaintenanceRequestApprovalDto approvalDto) {
+            @RequestBody MaintenanceRequestDto approvalDto) {
         String email = extractEmailFromToken(authHeader);
 
         if (email == null) {
@@ -176,7 +174,8 @@ public class ClientMaintenanceRequestController {
                     Optional.of(approvedRequest));
             return ResponseEntity.ok(successResponse);
         } catch (ValidationException ex) {
-            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(), ex.getErrors());
+            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),
+                    ex.getErrors());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }

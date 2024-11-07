@@ -2,10 +2,26 @@ import { Injectable } from '@angular/core';
 
 import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
 
+import axios, { AxiosResponse } from 'axios';
+import axiosConfig from '@/axios.config';
+import { ResponseError } from '@/shared/types/api/response-error.type';
+import { ResponseSuccess } from '@/shared/types/api/response-success.type';
+
 @Injectable()
 export class RequestDetailsService {
-  getRequestDetailsByRequestId(requestId: number) {
-    return maintenanceRequests
+  async getRequestDetailsByRequestId(requestId: number) : Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axiosConfig('/api/client/maintenance-requests/'+requestId);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
+  /*  return maintenanceRequests
       .filter((request) => request.id === requestId)
       ?.map((request) => {
         return {
@@ -18,6 +34,22 @@ export class RequestDetailsService {
           currentStatus: request.currentStatus,
           history: request.history,
         };
-      })?.[0];
+      })?.[0]; */
+  } 
+
+  async getRequestHistory(requestId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axiosConfig('/api/client/maintenance-requests/'+requestId+'/history');
+      console.log(response);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
   }
+ 
 }

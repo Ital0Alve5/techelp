@@ -20,7 +20,6 @@ import { ClientRequestHistory } from '../requests-table/types/client-request-his
   styleUrls: ['./request-details.component.scss'],
 })
 export class RequestDetailsComponent {
-  userId: number = JSON.parse(localStorage.getItem('userId')!);
   requestId: number = Number.parseInt(window.location.pathname.match(/\/solicitacao\/(\d+)/)![1]);
 
   requestData = signal<ClientRequests>({
@@ -94,6 +93,6 @@ export class RequestDetailsComponent {
 
   }
 
-  
+
 }
 

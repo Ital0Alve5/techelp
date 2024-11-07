@@ -1,10 +1,10 @@
 @if (router.url.includes('cliente')) {
-  <a routerLink="/cliente/{{ userId }}/solicitacoes">
+  <a routerLink="/cliente/solicitacoes">
     <arrow-right-icon width="20px" color="#fff" />
   </a>
 }
 @if (router.url.includes('funcionario')) {
-  <a routerLink="/funcionario/{{ userId }}/solicitacoes">
+  <a routerLink="/funcionario/solicitacoes">
     <arrow-right-icon width="20px" color="#fff" />
   </a>
 }
@@ -16,7 +16,7 @@
     </li>
     <li>
       <b>Categoria do equipamento:</b>
-      <p>{{ requestData().categoryId }}</p>
+      <p>{{ requestData().categoryName }}</p>
     </li>
     <li>
       <b>Descrição do equipamento:</b>

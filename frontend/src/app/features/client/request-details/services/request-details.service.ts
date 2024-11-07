@@ -11,8 +11,7 @@ import { ResponseSuccess } from '@/shared/types/api/response-success.type';
 export class RequestDetailsService {
   async getRequestDetailsByRequestId(requestId: number) : Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      const response = await axiosConfig('/api/maintenance-requests/'+requestId);
-      console.log(response);
+      const response = await axiosConfig('/api/client/maintenance-requests/'+requestId);
       return response;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -40,7 +39,7 @@ export class RequestDetailsService {
 
   async getRequestHistory(requestId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      const response = await axiosConfig('/api/maintenance-requests/'+requestId+'/history');
+      const response = await axiosConfig('/api/client/maintenance-requests/'+requestId+'/history');
       console.log(response);
       return response;
     } catch (error) {

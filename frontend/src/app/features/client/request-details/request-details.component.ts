@@ -24,8 +24,8 @@ export class RequestDetailsComponent {
   requestId: number = Number.parseInt(window.location.pathname.match(/\/solicitacao\/(\d+)/)![1]);
 
   requestData = signal<ClientRequests>({
-    clientId: 0,
-    categoryId: 0,
+    id: 0,
+    categoryName: '',
     deviceDescription: '',
     issueDescription: '',
     budget: 0,

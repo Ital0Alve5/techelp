@@ -1,23 +1,33 @@
 import { Injectable } from '@angular/core';
+import axios, { AxiosResponse } from 'axios';
+import axiosConfig from '@/axios.config';
 
-import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
+import { ResponseError } from '@/shared/types/api/response-error.type';
+import { ResponseSuccess } from '@/shared/types/api/response-success.type';
 
 @Injectable()
 export class BudgetService {
-  getBudgetByRequestId(requestId: number) {
-    return maintenanceRequests
-      .filter((request) => request.id === requestId)
-      ?.map((request) => {
-        return {
-          deviceDescription: request.deviceDescription,
-          deviceCategory: request.deviceCategory,
-          issueDescription: request.issueDescription,
-          price: request.price,
-          date: request.date,
-          hour: request.hour,
-          employee: request.history[request.history.length - 1].employee,
-          currentStatus: request.currentStatus,
-        };
-      })?.[0];
+  async getBudgetByRequestId(requestId: number): Promise<ResponseSuccess | null> {
+    try {
+      
+      const response: AxiosResponse<ResponseSuccess | ResponseError> = await axiosConfig.get(
+        `/api/maintenance-budget/${requestId}`
+      );
+
+      if (response.status === 200 && 'data' in response) {
+        return response.data as ResponseSuccess;
+      } else {
+        console.error('Erro na resposta da API:', response);
+        return null;
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Erro da API:', error.response.data);
+        return null;
+      } else {
+        console.error('Erro inesperado:', error);
+        throw error;
+      }
+    }
   }
 }

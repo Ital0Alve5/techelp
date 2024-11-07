@@ -178,4 +178,38 @@ public class ClientMaintenanceRequestController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
+
+    @PutMapping("/client/maintenance-requests/{id}/reject")
+    public ResponseEntity<ApiResponse> rejectRequest(
+            @PathVariable int id,
+            @RequestHeader(name = "Authorization") String authHeader,
+            @RequestBody MaintenanceRequestDto maintenanceRequestDto) {
+
+        String email = extractEmailFromToken(authHeader);
+
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
+        }
+
+        String rejectReason = maintenanceRequestDto.getRejectReason();
+        if (rejectReason == null || rejectReason.isBlank()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse("Motivo de rejeição não pode estar vazio", HttpStatus.BAD_REQUEST.value(),
+                            null));
+        }
+
+        try {
+            MaintenanceRequestDto rejectedRequest = maintenanceRequestService.rejectRequest(id, rejectReason);
+            SuccessResponse<MaintenanceRequestDto> successResponse = new SuccessResponse<>(
+                    HttpStatus.OK.value(),
+                    "Serviço Rejeitado",
+                    Optional.of(rejectedRequest));
+            return ResponseEntity.ok(successResponse);
+        } catch (ValidationException ex) {
+            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),
+                    ex.getErrors());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
 }

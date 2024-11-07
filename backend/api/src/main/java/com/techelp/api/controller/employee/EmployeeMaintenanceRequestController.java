@@ -5,8 +5,6 @@ import com.techelp.api.dto.response.ApiResponse;
 import com.techelp.api.dto.response.ErrorResponse;
 import com.techelp.api.dto.response.SuccessResponse;
 import com.techelp.api.exception.ValidationException;
-import com.techelp.api.model.EmployeeModel;
-import com.techelp.api.repository.EmployeeRepository;
 import com.techelp.api.security.service.JwtTokenService;
 import com.techelp.api.service.MaintenanceRequestService;
 import org.springframework.beans.factory.annotation.Autowired;

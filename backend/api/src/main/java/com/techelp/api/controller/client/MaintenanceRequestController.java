@@ -2,6 +2,7 @@ package com.techelp.api.controller.client;
 
 import com.techelp.api.dto.client.AssignEmployeeDto;
 import com.techelp.api.dto.client.HistoryDto;
+import com.techelp.api.dto.client.MaintenanceRequestApprovalDto;
 import com.techelp.api.dto.client.MaintenanceRequestDto;
 import com.techelp.api.dto.response.ApiResponse;
 import com.techelp.api.dto.response.ErrorResponse;
@@ -156,8 +157,10 @@ public class MaintenanceRequestController {
     }
 
     @PutMapping("/{id}/approve")
-    public ResponseEntity<ApiResponse> approveRequest(@PathVariable int id,
-                                                      @RequestHeader(name = "Authorization") String authHeader) {
+    public ResponseEntity<ApiResponse> approveRequest(
+            @PathVariable int id,
+            @RequestHeader(name = "Authorization") String authHeader,
+            @RequestBody MaintenanceRequestApprovalDto approvalDto) {
         String email = extractEmailFromToken(authHeader);
 
         if (email == null) {
@@ -166,13 +169,14 @@ public class MaintenanceRequestController {
         }
 
         try {
-            MaintenanceRequestDto approvedRequest = maintenanceRequestService.approveRequest(id);
+            MaintenanceRequestDto approvedRequest = maintenanceRequestService.approveRequest(id, approvalDto);
             SuccessResponse<MaintenanceRequestDto> successResponse = new SuccessResponse<>(
-                    HttpStatus.OK.value(), "Solicitação de manutenção aprovada com sucesso", Optional.of(approvedRequest));
+                    HttpStatus.OK.value(),
+                    String.format("Serviço Aprovado no Valor R$ %.2f", approvedRequest.getBudget()),
+                    Optional.of(approvedRequest));
             return ResponseEntity.ok(successResponse);
         } catch (ValidationException ex) {
-            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),
-                    ex.getErrors());
+            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(), ex.getErrors());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }

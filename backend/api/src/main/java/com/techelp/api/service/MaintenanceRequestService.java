@@ -2,6 +2,7 @@ package com.techelp.api.service;
 
 import com.techelp.api.dto.client.AssignEmployeeDto;
 import com.techelp.api.dto.client.HistoryDto;
+import com.techelp.api.dto.client.MaintenanceRequestApprovalDto;
 import com.techelp.api.dto.client.MaintenanceRequestDto;
 import com.techelp.api.exception.ValidationException;
 import com.techelp.api.model.*;
@@ -172,21 +173,23 @@ public class MaintenanceRequestService {
                 return dto;
         }
 
-        public MaintenanceRequestDto approveRequest(int requestId) {
+        public MaintenanceRequestDto approveRequest(int requestId, MaintenanceRequestApprovalDto approvalDto) {
                 MaintenanceRequestModel request = maintenanceRequestRepository.findById(requestId)
                         .orElseThrow(() -> new ValidationException("Erro de validação", Map.of("id", "Solicitação não encontrada")));
-        
+
+                request.setBudget(approvalDto.getBudget());
+                maintenanceRequestRepository.save(request);
+
                 StatusModel approvedStatus = statusRepository.findByName("Aprovada")
                         .orElseThrow(() -> new ValidationException("Erro de validação", Map.of("status", "Status 'Aprovada' não encontrado")));
-        
+
                 HistoryModel historyEntry = new HistoryModel();
                 historyEntry.setMaintenanceRequest(request);
                 historyEntry.setStatus(approvedStatus);
                 historyEntry.setDate(LocalDateTime.now());
-        
+
                 historyRepository.save(historyEntry);
-        
+
                 return toMaintenanceRequestDto(request);
         }
-
 }

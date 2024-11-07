@@ -1,18 +1,18 @@
 package com.techelp.api.service;
 
+import com.techelp.api.dto.client.AssignEmployeeDto;
+import com.techelp.api.dto.client.HistoryDto;
+import com.techelp.api.dto.client.MaintenanceRequestDto;
+import com.techelp.api.exception.ValidationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.techelp.api.dto.client.AssignEmployeeDto;
-import com.techelp.api.dto.client.HistoryDto;
-import com.techelp.api.dto.client.MaintenanceRequestDto;
-import com.techelp.api.exception.ValidationException;
 import com.techelp.api.model.CategoryModel;
 import com.techelp.api.model.ClientModel;
 import com.techelp.api.model.DeviceModel;
@@ -187,6 +187,28 @@ public class MaintenanceRequestService {
                 });
 
                 return dto;
+        }
+
+        public MaintenanceRequestDto approveRequest(int requestId, MaintenanceRequestDto approvalDto) {
+                MaintenanceRequestModel request = maintenanceRequestRepository.findById(requestId)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("id", "Solicitação não encontrada")));
+
+                request.setBudget(approvalDto.getBudget());
+                maintenanceRequestRepository.save(request);
+
+                StatusModel approvedStatus = statusRepository.findByName("Aprovada")
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("status", "Status 'Aprovada' não encontrado")));
+
+                HistoryModel historyEntry = new HistoryModel();
+                historyEntry.setMaintenanceRequest(request);
+                historyEntry.setStatus(approvedStatus);
+                historyEntry.setDate(LocalDateTime.now());
+
+                historyRepository.save(historyEntry);
+
+                return toMaintenanceRequestDto(request);
         }
 
         // --------------------- employee -----------------------

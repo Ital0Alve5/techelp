@@ -60,8 +60,33 @@ export class BudgetComponent {
     });
   }
 
-  openModalApprove() {
-    this.requestsService.updateStatus(this.requestId, this.requestData().employee, 'Aprovada');
+  async openModalApprove() {
+    try {
+      const price = parseFloat(this.requestData().price);
+      if (isNaN(price)) {
+        throw new Error('O valor de price é inválido.');
+      }
+  
+      const response = await this.budgetService.approveBudget(this.requestId, { budget: price });
+      if (response?.status === 200) {
+        this.popupService.addNewPopUp({
+          type: Status.Success,
+          message: `Serviço aprovado: ${response.data.message}`,
+        });
+      } else {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: `Erro ao aprovar serviço: ${response?.data.message || 'Erro desconhecido'}`,
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao aprovar serviço:', error);
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Erro inesperado ao aprovar o serviço.',
+      });
+    }
+  
     this.isApprovalModalOpen.set(false);
   }
 

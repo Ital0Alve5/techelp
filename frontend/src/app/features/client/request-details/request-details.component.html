@@ -1,10 +1,10 @@
 @if (router.url.includes('cliente')) {
-  <a routerLink="/cliente/{{ userId }}/solicitacoes">
+  <a routerLink="/cliente/solicitacoes">
     <arrow-right-icon width="20px" color="#fff" />
   </a>
 }
 @if (router.url.includes('funcionario')) {
-  <a routerLink="/funcionario/{{ userId }}/solicitacoes">
+  <a routerLink="/funcionario/solicitacoes">
     <arrow-right-icon width="20px" color="#fff" />
   </a>
 }
@@ -16,7 +16,7 @@
     </li>
     <li>
       <b>Categoria do equipamento:</b>
-      <p>{{ requestData().deviceCategory }}</p>
+      <p>{{ requestData().categoryName }}</p>
     </li>
     <li>
       <b>Descrição do equipamento:</b>
@@ -33,12 +33,12 @@
     <li>
       <b>Estado atual:</b>
       <p>
-        {{ requestData().currentStatus }}
+        {{ requestData().status }}
       </p>
     </li>
   </ul>
 </section>
-@if (requestData().history.length > 0) {
+@if (dataHistory().length > 0) {
   <section class="request-history">
     <h1>Histórico da solicitação:</h1>
     <table>
@@ -47,13 +47,13 @@
         <th>Funcionário responsável</th>
         <th>Ação</th>
       </tr>
-      @for (request of requestData().history; track $index) {
+      @for (request of dataHistory(); track $index) {
         <tr>
-          <td>{{ request.date }} {{ request.hour }}</td>
-          <td>{{ request.employee }}</td>
-          <td>{{ request.toStatus }}</td>
+          <td>{{ request.date }}</td>
+          <td>{{ request.employeeName }}</td>
+          <td>{{ request.status }}</td>
         </tr>
       }
     </table>
   </section>
-}
+} 

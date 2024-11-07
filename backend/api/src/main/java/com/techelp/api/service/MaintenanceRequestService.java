@@ -23,6 +23,7 @@ import com.techelp.api.model.StatusModel;
 import com.techelp.api.repository.CategoryRepository;
 import com.techelp.api.repository.ClientRepository;
 import com.techelp.api.repository.DeviceRepository;
+import com.techelp.api.repository.EmployeeRepository;
 import com.techelp.api.repository.HistoryRepository;
 import com.techelp.api.repository.MaintenanceRequestRepository;
 import com.techelp.api.repository.StatusRepository;
@@ -36,6 +37,8 @@ public class MaintenanceRequestService {
         private HistoryRepository historyRepository;
         @Autowired
         private ClientRepository clientRepository;
+        @Autowired
+        private EmployeeRepository employeeRepository;
         @Autowired
         private DeviceRepository deviceRepository;
         @Autowired
@@ -184,6 +187,30 @@ public class MaintenanceRequestService {
                 });
 
                 return dto;
+        }
+
+        // --------------------- employee -----------------------
+
+        public List<MaintenanceRequestDto> getAllRequestsOfEmployee(String email) {
+                EmployeeModel employee = employeeRepository.findByEmail(email)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("email", "Funcionário não encontrado")));
+
+                return maintenanceRequestRepository.findAllByEmployeeWithCurrentStatus(employee).stream()
+                                .map(this::toMaintenanceRequestDto)
+                                .collect(Collectors.toList());
+        }
+
+        public List<MaintenanceRequestDto> getOpenRequests() {
+                return maintenanceRequestRepository.findOpenRequests().stream()
+                                .map(this::toMaintenanceRequestDto)
+                                .collect(Collectors.toList());
+        }
+
+        public List<MaintenanceRequestDto> getTodayOpenRequests() {
+                return maintenanceRequestRepository.findOpenRequestsCreatedToday().stream()
+                                .map(this::toMaintenanceRequestDto)
+                                .collect(Collectors.toList());
         }
 
 }

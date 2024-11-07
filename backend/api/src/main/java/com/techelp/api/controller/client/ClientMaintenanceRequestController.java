@@ -21,7 +21,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
-public class MaintenanceRequestController {
+public class ClientMaintenanceRequestController {
 
     @Autowired
     private MaintenanceRequestService maintenanceRequestService;

@@ -183,7 +183,7 @@ public class ClientMaintenanceRequestController {
     public ResponseEntity<ApiResponse> rejectRequest(
             @PathVariable int id,
             @RequestHeader(name = "Authorization") String authHeader,
-            @RequestBody Map<String, String> payload) {
+            @RequestBody MaintenanceRequestDto maintenanceRequestDto) {
 
         String email = extractEmailFromToken(authHeader);
 
@@ -192,10 +192,11 @@ public class ClientMaintenanceRequestController {
                     .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
         }
 
-        String rejectReason = payload.get("rejectReason");
+        String rejectReason = maintenanceRequestDto.getRejectReason();
         if (rejectReason == null || rejectReason.isBlank()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("Motivo de rejeição não pode estar vazio", HttpStatus.BAD_REQUEST.value(), null));
+                    .body(new ErrorResponse("Motivo de rejeição não pode estar vazio", HttpStatus.BAD_REQUEST.value(),
+                            null));
         }
 
         try {

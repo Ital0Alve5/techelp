@@ -1,5 +1,5 @@
 <div class="buttons">
-  <a routerLink="/funcionario/{{ userId }}/solicitacoes">
+  <a routerLink="/funcionario/solicitacoes">
     <arrow-right-icon width="20px" color="#fff"></arrow-right-icon>
   </a>
   <button class="budget-button" app-button (click)="handleBudgetInput()">Efetuar orçamento</button>
@@ -15,7 +15,7 @@
 
 <section class="budget-container">
   <p>
-    Serviço avaliado por <b> {{ employee.name }}</b> e orçado em:
+    Serviço avaliado por <b> {{ requestData().lastEmployee }}</b> e orçado em:
   </p>
   <p class="price">{{ currencyMaskService.apply(budgetData().value) }}</p>
 </section>
@@ -24,22 +24,22 @@
   <ul>
     <li>
       <b>Data da solicitação:</b>
-      <p>{{ requestData.date }} às {{ requestData.hour }}</p>
+      <p>{{ requestData().date }} às {{ requestData().hour }}</p>
     </li>
     <br />
     <li>
       <b>Categoria do equipamento:</b>
-      <p>{{ requestData.deviceCategory }}</p>
+      <p>{{ requestData().categoryName }}</p>
     </li>
     <br />
     <li>
       <b>Descrição do defeito:</b>
-      <p>{{ requestData.issueDescription }}</p>
+      <p>{{ requestData().issueDescription }}</p>
     </li>
     <br />
     <li>
       <b>Descrição do equipamento:</b>
-      <p>{{ requestData.deviceDescription }}</p>
+      <p>{{ requestData().deviceDescription }}</p>
     </li>
   </ul>
 </section>

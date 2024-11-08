@@ -15,7 +15,7 @@ import { EmployeeService } from '@/shared/services/employees/employee.service';
 import { confirmBudgetService } from './services/confirm-budget.service';
 import { CurrencyMaskService } from '@/shared/services/input/masks.service';
 import { budgetData } from './model/budget-data.model';
-
+import { ClientRequests } from '../requests/types/client-requests.type';
 @Component({
   selector: 'app-make-budget',
   standalone: true,
@@ -26,22 +26,57 @@ import { budgetData } from './model/budget-data.model';
 })
 export class MakeBudgetComponent {
   budgetData = signal(JSON.parse(JSON.stringify(budgetData)));
-  userId: number = JSON.parse(localStorage.getItem('userId')!);
   requestId: number = Number.parseInt(window.location.pathname.match(/\/orcamento\/(\d+)/)![1]);
-  employee = this.employeeService.getEmployeeById(this.userId)!;
 
   isBudgetConfirmationModalOpen = signal(true);
 
-  requestData = this.requestsService.getRequestById(this.requestId)!;
+  requestData = signal<ClientRequests>({
+    id: 0,
+    categoryName: '',
+    deviceDescription: '',
+    issueDescription: '',
+    budget: 0,
+    orientation: null,
+    rejectReason: null,
+    status: '',
+    lastEmployee: null,
+    date: '',
+    hour: '',
+    clientId: 0,
+    clientName: '',
+  });
 
   constructor(
     public currencyMaskService: CurrencyMaskService,
-    private requestsService: RequestsService,
-    private employeeService: EmployeeService,
     private confirmBudgetService: confirmBudgetService,
     private popupService: PopupService,
     private router: Router,
-  ) {}
+  ) {
+    this.getRequestDetailsByRequestId();
+  }
+
+  async getRequestDetailsByRequestId() {
+    const response = await this.confirmBudgetService.getRequestDetailsByRequestId(this.requestId);
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+    const maintenanceRequestDetails = response.data.data as unknown;
+    this.requestData.set(maintenanceRequestDetails as ClientRequests);
+  }
 
   openModal() {
     this.isBudgetConfirmationModalOpen.set(false);
@@ -51,24 +86,30 @@ export class MakeBudgetComponent {
     this.isBudgetConfirmationModalOpen.set(true);
   }
 
-  confirmBudget() {
-    const success = this.confirmBudgetService.confirmBudget(
-      this.requestData,
-      this.employee,
-      this.budgetData().value,
-    );
+  async confirmBudget() {
+    const response = await this.confirmBudgetService.confirmBudget(this.requestId, this.budgetData().value);
 
-    if (!success) {
+    if (!response?.data) {
       this.popupService.addNewPopUp({
         type: Status.Error,
-        message: 'Houve um problema ao orçar!',
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
       });
       return;
     }
 
     this.closeModal();
 
-    this.router.navigate([`/funcionario/${this.userId}/solicitacoes`]);
+    this.router.navigate([`/funcionario/solicitacoes`]);
 
     this.popupService.addNewPopUp({
       type: Status.Success,
@@ -81,9 +122,7 @@ export class MakeBudgetComponent {
       this.budgetData().validation = { error: true, message: 'O valor do orçamento deve ser maior que zero.' };
       return;
     }
-
     this.budgetData().validation = { error: false, message: '' };
-
     this.openModal();
   }
 }

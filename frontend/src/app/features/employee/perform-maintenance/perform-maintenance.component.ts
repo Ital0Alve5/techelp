@@ -90,7 +90,6 @@ export class PerformMaintenanceComponent {
 
   async fetchEmployees() {
     const response = await this.employeeService.getAllEmployeesExceptMeApi();
-    console.log(response);
 
     if (!response?.data) {
       this.popupService.addNewPopUp({
@@ -111,9 +110,7 @@ export class PerformMaintenanceComponent {
     }
 
     const registeredEmployees = response?.data?.data?.['allEmployeesList'] as unknown;
-    console.log(registeredEmployees)
     this.registeredEmployees.set(registeredEmployees as Employee[]);
-    console.log(this.registeredEmployees);
   }
 
   async getRequestDetailsByRequestId() {
@@ -157,8 +154,19 @@ export class PerformMaintenanceComponent {
       }
       return;
     }
+    const employeeEmail = this.registeredEmployees().find(
+      (employee) => employee.id === this.selectedEmployeeId
+    )?.email;
 
-    const success = this.redirectMaintenanceService.redirectMaintenance(this.requestId, this.selectedEmployeeId);
+    if (!employeeEmail) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Funcionário não encontrado.',
+      });
+      return;
+    }
+
+    const success = this.redirectMaintenanceService.redirectMaintenance(this.requestId, employeeEmail);
 
     if (!success) {
       this.popupService.addNewPopUp({
@@ -169,7 +177,7 @@ export class PerformMaintenanceComponent {
     }
 
     this.closeRedirectModal();
-    this.router.navigate([`/funcionario/${this.employeeId}/solicitacoes`]);
+    this.router.navigate([`/funcionario/solicitacoes`]);
     this.popupService.addNewPopUp({
       type: Status.Success,
       message: 'Manutenção redirecionada com sucesso!',

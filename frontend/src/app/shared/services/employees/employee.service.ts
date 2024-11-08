@@ -36,10 +36,11 @@ export class EmployeeService {
     }
   }
 
-  async redirectToEmployee(id_da_request: number,): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+  async redirectToEmployee(id_da_request: number, email: string): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      const response = await axiosConfig(`/api/employee/maintenance-requests/${id_da_request}/redirect`);
-
+      const requestBody = { email };
+      const response = await axiosConfig.put(`/api/employee/maintenance-requests/${id_da_request}/redirect`, requestBody);
+  
       return response;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

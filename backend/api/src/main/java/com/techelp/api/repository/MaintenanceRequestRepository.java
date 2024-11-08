@@ -2,6 +2,8 @@ package com.techelp.api.repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,6 +20,14 @@ public interface MaintenanceRequestRepository extends JpaRepository<MaintenanceR
     List<MaintenanceRequestModel> findByDevice(DeviceModel device);
 
     List<MaintenanceRequestModel> findByClientEmail(String email);
+
+    @Query("SELECT mr FROM MaintenanceRequestModel mr " +
+           "JOIN mr.historyRecords h " +
+           "JOIN h.employee e " +
+           "WHERE mr.id = :id " +
+           "AND e.email = :email")
+    Optional<MaintenanceRequestModel> findByIdAndEmployeeEmail(@Param("id") int id, @Param("email") String email);
+
 
     @Query("SELECT mr FROM MaintenanceRequestModel mr " +
             "JOIN mr.historyRecords h1 " +

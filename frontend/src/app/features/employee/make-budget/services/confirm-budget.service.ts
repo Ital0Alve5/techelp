@@ -1,19 +1,46 @@
 import { Injectable } from '@angular/core';
 
-import { RequestsService } from '@/shared/services/requests/requests.service';
-import { Requests } from '@/shared/types/api/maintenance-requests.type';
-import { Employee } from '@/shared/types/employee.type';
+import axios, { AxiosResponse } from 'axios';
+import axiosConfig from '@/axios.config';
+import { ResponseError } from '@/shared/types/api/response-error.type';
+import { ResponseSuccess } from '@/shared/types/api/response-success.type';
 
 @Injectable()
 export class confirmBudgetService {
-  constructor(private requestsService: RequestsService) {}
+  async confirmBudget(
+    requestId: number,
+    budgetValue: string,
+  ): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    budgetValue = budgetValue.replace('R$ ', '').replace('.', '').replace(',', '.');
 
-  confirmBudget(request: Requests, employee: Employee, budgetValue: string): boolean {
-    request.price = budgetValue.replace('R$ ', '');
+    try {
+      const response = await axiosConfig.put(`/api/employee/maintenance-requests/${requestId}/make-budget`, {
+        budget: budgetValue,
+      });
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
+  }
 
-    this.requestsService.assignEmployeeToRequest(request.id, employee.id);
-    this.requestsService.updateStatus(request.id, employee.name, 'Orçada');
-
-    return true;
+  async getRequestDetailsByRequestId(
+    requestId: number,
+  ): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axiosConfig(`/api/employee/maintenance-requests/${requestId}`);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
   }
 }

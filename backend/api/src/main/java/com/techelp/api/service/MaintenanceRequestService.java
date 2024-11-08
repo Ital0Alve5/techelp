@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -294,4 +295,22 @@ public class MaintenanceRequestService {
                 return toMaintenanceRequestDto(request);
         }
 
+        public MaintenanceRequestDto getRequestByIdAndEmployeeEmail(int id, String email) {
+                MaintenanceRequestModel request = maintenanceRequestRepository.findById(id)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("id", "Solicitação de manutenção não encontrada")));
+
+                boolean isOpen = request.getHistoryRecords().stream()
+                                .max(Comparator.comparing(HistoryModel::getDate)) 
+                                .map(history -> history.getStatus().getId() == 17) 
+                                .orElse(false);
+
+                if (!isOpen) {
+                        request = maintenanceRequestRepository.findByIdAndEmployeeEmail(id, email)
+                                        .orElseThrow(() -> new ValidationException("Erro de autorização",
+                                                        Map.of("id", "Usuário não autorizado a acessar esta solicitação de manutenção")));
+                }
+
+                return toMaintenanceRequestDto(request);
+        }
 }

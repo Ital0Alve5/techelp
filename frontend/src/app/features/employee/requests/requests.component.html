@@ -16,7 +16,7 @@
       <tr table-data>
         <td><allow-visibility-icon (click)="onViewRequest(request.id)" width="16px" color="#9197B3" /></td>
         <td>{{ request.date }} {{ request.hour }}</td>
-        <td>{{ getClientName(request.clientId) }}</td>
+        <td>{{ request.clientName }}</td>
         <td>
           {{
             request.deviceDescription.length > 30

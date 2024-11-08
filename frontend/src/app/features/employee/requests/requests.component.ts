@@ -5,14 +5,11 @@ import { WaitingIcon } from '@/shared/ui/icons/waiting.icon';
 import { AllowVisibilityIcon } from '@/shared/ui/icons/allow-visibility.icon';
 
 import { ButtonComponent } from '@/shared/ui/button/button.component';
-import { LinkAsButtonComponent } from '@/shared/ui/link-as-button/link-as-button.component';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { TableComponent } from '@/shared/ui/table/table.component';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 
 import { RequestsService } from './services/requests.service';
-import { ClientsService } from '@/shared/services/clients/clients.service';
-import { EmployeeService } from '@/shared/services/employees/employee.service';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 
 import { FiltersComponent } from '@/features/employee/requests/components/filters/filters.component';
@@ -22,10 +19,9 @@ import { ClientRequests } from './types/client-requests.type';
 @Component({
   selector: 'app-requests',
   standalone: true,
-  providers: [RequestsService, ClientsService, EmployeeService],
+  providers: [RequestsService],
   imports: [
     ButtonComponent,
-    LinkAsButtonComponent,
     FiltersComponent,
     ModalComponent,
     TableComponent,
@@ -41,7 +37,6 @@ export class RequestsComponent {
   requestId = signal<number>(-1);
 
   constructor(
-    private clientsService: ClientsService,
     private requestsService: RequestsService,
     private router: Router,
     private popupService: PopupService,
@@ -169,12 +164,6 @@ export class RequestsComponent {
       //   }),
       // );
     }
-  }
-
-  getClientName(userId: number) {
-    const name = this.clientsService.getClientById(userId)?.name;
-    const splittedName = name?.split(' ');
-    return `${splittedName?.[0]} ${splittedName?.[1]}`;
   }
 
   onOpenModal(requestId: number) {

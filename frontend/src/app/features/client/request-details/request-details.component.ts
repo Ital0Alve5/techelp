@@ -92,7 +92,5 @@ export class RequestDetailsComponent {
     this.requestData.set(maintenanceRequestDetails as ClientRequests);
 
   }
-
-
 }
 

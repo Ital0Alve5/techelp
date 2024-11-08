@@ -15,17 +15,29 @@ import { RequestsService } from '@/shared/services/requests/requests.service';
 import { ClientsService } from '@/shared/services/clients/clients.service';
 import { EmployeeService } from '@/shared/services/employees/employee.service';
 import { MakeMaintenanceService } from './services/make-maintenance.service';
+import { confirmBudgetService } from '../make-budget/services/confirm-budget.service';
+import { ClientRequests } from '../requests/types/client-requests.type';
+import { CurrencyMaskService } from '@/shared/services/input/masks.service';
+import { Employee } from '@/shared/types/employee.type';
 
 @Component({
   selector: 'app-perform-maintenance',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, ArrowRightIcon, ButtonComponent, ModalComponent, SelectComponent],
-  providers: [RequestsService, RedirectMaintenanceService, ClientsService, EmployeeService, MakeMaintenanceService],
+  providers: [
+    RequestsService,
+    RedirectMaintenanceService,
+    ClientsService,
+    EmployeeService,
+    MakeMaintenanceService,
+    confirmBudgetService,
+  ],
   templateUrl: './perform-maintenance.component.html',
   styleUrls: ['./perform-maintenance.component.scss'],
 })
 export class PerformMaintenanceComponent {
   employeeId: number = JSON.parse(localStorage.getItem('userId')!);
+
   requestId: number = Number.parseInt(window.location.pathname.match(/\/manutencao\/(\d+)/)![1]);
 
   maintenanceDescription = signal('');
@@ -35,19 +47,97 @@ export class PerformMaintenanceComponent {
   isRedirectModalOpen = signal(true);
   selectedEmployeeId: number | null = null;
 
-  registeredEmployees = this.employeeService.getAllEmployeesExceptMe(this.employeeId);
-  requestData = this.requestsService.getRequestById(this.requestId)!;
-  clientData = this.clientsService.getClientById(this.requestData.userId)!;
+  registeredEmployees = signal<Employee[]>([
+    {
+      id: 0,
+      name: '',
+      email: '',
+      birthdate: '',
+      password: ''
+    }
+  ]);
+  
+  requestData = signal<ClientRequests>({
+    id: 0,
+    categoryName: '',
+    deviceDescription: '',
+    issueDescription: '',
+    budget: 0,
+    orientation: null,
+    rejectReason: null,
+    status: '',
+    lastEmployee: null,
+    date: '',
+    hour: '',
+    clientId: 0,
+    clientName: '',
+  });
+  clientData = this.clientsService.getClientById(1)!;
 
   constructor(
     private popupService: PopupService,
     private router: Router,
     private redirectMaintenanceService: RedirectMaintenanceService,
-    private requestsService: RequestsService,
     private clientsService: ClientsService,
     private employeeService: EmployeeService,
     private makeMaintenanceService: MakeMaintenanceService,
-  ) {}
+    private confirmBudgetService: confirmBudgetService,
+    public currencyMaskService: CurrencyMaskService,
+  ) {
+    this.fetchEmployees();
+    this.getRequestDetailsByRequestId();
+  }
+
+  async fetchEmployees() {
+    const response = await this.employeeService.getAllEmployeesExceptMeApi();
+    console.log(response);
+
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+
+    const registeredEmployees = response?.data?.data?.['allEmployeesList'] as unknown;
+    console.log(registeredEmployees)
+    this.registeredEmployees.set(registeredEmployees as Employee[]);
+    console.log(this.registeredEmployees);
+  }
+
+  async getRequestDetailsByRequestId() {
+    const response = await this.confirmBudgetService.getRequestDetailsByRequestId(this.requestId);
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+    const maintenanceRequestDetails = response.data.data as unknown;
+    this.requestData.set(maintenanceRequestDetails as ClientRequests);
+  }
 
   openRedirectModal() {
     this.isRedirectModalOpen.set(false);

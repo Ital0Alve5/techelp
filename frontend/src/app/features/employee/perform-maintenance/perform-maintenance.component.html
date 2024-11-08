@@ -14,7 +14,7 @@
     label=""
     [getId]="true"
     placeholder="Nome do funcionário"
-    [options]="registeredEmployees!"
+    [options]="registeredEmployees()"
     [(value)]="selectedEmployeeId!"
   ></app-select>
 
@@ -28,19 +28,19 @@
   <ul class="request-description">
     <li>
       <b>Data da solicitação:</b>
-      <p>{{ requestData.date }} às {{ requestData.hour }}</p>
+      <p>{{ requestData().date }} às {{ requestData().hour }}</p>
     </li>
     <li>
       <b>Categoria do equipamento:</b>
-      <p>{{ requestData.deviceCategory }}</p>
+      <p>{{ requestData().categoryName }}</p>
     </li>
     <li>
       <b>Descrição do equipamento:</b>
-      <p>{{ requestData.deviceDescription }}</p>
+      <p>{{ requestData().deviceDescription }}</p>
     </li>
     <li>
       <b>Descrição do defeito:</b>
-      <p>{{ requestData.issueDescription }}</p>
+      <p>{{ requestData().issueDescription }}</p>
     </li>
   </ul>
 </section>

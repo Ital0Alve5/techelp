@@ -1,6 +1,5 @@
 package com.techelp.api.controller.client;
 
-import com.techelp.api.dto.client.AssignEmployeeDto;
 import com.techelp.api.dto.client.HistoryDto;
 import com.techelp.api.dto.client.MaintenanceRequestDto;
 import com.techelp.api.dto.response.ApiResponse;
@@ -52,20 +51,6 @@ public class ClientMaintenanceRequestController {
                     HttpStatus.CREATED.value(), "Solicitação criada com sucesso",
                     Optional.of(createdRequest));
             return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
-        } catch (ValidationException ex) {
-            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),
-                    ex.getErrors());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-        }
-    }
-
-    @PutMapping("client/maintenance-requests/assign")
-    public ResponseEntity<ApiResponse> assignEmployeeAndEstimate(@RequestBody AssignEmployeeDto assignDto) {
-        try {
-            MaintenanceRequestDto updatedRequest = maintenanceRequestService.assignEmployeeAndEstimate(assignDto);
-            SuccessResponse<MaintenanceRequestDto> successResponse = new SuccessResponse<>(
-                    HttpStatus.OK.value(), "Orçamento realizado!", Optional.of(updatedRequest));
-            return ResponseEntity.ok(successResponse);
         } catch (ValidationException ex) {
             ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),
                     ex.getErrors());

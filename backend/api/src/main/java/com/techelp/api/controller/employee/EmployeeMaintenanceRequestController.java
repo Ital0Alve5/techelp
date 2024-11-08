@@ -1,5 +1,6 @@
 package com.techelp.api.controller.employee;
 
+import com.techelp.api.dto.EmployeeDto;
 import com.techelp.api.dto.client.MaintenanceRequestDto;
 import com.techelp.api.dto.response.ApiResponse;
 import com.techelp.api.dto.response.ErrorResponse;
@@ -55,7 +56,6 @@ public class EmployeeMaintenanceRequestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
-
 
     @GetMapping("employee/maintenance-requests/all")
     public ResponseEntity<ApiResponse> getAllRequests(@RequestHeader(name = "Authorization") String authHeader) {
@@ -134,4 +134,32 @@ public class EmployeeMaintenanceRequestController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
+
+    @PutMapping("employee/maintenance-requests/{id}/redirect")
+    public ResponseEntity<ApiResponse> redirectRequest(
+            @PathVariable int id,
+            @RequestHeader(name = "Authorization") String authHeader,
+            @RequestBody EmployeeDto employeeDto) {
+        String email = extractEmailFromToken(authHeader);
+
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
+        }
+
+        try {
+            MaintenanceRequestDto approvedRequest = maintenanceRequestService.redirectRequestToAnotherEmployee(id,
+                    email, employeeDto.email());
+            SuccessResponse<MaintenanceRequestDto> successResponse = new SuccessResponse<>(
+                    HttpStatus.OK.value(),
+                    String.format("Tarefa redirecionada para: %s", approvedRequest.getLastEmployee()),
+                    Optional.of(approvedRequest));
+            return ResponseEntity.ok(successResponse);
+        } catch (ValidationException ex) {
+            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),
+                    ex.getErrors());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
+
 }

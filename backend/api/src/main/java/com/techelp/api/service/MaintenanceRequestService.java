@@ -1,6 +1,5 @@
 package com.techelp.api.service;
 
-import com.techelp.api.dto.client.AssignEmployeeDto;
 import com.techelp.api.dto.client.HistoryDto;
 import com.techelp.api.dto.client.MaintenanceRequestDto;
 import com.techelp.api.exception.ValidationException;
@@ -84,28 +83,6 @@ public class MaintenanceRequestService {
                 historyEntry.setDate(LocalDateTime.now());
 
                 historyRepository.save(historyEntry);
-
-                return toMaintenanceRequestDto(request);
-        }
-
-        public MaintenanceRequestDto assignEmployeeAndEstimate(AssignEmployeeDto assignDto) {
-                MaintenanceRequestModel request = maintenanceRequestRepository
-                                .findById(assignDto.getMaintenanceRequestId())
-                                .orElseThrow(() -> new ValidationException("Erro de validação",
-                                                Map.of("maintenanceRequestId", "Solicitação não encontrada")));
-
-                EmployeeModel employee = new EmployeeModel();
-
-                StatusModel estimatingStatus = statusRepository.findByName("Em orçamento")
-                                .orElseThrow(
-                                                () -> new ValidationException("Erro de validação",
-                                                                Map.of("status", "Status não encontrado")));
-
-                HistoryModel historyEntry = new HistoryModel(employee, estimatingStatus, request, LocalDateTime.now());
-                historyRepository.save(historyEntry);
-
-                request.setBudget(assignDto.getBudget());
-                maintenanceRequestRepository.save(request);
 
                 return toMaintenanceRequestDto(request);
         }
@@ -301,8 +278,8 @@ public class MaintenanceRequestService {
                                                 Map.of("id", "Solicitação de manutenção não encontrada")));
 
                 boolean isOpen = request.getHistoryRecords().stream()
-                                .max(Comparator.comparing(HistoryModel::getDate)) 
-                                .map(history -> history.getStatus().getId() == 17) 
+                                .max(Comparator.comparing(HistoryModel::getDate))
+                                .map(history -> history.getStatus().getId() == 17)
                                 .orElse(false);
 
                 if (!isOpen) {
@@ -313,4 +290,36 @@ public class MaintenanceRequestService {
 
                 return toMaintenanceRequestDto(request);
         }
+
+        public MaintenanceRequestDto redirectRequestToAnotherEmployee(int id, String email,
+                        String anotherEmployeeEmail) {
+                MaintenanceRequestModel request = maintenanceRequestRepository.findById(id)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("id", "Solicitação de manutenção não encontrada")));
+
+                EmployeeModel anotherEmployee = employeeRepository.findByEmail(anotherEmployeeEmail)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("id", "O outro funcionário não foi encontrado!")));
+
+                if (email == anotherEmployeeEmail) {
+                        throw new ValidationException("Erro de autorização",
+                                        Map.of("requestId",
+                                                        "Usuário não pode redirecionar para si mesmo!"));
+                }
+
+                StatusModel redirectStatus = statusRepository.findByName("Redirecionada")
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("status", "Status 'Aprovada' não encontrado")));
+
+                HistoryModel historyEntry = new HistoryModel();
+                historyEntry.setEmployee(anotherEmployee);
+                historyEntry.setMaintenanceRequest(request);
+                historyEntry.setStatus(redirectStatus);
+                historyEntry.setDate(LocalDateTime.now());
+
+                historyRepository.save(historyEntry);
+
+                return toMaintenanceRequestDto(request);
+        }
+
 }

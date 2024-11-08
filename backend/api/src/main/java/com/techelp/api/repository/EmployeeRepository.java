@@ -1,5 +1,6 @@
 package com.techelp.api.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,5 @@ public interface EmployeeRepository extends JpaRepository<EmployeeModel, Integer
 
     Optional<EmployeeModel> findById(int id);
 
+    List<EmployeeModel> findByEmailNot(String email);
 }

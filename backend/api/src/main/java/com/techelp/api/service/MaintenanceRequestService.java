@@ -220,7 +220,7 @@ public class MaintenanceRequestService {
                 return toMaintenanceRequestDto(request);
         }
 
-        public MaintenanceRequestDto rescueRequest(int requestId) {
+        public MaintenanceRequestDto redeemRequest(int requestId) {
                 MaintenanceRequestModel request = maintenanceRequestRepository.findById(requestId)
                         .orElseThrow(() -> new ValidationException("Erro de validação", Map.of("id", "Solicitação não encontrada")));
             

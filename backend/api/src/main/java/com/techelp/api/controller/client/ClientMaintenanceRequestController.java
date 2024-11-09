@@ -198,8 +198,8 @@ public class ClientMaintenanceRequestController {
         }
     }
 
-    @PutMapping("/client/maintenance-requests/{id}/rescue")
-    public ResponseEntity<ApiResponse> rescueRequest(
+    @PutMapping("/client/maintenance-requests/{id}/redeem")
+    public ResponseEntity<ApiResponse> redeemRequest(
             @PathVariable int id,
             @RequestHeader(name = "Authorization") String authHeader) {
         
@@ -210,11 +210,11 @@ public class ClientMaintenanceRequestController {
                     .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
         }
         try {
-            MaintenanceRequestDto rescuedRequest = maintenanceRequestService.rescueRequest(id);
+            MaintenanceRequestDto redeemdRequest = maintenanceRequestService.redeemRequest(id);
             SuccessResponse<MaintenanceRequestDto> successResponse = new SuccessResponse<>(
                     HttpStatus.OK.value(),
                     "Solicitação resgatada",
-                    Optional.of(rescuedRequest));
+                    Optional.of(redeemdRequest));
             return ResponseEntity.ok(successResponse);
         } catch (ValidationException ex) {
             ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),

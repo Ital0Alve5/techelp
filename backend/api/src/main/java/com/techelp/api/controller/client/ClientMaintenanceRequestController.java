@@ -197,4 +197,29 @@ public class ClientMaintenanceRequestController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
+
+    @PutMapping("/client/maintenance-requests/{id}/rescue")
+    public ResponseEntity<ApiResponse> rescueRequest(
+            @PathVariable int id,
+            @RequestHeader(name = "Authorization") String authHeader) {
+        
+        String email = extractEmailFromToken(authHeader);
+
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
+        }
+        try {
+            MaintenanceRequestDto rescuedRequest = maintenanceRequestService.rescueRequest(id);
+            SuccessResponse<MaintenanceRequestDto> successResponse = new SuccessResponse<>(
+                    HttpStatus.OK.value(),
+                    "Solicitação resgatada",
+                    Optional.of(rescuedRequest));
+            return ResponseEntity.ok(successResponse);
+        } catch (ValidationException ex) {
+            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.BAD_REQUEST.value(),
+                    ex.getErrors());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
 }

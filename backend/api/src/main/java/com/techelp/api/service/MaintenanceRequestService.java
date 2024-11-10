@@ -322,7 +322,7 @@ public class MaintenanceRequestService {
                 return toMaintenanceRequestDto(request);
         }
 
-        public MaintenanceRequestDto performMaintenance(int id, String email) {
+        public MaintenanceRequestDto performMaintenance(int id, String email, String orientation, String description) {
 
                 MaintenanceRequestModel request = maintenanceRequestRepository.findById(id)
                                 .orElseThrow(() -> new ValidationException("Erro de validação",
@@ -334,6 +334,8 @@ public class MaintenanceRequestService {
                 StatusModel performMaintenanceStatus = statusRepository.findByName("Arrumada")
                                 .orElseThrow(() -> new ValidationException("Erro de validação",
                                                 Map.of("status", "Status 'Arrumada' não encontrado")));
+                request.setOrientation(orientation);
+                request.setMaintenance_description(description);
                 HistoryModel historyEntry = new HistoryModel();
                 historyEntry.setEmployee(employee);
                 historyEntry.setMaintenanceRequest(request);

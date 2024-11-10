@@ -37,6 +37,9 @@ public class MaintenanceRequestModel {
     @Column(nullable = true)
     private String reject_reason;
 
+    @Column(nullable = true)
+    private String maintenance_description;
+
     @OneToMany(mappedBy = "maintenanceRequest") 
     private List<HistoryModel> historyRecords;
 
@@ -60,7 +63,7 @@ public class MaintenanceRequestModel {
         request.setBudget(dto.getBudget());
         request.setOrientation(dto.getOrientation());
         request.setReject_reason(dto.getRejectReason());
-
+        request.setMaintenance_description(dto.getMaintenanceDescription());
         return request;
     }
 }

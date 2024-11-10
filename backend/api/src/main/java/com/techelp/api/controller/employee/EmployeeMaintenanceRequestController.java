@@ -164,7 +164,7 @@ public class EmployeeMaintenanceRequestController {
 
     @PutMapping("employee/maintenance-requests/{id}/perform-maintenance")
     public ResponseEntity<ApiResponse> performMaintenance(@PathVariable int id,
-        @RequestHeader(name = "Authorization") String authHeader){
+        @RequestHeader(name = "Authorization") String authHeader, @RequestBody MaintenanceRequestDto performedMaintenance){
         String email = extractEmailFromToken(authHeader);
 
         if (email == null) {
@@ -174,7 +174,7 @@ public class EmployeeMaintenanceRequestController {
 
         try {
             MaintenanceRequestDto performRequest = maintenanceRequestService.performMaintenance(id,
-                    email);
+                    email,performedMaintenance.getOrientation(),performedMaintenance.getMaintenanceDescription());
             SuccessResponse<MaintenanceRequestDto> successResponse = new SuccessResponse<>(
                     HttpStatus.OK.value(),
                     String.format("Tarefa arrumada com sucesso!", performRequest.getLastEmployee()),

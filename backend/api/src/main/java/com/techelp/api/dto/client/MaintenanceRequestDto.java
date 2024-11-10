@@ -12,6 +12,7 @@ public class MaintenanceRequestDto {
     private String clientName;
     private String categoryName;
     private String deviceDescription;
+    private String maintenanceDescription;
     private String issueDescription;
     private String maintenanceDescription;
     private Double budget;

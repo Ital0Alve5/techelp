@@ -86,7 +86,6 @@ export class BudgetComponent implements OnInit {
   }
 
   confirmPayment() {
-    // this.requestsService.updateStatus(this.requestId, this.requestData()?.lastEmployee, 'Paga');
     this.closeModalPayment();
     this.router.navigate([`/cliente/solicitacoes`]);
     this.popupService.addNewPopUp({
@@ -144,15 +143,33 @@ export class BudgetComponent implements OnInit {
     this.isRejectModalOpen.set(true);
   }
 
-  confirmReject(rejectForm: NgForm) {
+  async confirmReject(rejectForm: NgForm) {
     if (!rejectForm.valid) return;
-    const rejectionReason = rejectForm.value.rejectReason;
 
-    console.log(rejectionReason);
+    const response = await this.budgetService.rejectBudget(this.requestId, rejectForm.value.rejectReason);
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
 
-    // this.requestsService.updateStatus(this.requestId, this.requestData()?.employee, 'Rejeitada', rejectionReason);
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
 
-    this.closeModalReject();
     this.router.navigate([`/cliente/solicitacoes`]);
+
+    this.popupService.addNewPopUp({
+      type: Status.Success,
+      message: `Orçamento rejeitado!`,
+    });
   }
 }

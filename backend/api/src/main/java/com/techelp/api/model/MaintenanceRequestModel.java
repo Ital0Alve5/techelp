@@ -35,6 +35,9 @@ public class MaintenanceRequestModel {
     private String orientation;
 
     @Column(nullable = true)
+    private String maintenance_description;
+
+    @Column(nullable = true)
     private String reject_reason;
 
     @Column(nullable = true)

@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
-
 import axios, { AxiosResponse } from 'axios';
 import axiosConfig from '@/axios.config';
 import { ResponseError } from '@/shared/types/api/response-error.type';

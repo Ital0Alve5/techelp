@@ -1,24 +1,39 @@
 import { Injectable } from '@angular/core';
 
-import { maintenanceRequests } from '@/shared/mock/maintenance-requests.mock';
+import axios, { AxiosResponse } from 'axios';
+import axiosConfig from '@/axios.config';
+import { ResponseError } from '@/shared/types/api/response-error.type';
+import { ResponseSuccess } from '@/shared/types/api/response-success.type';
 
 @Injectable()
 export class RedeemService {
-  redeemRequestByRequestId(requestId: number) {
-    return maintenanceRequests
-      .filter((request) => request.id === requestId)
-      ?.map((request) => {
-        return {
-          deviceDescription: request.deviceDescription,
-          deviceCategory: request.deviceCategory,
-          issueDescription: request.issueDescription,
-          price: request.price,
-          date: request.date,
-          hour: request.hour,
-          employee: request.history[request.history.length - 1].employee,
-          currentStatus: request.currentStatus,
-          rejectReason: request.rejectReason,
-        };
-      })?.[0];
+  async redeemRequestByRequestId(requestId: number) : Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axiosConfig('/api/client/maintenance-requests/'+requestId);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Erro da API:', error.response.data);
+        return null;
+      } else {
+        console.error('Erro inesperado:', error);
+        throw error;
+      }
+    }
+  }
+
+  async redeemRequest(requestId: number,): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axiosConfig.put(`/api/client/maintenance-requests/${requestId}/redeem`);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Erro da API:', error.response.data);
+        return null;
+      } else {
+        console.error('Erro inesperado:', error);
+        throw error;
+      }
+    }
   }
 }

@@ -15,9 +15,9 @@
 
 <section class="budget-container">
   <p>
-    Serviço avaliado por <b> {{ requestData().employee }}</b> e orçado em:
+    Serviço avaliado por <b> {{ requestData().lastEmployee }}</b> e orçado em:
   </p>
-  <p class="price">R$ {{ requestData().price }}</p>
+  <p class="price">R$ {{ requestData().budget }}</p>
 </section>
 
 <section class="request-description">
@@ -29,7 +29,7 @@
     <br />
     <li>
       <b>Categoria do equipamento:</b>
-      <p>{{ requestData().deviceCategory }}</p>
+      <p>{{ requestData().categoryName }}</p>
     </li>
     <br />
     <li>

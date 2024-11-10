@@ -220,6 +220,27 @@ public class MaintenanceRequestService {
                 return toMaintenanceRequestDto(request);
         }
 
+        public MaintenanceRequestDto redeemRequest(int requestId) {
+                MaintenanceRequestModel request = maintenanceRequestRepository.findById(requestId)
+                        .orElseThrow(() -> new ValidationException("Erro de validação", Map.of("id", "Solicitação não encontrada")));
+            
+                StatusModel approvedStatus = statusRepository.findByName("Aprovada")
+                        .orElseThrow(() -> new ValidationException("Erro de validação", Map.of("status", "Status 'Aprovada' não encontrado")));
+             
+                HistoryModel lastHistoryEntry = historyRepository.findLatestHistoryByRequest(request)
+                        .orElseThrow(() -> new ValidationException("Erro de validação", Map.of("status", "Último registro no histórico não encontrado")));
+            
+                HistoryModel historyEntry = new HistoryModel();
+                historyEntry.setMaintenanceRequest(request);
+                historyEntry.setStatus(approvedStatus);
+                historyEntry.setDate(LocalDateTime.now());
+                historyEntry.setEmployee(lastHistoryEntry.getEmployee());
+            
+                historyRepository.save(historyEntry);
+            
+                return toMaintenanceRequestDto(request);
+        }                        
+
         // --------------------- employee -----------------------
 
         public List<MaintenanceRequestDto> getAllRequestsOfEmployee(String email) {

@@ -44,6 +44,8 @@ export class MakeBudgetComponent {
     hour: '',
     clientId: 0,
     clientName: '',
+    clientEmail: '',
+    clientPhone: '',
   });
 
   constructor(

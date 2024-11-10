@@ -1,5 +1,5 @@
 <div class="buttons">
-  <a routerLink="/funcionario/{{ employeeId }}/solicitacoes">
+  <a routerLink="/funcionario/solicitacoes">
     <arrow-right-icon width="20px" color="#fff"></arrow-right-icon>
   </a>
   <button backgroundColor="#4e42ff" app-button (click)="openRedirectModal()">Redirecionar Manutenção</button>
@@ -49,15 +49,15 @@
   <ul class="request-description">
     <li>
       <b>Nome do cliente:</b>
-      <p>{{ clientData.name }}</p>
+      <p>{{ requestData().clientName }}</p>
     </li>
     <li>
       <b>E-mail do cliente:</b>
-      <p>{{ clientData.email }}</p>
+      <p>{{ requestData().clientEmail }}</p>
     </li>
     <li>
       <b>Telefone do cliente:</b>
-      <p>{{ clientData.phone }}</p>
+      <p>{{ requestData().clientPhone }}</p>
     </li>
   </ul>
 </section>

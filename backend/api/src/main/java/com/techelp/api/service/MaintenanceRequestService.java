@@ -149,6 +149,8 @@ public class MaintenanceRequestService {
 
                 dto.setClientId(request.getClient().getId());
                 dto.setClientName(request.getClient().getName());
+                dto.setClientEmail(request.getClient().getEmail());
+                dto.setClientPhone(request.getClient().getPhone());
                 dto.setCategoryId(request.getDevice().getCategory().getId());
                 dto.setDeviceDescription(request.getDevice().getDevice_description());
                 dto.setIssueDescription(request.getDevice().getIssue_description());

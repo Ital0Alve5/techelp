@@ -10,6 +10,8 @@ public class MaintenanceRequestDto {
     private int categoryId;
     private int clientId;
     private String clientName;
+    private String clientEmail;
+    private String clientPhone;
     private String categoryName;
     private String deviceDescription;
     private String issueDescription;

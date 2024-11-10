@@ -2,6 +2,8 @@ export type ClientRequests = {
   id: number;
   clientId: number;
   clientName: string;
+  clientEmail: string;
+  clientPhone: string;
   categoryName: string;
   deviceDescription: string;
   issueDescription: string;

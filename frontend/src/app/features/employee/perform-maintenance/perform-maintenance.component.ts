@@ -53,10 +53,10 @@ export class PerformMaintenanceComponent {
       name: '',
       email: '',
       birthdate: '',
-      password: ''
-    }
+      password: '',
+    },
   ]);
-  
+
   requestData = signal<ClientRequests>({
     id: 0,
     categoryName: '',
@@ -71,9 +71,12 @@ export class PerformMaintenanceComponent {
     hour: '',
     clientId: 0,
     clientName: '',
+    clientEmail: '',
+    clientPhone: '',
   });
-  clientData = this.clientsService.getClientById(1)!;
 
+    clientData = this.clientsService.getClientById(1)!;
+  
   constructor(
     private popupService: PopupService,
     private router: Router,
@@ -154,9 +157,7 @@ export class PerformMaintenanceComponent {
       }
       return;
     }
-    const employeeEmail = this.registeredEmployees().find(
-      (employee) => employee.id === this.selectedEmployeeId
-    )?.email;
+    const employeeEmail = this.registeredEmployees().find((employee) => employee.id === this.selectedEmployeeId)?.email;
 
     if (!employeeEmail) {
       this.popupService.addNewPopUp({

@@ -322,4 +322,28 @@ public class MaintenanceRequestService {
                 return toMaintenanceRequestDto(request);
         }
 
+        public MaintenanceRequestDto performMaintenance(int id, String email, String orientation, String description) {
+
+                MaintenanceRequestModel request = maintenanceRequestRepository.findById(id)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("id", "Solicitação não encontrada")));
+                EmployeeModel employee = employeeRepository.findByEmail(email)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("id", "Funcionário não encontrado!")));
+
+                StatusModel performMaintenanceStatus = statusRepository.findByName("Arrumada")
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("status", "Status 'Arrumada' não encontrado")));
+                request.setOrientation(orientation);
+                request.setMaintenance_description(description);
+                HistoryModel historyEntry = new HistoryModel();
+                historyEntry.setEmployee(employee);
+                historyEntry.setMaintenanceRequest(request);
+                historyEntry.setStatus(performMaintenanceStatus);
+                historyEntry.setDate(LocalDateTime.now());
+                historyRepository.save(historyEntry);
+
+                return toMaintenanceRequestDto(request);
+        }
+
 }

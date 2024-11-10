@@ -14,6 +14,7 @@ public class MaintenanceRequestDto {
     private String deviceDescription;
     private String maintenanceDescription;
     private String issueDescription;
+    private String maintenanceDescription;
     private Double budget;
     private String orientation;
     private String rejectReason;

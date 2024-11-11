@@ -8,6 +8,7 @@ import { BudgetComponent } from './features/client/budget/budget.component';
 import { RedeemComponent } from './features/client/redeem/redeem.component';
 import { RequestDetailsComponent } from './features/client/request-details/request-details.component';
 import { RequestsComponent } from './features/employee/requests/requests.component';
+import { EmployeeRequestDetailsComponent } from './features/employee/request-details/request-details.component';
 import { MakeBudgetComponent } from './features/employee/make-budget/make-budget.component';
 import { PerformMaintenanceComponent } from './features/employee/perform-maintenance/perform-maintenance.component';
 import { CategoriesComponent } from './features/employee/categories/categories.component';
@@ -57,7 +58,7 @@ export const routes: Routes = [
   {
     path: 'funcionario/solicitacao/:requestId',
     canActivate: [authGuard],
-    component: RequestDetailsComponent,
+    component: EmployeeRequestDetailsComponent,
   },
   {
     path: 'funcionario/solicitacoes',

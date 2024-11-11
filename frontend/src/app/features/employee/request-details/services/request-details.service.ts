@@ -9,7 +9,7 @@ import { ResponseSuccess } from '@/shared/types/api/response-success.type';
 export class RequestDetailsService {
   async getRequestDetailsByRequestId(requestId: number) : Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      const response = await axiosConfig('/api/client/maintenance-requests/'+requestId);
+      const response = await axiosConfig('/api/employee/maintenance-requests/'+requestId);
       return response;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -19,25 +19,11 @@ export class RequestDetailsService {
         throw error;
       }
     }
-  /*  return maintenanceRequests
-      .filter((request) => request.id === requestId)
-      ?.map((request) => {
-        return {
-          deviceDescription: request.deviceDescription,
-          deviceCategory: request.deviceCategory,
-          issueDescription: request.issueDescription,
-          date: request.date,
-          hour: request.hour,
-          employee: request.history.length > 0 ? request.history[request.history.length - 1].employee : null,
-          currentStatus: request.currentStatus,
-          history: request.history,
-        };
-      })?.[0]; */
-  } 
+  }
 
   async getRequestHistory(requestId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      const response = await axiosConfig('/api/client/maintenance-requests/'+requestId+'/history');
+      const response = await axiosConfig('/api/employee/maintenance-requests/'+requestId+'/history');
       console.log(response);
       return response;
     } catch (error) {
@@ -49,5 +35,5 @@ export class RequestDetailsService {
       }
     }
   }
- 
+
 }

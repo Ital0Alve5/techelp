@@ -245,6 +245,26 @@ public class MaintenanceRequestService {
 
         // --------------------- employee -----------------------
 
+        public List<HistoryDto> getRequestHistoryByEmployeeEmail(int requestId) {
+                MaintenanceRequestModel request = maintenanceRequestRepository.findById(requestId)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("requestId", "Solicitação de manutenção não encontrada")));
+
+                return historyRepository.findByMaintenanceRequest(request).stream()
+                                .map(history -> {
+                                        HistoryDto dto = new HistoryDto();
+                                        dto.setStatus(history.getStatus().getName());
+                                        dto.setEmployeeName(
+                                                        history.getEmployee() != null ? history.getEmployee().getName()
+                                                                        : null);
+                                        dto.setDate(history.getDate().format(DATE_FORMATTER) + " "
+                                                        + history.getDate().format(HOUR_FORMATTER));
+                                        return dto;
+                                })
+                                .collect(Collectors.toList());
+        }
+
+
         public List<MaintenanceRequestDto> getAllRequestsOfEmployee(String email) {
                 EmployeeModel employee = employeeRepository.findByEmail(email)
                                 .orElseThrow(() -> new ValidationException("Erro de validação",

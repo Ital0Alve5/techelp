@@ -1,6 +1,7 @@
 package com.techelp.api.controller.employee;
 
 import com.techelp.api.dto.EmployeeDto;
+import com.techelp.api.dto.client.HistoryDto;
 import com.techelp.api.dto.client.MaintenanceRequestDto;
 import com.techelp.api.dto.response.ApiResponse;
 import com.techelp.api.dto.response.ErrorResponse;
@@ -49,6 +50,35 @@ public class EmployeeMaintenanceRequestController {
             MaintenanceRequestDto request = maintenanceRequestService.getRequestByIdAndEmployeeEmail(id, email);
             SuccessResponse<MaintenanceRequestDto> successResponse = new SuccessResponse<>(
                     HttpStatus.OK.value(), "Solicitação de manutenção encontrada", Optional.of(request));
+            return ResponseEntity.ok(successResponse);
+        } catch (ValidationException ex) {
+            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.NOT_FOUND.value(),
+                    ex.getErrors());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+    }
+
+    @GetMapping("employee/maintenance-requests/{id}/history")
+    public ResponseEntity<ApiResponse> getRequestHistory(@PathVariable int id,
+            @RequestHeader(name = "Authorization") String authHeader) {
+        String email = extractEmailFromToken(authHeader);
+
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
+        }
+
+        try {
+            List<HistoryDto> historyRecords = maintenanceRequestService.getRequestHistoryByEmployeeEmail(id);
+
+            if (historyRecords.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ErrorResponse("Erro na busca por histórico!", HttpStatus.NOT_FOUND.value(),
+                                Map.of("history", "Solicitação de manutenção não encontrada para o usuário.")));
+            }
+
+            SuccessResponse<List<HistoryDto>> successResponse = new SuccessResponse<>(
+                    HttpStatus.OK.value(), "Histórico da solicitação encontrado!", Optional.of(historyRecords));
             return ResponseEntity.ok(successResponse);
         } catch (ValidationException ex) {
             ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.NOT_FOUND.value(),
@@ -164,7 +194,8 @@ public class EmployeeMaintenanceRequestController {
 
     @PutMapping("employee/maintenance-requests/{id}/perform-maintenance")
     public ResponseEntity<ApiResponse> performMaintenance(@PathVariable int id,
-        @RequestHeader(name = "Authorization") String authHeader, @RequestBody MaintenanceRequestDto performedMaintenance){
+            @RequestHeader(name = "Authorization") String authHeader,
+            @RequestBody MaintenanceRequestDto performedMaintenance) {
         String email = extractEmailFromToken(authHeader);
 
         if (email == null) {
@@ -174,7 +205,7 @@ public class EmployeeMaintenanceRequestController {
 
         try {
             MaintenanceRequestDto performRequest = maintenanceRequestService.performMaintenance(id,
-                    email,performedMaintenance.getOrientation(),performedMaintenance.getMaintenanceDescription());
+                    email, performedMaintenance.getOrientation(), performedMaintenance.getMaintenanceDescription());
             SuccessResponse<MaintenanceRequestDto> successResponse = new SuccessResponse<>(
                     HttpStatus.OK.value(),
                     String.format("Tarefa arrumada com sucesso!", performRequest.getLastEmployee()),

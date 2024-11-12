@@ -20,14 +20,7 @@ import { ClientRequests } from './types/client-requests.type';
   selector: 'app-requests',
   standalone: true,
   providers: [RequestsService],
-  imports: [
-    ButtonComponent,
-    FiltersComponent,
-    ModalComponent,
-    TableComponent,
-    WaitingIcon,
-    AllowVisibilityIcon,
-  ],
+  imports: [ButtonComponent, FiltersComponent, ModalComponent, TableComponent, WaitingIcon, AllowVisibilityIcon],
   templateUrl: './requests.component.html',
   styleUrl: './requests.component.scss',
 })
@@ -141,6 +134,39 @@ export class RequestsComponent {
     }
   }
 
+  async getOpenRequestsByDateRange(startDate: string, endDate: string) {
+    const response = await this.requestsService.getOpenRequestsByDateRange(startDate, endDate);
+
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+
+    const maintenanceRequestsList = response.data.data?.['maintenanceRequestsList'] as unknown;
+
+    if (Array.isArray(maintenanceRequestsList)) {
+      this.requests.set(maintenanceRequestsList as ClientRequests[]);
+    } else {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Formato inesperado da lista de solicitações de manutenção.',
+      });
+    }
+  }
+
   handleFilter(filterSelected: FiltersResponse) {
     const type = typeof filterSelected === 'string' ? filterSelected : filterSelected.type;
 
@@ -157,12 +183,7 @@ export class RequestsComponent {
       case 'data':
         if (!filterSelected.data) return;
 
-      // this.userRequests.set(
-      //   this.requestsService.filterByRequestsByDateAndEmployee({
-      //     startDate: filterSelected.data.startDate,
-      //     endDate: filterSelected.data.endDate,
-      //   }),
-      // );
+        this.getOpenRequestsByDateRange(filterSelected.data.startDate, filterSelected.data.endDate);
     }
   }
 
@@ -177,27 +198,23 @@ export class RequestsComponent {
   }
 
   onFinishRequest() {
-    // const employeeName = this.employeeService.getEmployeeById(this.userId)!;
+    // if (this.requestId() <= -1) {
+    //   this.popupService.addNewPopUp({
+    //     type: Status.Error,
+    //     message: 'Solicitação não encontrada! Tente novamente',
+    //   });
 
-    if (this.requestId() <= -1) {
-      this.popupService.addNewPopUp({
-        type: Status.Error,
-        message: 'Solicitação não encontrada! Tente novamente',
-      });
+    //   return;
+    // }
 
-      return;
-    }
+    // this.hideModal.set(true);
 
-    // this.requestsService.updateStatus(this.requestId(), employeeName.name, 'Finalizada');
+    // this.router.navigate([`/funcionario/solicitacoes`]);
 
-    this.hideModal.set(true);
-
-    this.router.navigate([`/funcionario/solicitacoes`]);
-
-    this.popupService.addNewPopUp({
-      type: Status.Success,
-      message: 'Solicitação finalizada!',
-    });
+    // this.popupService.addNewPopUp({
+    //   type: Status.Success,
+    //   message: 'Solicitação finalizada!',
+    // });
   }
 
   onViewRequest(requestId: number) {

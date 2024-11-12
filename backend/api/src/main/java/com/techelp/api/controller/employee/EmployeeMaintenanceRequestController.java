@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -128,6 +129,37 @@ public class EmployeeMaintenanceRequestController {
     public ResponseEntity<ApiResponse> getTodayOpenRequests() {
         try {
             List<MaintenanceRequestDto> requests = maintenanceRequestService.getTodayOpenRequests();
+            SuccessResponse<Map<String, List<MaintenanceRequestDto>>> successResponse = new SuccessResponse<>(
+                    HttpStatus.OK.value(), "Lista de solicitações abertas hoje",
+                    Optional.of(Map.of("maintenanceRequestsList", requests)));
+            return ResponseEntity.ok(successResponse);
+        } catch (ValidationException ex) {
+            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.NOT_FOUND.value(),
+                    ex.getErrors());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+    }
+
+    @GetMapping("employee/maintenance-requests/date-range")
+    public ResponseEntity<ApiResponse> getOpenRequestsByDateRange(@RequestParam String startDate,
+            @RequestParam String endDate,
+            @RequestHeader(name = "Authorization") String authHeader
+
+    ) {
+        String email = extractEmailFromToken(authHeader);
+
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
+        }
+
+        try {
+
+            LocalDate convertStartDate = LocalDate.parse(startDate);
+            LocalDate convertEndDate = LocalDate.parse(endDate);
+
+            List<MaintenanceRequestDto> requests = maintenanceRequestService.getOpenRequestsByDateRange(email,
+                    convertStartDate, convertEndDate);
             SuccessResponse<Map<String, List<MaintenanceRequestDto>>> successResponse = new SuccessResponse<>(
                     HttpStatus.OK.value(), "Lista de solicitações abertas hoje",
                     Optional.of(Map.of("maintenanceRequestsList", requests)));

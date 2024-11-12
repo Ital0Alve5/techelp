@@ -22,7 +22,6 @@ export class RequestsService {
     }
   }
 
-
   async getAllRequests(): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
       const response = await axiosConfig('/api/employee/maintenance-requests/all');
@@ -53,4 +52,23 @@ export class RequestsService {
     }
   }
 
+  async getOpenRequestsByDateRange(
+    startDate: string,
+    endDate: string,
+  ): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axiosConfig(
+        `/api/employee/maintenance-requests/date-range?startDate=${startDate}&endDate=${endDate}`,
+      );
+
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
+  }
 }

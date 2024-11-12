@@ -41,11 +41,6 @@ export class FiltersComponent implements OnInit {
     return ['hoje', 'todas', 'data', 'abertas'].includes(value as FilterTypes);
   }
 
-  formmatDate(date: string) {
-    const [year, month, day] = date.split('-');
-    return `${day}/${month}/${year}`;
-  }
-
   setStartDate(startDate: string) {
     this.startDate.set(startDate);
     this.filterByDate();
@@ -92,16 +87,14 @@ export class FiltersComponent implements OnInit {
   filterByDate() {
     if (!this.startDate() && !this.endDate()) return;
 
-    const unformmatedDates = { startDate: this.startDate()!, endDate: this.endDate()! };
-
     const response: FiltersResponse = {
       type: 'data',
-      data: { startDate: this.formmatDate(this.startDate()!), endDate: this.formmatDate(this.endDate()!) },
+      data: { startDate: this.startDate()!, endDate: this.endDate()! },
     };
 
     this.onFilter.emit(response);
 
-    response.data = unformmatedDates;
+    response.data = { startDate: this.startDate()!, endDate: this.endDate()! };
     this.setQueryParams(response);
   }
 

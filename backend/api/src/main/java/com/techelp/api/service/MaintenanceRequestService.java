@@ -6,6 +6,7 @@ import com.techelp.api.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -224,24 +225,27 @@ public class MaintenanceRequestService {
 
         public MaintenanceRequestDto redeemRequest(int requestId) {
                 MaintenanceRequestModel request = maintenanceRequestRepository.findById(requestId)
-                        .orElseThrow(() -> new ValidationException("Erro de validação", Map.of("id", "Solicitação não encontrada")));
-            
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("id", "Solicitação não encontrada")));
+
                 StatusModel approvedStatus = statusRepository.findByName("Aprovada")
-                        .orElseThrow(() -> new ValidationException("Erro de validação", Map.of("status", "Status 'Aprovada' não encontrado")));
-             
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("status", "Status 'Aprovada' não encontrado")));
+
                 HistoryModel lastHistoryEntry = historyRepository.findLatestHistoryByRequest(request)
-                        .orElseThrow(() -> new ValidationException("Erro de validação", Map.of("status", "Último registro no histórico não encontrado")));
-            
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("status", "Último registro no histórico não encontrado")));
+
                 HistoryModel historyEntry = new HistoryModel();
                 historyEntry.setMaintenanceRequest(request);
                 historyEntry.setStatus(approvedStatus);
                 historyEntry.setDate(LocalDateTime.now());
                 historyEntry.setEmployee(lastHistoryEntry.getEmployee());
-            
+
                 historyRepository.save(historyEntry);
-            
+
                 return toMaintenanceRequestDto(request);
-        }                        
+        }
 
         // --------------------- employee -----------------------
 
@@ -264,13 +268,24 @@ public class MaintenanceRequestService {
                                 .collect(Collectors.toList());
         }
 
-
         public List<MaintenanceRequestDto> getAllRequestsOfEmployee(String email) {
                 EmployeeModel employee = employeeRepository.findByEmail(email)
                                 .orElseThrow(() -> new ValidationException("Erro de validação",
                                                 Map.of("email", "Funcionário não encontrado")));
 
                 return maintenanceRequestRepository.findAllByEmployeeWithCurrentStatus(employee).stream()
+                                .map(this::toMaintenanceRequestDto)
+                                .collect(Collectors.toList());
+        }
+
+        public List<MaintenanceRequestDto> getOpenRequestsByDateRange(String email, LocalDate startDate,
+                        LocalDate endDate) {
+                EmployeeModel employee = employeeRepository.findByEmail(email)
+                                .orElseThrow(() -> new ValidationException("Erro de validação",
+                                                Map.of("email", "Funcionário não encontrado")));
+
+                return maintenanceRequestRepository.findAllByEmployeeWithDateRange(employee, startDate, endDate)
+                                .stream()
                                 .map(this::toMaintenanceRequestDto)
                                 .collect(Collectors.toList());
         }

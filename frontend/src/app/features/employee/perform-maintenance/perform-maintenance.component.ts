@@ -202,8 +202,10 @@ export class PerformMaintenanceComponent {
         maintenanceDetails.form.value.maintenanceDescription,
         maintenanceDetails.form.value.orientationToClient
       );
-
+      console.log(response)
+      
       if (response?.data) {
+        console.log('Resposta da requisição de manutenção:', response.data);
         this.router.navigate([`/funcionario/${this.employeeId}/solicitacoes`]);
 
         this.popupService.addNewPopUp({
@@ -211,6 +213,7 @@ export class PerformMaintenanceComponent {
           message: 'Manutenção confirmada!',
         });
       } else {
+        console.log('Resposta sem dados:', response);
         this.popupService.addNewPopUp({
           type: Status.Error,
           message: 'Algo deu errado ao realizar a manutenção!',

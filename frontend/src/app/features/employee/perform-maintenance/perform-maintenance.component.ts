@@ -11,7 +11,7 @@ import { SelectComponent } from '@/shared/ui/select/select.component';
 
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { RedirectMaintenanceService } from './services/redirect-maintenance.service';
-import { RequestsService } from '@/shared/services/requests/requests.service';
+import { RequestsService } from '../requests/services/requests.service';
 import { ClientsService } from '@/shared/services/clients/clients.service';
 import { EmployeeService } from '@/shared/services/employees/employee.service';
 import { confirmBudgetService } from '../make-budget/services/confirm-budget.service';

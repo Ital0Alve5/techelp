@@ -75,10 +75,10 @@ export class RequestsService {
   ): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
       const response = await axiosConfig.put(
-        `/employee/maintenance-requests/${requestId}/perform-maintenance`,
+        `api/employee/maintenance-requests/${requestId}/perform-maintenance`,
         {
-          maintenanceDescription,  
-          orientationToClient,     
+          maintenanceDescription,
+          orientation: orientationToClient,
         }
       );
       return response;

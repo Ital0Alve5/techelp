@@ -14,7 +14,6 @@ import { RedirectMaintenanceService } from './services/redirect-maintenance.serv
 import { RequestsService } from '@/shared/services/requests/requests.service';
 import { ClientsService } from '@/shared/services/clients/clients.service';
 import { EmployeeService } from '@/shared/services/employees/employee.service';
-import { MakeMaintenanceService } from './services/make-maintenance.service';
 import { confirmBudgetService } from '../make-budget/services/confirm-budget.service';
 import { ClientRequests } from '../requests/types/client-requests.type';
 import { CurrencyMaskService } from '@/shared/services/input/masks.service';
@@ -29,7 +28,6 @@ import { Employee } from '@/shared/types/employee.type';
     RedirectMaintenanceService,
     ClientsService,
     EmployeeService,
-    MakeMaintenanceService,
     confirmBudgetService,
   ],
   templateUrl: './perform-maintenance.component.html',
@@ -75,7 +73,7 @@ export class PerformMaintenanceComponent {
     clientPhone: '',
   });
 
-    clientData = this.clientsService.getClientById(1)!;
+  clientData = this.clientsService.getClientById(1)!;
   
   constructor(
     private popupService: PopupService,
@@ -83,7 +81,7 @@ export class PerformMaintenanceComponent {
     private redirectMaintenanceService: RedirectMaintenanceService,
     private clientsService: ClientsService,
     private employeeService: EmployeeService,
-    private makeMaintenanceService: MakeMaintenanceService,
+    private requestsService: RequestsService,  
     private confirmBudgetService: confirmBudgetService,
     public currencyMaskService: CurrencyMaskService,
   ) {
@@ -189,25 +187,39 @@ export class PerformMaintenanceComponent {
     this.isMaintenanceModalHidden.set(false);
   }
 
-  confirmMaintenanceDetails(maintenanceDetails: NgForm) {
-    const wasMaintenanceConfirmed = this.makeMaintenanceService.confirmMaintenanceDetails(
-      this.requestId,
-      this.employeeId,
-      maintenanceDetails.form.value.maintenanceDescription,
-      maintenanceDetails.form.value.orientationToClient,
-    );
-
-    if (wasMaintenanceConfirmed) {
-      this.router.navigate([`/funcionario/${this.employeeId}/solicitacoes`]);
-
-      this.popupService.addNewPopUp({
-        type: Status.Success,
-        message: 'Manutenção confirmada!',
-      });
-    } else {
+  async confirmMaintenanceDetails(maintenanceDetails: NgForm) {
+    if (!maintenanceDetails.form.value.maintenanceDescription || !maintenanceDetails.form.value.orientationToClient) {
       this.popupService.addNewPopUp({
         type: Status.Error,
-        message: 'Algo deu errado!',
+        message: 'Por favor, preencha todos os campos.',
+      });
+      return;
+    }
+
+    try {
+      const response = await this.requestsService.performMaintenance(
+        this.requestId,
+        maintenanceDetails.form.value.maintenanceDescription,
+        maintenanceDetails.form.value.orientationToClient
+      );
+
+      if (response?.data) {
+        this.router.navigate([`/funcionario/${this.employeeId}/solicitacoes`]);
+
+        this.popupService.addNewPopUp({
+          type: Status.Success,
+          message: 'Manutenção confirmada!',
+        });
+      } else {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: 'Algo deu errado ao realizar a manutenção!',
+        });
+      }
+    } catch (error) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Erro ao tentar realizar a manutenção!',
       });
     }
   }

@@ -55,4 +55,18 @@ export class BudgetService {
       }
     }
   }
+
+  async confirmPayment(requestId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axiosConfig(`/api/client/maintenance-requests/${requestId}/confirm-payment`);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
+  }
 }

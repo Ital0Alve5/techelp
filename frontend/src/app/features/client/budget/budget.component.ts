@@ -85,13 +85,42 @@ export class BudgetComponent implements OnInit {
     this.isPaymentConfirmationModalOpen.set(true);
   }
 
-  confirmPayment() {
-    this.closeModalPayment();
-    this.router.navigate([`/cliente/solicitacoes`]);
-    this.popupService.addNewPopUp({
-      type: Status.Success,
-      message: 'Pagamento efetuado com sucesso!',
-    });
+  async confirmPayment() {
+    try {
+      const response = await this.budgetService.confirmPayment(this.requestId);
+
+      if (!response?.data) {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: `Erro ao aprovar serviço: ${response?.data.message || 'Erro desconhecido'}`,
+        });
+        return;
+      }
+
+      if ('errors' in response.data) {
+        Object.values(response.data.errors).forEach((error) => {
+          this.popupService.addNewPopUp({
+            type: Status.Error,
+            message: error,
+          });
+        });
+        return;
+      }
+
+      this.closeModalPayment();
+      this.router.navigate([`/cliente/solicitacoes`]);
+
+      this.popupService.addNewPopUp({
+        type: Status.Success,
+        message: 'Pagamento efetuado com sucesso!',
+      });
+    } catch (error) {
+      console.error('Erro ao aprovar serviço:', error);
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Erro inesperado ao aprovar o serviço.',
+      });
+    }
   }
 
   async openModalApprove() {

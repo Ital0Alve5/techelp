@@ -248,7 +248,5 @@ public class EmployeeMaintenanceRequestController {
                     ex.getErrors());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
-
     }
-
 }

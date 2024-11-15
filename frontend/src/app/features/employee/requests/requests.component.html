@@ -47,7 +47,7 @@
               <button class="makeMaintenance" (click)="onMakeMaintenance(request.id)">Efetuar manutenção</button>
             }
             @case ('Paga') {
-              <button class="finishRequest" (click)="onOpenModal(request.id)">Finalizar solicitação</button>
+              <button class="finishRequest" (click)="onOpenFinishModal(request.id)">Finalizar solicitação</button>
             }
           }
         </td>
@@ -57,7 +57,7 @@
   <app-modal [(isHidden)]="hideModal">
     <p class="modal">Você tem certeza que deseja finalizar esta solicitação?</p>
     <div class="buttons">
-      <button class="cancelButton" (click)="onCloseModal()">Cancelar</button>
+      <button class="cancelButton" (click)="onCloseFinishModal()">Cancelar</button>
       <button class="confirmButton" (click)="onFinishRequest()">Confirmar</button>
     </div>
   </app-modal>

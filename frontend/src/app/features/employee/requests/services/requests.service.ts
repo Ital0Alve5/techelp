@@ -6,7 +6,6 @@ import { ResponseSuccess } from '@/shared/types/api/response-success.type';
 
 @Injectable()
 export class RequestsService {
-
   async getAllOpenRequests(): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
       const response = await axiosConfig('/api/employee/maintenance-requests/open');
@@ -71,16 +70,27 @@ export class RequestsService {
   async performMaintenance(
     requestId: number,
     maintenanceDescription: string,
-    orientationToClient: string
+    orientationToClient: string,
   ): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      const response = await axiosConfig.put(
-        `api/employee/maintenance-requests/${requestId}/perform-maintenance`,
-        {
-          maintenanceDescription,
-          orientation: orientationToClient,
-        }
-      );
+      const response = await axiosConfig.put(`api/employee/maintenance-requests/${requestId}/perform-maintenance`, {
+        maintenanceDescription,
+        orientation: orientationToClient,
+      });
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
+  }
+
+  async finishRequest(requestId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axiosConfig(`api/employee/maintenance-requests/${requestId}/finish`);
       return response;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

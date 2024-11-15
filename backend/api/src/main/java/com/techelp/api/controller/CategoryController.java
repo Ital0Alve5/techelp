@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api/employee/categories")
 public class CategoryController {
 
     @Autowired
@@ -56,15 +56,37 @@ public class CategoryController {
     }
 
     @PutMapping("edit/{id}")
-    public ResponseEntity<CategoryModel> updateCategory(@PathVariable int id,
+    public ResponseEntity<ApiResponse> updateCategory(@PathVariable int id,
             @RequestBody CategoryModel categoryDetails) {
-        CategoryModel updatedCategory = categoryService.updateCategory(id, categoryDetails);
-        return ResponseEntity.ok(updatedCategory);
+        try {
+            CategoryModel updatedCategory = categoryService.updateCategory(id, categoryDetails);
+            SuccessResponse<Map<String, Object>> successResponse = new SuccessResponse<>(HttpStatus.OK.value(),
+                    "Categoria editada com sucesso!", Optional.of(
+                            Map.of("categoryName", updatedCategory.getName(), "categoryId", updatedCategory.getId())));
+
+            return ResponseEntity.ok(successResponse);
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse("Erro na edição da categoria",
+                    HttpStatus.BAD_REQUEST.value(),
+                    Map.of("message", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable int id) {
-        categoryService.deleteCategory(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ApiResponse> deleteCategory(@PathVariable int id) {
+        try {
+            categoryService.deleteCategory(id);
+
+            SuccessResponse<Map<String, Object>> successResponse = new SuccessResponse<>(HttpStatus.OK.value(),
+                    "Categoria deletada com sucesso!", Optional.empty());
+
+            return ResponseEntity.ok(successResponse);
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse("Erro na deleção da categoria",
+                    HttpStatus.BAD_REQUEST.value(),
+                    Map.of("message", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
     }
 }

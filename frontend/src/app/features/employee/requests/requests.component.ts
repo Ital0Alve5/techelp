@@ -187,34 +187,54 @@ export class RequestsComponent {
     }
   }
 
-  onOpenModal(requestId: number) {
+  onOpenFinishModal(requestId: number) {
     this.requestId.set(requestId);
     this.hideModal.set(false);
   }
 
-  onCloseModal() {
+  onCloseFinishModal() {
     this.requestId.set(-1);
     this.hideModal.set(true);
   }
 
-  onFinishRequest() {
-    // if (this.requestId() <= -1) {
-    //   this.popupService.addNewPopUp({
-    //     type: Status.Error,
-    //     message: 'Solicitação não encontrada! Tente novamente',
-    //   });
+  async onFinishRequest() {
+    if (this.requestId() <= -1) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Solicitação não encontrada! Tente novamente',
+      });
 
-    //   return;
-    // }
+      return;
+    }
 
-    // this.hideModal.set(true);
+    const response = await this.requestsService.finishRequest(this.requestId());
 
-    // this.router.navigate([`/funcionario/solicitacoes`]);
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
 
-    // this.popupService.addNewPopUp({
-    //   type: Status.Success,
-    //   message: 'Solicitação finalizada!',
-    // });
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+
+    await this.getAllRequests();
+
+    this.hideModal.set(true);
+
+    this.popupService.addNewPopUp({
+      type: Status.Success,
+      message: 'Solicitação finalizada!',
+    });
   }
 
   onViewRequest(requestId: number) {

@@ -257,7 +257,7 @@ public class MaintenanceRequestService {
                                 .orElseThrow(() -> new ValidationException("Erro de validação",
                                                 Map.of("status", "Último registro no histórico não encontrado")));
 
-                StatusModel finishStatus = statusRepository.findByName("Finalizada")
+                StatusModel finishStatus = statusRepository.findByName("Paga")
                                 .orElseThrow(() -> new ValidationException("Erro de validação",
                                                 Map.of("status", "Status 'Finalizada' não encontrado")));
 

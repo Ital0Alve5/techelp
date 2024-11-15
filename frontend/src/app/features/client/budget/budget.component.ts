@@ -123,7 +123,7 @@ export class BudgetComponent implements OnInit {
     }
   }
 
-  async openModalApprove() {
+  async confirmApprove() {
     try {
       const response = await this.budgetService.approveBudget(this.requestId);
 
@@ -145,9 +145,11 @@ export class BudgetComponent implements OnInit {
         return;
       }
 
+      this.router.navigate([`/cliente/solicitacoes`]);
+
       this.popupService.addNewPopUp({
         type: Status.Success,
-        message: `Serviço aprovado: ${response.data.message}`,
+        message: response.data.message,
       });
     } catch (error) {
       console.error('Erro ao aprovar serviço:', error);
@@ -156,7 +158,9 @@ export class BudgetComponent implements OnInit {
         message: 'Erro inesperado ao aprovar o serviço.',
       });
     }
+  }
 
+  async openModalApprove() {
     this.isApprovalModalOpen.set(false);
   }
 

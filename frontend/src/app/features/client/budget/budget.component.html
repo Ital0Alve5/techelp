@@ -38,13 +38,14 @@
 
 <div>
   <app-modal [(isHidden)]="isApprovalModalOpen">
-    <p class="modal-title">Serviço Aprovado</p>
+    <p class="modal-title">Confirmar aprovação do serviço?</p>
     <br />
     <p>
-      Serviço aprovado no valor de <span class="price-highlight">R$ {{ requestData().budget }}</span>
+      O serviço será aprovado no valor de <span class="price-highlight">R$ {{ requestData().budget }}</span>
     </p>
-    <div class="modal-footer">
-      <button app-button (click)="closeModalApprove()" routerLink="/cliente/solicitacoes">OK</button>
+    <div class="buttons buttons--modal">
+      <button backgroundColor="#dc363c" app-button (click)="closeModalApprove()">Cancelar</button>
+      <button backgroundColor="#10855b" app-button (click)="confirmApprove()">Continuar</button>
     </div>
   </app-modal>
 </div>
@@ -62,13 +63,7 @@
         required
         [(ngModel)]="rejectReason"
       ></textarea>
-      <button
-        type="submit"
-        [disabled]="!rejectForm.valid"
-        class="button--modal"
-        backgroundColor="#10855b"
-        app-button
-      >
+      <button type="submit" [disabled]="!rejectForm.valid" class="button--modal" backgroundColor="#10855b" app-button>
         Continuar
       </button>
     </form>

@@ -74,14 +74,14 @@ export class PerformMaintenanceComponent {
   });
 
   clientData = this.clientsService.getClientById(1)!;
-  
+
   constructor(
     private popupService: PopupService,
     private router: Router,
     private redirectMaintenanceService: RedirectMaintenanceService,
     private clientsService: ClientsService,
     private employeeService: EmployeeService,
-    private requestsService: RequestsService,  
+    private requestsService: RequestsService,
     private confirmBudgetService: confirmBudgetService,
     public currencyMaskService: CurrencyMaskService,
   ) {
@@ -203,10 +203,10 @@ export class PerformMaintenanceComponent {
         maintenanceDetails.form.value.orientationToClient
       );
       console.log(response)
-      
+
       if (response?.data) {
         console.log('Resposta da requisição de manutenção:', response.data);
-        this.router.navigate([`/funcionario/${this.employeeId}/solicitacoes`]);
+        this.router.navigate([`/funcionario/solicitacoes`]);
 
         this.popupService.addNewPopUp({
           type: Status.Success,

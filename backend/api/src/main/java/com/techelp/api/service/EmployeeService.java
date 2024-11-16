@@ -27,4 +27,30 @@ public class EmployeeService {
         return employeeRepository.findByEmailNot(email).stream().map(this::toEmployeeDto)
                 .collect(Collectors.toList());
     }
+
+    public EmployeeDto addEmployee(EmployeeDto employee){
+        EmployeeModel newEmployee = new EmployeeModel();
+        newEmployee.setBirthdate(employee.datebirth());
+        newEmployee.setEmail(employee.email());
+        newEmployee.setName(employee.name());
+
+        return toEmployeeDto(employeeRepository.save(newEmployee));
+    }
+
+    public EmployeeDto editEmployee(String email, int id, EmployeeDto employee){
+        EmployeeModel employeeUpdated = employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o ID: " + id));
+        if(employeeUpdated.getEmail() == email) {
+            throw new RuntimeException("Funcionário não pode editar a si mesmo");
+        }
+        employeeUpdated.setBirthdate(employee.datebirth());
+        employeeUpdated.setEmail(employee.email());
+        employeeUpdated.setName(employee.name());
+        return toEmployeeDto(employeeRepository.save(employeeUpdated));
+    }
+
+    public EmployeeDto getEmployeeById(int id){
+        EmployeeModel foundEmployee = employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o ID: " + id));
+    
+        return toEmployeeDto(foundEmployee);
+    }
 }

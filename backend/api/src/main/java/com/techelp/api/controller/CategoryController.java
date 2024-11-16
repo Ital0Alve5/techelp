@@ -15,13 +15,13 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/employee/categories")
+@RequestMapping("/api")
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
 
-    @PostMapping("/add")
+    @PostMapping("employee/categories/add")
     public ResponseEntity<ApiResponse> createCategory(@RequestBody CategoryModel category) {
         try {
             CategoryModel createdCategory = categoryService.addCategory(category);
@@ -48,14 +48,14 @@ public class CategoryController {
         return ResponseEntity.ok(successResponse);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("employee/categories/{id}")
     public ResponseEntity<CategoryModel> getCategoryById(@PathVariable int id) {
         return categoryService.getCategoryById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("edit/{id}")
+    @PutMapping("employee/categories/edit/{id}")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable int id,
             @RequestBody CategoryModel categoryDetails) {
         try {
@@ -73,7 +73,7 @@ public class CategoryController {
         }
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("employee/categories/delete/{id}")
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable int id) {
         try {
             categoryService.deleteCategory(id);

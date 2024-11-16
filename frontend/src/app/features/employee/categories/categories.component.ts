@@ -1,19 +1,17 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { Categorie } from '@/shared/types/categorie.type';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { FormsModule } from '@angular/forms';
-import { CategoriesService } from '@/shared/services/crud/categories.service';
 import { RouterLink } from '@angular/router';
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 import { TableComponent } from '@/shared/ui/table/table.component';
 import { EditIcon } from '@/shared/ui/icons/edit/edit.icon';
 import { DeleteIcon } from '@/shared/ui/icons/delete/delete.icon';
 import { AddIcon } from '@/shared/ui/icons/add/add.icon';
-import { TextareaComponent } from '@/shared/ui/textarea/textarea.component';
-import { categorieData } from './model/categorie-data.model';
 import { RequiredValidator } from '@/shared/services/validators/required-validator.service';
 import { MinLengthValidator } from '@/shared/services/validators/min-length-validator.service';
+import { CategoriesService } from './service/categories.service';
 
 @Component({
   selector: 'app-categories',
@@ -28,18 +26,16 @@ import { MinLengthValidator } from '@/shared/services/validators/min-length-vali
     DeleteIcon,
     AddIcon,
     TableComponent,
-    TextareaComponent,
-  ],
+  ],  
   providers: [RequiredValidator, MinLengthValidator],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements OnInit {
   userId: number = JSON.parse(localStorage.getItem('userId')!);
-  categories: Categorie[] = this.categoriesService.getCategories();
-
-  newCategorieData = signal(JSON.parse(JSON.stringify(categorieData)));
-  selectedCategoryData = signal(JSON.parse(JSON.stringify(categorieData)));
+  categories: Categorie[] = [];
+  newCategorieData = signal({ id: -1, value: '', validation: { error: false, message: '' } });
+  selectedCategoryData = signal({ id: -1, value: '', validation: { error: false, message: '' } });
 
   isNewCategoryModalOpen = signal(true);
   isEditCategoryModalOpen = signal(true);
@@ -48,8 +44,21 @@ export class CategoriesComponent {
   constructor(
     private categoriesService: CategoriesService,
     private requiredValidator: RequiredValidator,
-    private minLengthValidator: MinLengthValidator,
+    private minLengthValidator: MinLengthValidator
   ) {}
+
+  ngOnInit(): void {
+    this.loadCategories();
+  }
+
+  async loadCategories() {
+    const success = await this.categoriesService.getCategories();
+    if (!success?.data) {
+      console.error('Erro ao carregar categorias:', success?.data);
+      return;
+    }
+    this.categories = Array.isArray(success.data) ? success.data : [success.data];
+  }
 
   openNewCategoryModal() {
     this.isNewCategoryModalOpen.set(false);
@@ -77,49 +86,56 @@ export class CategoriesComponent {
     this.isDeleteCategoryModalOpen.set(true);
   }
 
-  addNewCategory() {
+  async addNewCategory() {
     if (!this.validateNewCategory()) return;
 
-    this.categoriesService.addCategory(this.newCategorieData().value);
-    this.newCategorieData().value = '';
-
-    this.categories = this.categoriesService.getCategories();
+    const success = await this.categoriesService.addCategory(this.newCategorieData().value);
+    if (!success?.data) {
+      console.error('Erro ao adicionar categoria:', success?.data);
+      return;
+    }
+    this.loadCategories();
     this.closeNewCategoryModal();
   }
 
-  updateCategory() {
+  async updateCategory() {
     if (!this.validateEditedCategory()) return;
 
-    this.categoriesService.updateCategory(this.selectedCategoryData().id!, this.selectedCategoryData().value);
-    this.selectedCategoryData().value = '';
-    this.selectedCategoryData().id = -1;
-
-    this.categories = this.categoriesService.getCategories();
+    const success = await this.categoriesService.updateCategory(
+      this.selectedCategoryData().id,
+      this.selectedCategoryData().value
+    );
+    if (!success?.data) {
+      console.error('Erro ao atualizar categoria:', success?.data);
+      return;
+    }
+    this.loadCategories();
     this.closeEditCategoryModal();
   }
 
-  deleteCategory() {
-    if (this.selectedCategoryData().id < 0) return
-      this.categoriesService.removeCategory(this.selectedCategoryData().id!);
-      this.categories = this.categoriesService.getCategories();
-      this.closeDeleteCategoryModal();
+  async deleteCategory() {
+    if (this.selectedCategoryData().id < 0) return;
+
+    const success = await this.categoriesService.removeCategory(this.selectedCategoryData().id);
+    if (!success?.data) {
+      console.error('Erro ao deletar categoria:', success?.data);
+      return;
+    }
+    this.loadCategories();
+    this.closeDeleteCategoryModal();
   }
 
   validateNewCategory() {
     this.requiredValidator.setNext(this.minLengthValidator);
     this.newCategorieData().validation = this.requiredValidator.validate(this.newCategorieData().value);
 
-    if (!this.newCategorieData().validation.error) return true;
-
-    return false;
+    return !this.newCategorieData().validation.error;
   }
 
   validateEditedCategory() {
     this.requiredValidator.setNext(this.minLengthValidator);
     this.selectedCategoryData().validation = this.requiredValidator.validate(this.selectedCategoryData().value);
 
-    if (!this.selectedCategoryData().validation.error) return true;
-
-    return false;
+    return !this.selectedCategoryData().validation.error;
   }
 }

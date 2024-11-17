@@ -37,7 +37,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping
+    @GetMapping("employee/categories")
     public ResponseEntity<ApiResponse> getAllCategories() {
         List<CategoryModel> categories = categoryService.getAllCategories();
 

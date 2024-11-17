@@ -24,6 +24,8 @@ import com.techelp.api.exception.ValidationException;
 import com.techelp.api.security.service.JwtTokenService;
 import com.techelp.api.service.EmployeeService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
@@ -65,7 +67,7 @@ public class EmployeeController {
     }
 
     @PostMapping("employee/add")
-    public ResponseEntity<ApiResponse> addEmployee(@RequestHeader(name = "Authorization") String authHeader, @RequestBody EmployeeDto employee){
+    public ResponseEntity<ApiResponse> addEmployee(@RequestHeader(name = "Authorization") String authHeader, @RequestBody @Valid EmployeeDto employee){
         String email = extractEmailFromToken(authHeader);
 
         if (email == null) {

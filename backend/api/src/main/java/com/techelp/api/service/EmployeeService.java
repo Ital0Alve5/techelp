@@ -39,10 +39,13 @@ public class EmployeeService {
     }
 
     public EmployeeDto addEmployee(EmployeeDto employee){
+        if(employee.password().isEmpty()) {
+            throw new RuntimeException("A senha é obrigatória");
+        }
         Map<String, String> validationErrors = this.validate(employee);
             if (!validationErrors.isEmpty()) {
 				throw new ValidationException("Erro de validação", validationErrors);
-	}
+	        }
         EmployeeModel newEmployee = new EmployeeModel();
         newEmployee.setBirthdate(employee.birthdate());
         newEmployee.setEmail(employee.email());

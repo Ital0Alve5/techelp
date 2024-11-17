@@ -67,7 +67,7 @@ public class EmployeeController {
     }
 
     @PostMapping("employee/add")
-    public ResponseEntity<ApiResponse> addEmployee(@RequestHeader(name = "Authorization") String authHeader, @RequestBody @Valid EmployeeDto employee){
+    public ResponseEntity<ApiResponse> addEmployee(@RequestHeader(name = "Authorization") String authHeader, @RequestBody EmployeeDto employee){
         String email = extractEmailFromToken(authHeader);
 
         if (email == null) {

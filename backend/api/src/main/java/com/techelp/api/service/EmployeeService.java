@@ -1,6 +1,5 @@
 package com.techelp.api.service;
 
-import com.techelp.api.dto.ClientDto;
 import com.techelp.api.dto.EmployeeDto;
 import com.techelp.api.exception.ValidationException;
 
@@ -29,7 +28,7 @@ public class EmployeeService {
 
     public EmployeeDto toEmployeeDto(EmployeeModel request) {
         EmployeeDto dto = new EmployeeDto(request.getId(), request.getEmail(), request.getPassword(), request.getName(),
-                request.getBirthdate());
+                request.getBirthdate(),request.getIs_active());
 
         return dto;
     }
@@ -45,26 +44,31 @@ public class EmployeeService {
 				throw new ValidationException("Erro de validação", validationErrors);
 	}
         EmployeeModel newEmployee = new EmployeeModel();
-        newEmployee.setBirthdate(employee.datebirth());
+        newEmployee.setBirthdate(employee.birthdate());
         newEmployee.setEmail(employee.email());
         newEmployee.setName(employee.name());
         newEmployee.setPassword(passwordEncoder.encode(employee.password()));
-
+        newEmployee.setIs_active(true);
         return toEmployeeDto(employeeRepository.save(newEmployee));
     }
 
     public EmployeeDto editEmployee(String email, int id, EmployeeDto employee){
         EmployeeModel employeeUpdated = employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o ID: " + id));
-        if(employeeUpdated.getEmail() == email) {
+        if(employeeUpdated.getEmail().equals(email)) {
             throw new RuntimeException("Funcionário não pode editar a si mesmo");
         }
+        if(!employeeUpdated.getEmail().equals(employee.email())){
         Map<String, String> validationErrors = this.validate(employee);
             if (!validationErrors.isEmpty()) {
 				throw new ValidationException("Erro de validação", validationErrors);
 	        }
-        employeeUpdated.setBirthdate(employee.datebirth());
+        }
+        employeeUpdated.setBirthdate(employee.birthdate());
         employeeUpdated.setEmail(employee.email());
         employeeUpdated.setName(employee.name());
+        if(employee.is_active() != null){
+            employeeUpdated.setIs_active(employee.is_active());
+        }
         return toEmployeeDto(employeeRepository.save(employeeUpdated));
     }
 

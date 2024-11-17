@@ -37,7 +37,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping
+    @GetMapping("employee/categories")
     public ResponseEntity<ApiResponse> getAllCategories() {
         List<CategoryModel> categories = categoryService.getAllCategories();
 
@@ -67,6 +67,46 @@ public class CategoryController {
             return ResponseEntity.ok(successResponse);
         } catch (Exception e) {
             ErrorResponse errorResponse = new ErrorResponse("Erro na edição da categoria",
+                    HttpStatus.BAD_REQUEST.value(),
+                    Map.of("message", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
+
+    @PutMapping("employee/categories/edit/name/{id}")
+    public ResponseEntity<ApiResponse> updateCategoryName(@PathVariable int id,
+            @RequestBody Map<String, String> categoryDetails) {
+        try {
+            String newName = categoryDetails.get("name");
+            CategoryModel updatedCategory = categoryService.updateCategoryName(id, newName);
+
+            SuccessResponse<Map<String, Object>> successResponse = new SuccessResponse<>(HttpStatus.OK.value(),
+                    "Nome da categoria editado com sucesso!", Optional.of(
+                            Map.of("categoryName", updatedCategory.getName(), "categoryId", updatedCategory.getId())));
+
+            return ResponseEntity.ok(successResponse);
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse("Erro na edição do nome da categoria",
+                    HttpStatus.BAD_REQUEST.value(),
+                    Map.of("message", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
+
+    @PutMapping("employee/categories/edit/status/{id}")
+    public ResponseEntity<ApiResponse> updateCategoryStatus(@PathVariable int id,
+            @RequestBody Map<String, Boolean> categoryDetails) {
+        try {
+            boolean isActive = categoryDetails.get("is_active");
+            CategoryModel updatedCategory = categoryService.updateCategoryStatus(id, isActive);
+
+            SuccessResponse<Map<String, Object>> successResponse = new SuccessResponse<>(HttpStatus.OK.value(),
+                    "Status da categoria editado com sucesso!", Optional.of(
+                            Map.of("categoryId", updatedCategory.getId(), "isActive", updatedCategory.getIs_active())));
+
+            return ResponseEntity.ok(successResponse);
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse("Erro na edição do status da categoria",
                     HttpStatus.BAD_REQUEST.value(),
                     Map.of("message", e.getMessage()));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);

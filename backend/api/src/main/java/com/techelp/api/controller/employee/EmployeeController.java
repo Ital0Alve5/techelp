@@ -24,6 +24,8 @@ import com.techelp.api.exception.ValidationException;
 import com.techelp.api.security.service.JwtTokenService;
 import com.techelp.api.service.EmployeeService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin

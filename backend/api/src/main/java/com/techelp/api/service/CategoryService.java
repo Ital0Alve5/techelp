@@ -35,6 +35,22 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
+    public CategoryModel updateCategoryName(int id, String name) {
+        CategoryModel category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada com o ID: " + id));
+
+        category.setName(name);
+        return categoryRepository.save(category);
+    }
+    
+    public CategoryModel updateCategoryStatus(int id, boolean isActive) {
+        CategoryModel category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada com o ID: " + id));
+
+        category.setIs_active(isActive);
+        return categoryRepository.save(category);
+    }
+
     public void deleteCategory(int id) {
         categoryRepository.deleteById(id);
     }

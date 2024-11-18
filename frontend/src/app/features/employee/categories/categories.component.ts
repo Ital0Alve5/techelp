@@ -3,7 +3,7 @@ import { Categorie } from '@/shared/types/categorie.type';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { FormsModule } from '@angular/forms';
-import { CategoriesService } from '@/shared/services/crud/categories.service';
+import { CategoriesService } from './service/categories.service';
 import { RouterLink } from '@angular/router';
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 import { TableComponent } from '@/shared/ui/table/table.component';
@@ -14,6 +14,8 @@ import { TextareaComponent } from '@/shared/ui/textarea/textarea.component';
 import { categorieData } from './model/categorie-data.model';
 import { RequiredValidator } from '@/shared/services/validators/required-validator.service';
 import { MinLengthValidator } from '@/shared/services/validators/min-length-validator.service';
+import { PopupService } from '@/shared/services/pop-up/pop-up.service';
+import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 
 @Component({
   selector: 'app-categories',
@@ -30,14 +32,13 @@ import { MinLengthValidator } from '@/shared/services/validators/min-length-vali
     TableComponent,
     TextareaComponent,
   ],
-  providers: [RequiredValidator, MinLengthValidator],
+  providers: [RequiredValidator, MinLengthValidator, CategoriesService],
   templateUrl: './categories.component.html',
-  styleUrl: './categories.component.scss',
+  styleUrls: ['./categories.component.scss'],
 })
 export class CategoriesComponent {
   userId: number = JSON.parse(localStorage.getItem('userId')!);
-  categories: Categorie[] = this.categoriesService.getCategories();
-
+  categories = signal<Categorie[]>([]);
   newCategorieData = signal(JSON.parse(JSON.stringify(categorieData)));
   selectedCategoryData = signal(JSON.parse(JSON.stringify(categorieData)));
 
@@ -49,7 +50,52 @@ export class CategoriesComponent {
     private categoriesService: CategoriesService,
     private requiredValidator: RequiredValidator,
     private minLengthValidator: MinLengthValidator,
-  ) {}
+    private popupService: PopupService,
+  ) {
+    this.loadCategories();
+  }
+
+  async loadCategories() {
+    const response = await this.categoriesService.getCategories();
+  
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+  
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+  
+    const categoriesList = response.data.data?.['deviceCategories'];
+  
+    if (Array.isArray(categoriesList)) {
+      const categories = categoriesList
+        .map(item => ({
+          id: Number(item['id']),
+          label: item['name'],
+          isActive: item['is_active']
+        }))
+        .filter(category => category.isActive);
+  
+      this.categories.set(categories.filter(category => category));
+    } else {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Formato inesperado da lista de categorias.',
+      });
+    }
+  }
+  
 
   openNewCategoryModal() {
     this.isNewCategoryModalOpen.set(false);
@@ -77,49 +123,86 @@ export class CategoriesComponent {
     this.isDeleteCategoryModalOpen.set(true);
   }
 
-  addNewCategory() {
+  async addNewCategory() {
     if (!this.validateNewCategory()) return;
 
-    this.categoriesService.addCategory(this.newCategorieData().value);
-    this.newCategorieData().value = '';
-
-    this.categories = this.categoriesService.getCategories();
-    this.closeNewCategoryModal();
+    try {
+      const response = await this.categoriesService.addCategory(this.newCategorieData().value);
+      if (response && response.data) {
+        this.newCategorieData().value = '';
+        await this.loadCategories();
+        this.closeNewCategoryModal();
+      } else {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: 'Erro ao adicionar a categoria.',
+        });
+      }
+    } catch (error) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Erro inesperado ao adicionar a categoria.',
+      });
+    }
   }
 
-  updateCategory() {
+  async updateCategory() {
     if (!this.validateEditedCategory()) return;
 
-    this.categoriesService.updateCategory(this.selectedCategoryData().id!, this.selectedCategoryData().value);
-    this.selectedCategoryData().value = '';
-    this.selectedCategoryData().id = -1;
-
-    this.categories = this.categoriesService.getCategories();
-    this.closeEditCategoryModal();
+    try {
+      const response = await this.categoriesService.updateCategory(this.selectedCategoryData().id!, this.selectedCategoryData().value);
+      if (response && response.data) {
+        this.selectedCategoryData().value = '';
+        this.selectedCategoryData().id = -1;
+        await this.loadCategories();
+        this.closeEditCategoryModal();
+      } else {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: 'Erro ao atualizar a categoria.',
+        });
+      }
+    } catch (error) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Erro inesperado ao atualizar a categoria.',
+      });
+    }
   }
 
-  deleteCategory() {
-    if (this.selectedCategoryData().id < 0) return
-      this.categoriesService.removeCategory(this.selectedCategoryData().id!);
-      this.categories = this.categoriesService.getCategories();
-      this.closeDeleteCategoryModal();
+  async deleteCategory() {
+    if (this.selectedCategoryData().id < 0) return;
+
+    try {
+      const response = await this.categoriesService.removeCategory(this.selectedCategoryData().id!);
+      if (response && response.data) {
+        await this.loadCategories();
+        this.closeDeleteCategoryModal();
+      } else {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: 'Erro ao deletar a categoria.',
+        });
+      }
+    } catch (error) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Erro inesperado ao deletar a categoria.',
+      });
+    }
   }
 
   validateNewCategory() {
     this.requiredValidator.setNext(this.minLengthValidator);
     this.newCategorieData().validation = this.requiredValidator.validate(this.newCategorieData().value);
 
-    if (!this.newCategorieData().validation.error) return true;
-
-    return false;
+    return !this.newCategorieData().validation.error;
   }
 
   validateEditedCategory() {
     this.requiredValidator.setNext(this.minLengthValidator);
     this.selectedCategoryData().validation = this.requiredValidator.validate(this.selectedCategoryData().value);
 
-    if (!this.selectedCategoryData().validation.error) return true;
-
-    return false;
+    return !this.selectedCategoryData().validation.error;
   }
 }

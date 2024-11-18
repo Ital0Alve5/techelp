@@ -138,7 +138,7 @@ export class EmployeesListingComponent implements OnInit, OnDestroy {
 
   async deleteEmployeeById(employeeId: number, employee: Employee) {
     const response = await this.employeeService.deleteEmployeeByIdApi(employeeId, employee);
-
+    
     if (!response?.data) {
       this.popupService.addNewPopUp({
         type: Status.Error,
@@ -221,6 +221,8 @@ export class EmployeesListingComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.employeesList.update((employees) => [...employees, employeeData]);
+
     this.clearNewEmployee();
     this.closeNewEmployeeModal();
   }
@@ -245,9 +247,10 @@ export class EmployeesListingComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.employeesList.update((employees) => employees.map(emp => emp.id === employeeData.id ? { ...emp, ...employeeData } : emp));
+
     this.clearSelectedEmployee();
     this.closeEditEmployeeModal();
-    this.fetchEmployees();
   }
 
   clearSelectedEmployee() {
@@ -270,6 +273,8 @@ export class EmployeesListingComponent implements OnInit, OnDestroy {
     };
 
     this.employeeService.deleteEmployeeByIdApi(this.selectedEmployeeData().id, employeeData);
+
+    this.employeesList.set(this.employeesList().filter((emp) => emp.id !== employeeData.id));
 
     this.clearSelectedEmployee();
     this.closeDeleteEmployeeModal();

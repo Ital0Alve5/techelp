@@ -64,7 +64,9 @@ public class EmployeeService {
         EmployeeModel employeeUpdated = employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o ID: " + id));
         if (employeeUpdated.getEmail().equals(email)) {
-            throw new RuntimeException("Funcionário não pode editar a si mesmo");
+            if (!employee.is_active()) {
+                throw new RuntimeException("Funcionário não pode remover a si mesmo");
+            }
         }
         if (!employeeUpdated.getEmail().equals(employee.email())) {
             Map<String, String> validationErrors = this.validate(employee);

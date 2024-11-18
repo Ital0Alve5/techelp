@@ -99,12 +99,34 @@ export class EmployeesListingComponent implements OnInit {
       return;
     }
 
-    const registeredEmployees = response?.data?.data?.['allEmployeesList'] as unknown;
+    const registeredEmployees = (response?.data?.data?.['allEmployeesList'] as unknown as Employee[]).filter(employee => employee.is_active);
     this.employeesList.set(registeredEmployees as Employee[]);
   }
 
   async updateEmployeeById(employeeId: number, employee: Employee) {
     const response = await this.employeeService.updateEmployeeByIdApi(employeeId, employee);
+
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+  }
+
+  async deleteEmployeeById(employeeId: number, employee: Employee) {
+    const response = await this.employeeService.deleteEmployeeByIdApi(employeeId, employee);
 
     if (!response?.data) {
       this.popupService.addNewPopUp({
@@ -153,6 +175,10 @@ export class EmployeesListingComponent implements OnInit {
 
   openDeleteEmployeeModal(employee: Employee) {
     this.selectedEmployeeData().id = employee.id;
+    this.selectedEmployeeData().email.value = employee.email;
+    this.selectedEmployeeData().name.value = employee.name;
+    this.selectedEmployeeData().birthdate.value = employee.birthdate;
+    this.selectedEmployeeData().password.value = employee.password;
     this.isDeleteEmployeeModalOpen.set(false);
   }
 
@@ -166,13 +192,15 @@ export class EmployeesListingComponent implements OnInit {
     if (!this.validateNewEmployee()) return;
 
     const employeeData = {
+      id: this.newEmployeeData().id,
       email: this.newEmployeeData().email.value,
       password: this.newEmployeeData().password.value,
       name: this.newEmployeeData().name.value,
       birthdate: this.newEmployeeData().birthdate.value,
+      is_active: true,
     };
 
-    if (!this.employeeService.addNewEmployee(employeeData)) {
+    if (!this.employeeService.addNewEmployeeApi(employeeData)) {
       this.popupService.addNewPopUp({
         type: Status.Error,
         message: 'Funcionário já existe!',
@@ -193,6 +221,7 @@ export class EmployeesListingComponent implements OnInit {
       email: this.selectedEmployeeData().email.value,
       birthdate: this.selectedEmployeeData().birthdate.value,
       password: this.selectedEmployeeData().password.value,
+      is_active: this.selectedEmployeeData().is_active,
     };
 
     if (!this.updateEmployeeById(this.selectedEmployeeData().id, employeeData)) {
@@ -206,7 +235,6 @@ export class EmployeesListingComponent implements OnInit {
     this.clearSelectedEmployee();
     this.closeEditEmployeeModal();
     this.fetchEmployees();
-    console.log(this.employeesList());
   }
 
   clearSelectedEmployee() {
@@ -218,7 +246,17 @@ export class EmployeesListingComponent implements OnInit {
   }
 
   deleteEmployee() {
-    this.employeeService.deleteEmployeeById(this.selectedEmployeeData().id);
+
+    const employeeData = {
+      id: this.selectedEmployeeData().id,
+      name: this.selectedEmployeeData().name.value,
+      email: this.selectedEmployeeData().email.value,
+      birthdate: this.selectedEmployeeData().birthdate.value,
+      password: this.selectedEmployeeData().password.value,
+      is_active: false,
+    };
+
+    this.employeeService.deleteEmployeeByIdApi(this.selectedEmployeeData().id, employeeData);
 
     this.clearSelectedEmployee();
     this.closeDeleteEmployeeModal();

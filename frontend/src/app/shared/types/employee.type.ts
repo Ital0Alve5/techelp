@@ -4,4 +4,5 @@ export type Employee = {
   email: string;
   birthdate: string;
   password: string;
+  is_active: boolean;
 };

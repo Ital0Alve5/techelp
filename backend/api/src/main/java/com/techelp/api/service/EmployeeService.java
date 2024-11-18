@@ -1,12 +1,12 @@
 package com.techelp.api.service;
 
-import com.techelp.api.dto.EmployeeDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.techelp.api.dto.EmployeeDto;
 import com.techelp.api.model.EmployeeModel;
 import com.techelp.api.repository.EmployeeRepository;
 
@@ -30,7 +30,7 @@ public class EmployeeService {
 
     public EmployeeDto addEmployee(EmployeeDto employee){
         EmployeeModel newEmployee = new EmployeeModel();
-        newEmployee.setBirthdate(employee.datebirth());
+        newEmployee.setBirthdate(employee.birthdate());
         newEmployee.setEmail(employee.email());
         newEmployee.setName(employee.name());
 
@@ -42,7 +42,7 @@ public class EmployeeService {
         if(employeeUpdated.getEmail() == email) {
             throw new RuntimeException("Funcionário não pode editar a si mesmo");
         }
-        employeeUpdated.setBirthdate(employee.datebirth());
+        employeeUpdated.setBirthdate(employee.birthdate());
         employeeUpdated.setEmail(employee.email());
         employeeUpdated.setName(employee.name());
         return toEmployeeDto(employeeRepository.save(employeeUpdated));

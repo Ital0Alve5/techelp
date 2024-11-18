@@ -1,4 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
+import { interval } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { RouterLink } from '@angular/router';
 import { EmployeeService } from '@/shared/services/employees/employee.service';
 import { EmployeesTableRowComponent } from './components/employees-table-row/employees-table-row.component';
@@ -19,6 +21,7 @@ import { NameValidator } from '@/shared/services/validators/name-validator.servi
 import { DateValidator } from '@/shared/services/validators/date-validator.service';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+
 @Component({
   selector: 'app-employees-listing',
   standalone: true,
@@ -45,10 +48,10 @@ import { Status } from '@/shared/ui/pop-up/enum/status.enum';
   templateUrl: './employees-listing.component.html',
   styleUrl: './employees-listing.component.scss',
 })
-export class EmployeesListingComponent {
+export class EmployeesListingComponent implements OnInit {
   userId: number = JSON.parse(localStorage.getItem('userId')!);
 
-  employeesList = signal(this.employeeService.getAllEmployees());
+  employeesList = signal([] as Employee[]);
   newEmployeeData = signal(JSON.parse(JSON.stringify(formData)));
   selectedEmployeeData = signal(JSON.parse(JSON.stringify(formData)));
 
@@ -67,6 +70,61 @@ export class EmployeesListingComponent {
     private popupService: PopupService,
   ) {}
 
+  ngOnInit() {
+    this.fetchEmployees();
+
+    interval(2000)
+      .pipe(switchMap(() => this.fetchEmployees()))
+      .subscribe();
+  }
+
+  async fetchEmployees() {
+    const response = await this.employeeService.getAllEmployeesExceptMeApi();
+
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+
+    const registeredEmployees = response?.data?.data?.['allEmployeesList'] as unknown;
+    this.employeesList.set(registeredEmployees as Employee[]);
+  }
+
+  async updateEmployeeById(employeeId: number, employee: Employee) {
+    const response = await this.employeeService.updateEmployeeByIdApi(employeeId, employee);
+
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+  }
+
   openNewEmployeeModal() {
     this.isNewEmployeeModalOpen.set(false);
   }
@@ -82,6 +140,7 @@ export class EmployeesListingComponent {
     this.selectedEmployeeData().email.value = employee.email;
     this.selectedEmployeeData().name.value = employee.name;
     this.selectedEmployeeData().birthdate.value = employee.birthdate;
+    this.selectedEmployeeData().password.value = employee.password;
 
     this.isEditEmployeeModalOpen.set(false);
   }
@@ -107,10 +166,10 @@ export class EmployeesListingComponent {
     if (!this.validateNewEmployee()) return;
 
     const employeeData = {
-      name: this.newEmployeeData().name.value,
       email: this.newEmployeeData().email.value,
-      birthdate: this.newEmployeeData().birthdate.value,
       password: this.newEmployeeData().password.value,
+      name: this.newEmployeeData().name.value,
+      birthdate: this.newEmployeeData().birthdate.value,
     };
 
     if (!this.employeeService.addNewEmployee(employeeData)) {
@@ -122,7 +181,6 @@ export class EmployeesListingComponent {
     }
 
     this.clearNewEmployee();
-
     this.closeNewEmployeeModal();
   }
 
@@ -130,12 +188,14 @@ export class EmployeesListingComponent {
     if (!this.validateEditedEmployee()) return;
 
     const employeeData = {
+      id: this.selectedEmployeeData().id,
       name: this.selectedEmployeeData().name.value,
       email: this.selectedEmployeeData().email.value,
       birthdate: this.selectedEmployeeData().birthdate.value,
+      password: this.selectedEmployeeData().password.value,
     };
 
-    if (!this.employeeService.updateEmployeeById(this.selectedEmployeeData().id, employeeData)) {
+    if (!this.updateEmployeeById(this.selectedEmployeeData().id, employeeData)) {
       this.popupService.addNewPopUp({
         type: Status.Error,
         message: 'Funcionário já existe!',
@@ -145,6 +205,8 @@ export class EmployeesListingComponent {
 
     this.clearSelectedEmployee();
     this.closeEditEmployeeModal();
+    this.fetchEmployees();
+    console.log(this.employeesList());
   }
 
   clearSelectedEmployee() {
@@ -174,8 +236,7 @@ export class EmployeesListingComponent {
     this.requiredValidator.setNext(this.dateValidator);
     this.selectedEmployeeData().birthdate.validation = this.requiredValidator.validate(birthdate.value);
 
-    const isValidForm =
-      !email.validation.error && !name.validation.error && !birthdate.validation.error;
+    const isValidForm = !email.validation.error && !name.validation.error && !birthdate.validation.error;
 
     return isValidForm;
   }

@@ -13,12 +13,19 @@ export class EmployeeService {
     return registeredEmployee.find((employee) => employee.id === employeeId);
   }
 
-  getAllEmployees(): Employee[] {
-    return registeredEmployee;
-  }
+  async getEmployeeByIdApi(employeeId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axiosConfig(`/api/employee/${employeeId}`);
 
-  getAllEmployeesExceptMe(employeeId: number): Employee[] {
-    return this.getAllEmployees().filter((employee) => employee.id !== employeeId);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
   }
 
   async getAllEmployeesExceptMeApi(): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
@@ -35,6 +42,7 @@ export class EmployeeService {
       }
     }
   }
+
 
   async redirectToEmployee(id_da_request: number, email: string): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
@@ -68,6 +76,42 @@ export class EmployeeService {
     registeredEmployee.push({ ...newEmployee, id: Math.random() * (100 - 7) + 7 });
 
     return true;
+  }
+
+  async updateEmployeeByIdApi(employeeId: number, employee: Employee): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const requestBody = {
+          "id": employee.id,
+          "email": employee.email,
+          "password": employee.password,
+          "name": employee.name,
+          "birthdate": employee.birthdate,
+      };
+      const response = await axiosConfig.post(`/api/employee/edit/${employeeId}`, requestBody);
+  
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
+  }
+
+  async deleteEmployeeByIdApi(employeeId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axiosConfig.post(`/api/employee/edit/${employeeId}`);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
   }
 
   updateEmployeeById(employeeId: number, data: Partial<Employee>): boolean {

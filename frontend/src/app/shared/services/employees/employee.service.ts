@@ -39,6 +39,21 @@ export class EmployeeService {
     }
   }
 
+  async getAllEmployeesApi(): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axiosConfig('/api/employee/maintenance-requests/all-employees');
+
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
+  }
+
 
   async redirectToEmployee(id_da_request: number, email: string): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
@@ -65,7 +80,9 @@ export class EmployeeService {
           "password": employee.password,
           "name": employee.name,
           "birthdate": employee.birthdate,
+          "is_active": employee.is_active,
       };
+      console.log(employee.is_active);
       const response = await axiosConfig.post(`/api/employee/edit/${employeeId}`, requestBody);
   
       return response;

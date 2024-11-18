@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { interval } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { RouterLink } from '@angular/router';
@@ -21,6 +21,7 @@ import { NameValidator } from '@/shared/services/validators/name-validator.servi
 import { DateValidator } from '@/shared/services/validators/date-validator.service';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-employees-listing',
@@ -48,7 +49,10 @@ import { Status } from '@/shared/ui/pop-up/enum/status.enum';
   templateUrl: './employees-listing.component.html',
   styleUrl: './employees-listing.component.scss',
 })
-export class EmployeesListingComponent implements OnInit {
+export class EmployeesListingComponent implements OnInit, OnDestroy {
+  private subscription: Subscription | null = null;
+
+
   userId: number = JSON.parse(localStorage.getItem('userId')!);
 
   employeesList = signal([] as Employee[]);
@@ -73,13 +77,20 @@ export class EmployeesListingComponent implements OnInit {
   ngOnInit() {
     this.fetchEmployees();
 
-    interval(2000)
+    this.subscription = interval(2000)
       .pipe(switchMap(() => this.fetchEmployees()))
       .subscribe();
   }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+
   async fetchEmployees() {
-    const response = await this.employeeService.getAllEmployeesExceptMeApi();
+    const response = await this.employeeService.getAllEmployeesApi();
 
     if (!response?.data) {
       this.popupService.addNewPopUp({
@@ -163,6 +174,7 @@ export class EmployeesListingComponent implements OnInit {
     this.selectedEmployeeData().name.value = employee.name;
     this.selectedEmployeeData().birthdate.value = employee.birthdate;
     this.selectedEmployeeData().password.value = employee.password;
+    this.selectedEmployeeData().is_active = employee.is_active;
 
     this.isEditEmployeeModalOpen.set(false);
   }
@@ -179,6 +191,7 @@ export class EmployeesListingComponent implements OnInit {
     this.selectedEmployeeData().name.value = employee.name;
     this.selectedEmployeeData().birthdate.value = employee.birthdate;
     this.selectedEmployeeData().password.value = employee.password;
+    this.selectedEmployeeData().is_active = employee.is_active;
     this.isDeleteEmployeeModalOpen.set(false);
   }
 

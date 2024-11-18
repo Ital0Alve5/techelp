@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EmployeeService {
-    
+
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -27,24 +27,30 @@ public class EmployeeService {
 
     public EmployeeDto toEmployeeDto(EmployeeModel request) {
         EmployeeDto dto = new EmployeeDto(request.getId(), request.getEmail(), request.getPassword(), request.getName(),
-                request.getBirthdate(),request.getIs_active());
+                request.getBirthdate(), request.getIs_active());
 
         return dto;
     }
 
-    public List<EmployeeDto> getAllEmployees(String email) {
+    public List<EmployeeDto> getAllEmployeesExceptMe(String email) {
         return employeeRepository.findByEmailNot(email).stream().map(this::toEmployeeDto)
                 .collect(Collectors.toList());
     }
 
-    public EmployeeDto addEmployee(EmployeeDto employee){
-        if(employee.password().isEmpty()) {
+    public List<EmployeeDto> getAllEmployees() {
+        return employeeRepository.findAll().stream()
+                .map(this::toEmployeeDto)
+                .collect(Collectors.toList());
+    }
+
+    public EmployeeDto addEmployee(EmployeeDto employee) {
+        if (employee.password().isEmpty()) {
             throw new RuntimeException("A senha é obrigatória");
         }
         Map<String, String> validationErrors = this.validate(employee);
-            if (!validationErrors.isEmpty()) {
-				throw new ValidationException("Erro de validação", validationErrors);
-	        }
+        if (!validationErrors.isEmpty()) {
+            throw new ValidationException("Erro de validação", validationErrors);
+        }
         EmployeeModel newEmployee = new EmployeeModel();
         newEmployee.setBirthdate(employee.birthdate());
         newEmployee.setEmail(employee.email());
@@ -54,33 +60,35 @@ public class EmployeeService {
         return toEmployeeDto(employeeRepository.save(newEmployee));
     }
 
-    public EmployeeDto editEmployee(String email, int id, EmployeeDto employee){
-        EmployeeModel employeeUpdated = employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o ID: " + id));
-        if(employeeUpdated.getEmail().equals(email)) {
+    public EmployeeDto editEmployee(String email, int id, EmployeeDto employee) {
+        EmployeeModel employeeUpdated = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o ID: " + id));
+        if (employeeUpdated.getEmail().equals(email)) {
             throw new RuntimeException("Funcionário não pode editar a si mesmo");
         }
-        if(!employeeUpdated.getEmail().equals(employee.email())){
-        Map<String, String> validationErrors = this.validate(employee);
+        if (!employeeUpdated.getEmail().equals(employee.email())) {
+            Map<String, String> validationErrors = this.validate(employee);
             if (!validationErrors.isEmpty()) {
-				throw new ValidationException("Erro de validação", validationErrors);
-	        }
+                throw new ValidationException("Erro de validação", validationErrors);
+            }
         }
         employeeUpdated.setBirthdate(employee.birthdate());
         employeeUpdated.setEmail(employee.email());
         employeeUpdated.setName(employee.name());
-        if(employee.is_active() != null){
+        if (employee.is_active() != null) {
             employeeUpdated.setIs_active(employee.is_active());
         }
         return toEmployeeDto(employeeRepository.save(employeeUpdated));
     }
 
-    public EmployeeDto getEmployeeById(int id){
-        EmployeeModel foundEmployee = employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o ID: " + id));
-    
+    public EmployeeDto getEmployeeById(int id) {
+        EmployeeModel foundEmployee = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o ID: " + id));
+
         return toEmployeeDto(foundEmployee);
     }
 
-     public Map<String, String> validate(EmployeeDto employee) {
+    public Map<String, String> validate(EmployeeDto employee) {
         Map<String, String> errors = new HashMap<>();
 
         if (!checkIfEmployeeExistsByEmail(employee)) {
@@ -89,6 +97,7 @@ public class EmployeeService {
 
         return errors;
     }
+
     private Boolean checkIfEmployeeExistsByEmail(EmployeeDto employee) {
         return employeeRepository.findByEmail(employee.email()).isEmpty();
     }

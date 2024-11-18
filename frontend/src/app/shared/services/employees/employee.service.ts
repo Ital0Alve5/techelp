@@ -26,7 +26,7 @@ export class EmployeeService {
 
   async getAllEmployeesExceptMeApi(): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      const response = await axiosConfig('/api/employee/maintenance-requests/all-employees');
+      const response = await axiosConfig('/api/employee/maintenance-requests/all-employees-except-me');
 
       return response;
     } catch (error) {

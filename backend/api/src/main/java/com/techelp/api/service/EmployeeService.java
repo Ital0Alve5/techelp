@@ -90,6 +90,13 @@ public class EmployeeService {
         return toEmployeeDto(foundEmployee);
     }
 
+    public EmployeeDto getEmployeeByEmail(String email) {
+        EmployeeModel foundEmployee = employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o email: " + email));
+
+        return toEmployeeDto(foundEmployee);
+    }
+
     public Map<String, String> validate(EmployeeDto employee) {
         Map<String, String> errors = new HashMap<>();
 

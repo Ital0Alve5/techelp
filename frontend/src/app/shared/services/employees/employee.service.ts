@@ -142,4 +142,22 @@ export class EmployeeService {
     }
   }
 
+  async getEmployeeByEmail(email: string): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const requestBody = {
+          "email": email,
+      };
+      const response = await axiosConfig.post(`/api/employee/get-by-email`, requestBody);
+  
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
+  }
+
 }

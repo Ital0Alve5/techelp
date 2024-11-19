@@ -1,6 +1,4 @@
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
-import { interval } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Component, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { EmployeeService } from '@/shared/services/employees/employee.service';
 import { EmployeesTableRowComponent } from './components/employees-table-row/employees-table-row.component';
@@ -21,7 +19,6 @@ import { NameValidator } from '@/shared/services/validators/name-validator.servi
 import { DateValidator } from '@/shared/services/validators/date-validator.service';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-employees-listing',
@@ -49,9 +46,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './employees-listing.component.html',
   styleUrl: './employees-listing.component.scss',
 })
-export class EmployeesListingComponent implements OnInit, OnDestroy {
-  private subscription: Subscription | null = null;
-
+export class EmployeesListingComponent implements OnInit {
 
   userId: number = JSON.parse(localStorage.getItem('userId')!);
 
@@ -76,18 +71,7 @@ export class EmployeesListingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fetchEmployees();
-
-    this.subscription = interval(2000)
-      .pipe(switchMap(() => this.fetchEmployees()))
-      .subscribe();
   }
-
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
 
   async fetchEmployees() {
     const response = await this.employeeService.getAllEmployeesApi();
@@ -110,7 +94,9 @@ export class EmployeesListingComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const registeredEmployees = (response?.data?.data?.['allEmployeesList'] as unknown as Employee[]).filter(employee => employee.is_active);
+    const registeredEmployees = (response?.data?.data?.['allEmployeesList'] as unknown as Employee[]).filter(
+      (employee) => employee.is_active,
+    );
     this.employeesList.set(registeredEmployees as Employee[]);
   }
 
@@ -138,7 +124,7 @@ export class EmployeesListingComponent implements OnInit, OnDestroy {
 
   async deleteEmployeeById(employeeId: number, employee: Employee) {
     const response = await this.employeeService.deleteEmployeeByIdApi(employeeId, employee);
-    
+
     if (!response?.data) {
       this.popupService.addNewPopUp({
         type: Status.Error,
@@ -156,6 +142,29 @@ export class EmployeesListingComponent implements OnInit, OnDestroy {
       });
       return;
     }
+  }
+
+  async fetchEmployeeByEmail(email: string) {
+    const response = await this.employeeService.getEmployeeByEmail(email);
+
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+    return response.data.data;
   }
 
   openNewEmployeeModal() {
@@ -201,7 +210,7 @@ export class EmployeesListingComponent implements OnInit, OnDestroy {
     this.closeEditEmployeeModal();
   }
 
-  addNewEmployee() {
+  async addNewEmployee() {
     if (!this.validateNewEmployee()) return;
 
     const employeeData = {
@@ -213,7 +222,7 @@ export class EmployeesListingComponent implements OnInit, OnDestroy {
       is_active: true,
     };
 
-    if (!this.employeeService.addNewEmployeeApi(employeeData)) {
+    if (!(await this.employeeService.addNewEmployeeApi(employeeData))) {
       this.popupService.addNewPopUp({
         type: Status.Error,
         message: 'Funcionário já existe!',
@@ -221,6 +230,11 @@ export class EmployeesListingComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const responseFetch = await this.fetchEmployeeByEmail(employeeData.email);
+    if (responseFetch) {
+      const id = responseFetch?.['id'];
+      employeeData.id = id;
+    }
     this.employeesList.update((employees) => [...employees, employeeData]);
 
     this.clearNewEmployee();
@@ -247,7 +261,9 @@ export class EmployeesListingComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.employeesList.update((employees) => employees.map(emp => emp.id === employeeData.id ? { ...emp, ...employeeData } : emp));
+    this.employeesList.update((employees) =>
+      employees.map((emp) => (emp.id === employeeData.id ? { ...emp, ...employeeData } : emp)),
+    );
 
     this.clearSelectedEmployee();
     this.closeEditEmployeeModal();
@@ -262,7 +278,6 @@ export class EmployeesListingComponent implements OnInit, OnDestroy {
   }
 
   deleteEmployee() {
-
     const employeeData = {
       id: this.selectedEmployeeData().id,
       name: this.selectedEmployeeData().name.value,

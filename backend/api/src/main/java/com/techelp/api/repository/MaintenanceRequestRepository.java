@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.techelp.api.model.MaintenanceRequestModel;
+import com.techelp.api.dto.RevenueDto;
 import com.techelp.api.model.ClientModel;
 import com.techelp.api.model.DeviceModel;
 import com.techelp.api.model.EmployeeModel;
@@ -57,5 +58,27 @@ public interface MaintenanceRequestRepository extends JpaRepository<MaintenanceR
             @Param("employee") EmployeeModel employee,
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate);
+
+        @Query("SELECT new com.techelp.api.dto.RevenueDto(c.name, SUM(m.budget)) " +
+            "FROM MaintenanceRequestModel m " +
+            "JOIN m.device d " +
+            "JOIN d.category c " +
+            "JOIN m.historyRecords h " +
+            "JOIN h.status s " +
+            "WHERE s.name = 'Finalizada' " +
+            "AND h.date = (SELECT MAX(h2.date) FROM HistoryModel h2 WHERE h2.maintenanceRequest = m) " +
+            "GROUP BY c.name")
+        List<RevenueDto> findCategoryRevenues();
+
+        @Query(value = "SELECT SUM(m.budget) as budget, DATE(h.date) as date " +
+        "FROM maintenance_request m " +
+        "INNER JOIN device d ON m.device_id = d.id " +
+        "INNER JOIN history h ON h.maintenance_request_id = m.id " +
+        "INNER JOIN status s ON h.status_id = s.id " +
+        "WHERE s.name = 'Finalizada' " +
+        "AND h.date = (SELECT MAX(h2.date) FROM history h2 WHERE h2.maintenance_request_id = m.id) " +
+        "GROUP BY DATE(h.date)",
+        nativeQuery = true)
+        List<Object[]> findBudgetGroupedByDate();
 
 }

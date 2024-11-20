@@ -184,6 +184,7 @@ export class EmployeesListingComponent implements OnInit {
     this.selectedEmployeeData().birthdate.value = employee.birthdate;
     this.selectedEmployeeData().password.value = employee.password;
     this.selectedEmployeeData().is_active = employee.is_active;
+    this.selectedEmployeeData().is_current = employee.is_current;
 
     this.isEditEmployeeModalOpen.set(false);
   }
@@ -201,6 +202,7 @@ export class EmployeesListingComponent implements OnInit {
     this.selectedEmployeeData().birthdate.value = employee.birthdate;
     this.selectedEmployeeData().password.value = employee.password;
     this.selectedEmployeeData().is_active = employee.is_active;
+    this.selectedEmployeeData().is_current = employee.is_current;
     this.isDeleteEmployeeModalOpen.set(false);
   }
 
@@ -220,6 +222,7 @@ export class EmployeesListingComponent implements OnInit {
       name: this.newEmployeeData().name.value,
       birthdate: this.newEmployeeData().birthdate.value,
       is_active: true,
+      is_current: false
     };
 
     if (!(await this.employeeService.addNewEmployeeApi(employeeData))) {
@@ -251,6 +254,7 @@ export class EmployeesListingComponent implements OnInit {
       birthdate: this.selectedEmployeeData().birthdate.value,
       password: this.selectedEmployeeData().password.value,
       is_active: this.selectedEmployeeData().is_active,
+      is_current: this.selectedEmployeeData().is_current
     };
 
     if (!this.updateEmployeeById(this.selectedEmployeeData().id, employeeData)) {
@@ -285,6 +289,7 @@ export class EmployeesListingComponent implements OnInit {
       birthdate: this.selectedEmployeeData().birthdate.value,
       password: this.selectedEmployeeData().password.value,
       is_active: false,
+      is_current: this.selectedEmployeeData().is_current.value,
     };
 
     this.employeeService.deleteEmployeeByIdApi(this.selectedEmployeeData().id, employeeData);

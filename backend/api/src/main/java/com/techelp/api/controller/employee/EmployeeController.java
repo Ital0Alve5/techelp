@@ -76,7 +76,7 @@ public class EmployeeController {
         }
 
         try {
-            List<EmployeeDto> requests = employeeService.getAllEmployees();
+            List<EmployeeDto> requests = employeeService.getAllEmployees(email);
             SuccessResponse<Map<String, List<EmployeeDto>>> successResponse = new SuccessResponse<>(
                     HttpStatus.OK.value(), "Lista de solicitações do funcionário",
                     Optional.of(Map.of("allEmployeesList", requests)));

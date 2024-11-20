@@ -5,4 +5,5 @@ export type Employee = {
   birthdate: string;
   password: string;
   is_active: boolean;
+  is_current: boolean;
 };

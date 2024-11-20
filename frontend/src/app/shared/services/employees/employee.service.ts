@@ -81,8 +81,8 @@ export class EmployeeService {
           "name": employee.name,
           "birthdate": employee.birthdate,
           "is_active": employee.is_active,
+          "is_current": employee.is_current,
       };
-      console.log(employee.is_active);
       const response = await axiosConfig.post(`/api/employee/edit/${employeeId}`, requestBody);
   
       return response;
@@ -105,6 +105,7 @@ export class EmployeeService {
           "name": employee.name,
           "birthdate": employee.birthdate,
           "is_active": false,
+          "is_current": employee.is_current,
       };
       const response = await axiosConfig.post(`/api/employee/edit/${employeeId}`, requestBody);
   
@@ -128,6 +129,7 @@ export class EmployeeService {
           "name": employee.name,
           "birthdate": employee.birthdate,
           "is_active": employee.is_active,
+          "is_current": employee.is_current,
       };
       const response = await axiosConfig.post(`/api/employee/add`, requestBody);
   

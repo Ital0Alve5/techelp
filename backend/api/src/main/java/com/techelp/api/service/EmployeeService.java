@@ -27,7 +27,7 @@ public class EmployeeService {
 
     public EmployeeDto toEmployeeDto(EmployeeModel request) {
         EmployeeDto dto = new EmployeeDto(request.getId(), request.getEmail(), request.getPassword(), request.getName(),
-                request.getBirthdate(), request.getIs_active());
+                request.getBirthdate(), request.getIs_active(), false);
 
         return dto;
     }
@@ -37,9 +37,16 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
-    public List<EmployeeDto> getAllEmployees() {
+    public List<EmployeeDto> getAllEmployees(String email) {
         return employeeRepository.findAll().stream()
-                .map(this::toEmployeeDto)
+                .map(employee -> {
+                    EmployeeDto dto = toEmployeeDto(employee);
+                    if (dto.email().equals(email)) {
+                        return new EmployeeDto(dto.id(), dto.email(), dto.password(), dto.name(), dto.birthdate(),
+                                dto.is_active(), true);
+                    }
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 

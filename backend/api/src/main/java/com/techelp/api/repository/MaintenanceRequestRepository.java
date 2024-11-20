@@ -77,8 +77,9 @@ public interface MaintenanceRequestRepository extends JpaRepository<MaintenanceR
         "INNER JOIN status s ON h.status_id = s.id " +
         "WHERE s.name = 'Finalizada' " +
         "AND h.date = (SELECT MAX(h2.date) FROM history h2 WHERE h2.maintenance_request_id = m.id) " +
+        "AND DATE(h.date) BETWEEN CAST(:startDate AS DATE) AND CAST(:endDate AS DATE) " +
         "GROUP BY DATE(h.date)",
-        nativeQuery = true)
-        List<Object[]> findBudgetGroupedByDate();
+nativeQuery = true)
+ List<Object[]> findBudgetGroupedByDateInRange(@Param("startDate") String startDate, @Param("endDate") String endDate);
 
 }

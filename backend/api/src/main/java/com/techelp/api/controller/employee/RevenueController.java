@@ -18,7 +18,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/employee")
 @CrossOrigin
 public class RevenueController {
 
@@ -56,26 +56,27 @@ public class RevenueController {
         }
     }
 
-    @GetMapping("/revenue/by-date")
-    private ResponseEntity<ApiResponse> getRevenueByDate(@RequestHeader(name = "Authorization") String authHeader) {
+    @GetMapping("/revenue/by-date-range")
+    private ResponseEntity<ApiResponse> getRevenueByDateRange(
+            @RequestParam String startDate,
+            @RequestParam String endDate,
+            @RequestHeader(name = "Authorization") String authHeader) {
         String email = extractEmailFromToken(authHeader);
-
+    
         if (email == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
         }
-
+    
         try {
-            List<RevenueDto> request = revenueService.getDateRevenues();
+            List<RevenueDto> request = revenueService.getDateRevenuesInRange(startDate, endDate);
             SuccessResponse<List<RevenueDto>> successResponse = new SuccessResponse<>(
-                    HttpStatus.OK.value(), "Receitas por data!", Optional.of(request));
+                    HttpStatus.OK.value(), "Receitas por data no intervalo!", Optional.of(request));
             return ResponseEntity.ok(successResponse);
         } catch (ValidationException ex) {
             ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.NOT_FOUND.value(),
                     ex.getErrors());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
-    }
-
-
+    }    
 }

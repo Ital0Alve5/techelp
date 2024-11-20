@@ -21,17 +21,21 @@ public class RevenueService {
         return maintenanceRequestRepository.findCategoryRevenues();
     }
 
-    public List<RevenueDto> getDateRevenues() {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-    List<Object[]> results = maintenanceRequestRepository.findBudgetGroupedByDate();
-
-    return results.stream()
-                  .map(row -> new RevenueDto(
-                          (Double) row[0],
-                          formatter.format(LocalDate.parse(row[1].toString()))
-                  ))
-                  .collect(Collectors.toList());
+    public List<RevenueDto> getDateRevenuesInRange(String startDate, String endDate) {
+        DateTimeFormatter dbFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    
+        String formattedStartDate = LocalDate.parse(startDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")).format(dbFormatter);
+        String formattedEndDate = LocalDate.parse(endDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")).format(dbFormatter);
+    
+        List<Object[]> results = maintenanceRequestRepository.findBudgetGroupedByDateInRange(formattedStartDate, formattedEndDate);
+    
+        return results.stream()
+                      .map(row -> new RevenueDto(
+                              (Double) row[0],
+                              outputFormatter.format(LocalDate.parse(row[1].toString()))
+                      ))
+                      .collect(Collectors.toList());
     }
-
+    
 }

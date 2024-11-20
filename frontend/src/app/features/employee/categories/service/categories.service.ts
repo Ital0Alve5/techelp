@@ -8,7 +8,7 @@ import axiosConfig from '@/axios.config';
 export class CategoriesService {
   async getCategories(): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      const response = await axiosConfig.get('/api/employee/categories');
+      const response = await axiosConfig.get('/api/categories');
       return response;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

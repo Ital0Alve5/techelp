@@ -26,7 +26,7 @@ export class EmployeeService {
 
   async getAllEmployeesExceptMeApi(): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      const response = await axiosConfig('/api/employee/maintenance-requests/all-employees-except-me');
+      const response = await axiosConfig('/api/employee/all-except-me');
 
       return response;
     } catch (error) {
@@ -75,13 +75,9 @@ export class EmployeeService {
   async updateEmployeeByIdApi(employeeId: number, employee: Employee): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
       const requestBody = {
-          "id": employee.id,
           "email": employee.email,
-          "password": employee.password,
           "name": employee.name,
           "birthdate": employee.birthdate,
-          "is_active": employee.is_active,
-          "is_current": employee.is_current,
       };
       const response = await axiosConfig.post(`/api/employee/edit/${employeeId}`, requestBody);
   
@@ -99,9 +95,7 @@ export class EmployeeService {
   async deleteEmployeeByIdApi(employeeId: number, employee: Employee): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
       const requestBody = {
-          "id": employee.id,
           "email": employee.email,
-          "password": employee.password,
           "name": employee.name,
           "birthdate": employee.birthdate,
           "is_active": false,
@@ -123,7 +117,6 @@ export class EmployeeService {
   async addNewEmployeeApi(employee: Employee): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
       const requestBody = {
-          "id": employee.id,
           "email": employee.email,
           "password": employee.password,
           "name": employee.name,

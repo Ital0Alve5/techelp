@@ -42,7 +42,7 @@ public class EmployeeController {
         return null;
     }
 
-    @GetMapping("employee/maintenance-requests/all-employees-except-me")
+    @GetMapping("employee/all-except-me")
     public ResponseEntity<ApiResponse> getAllEmployeesExceptMe(
             @RequestHeader(name = "Authorization") String authHeader) {
         String email = extractEmailFromToken(authHeader);

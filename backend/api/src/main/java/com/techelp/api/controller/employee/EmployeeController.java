@@ -24,8 +24,6 @@ import com.techelp.api.exception.ValidationException;
 import com.techelp.api.security.service.JwtTokenService;
 import com.techelp.api.service.EmployeeService;
 
-import jakarta.validation.Valid;
-
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
@@ -44,8 +42,32 @@ public class EmployeeController {
         return null;
     }
 
+    @GetMapping("employee/all-except-me")
+    public ResponseEntity<ApiResponse> getAllEmployeesExceptMe(
+            @RequestHeader(name = "Authorization") String authHeader) {
+        String email = extractEmailFromToken(authHeader);
+
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
+        }
+
+        try {
+            List<EmployeeDto> requests = employeeService.getAllEmployeesExceptMe(email);
+            SuccessResponse<Map<String, List<EmployeeDto>>> successResponse = new SuccessResponse<>(
+                    HttpStatus.OK.value(), "Lista de solicitações do funcionário",
+                    Optional.of(Map.of("allEmployeesList", requests)));
+            return ResponseEntity.ok(successResponse);
+        } catch (ValidationException ex) {
+            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.NOT_FOUND.value(),
+                    ex.getErrors());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+    }
+
     @GetMapping("employee/maintenance-requests/all-employees")
-    public ResponseEntity<ApiResponse> getAllEmployees(@RequestHeader(name = "Authorization") String authHeader) {
+    public ResponseEntity<ApiResponse> getAllEmployees(
+            @RequestHeader(name = "Authorization") String authHeader) {
         String email = extractEmailFromToken(authHeader);
 
         if (email == null) {
@@ -67,7 +89,8 @@ public class EmployeeController {
     }
 
     @PostMapping("employee/add")
-    public ResponseEntity<ApiResponse> addEmployee(@RequestHeader(name = "Authorization") String authHeader, @RequestBody EmployeeDto employee){
+    public ResponseEntity<ApiResponse> addEmployee(@RequestHeader(name = "Authorization") String authHeader,
+            @RequestBody EmployeeDto employee) {
         String email = extractEmailFromToken(authHeader);
 
         if (email == null) {
@@ -88,7 +111,8 @@ public class EmployeeController {
     }
 
     @PostMapping("employee/edit/{id}")
-    public ResponseEntity<ApiResponse> editEmployee(@PathVariable int id, @RequestHeader(name = "Authorization") String authHeader, @RequestBody EmployeeDto employee){
+    public ResponseEntity<ApiResponse> editEmployee(@PathVariable int id,
+            @RequestHeader(name = "Authorization") String authHeader, @RequestBody EmployeeDto employee) {
         String email = extractEmailFromToken(authHeader);
 
         if (email == null) {
@@ -109,8 +133,31 @@ public class EmployeeController {
 
     }
 
+    @PostMapping("employee/get-by-email")
+    public ResponseEntity<ApiResponse> getEmployeeByEmail(@RequestHeader(name = "Authorization") String authHeader, @RequestBody EmployeeDto employee) {
+        String email = extractEmailFromToken(authHeader);
+
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse("Token inválido ou expirado", HttpStatus.UNAUTHORIZED.value(), null));
+        }
+        try {
+            EmployeeDto wantedEmployee = employeeService.getEmployeeByEmail(employee.email());
+            SuccessResponse<EmployeeDto> successResponse = new SuccessResponse<>(
+                    HttpStatus.OK.value(), "Funcionário encontrado",
+                    Optional.of(wantedEmployee));
+            return ResponseEntity.ok(successResponse);
+        } catch (ValidationException ex) {
+            ErrorResponse errorResponse = new ErrorResponse("Erro de validação", HttpStatus.NOT_FOUND.value(),
+                    ex.getErrors());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+
+    }
+
     @GetMapping("employee/{id}")
-    public ResponseEntity<ApiResponse> getEmployeeById(@PathVariable int id, @RequestHeader(name = "Authorization") String authHeader){
+    public ResponseEntity<ApiResponse> getEmployeeById(@PathVariable int id,
+            @RequestHeader(name = "Authorization") String authHeader) {
         String email = extractEmailFromToken(authHeader);
 
         if (email == null) {

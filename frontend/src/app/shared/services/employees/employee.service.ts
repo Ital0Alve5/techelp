@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { registeredEmployee } from '@/shared/mock/registered-employee.mock';
 import { Employee } from '@/shared/types/employee.type';
 
 import axios, { AxiosResponse } from 'axios';
@@ -9,19 +8,38 @@ import { ResponseSuccess } from '@/shared/types/api/response-success.type';
 
 @Injectable()
 export class EmployeeService {
-  getEmployeeById(employeeId: number): Employee | undefined {
-    return registeredEmployee.find((employee) => employee.id === employeeId);
-  }
 
-  getAllEmployees(): Employee[] {
-    return registeredEmployee;
-  }
+  async getEmployeeByIdApi(employeeId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axiosConfig(`/api/employee/${employeeId}`);
 
-  getAllEmployeesExceptMe(employeeId: number): Employee[] {
-    return this.getAllEmployees().filter((employee) => employee.id !== employeeId);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
   }
 
   async getAllEmployeesExceptMeApi(): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const response = await axiosConfig('/api/employee/all-except-me');
+
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
+  }
+
+  async getAllEmployeesApi(): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
       const response = await axiosConfig('/api/employee/maintenance-requests/all-employees');
 
@@ -35,6 +53,7 @@ export class EmployeeService {
       }
     }
   }
+
 
   async redirectToEmployee(id_da_request: number, email: string): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
@@ -53,42 +72,87 @@ export class EmployeeService {
   }
 
 
-
-  checkIfEmployeeExists(employeeToCheck: Partial<{ id: number; email: string }>): boolean {
-    if (employeeToCheck.id && this.getEmployeeById(employeeToCheck.id)) return true;
-
-    return Boolean(registeredEmployee.find((employee) => employee.email === employeeToCheck.email));
-  }
-
-  addNewEmployee(newEmployee: Omit<Employee, 'id'>): boolean {
-    if (this.checkIfEmployeeExists({ email: newEmployee.email })) {
-      return false;
+  async updateEmployeeByIdApi(employeeId: number, employee: Employee): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const requestBody = {
+          "email": employee.email,
+          "name": employee.name,
+          "birthdate": employee.birthdate,
+      };
+      const response = await axiosConfig.post(`/api/employee/edit/${employeeId}`, requestBody);
+  
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
     }
-
-    registeredEmployee.push({ ...newEmployee, id: Math.random() * (100 - 7) + 7 });
-
-    return true;
   }
 
-  updateEmployeeById(employeeId: number, data: Partial<Employee>): boolean {
-    const employee = this.getEmployeeById(employeeId)!
-
-    if (data.email && (employee.email !== data.email) && this.checkIfEmployeeExists({ email: data.email })) {
-      return false;
+  async deleteEmployeeByIdApi(employeeId: number, employee: Employee): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const requestBody = {
+          "email": employee.email,
+          "name": employee.name,
+          "birthdate": employee.birthdate,
+          "is_active": false,
+          "is_current": employee.is_current,
+      };
+      const response = await axiosConfig.post(`/api/employee/edit/${employeeId}`, requestBody);
+  
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
     }
-
-    registeredEmployee.forEach((employee) => {
-      if (employee.id === employeeId) Object.assign(employee, data);
-    });
-
-    return true;
   }
 
-  deleteEmployeeById(employeeId: number): Employee[] {
-    registeredEmployee.forEach((employee, index) => {
-      if (employee.id === employeeId) registeredEmployee.splice(index, 1);
-    });
-
-    return registeredEmployee;
+  async addNewEmployeeApi(employee: Employee): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const requestBody = {
+          "email": employee.email,
+          "password": employee.password,
+          "name": employee.name,
+          "birthdate": employee.birthdate,
+          "is_active": employee.is_active,
+          "is_current": employee.is_current,
+      };
+      const response = await axiosConfig.post(`/api/employee/add`, requestBody);
+  
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
   }
+
+  async getEmployeeByEmail(email: string): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+    try {
+      const requestBody = {
+          "email": email,
+      };
+      const response = await axiosConfig.post(`/api/employee/get-by-email`, requestBody);
+  
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response;
+      } else {
+        console.error('Unexpected error:', error);
+        throw error;
+      }
+    }
+  }
+
 }

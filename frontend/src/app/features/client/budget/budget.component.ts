@@ -13,6 +13,7 @@ import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { BudgetService } from './services/budget.service';
 import { RequestsService } from '@/shared/services/requests/requests.service';
 import { ClientRequests } from '../requests-table/types/client-requests.type';
+import { ConverterService } from '@/shared/services/utils/converter.service';
 
 @Component({
   selector: 'app-budget',
@@ -48,6 +49,7 @@ export class BudgetComponent implements OnInit {
     private popupService: PopupService,
     private router: Router,
     private budgetService: BudgetService,
+    private converterService: ConverterService,
   ) {}
 
   ngOnInit(): void {
@@ -204,5 +206,13 @@ export class BudgetComponent implements OnInit {
       type: Status.Success,
       message: `Orçamento rejeitado!`,
     });
+  }
+  convertCurrency(value: number | null){
+    if(value !== null){
+      console.log(this.converterService.convertFloatToCurrency(value))
+      return this.converterService.convertFloatToCurrency(value);
+    }
+    console.log(value)
+    return null;
   }
 }

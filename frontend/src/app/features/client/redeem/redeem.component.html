@@ -17,7 +17,7 @@
   <p>
     Serviço avaliado por <b> {{ requestData().lastEmployee }}</b> e orçado em:
   </p>
-  <p class="price">R$ {{ requestData().budget }}</p>
+  <p class="price">R$ {{ convertCurrency(requestData().budget) }}</p>
 </section>
 
 <section class="request-description">

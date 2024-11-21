@@ -123,10 +123,8 @@ export class RedeemComponent implements OnInit{
   }
   convertCurrency(value: number | null){
     if(value !== null){
-      console.log(this.converterService.convertFloatToCurrency(value))
       return this.converterService.convertFloatToCurrency(value);
     }
-    console.log(value)
     return null;
   }
 }

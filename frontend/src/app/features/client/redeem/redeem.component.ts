@@ -11,6 +11,8 @@ import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { RequestsService } from '@/shared/services/requests/requests.service';
 import { RedeemService } from './services/redeem.service';
 import { ClientRequests } from '../requests-table/types/client-requests.type';
+import { ConverterService } from '@/shared/services/utils/converter.service';
+
 
 @Component({
   selector: 'app-redeem',
@@ -43,8 +45,8 @@ export class RedeemComponent implements OnInit{
   constructor(
     private popupService: PopupService,
     private router: Router,
-    private requestsService: RequestsService,
     private redeemService: RedeemService,
+    private converterService: ConverterService,
   ) {}
 
   ngOnInit(): void {
@@ -118,5 +120,11 @@ export class RedeemComponent implements OnInit{
         message: 'Erro inesperado ao resgatar a solicitação.',
       });
     }
+  }
+  convertCurrency(value: number | null){
+    if(value !== null){
+      return this.converterService.convertFloatToCurrency(value);
+    }
+    return null;
   }
 }

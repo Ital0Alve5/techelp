@@ -302,13 +302,9 @@ public class MaintenanceRequestService {
                                 .collect(Collectors.toList());
         }
 
-        public List<MaintenanceRequestDto> getOpenRequestsByDateRange(String email, LocalDate startDate,
+        public List<MaintenanceRequestDto> getOpenRequestsByDateRange(LocalDate startDate,
                         LocalDate endDate) {
-                EmployeeModel employee = employeeRepository.findByEmail(email)
-                                .orElseThrow(() -> new ValidationException("Erro de validação",
-                                                Map.of("email", "Funcionário não encontrado")));
-
-                return maintenanceRequestRepository.findAllByEmployeeWithDateRange(employee, startDate, endDate)
+                return maintenanceRequestRepository.findRequestsByCreationDateRange(startDate, endDate)
                                 .stream()
                                 .map(this::toMaintenanceRequestDto)
                                 .collect(Collectors.toList());

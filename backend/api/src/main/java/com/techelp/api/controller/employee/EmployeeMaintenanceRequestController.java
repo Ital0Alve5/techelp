@@ -158,8 +158,8 @@ public class EmployeeMaintenanceRequestController {
             LocalDate convertStartDate = LocalDate.parse(startDate);
             LocalDate convertEndDate = LocalDate.parse(endDate);
 
-            List<MaintenanceRequestDto> requests = maintenanceRequestService.getOpenRequestsByDateRange(email,
-                    convertStartDate, convertEndDate);
+            List<MaintenanceRequestDto> requests = maintenanceRequestService
+                    .getOpenRequestsByDateRange(convertStartDate, convertEndDate);
             SuccessResponse<Map<String, List<MaintenanceRequestDto>>> successResponse = new SuccessResponse<>(
                     HttpStatus.OK.value(), "Lista de solicitações abertas hoje",
                     Optional.of(Map.of("maintenanceRequestsList", requests)));

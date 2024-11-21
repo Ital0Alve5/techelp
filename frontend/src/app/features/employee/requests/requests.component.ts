@@ -135,6 +135,9 @@ export class RequestsComponent {
   }
 
   async getOpenRequestsByDateRange(startDate: string, endDate: string) {
+    if (!startDate) startDate = '2024-01-01';
+    else if (!endDate) endDate = new Date().toISOString().split('T')[0].split('-').reverse().join('-');
+
     const response = await this.requestsService.getOpenRequestsByDateRange(startDate, endDate);
 
     if (!response?.data) {
@@ -182,7 +185,6 @@ export class RequestsComponent {
         break;
       case 'data':
         if (!filterSelected.data) return;
-
         this.getOpenRequestsByDateRange(filterSelected.data.startDate, filterSelected.data.endDate);
     }
   }

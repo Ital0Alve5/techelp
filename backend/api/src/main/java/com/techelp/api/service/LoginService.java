@@ -60,6 +60,10 @@ public class LoginService {
             errors.put("email", "E-mail inválido!");
         }
 
+        if (!isEmployeeActive(employee.getEmail())) {
+            errors.put("email", "Usuário inativo!");
+        }
+
         if (!errors.isEmpty()) {
             throw new ValidationException("Erro de validação", errors);
         }
@@ -83,5 +87,11 @@ public class LoginService {
 
     private Boolean checkIfEmployeeExistsByEmail(String email) {
         return employeeRepository.findByEmail(email).isEmpty();
+    }
+
+    private Boolean isEmployeeActive(String email) {
+        EmployeeModel foundEmployee = employeeRepository.findByEmail(email).orElseThrow();
+
+        return foundEmployee.getIs_active();
     }
 }

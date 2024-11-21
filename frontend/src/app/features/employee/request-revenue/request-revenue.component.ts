@@ -1,11 +1,10 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { LockIcon } from '@/shared/ui/icons/lock.icon';
 import { CardComponent } from '@/shared/ui/card/card.component';
 import { InputComponent } from '@/shared/ui/input/input.component';
-import { CheckboxComponent } from '@/shared/ui/checkbox/checkbox.component';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { RequiredValidator } from '@/shared/services/validators/required-validator.service';
 import { DateValidator } from '@/shared/services/validators/date-validator.service';
@@ -15,13 +14,12 @@ import { formData } from './model/form-data.model';
 @Component({
   selector: 'app-request-revenue',
   standalone: true,
-  imports: [FormsModule, LockIcon, CardComponent, InputComponent, CheckboxComponent, ButtonComponent],
+  imports: [FormsModule, LockIcon, CardComponent, InputComponent, ButtonComponent],
   providers: [RequiredValidator, DateValidator],
   templateUrl: './request-revenue.component.html',
   styleUrl: './request-revenue.component.scss',
 })
 export class RequestRevenueComponent {
-  employeeId = input.required<number>();
   formValues = signal(JSON.parse(JSON.stringify(formData)));
   isCategory = signal(true);
 
@@ -46,7 +44,7 @@ export class RequestRevenueComponent {
           },
         };
 
-    this.router.navigate([`/funcionario/${this.employeeId()}/receita${this.isCategory() ? '/categoria' : ''}`], params);
+    this.router.navigate([`/funcionario/receita${this.isCategory() ? '/categoria' : ''}`], params);
   }
 
   validateDate() {

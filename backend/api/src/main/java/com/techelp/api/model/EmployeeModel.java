@@ -38,6 +38,9 @@ public class EmployeeModel extends User {
     @OneToMany(mappedBy = "employee")
     private List<HistoryModel> historyRecords;
 
+    @Column(unique = false)
+    private Boolean is_active;
+
     public EmployeeModel() {
         super();
     }

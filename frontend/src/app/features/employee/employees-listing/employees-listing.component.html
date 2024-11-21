@@ -1,5 +1,5 @@
 <div class="buttons">
-  <a routerLink="/funcionario/{{ userId }}/solicitacoes">
+  <a routerLink="/funcionario/solicitacoes">
     <arrow-right-icon width="20px" color="#fff"></arrow-right-icon>
   </a>
 </div>
@@ -18,7 +18,7 @@
       </td>
       <td (click)="openEditEmployeeModal(employee)"><edit-icon /></td>
       <td>
-        @if (employee.id !== userId) {
+        @if (!employee.is_current && employeesList().length > 1) {
           <delete-icon (click)="openDeleteEmployeeModal(employee)" />
         }
       </td>

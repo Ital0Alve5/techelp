@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { EmployeeService } from '@/shared/services/employees/employee.service';
 import { EmployeesTableRowComponent } from './components/employees-table-row/employees-table-row.component';
@@ -19,6 +19,7 @@ import { NameValidator } from '@/shared/services/validators/name-validator.servi
 import { DateValidator } from '@/shared/services/validators/date-validator.service';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
+
 @Component({
   selector: 'app-employees-listing',
   standalone: true,
@@ -45,10 +46,11 @@ import { Status } from '@/shared/ui/pop-up/enum/status.enum';
   templateUrl: './employees-listing.component.html',
   styleUrl: './employees-listing.component.scss',
 })
-export class EmployeesListingComponent {
+export class EmployeesListingComponent implements OnInit {
+
   userId: number = JSON.parse(localStorage.getItem('userId')!);
 
-  employeesList = signal(this.employeeService.getAllEmployees());
+  employeesList = signal([] as Employee[]);
   newEmployeeData = signal(JSON.parse(JSON.stringify(formData)));
   selectedEmployeeData = signal(JSON.parse(JSON.stringify(formData)));
 
@@ -67,6 +69,104 @@ export class EmployeesListingComponent {
     private popupService: PopupService,
   ) {}
 
+  ngOnInit() {
+    this.fetchEmployees();
+  }
+
+  async fetchEmployees() {
+    const response = await this.employeeService.getAllEmployeesApi();
+
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+
+    const registeredEmployees = (response?.data?.data?.['allEmployeesList'] as unknown as Employee[]).filter(
+      (employee) => employee.is_active,
+    );
+    this.employeesList.set(registeredEmployees as Employee[]);
+  }
+
+  async updateEmployeeById(employeeId: number, employee: Employee) {
+    const response = await this.employeeService.updateEmployeeByIdApi(employeeId, employee);
+
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+  }
+
+  async deleteEmployeeById(employeeId: number, employee: Employee) {
+    const response = await this.employeeService.deleteEmployeeByIdApi(employeeId, employee);
+
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+  }
+
+  async fetchEmployeeByEmail(email: string) {
+    const response = await this.employeeService.getEmployeeByEmail(email);
+
+    if (!response?.data) {
+      this.popupService.addNewPopUp({
+        type: Status.Error,
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
+      });
+      return;
+    }
+    return response.data.data;
+  }
+
   openNewEmployeeModal() {
     this.isNewEmployeeModalOpen.set(false);
   }
@@ -82,6 +182,9 @@ export class EmployeesListingComponent {
     this.selectedEmployeeData().email.value = employee.email;
     this.selectedEmployeeData().name.value = employee.name;
     this.selectedEmployeeData().birthdate.value = employee.birthdate;
+    this.selectedEmployeeData().password.value = employee.password;
+    this.selectedEmployeeData().is_active = employee.is_active;
+    this.selectedEmployeeData().is_current = employee.is_current;
 
     this.isEditEmployeeModalOpen.set(false);
   }
@@ -94,6 +197,12 @@ export class EmployeesListingComponent {
 
   openDeleteEmployeeModal(employee: Employee) {
     this.selectedEmployeeData().id = employee.id;
+    this.selectedEmployeeData().email.value = employee.email;
+    this.selectedEmployeeData().name.value = employee.name;
+    this.selectedEmployeeData().birthdate.value = employee.birthdate;
+    this.selectedEmployeeData().password.value = employee.password;
+    this.selectedEmployeeData().is_active = employee.is_active;
+    this.selectedEmployeeData().is_current = employee.is_current;
     this.isDeleteEmployeeModalOpen.set(false);
   }
 
@@ -103,17 +212,20 @@ export class EmployeesListingComponent {
     this.closeEditEmployeeModal();
   }
 
-  addNewEmployee() {
+  async addNewEmployee() {
     if (!this.validateNewEmployee()) return;
 
     const employeeData = {
-      name: this.newEmployeeData().name.value,
+      id: this.newEmployeeData().id,
       email: this.newEmployeeData().email.value,
-      birthdate: this.newEmployeeData().birthdate.value,
       password: this.newEmployeeData().password.value,
+      name: this.newEmployeeData().name.value,
+      birthdate: this.newEmployeeData().birthdate.value,
+      is_active: true,
+      is_current: false
     };
 
-    if (!this.employeeService.addNewEmployee(employeeData)) {
+    if (!(await this.employeeService.addNewEmployeeApi(employeeData))) {
       this.popupService.addNewPopUp({
         type: Status.Error,
         message: 'Funcionário já existe!',
@@ -121,8 +233,14 @@ export class EmployeesListingComponent {
       return;
     }
 
-    this.clearNewEmployee();
+    const responseFetch = await this.fetchEmployeeByEmail(employeeData.email);
+    if (responseFetch) {
+      const id = responseFetch?.['id'];
+      employeeData.id = id;
+    }
+    this.employeesList.update((employees) => [...employees, employeeData]);
 
+    this.clearNewEmployee();
     this.closeNewEmployeeModal();
   }
 
@@ -130,18 +248,26 @@ export class EmployeesListingComponent {
     if (!this.validateEditedEmployee()) return;
 
     const employeeData = {
+      id: this.selectedEmployeeData().id,
       name: this.selectedEmployeeData().name.value,
       email: this.selectedEmployeeData().email.value,
       birthdate: this.selectedEmployeeData().birthdate.value,
+      password: this.selectedEmployeeData().password.value,
+      is_active: this.selectedEmployeeData().is_active,
+      is_current: this.selectedEmployeeData().is_current
     };
 
-    if (!this.employeeService.updateEmployeeById(this.selectedEmployeeData().id, employeeData)) {
+    if (!this.updateEmployeeById(this.selectedEmployeeData().id, employeeData)) {
       this.popupService.addNewPopUp({
         type: Status.Error,
         message: 'Funcionário já existe!',
       });
       return;
     }
+
+    this.employeesList.update((employees) =>
+      employees.map((emp) => (emp.id === employeeData.id ? { ...emp, ...employeeData } : emp)),
+    );
 
     this.clearSelectedEmployee();
     this.closeEditEmployeeModal();
@@ -156,7 +282,19 @@ export class EmployeesListingComponent {
   }
 
   deleteEmployee() {
-    this.employeeService.deleteEmployeeById(this.selectedEmployeeData().id);
+    const employeeData = {
+      id: this.selectedEmployeeData().id,
+      name: this.selectedEmployeeData().name.value,
+      email: this.selectedEmployeeData().email.value,
+      birthdate: this.selectedEmployeeData().birthdate.value,
+      password: this.selectedEmployeeData().password.value,
+      is_active: false,
+      is_current: this.selectedEmployeeData().is_current.value,
+    };
+
+    this.employeeService.deleteEmployeeByIdApi(this.selectedEmployeeData().id, employeeData);
+
+    this.employeesList.set(this.employeesList().filter((emp) => emp.id !== employeeData.id));
 
     this.clearSelectedEmployee();
     this.closeDeleteEmployeeModal();
@@ -174,8 +312,7 @@ export class EmployeesListingComponent {
     this.requiredValidator.setNext(this.dateValidator);
     this.selectedEmployeeData().birthdate.validation = this.requiredValidator.validate(birthdate.value);
 
-    const isValidForm =
-      !email.validation.error && !name.validation.error && !birthdate.validation.error;
+    const isValidForm = !email.validation.error && !name.validation.error && !birthdate.validation.error;
 
     return isValidForm;
   }

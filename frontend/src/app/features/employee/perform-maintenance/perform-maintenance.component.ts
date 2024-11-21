@@ -52,6 +52,8 @@ export class PerformMaintenanceComponent {
       email: '',
       birthdate: '',
       password: '',
+      is_active: false,
+      is_current: false,
     },
   ]);
 

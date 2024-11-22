@@ -357,7 +357,7 @@ public class MaintenanceRequestService {
 
                 boolean isOpen = request.getHistoryRecords().stream()
                                 .max(Comparator.comparing(HistoryModel::getDate))
-                                .map(history -> history.getStatus().getId() == 17)
+                                .map(history -> history.getStatus().getName().equals("Aberta"))
                                 .orElse(false);
 
                 if (!isOpen) {

@@ -31,7 +31,7 @@ public interface MaintenanceRequestRepository extends JpaRepository<MaintenanceR
 
         @Query("SELECT mr FROM MaintenanceRequestModel mr " +
                         "JOIN mr.historyRecords h1 " +
-                        "WHERE h1.status.id = 17 " +
+                        "WHERE h1.status.name = 'Aberta' " +
                         "AND h1.date = (SELECT MAX(h2.date) FROM HistoryModel h2 WHERE h2.maintenanceRequest = mr)")
         List<MaintenanceRequestModel> findOpenRequests();
 
@@ -43,7 +43,7 @@ public interface MaintenanceRequestRepository extends JpaRepository<MaintenanceR
 
         @Query("SELECT mr FROM MaintenanceRequestModel mr " +
                         "JOIN mr.historyRecords h1 " +
-                        "WHERE h1.status.id = 17 " +
+                        "WHERE h1.status.name = 'Aberta' " +
                         "AND h1.date = (SELECT MAX(h2.date) FROM HistoryModel h2 WHERE h2.maintenanceRequest = mr) " +
                         "AND FUNCTION('DATE', h1.date) = CURRENT_DATE")
         List<MaintenanceRequestModel> findOpenRequestsCreatedToday();

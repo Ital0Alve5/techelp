@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
@@ -17,7 +17,7 @@ import { ClientRequestHistory } from '../requests-table/types/client-request-his
   templateUrl: './request-details.component.html',
   styleUrls: ['./request-details.component.scss'],
 })
-export class RequestDetailsComponent {
+export class RequestDetailsComponent implements OnInit {
   requestId: number = Number.parseInt(window.location.pathname.match(/\/solicitacao\/(\d+)/)![1]);
 
   requestData = signal<ClientRequests>({
@@ -31,19 +31,22 @@ export class RequestDetailsComponent {
     status: '',
     lastEmployee: null,
     date: '',
-    hour: ''
+    hour: '',
   });
 
+  ngOnInit() {
+    this.getRequestDetailsByRequestId(this.requestId);
+    this.getRequestHistory(this.requestId);
+  }
+  
   dataHistory = signal<ClientRequestHistory[]>([]);
 
   constructor(
     public router: Router,
     private requestDetailsService: RequestDetailsService,
-    private popupService : PopupService
-  ) {
-    this.getRequestDetailsByRequestId(this.requestId);
-    this.getRequestHistory(this.requestId);
-  }
+    private popupService: PopupService,
+  ) {}
+
   async getRequestHistory(id: number) {
     const success = await this.requestDetailsService.getRequestHistory(id);
     if (!success?.data) {
@@ -67,7 +70,6 @@ export class RequestDetailsComponent {
     this.dataHistory.set(requestHistory as ClientRequestHistory[]);
   }
   async getRequestDetailsByRequestId(id: number) {
-
     const success = await this.requestDetailsService.getRequestDetailsByRequestId(id);
     if (!success?.data) {
       this.popupService.addNewPopUp({
@@ -88,7 +90,5 @@ export class RequestDetailsComponent {
     }
     const maintenanceRequestDetails = success.data.data as unknown;
     this.requestData.set(maintenanceRequestDetails as ClientRequests);
-
   }
 }
-

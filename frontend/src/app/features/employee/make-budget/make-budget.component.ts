@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
@@ -22,7 +22,7 @@ import { ClientRequests } from '../requests/types/client-requests.type';
   templateUrl: './make-budget.component.html',
   styleUrls: ['./make-budget.component.scss'],
 })
-export class MakeBudgetComponent {
+export class MakeBudgetComponent implements OnInit {
   budgetData = signal(JSON.parse(JSON.stringify(budgetData)));
   requestId: number = Number.parseInt(window.location.pathname.match(/\/orcamento\/(\d+)/)![1]);
 
@@ -51,7 +51,9 @@ export class MakeBudgetComponent {
     private confirmBudgetService: confirmBudgetService,
     private popupService: PopupService,
     private router: Router,
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.getRequestDetailsByRequestId();
   }
 

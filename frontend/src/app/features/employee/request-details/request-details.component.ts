@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
@@ -17,7 +17,7 @@ import { EmployeeRequestHistory } from './types/employee-request-history.type';
   templateUrl: './request-details.component.html',
   styleUrls: ['./request-details.component.scss'],
 })
-export class EmployeeRequestDetailsComponent {
+export class EmployeeRequestDetailsComponent implements OnInit {
   requestId: number = Number.parseInt(window.location.pathname.match(/\/solicitacao\/(\d+)/)![1]);
 
   requestData = signal<EmployeeRequests>({
@@ -40,7 +40,9 @@ export class EmployeeRequestDetailsComponent {
     public router: Router,
     private requestDetailsService: RequestDetailsService,
     private popupService: PopupService,
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.getRequestDetailsByRequestId(this.requestId);
     this.getRequestHistory(this.requestId);
   }

@@ -19,21 +19,7 @@ export class RequestDetailsService {
         throw error;
       }
     }
-  /*  return maintenanceRequests
-      .filter((request) => request.id === requestId)
-      ?.map((request) => {
-        return {
-          deviceDescription: request.deviceDescription,
-          deviceCategory: request.deviceCategory,
-          issueDescription: request.issueDescription,
-          date: request.date,
-          hour: request.hour,
-          employee: request.history.length > 0 ? request.history[request.history.length - 1].employee : null,
-          currentStatus: request.currentStatus,
-          history: request.history,
-        };
-      })?.[0]; */
-  } 
+  }
 
   async getRequestHistory(requestId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
@@ -49,5 +35,5 @@ export class RequestDetailsService {
       }
     }
   }
- 
+
 }

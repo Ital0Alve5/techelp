@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 
 import { RequestsService } from './services/requests.service';
 import { TableComponent } from '@/shared/ui/table/table.component';
@@ -17,14 +17,16 @@ import { ClientRequests } from './types/client-requests.type';
   templateUrl: './requests-table.component.html',
   styleUrl: './requests-table.component.scss',
 })
-export class ClientRequestsTableComponent {
+export class ClientRequestsTableComponent implements OnInit {
   requests = signal<ClientRequests[]>([]);
 
   constructor(
     private requestsService: RequestsService,
     private router: Router,
     private popupService: PopupService,
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.getRequestsById();
   }
 

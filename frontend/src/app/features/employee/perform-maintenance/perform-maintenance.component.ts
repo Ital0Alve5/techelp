@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
@@ -22,16 +22,11 @@ import { Employee } from '@/shared/types/employee.type';
   selector: 'app-perform-maintenance',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, ArrowRightIcon, ButtonComponent, ModalComponent, SelectComponent],
-  providers: [
-    RequestsService,
-    RedirectMaintenanceService,
-    EmployeeService,
-    confirmBudgetService,
-  ],
+  providers: [RequestsService, RedirectMaintenanceService, EmployeeService, confirmBudgetService],
   templateUrl: './perform-maintenance.component.html',
   styleUrls: ['./perform-maintenance.component.scss'],
 })
-export class PerformMaintenanceComponent {
+export class PerformMaintenanceComponent implements OnInit {
   employeeId: number = JSON.parse(localStorage.getItem('userId')!);
 
   requestId: number = Number.parseInt(window.location.pathname.match(/\/manutencao\/(\d+)/)![1]);
@@ -73,7 +68,6 @@ export class PerformMaintenanceComponent {
     clientPhone: '',
   });
 
-
   constructor(
     private popupService: PopupService,
     private router: Router,
@@ -82,7 +76,9 @@ export class PerformMaintenanceComponent {
     private requestsService: RequestsService,
     private confirmBudgetService: confirmBudgetService,
     public currencyMaskService: CurrencyMaskService,
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.fetchEmployees();
     this.getRequestDetailsByRequestId();
   }
@@ -198,9 +194,9 @@ export class PerformMaintenanceComponent {
       const response = await this.requestsService.performMaintenance(
         this.requestId,
         maintenanceDetails.form.value.maintenanceDescription,
-        maintenanceDetails.form.value.orientationToClient
+        maintenanceDetails.form.value.orientationToClient,
       );
-      console.log(response)
+      console.log(response);
 
       if (response?.data) {
         console.log('Resposta da requisição de manutenção:', response.data);

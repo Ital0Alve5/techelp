@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Category } from '@/shared/types/category.type';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { FormsModule } from '@angular/forms';
@@ -17,20 +17,12 @@ import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [
-    ModalComponent,
-    FormsModule,
-    EditIcon,
-    DeleteIcon,
-    AddIcon,
-    TableComponent,
-    TextareaComponent,
-  ],
+  imports: [ModalComponent, FormsModule, EditIcon, DeleteIcon, AddIcon, TableComponent, TextareaComponent],
   providers: [RequiredValidator, MinLengthValidator, CategoriesService],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.scss'],
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements OnInit {
   userId: number = JSON.parse(localStorage.getItem('userId')!);
   categories = signal<Category[]>([]);
   newCategorieData = signal(JSON.parse(JSON.stringify(categorieData)));
@@ -45,7 +37,9 @@ export class CategoriesComponent {
     private requiredValidator: RequiredValidator,
     private minLengthValidator: MinLengthValidator,
     private popupService: PopupService,
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.loadCategories();
   }
 
@@ -74,14 +68,14 @@ export class CategoriesComponent {
 
     if (Array.isArray(categoriesList)) {
       const categories = categoriesList
-        .map(item => ({
+        .map((item) => ({
           id: Number(item['id']),
           label: item['name'],
-          isActive: item['is_active']
+          isActive: item['is_active'],
         }))
-        .filter(category => category.isActive);
+        .filter((category) => category.isActive);
 
-      this.categories.set(categories.filter(category => category));
+      this.categories.set(categories.filter((category) => category));
     } else {
       this.popupService.addNewPopUp({
         type: Status.Error,
@@ -89,7 +83,6 @@ export class CategoriesComponent {
       });
     }
   }
-
 
   openNewCategoryModal() {
     this.isNewCategoryModalOpen.set(false);
@@ -144,7 +137,10 @@ export class CategoriesComponent {
     if (!this.validateEditedCategory()) return;
 
     try {
-      const response = await this.categoriesService.updateCategory(this.selectedCategoryData().id!, this.selectedCategoryData().value);
+      const response = await this.categoriesService.updateCategory(
+        this.selectedCategoryData().id!,
+        this.selectedCategoryData().value,
+      );
       if (response && response.data) {
         this.selectedCategoryData().value = '';
         this.selectedCategoryData().id = -1;

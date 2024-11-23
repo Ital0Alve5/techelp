@@ -9,7 +9,6 @@ import { InputComponent } from '@/shared/ui/input/input.component';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
-import { RequestsService } from '@/shared/services/requests/requests.service';
 import { EmployeeService } from '@/shared/services/employees/employee.service';
 import { confirmBudgetService } from './services/confirm-budget.service';
 import { CurrencyMaskService } from '@/shared/services/input/masks.service';
@@ -19,7 +18,7 @@ import { ClientRequests } from '../requests/types/client-requests.type';
   selector: 'app-make-budget',
   standalone: true,
   imports: [ButtonComponent, ArrowRightIcon, RouterLink, ModalComponent, FormsModule, InputComponent],
-  providers: [RequestsService, EmployeeService, confirmBudgetService],
+  providers: [EmployeeService, confirmBudgetService],
   templateUrl: './make-budget.component.html',
   styleUrls: ['./make-budget.component.scss'],
 })

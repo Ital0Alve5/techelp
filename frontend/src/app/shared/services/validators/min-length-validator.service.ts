@@ -11,6 +11,7 @@ export class MinLengthValidator extends BaseValidator {
   }
 
   override validate(inputValue: string): InputError {
+    console.log(inputValue)
     inputValue = super.sanitize(inputValue);
 
     if (inputValue.length < this.minLength)

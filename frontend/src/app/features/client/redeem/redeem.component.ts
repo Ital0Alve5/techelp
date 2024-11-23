@@ -7,7 +7,6 @@ import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
-import { RequestsService } from '@/shared/services/requests/requests.service';
 import { RedeemService } from './services/redeem.service';
 import { ClientRequests } from '../requests-table/types/client-requests.type';
 import { ConverterService } from '@/shared/services/utils/converter.service';
@@ -17,7 +16,7 @@ import { ConverterService } from '@/shared/services/utils/converter.service';
   selector: 'app-redeem',
   standalone: true,
   imports: [ButtonComponent, ArrowRightIcon, RouterLink, ModalComponent],
-  providers: [RequestsService, RedeemService],
+  providers: [RedeemService],
   templateUrl: './redeem.component.html',
   styleUrls: ['./redeem.component.scss'],
 })

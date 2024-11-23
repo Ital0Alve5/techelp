@@ -28,7 +28,7 @@ import lombok.Setter;
 @Setter
 public class ClientModel extends User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable = false, unique = true)

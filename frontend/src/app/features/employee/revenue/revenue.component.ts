@@ -4,7 +4,6 @@ import { TableComponent } from '@/shared/ui/table/table.component';
 import { CurrencyMaskService } from '@/shared/services/input/masks.service';
 import { RouterLink } from '@angular/router';
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
-import { RequestsService } from '@/shared/services/requests/requests.service';
 import { Revenue } from './types/revenue.type';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
@@ -13,7 +12,7 @@ import { Status } from '@/shared/ui/pop-up/enum/status.enum';
   selector: 'app-revenue',
   standalone: true,
   imports: [TableComponent, RouterLink, ArrowRightIcon],
-  providers: [CurrencyMaskService, RevenueService, RequestsService, PopupService],
+  providers: [CurrencyMaskService, RevenueService, PopupService],
   templateUrl: './revenue.component.html',
   styleUrl: './revenue.component.scss',
 })

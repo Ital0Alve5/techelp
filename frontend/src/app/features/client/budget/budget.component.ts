@@ -10,7 +10,6 @@ import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 import { BudgetService } from './services/budget.service';
-import { RequestsService } from '@/shared/services/requests/requests.service';
 import { ClientRequests } from '../requests-table/types/client-requests.type';
 import { ConverterService } from '@/shared/services/utils/converter.service';
 
@@ -18,7 +17,7 @@ import { ConverterService } from '@/shared/services/utils/converter.service';
   selector: 'app-budget',
   standalone: true,
   imports: [ButtonComponent, ArrowRightIcon, RouterLink, ModalComponent, FormsModule],
-  providers: [BudgetService, RequestsService],
+  providers: [BudgetService],
   templateUrl: './budget.component.html',
   styleUrl: './budget.component.scss',
 })

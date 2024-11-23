@@ -3,18 +3,14 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { CardComponent } from '@/shared/ui/card/card.component';
-import { AuthTypeComponent } from '@/shared/ui/auth-type/auth-type.component';
 import { TextareaComponent } from '@/shared/ui/textarea/textarea.component';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
-import { UserIcon } from '@/shared/ui/icons/user.icon';
-import { LockIcon } from '@/shared/ui/icons/lock.icon';
 import { SelectComponent } from '@/shared/ui/select/select.component';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 
 import { RequiredValidator } from '@/shared/services/validators/required-validator.service';
 import { MaxLengthValidator } from '@/shared/services/validators/max-length-validator.service';
 import { MinLengthValidator } from '@/shared/services/validators/min-length-validator.service';
-import { DeviceCategoryValidator } from '@/shared/services/validators/device-category.service';
 import { RequestMaintenanceService } from './services/request-maintenance.service';
 import { PopupService } from '@/shared/services/pop-up/pop-up.service';
 
@@ -25,11 +21,8 @@ import { Categorie } from './types/categorie.type';
   standalone: true,
   imports: [
     CardComponent,
-    AuthTypeComponent,
     TextareaComponent,
     ButtonComponent,
-    UserIcon,
-    LockIcon,
     SelectComponent,
     FormsModule,
   ],
@@ -37,7 +30,6 @@ import { Categorie } from './types/categorie.type';
     RequiredValidator,
     MaxLengthValidator,
     MinLengthValidator,
-    DeviceCategoryValidator,
     RequestMaintenanceService,
   ],
   templateUrl: './request-maintenance.component.html',
@@ -51,7 +43,6 @@ export class RequestMaintenanceComponent implements OnInit {
     private requiredValidator: RequiredValidator,
     private maxLengthValidator: MaxLengthValidator,
     private minLengthValidator: MinLengthValidator,
-    private deviceCategoryValidator: DeviceCategoryValidator,
     private requestMaintenanceService: RequestMaintenanceService,
     private popupService: PopupService,
     private router: Router,
@@ -134,6 +125,8 @@ export class RequestMaintenanceComponent implements OnInit {
   onSubmit() {
     const { deviceDescription, issueDescription, deviceCategory } = this.formValues();
 
+    this.formValues().deviceCategory.validation = this.requiredValidator.validate(deviceCategory.value);
+
     this.minLengthValidator.setMinLength(5);
     this.maxLengthValidator.setMaxLength(50);
     this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
@@ -144,8 +137,6 @@ export class RequestMaintenanceComponent implements OnInit {
     this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
     this.formValues().issueDescription.validation = this.requiredValidator.validate(issueDescription.value);
 
-    this.requiredValidator.setNext(this.deviceCategoryValidator);
-    this.formValues().deviceCategory.validation = this.requiredValidator.validate(deviceCategory.value);
 
     if (!deviceDescription.validation.error && !issueDescription.validation.error && !deviceCategory.validation.error) {
       this.sendData();

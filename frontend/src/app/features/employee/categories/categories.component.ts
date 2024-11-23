@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { Categorie } from '@/shared/types/categorie.type';
+import { Category } from '@/shared/types/category.type';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { FormsModule } from '@angular/forms';
 import { CategoriesService } from './service/categories.service';
@@ -32,7 +32,7 @@ import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 })
 export class CategoriesComponent {
   userId: number = JSON.parse(localStorage.getItem('userId')!);
-  categories = signal<Categorie[]>([]);
+  categories = signal<Category[]>([]);
   newCategorieData = signal(JSON.parse(JSON.stringify(categorieData)));
   selectedCategoryData = signal(JSON.parse(JSON.stringify(categorieData)));
 
@@ -99,7 +99,7 @@ export class CategoriesComponent {
     this.isNewCategoryModalOpen.set(true);
   }
 
-  openEditCategoryModal(categorie: Categorie) {
+  openEditCategoryModal(categorie: Category) {
     this.selectedCategoryData().id = categorie.id;
     this.isEditCategoryModalOpen.set(false);
   }
@@ -108,7 +108,7 @@ export class CategoriesComponent {
     this.isEditCategoryModalOpen.set(true);
   }
 
-  openDeleteCategoryModal(categorie: Categorie) {
+  openDeleteCategoryModal(categorie: Category) {
     this.selectedCategoryData().id = categorie.id;
     this.isDeleteCategoryModalOpen.set(false);
   }

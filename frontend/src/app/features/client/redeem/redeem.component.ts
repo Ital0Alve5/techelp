@@ -2,7 +2,6 @@ import { Component, signal, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
 import { ButtonComponent } from '@/shared/ui/button/button.component';
-import { CardComponent } from '@/shared/ui/card/card.component';
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
@@ -17,7 +16,7 @@ import { ConverterService } from '@/shared/services/utils/converter.service';
 @Component({
   selector: 'app-redeem',
   standalone: true,
-  imports: [ButtonComponent, CardComponent, ArrowRightIcon, RouterLink, ModalComponent],
+  imports: [ButtonComponent, ArrowRightIcon, RouterLink, ModalComponent],
   providers: [RequestsService, RedeemService],
   templateUrl: './redeem.component.html',
   styleUrls: ['./redeem.component.scss'],

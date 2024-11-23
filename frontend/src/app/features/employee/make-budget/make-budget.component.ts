@@ -3,7 +3,6 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { ButtonComponent } from '@/shared/ui/button/button.component';
-import { CardComponent } from '@/shared/ui/card/card.component';
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { InputComponent } from '@/shared/ui/input/input.component';
@@ -19,7 +18,7 @@ import { ClientRequests } from '../requests/types/client-requests.type';
 @Component({
   selector: 'app-make-budget',
   standalone: true,
-  imports: [ButtonComponent, CardComponent, ArrowRightIcon, RouterLink, ModalComponent, FormsModule, InputComponent],
+  imports: [ButtonComponent, ArrowRightIcon, RouterLink, ModalComponent, FormsModule, InputComponent],
   providers: [RequestsService, EmployeeService, confirmBudgetService],
   templateUrl: './make-budget.component.html',
   styleUrls: ['./make-budget.component.scss'],

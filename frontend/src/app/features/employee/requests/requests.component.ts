@@ -1,10 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { WaitingIcon } from '@/shared/ui/icons/waiting.icon';
 import { AllowVisibilityIcon } from '@/shared/ui/icons/allow-visibility.icon';
 
-import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { TableComponent } from '@/shared/ui/table/table.component';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
@@ -20,7 +18,7 @@ import { ClientRequests } from './types/client-requests.type';
   selector: 'app-requests',
   standalone: true,
   providers: [RequestsService],
-  imports: [ButtonComponent, FiltersComponent, ModalComponent, TableComponent, WaitingIcon, AllowVisibilityIcon],
+  imports: [FiltersComponent, ModalComponent, TableComponent, AllowVisibilityIcon],
   templateUrl: './requests.component.html',
   styleUrl: './requests.component.scss',
 })

@@ -1,8 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
-import { ButtonComponent } from '@/shared/ui/button/button.component';
-import { CardComponent } from '@/shared/ui/card/card.component';
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 
 import { RequestDetailsService } from './services/request-details.service';
@@ -14,7 +12,7 @@ import { EmployeeRequestHistory } from './types/employee-request-history.type';
 @Component({
   selector: 'app-employee-request-details',
   standalone: true,
-  imports: [ButtonComponent, CardComponent, ArrowRightIcon, RouterLink],
+  imports: [ArrowRightIcon, RouterLink],
   providers: [RequestDetailsService],
   templateUrl: './request-details.component.html',
   styleUrls: ['./request-details.component.scss'],

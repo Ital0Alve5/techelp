@@ -4,7 +4,6 @@ import { RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 
 import { ButtonComponent } from '@/shared/ui/button/button.component';
-import { CardComponent } from '@/shared/ui/card/card.component';
 import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { Status } from '@/shared/ui/pop-up/enum/status.enum';
@@ -18,7 +17,7 @@ import { ConverterService } from '@/shared/services/utils/converter.service';
 @Component({
   selector: 'app-budget',
   standalone: true,
-  imports: [ButtonComponent, CardComponent, ArrowRightIcon, RouterLink, ModalComponent, FormsModule],
+  imports: [ButtonComponent, ArrowRightIcon, RouterLink, ModalComponent, FormsModule],
   providers: [BudgetService, RequestsService],
   templateUrl: './budget.component.html',
   styleUrl: './budget.component.scss',

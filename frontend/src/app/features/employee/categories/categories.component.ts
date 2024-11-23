@@ -1,11 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { Categorie } from '@/shared/types/categorie.type';
-import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { FormsModule } from '@angular/forms';
 import { CategoriesService } from './service/categories.service';
-import { RouterLink } from '@angular/router';
-import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 import { TableComponent } from '@/shared/ui/table/table.component';
 import { EditIcon } from '@/shared/ui/icons/edit/edit.icon';
 import { DeleteIcon } from '@/shared/ui/icons/delete/delete.icon';
@@ -21,11 +18,8 @@ import { Status } from '@/shared/ui/pop-up/enum/status.enum';
   selector: 'app-categories',
   standalone: true,
   imports: [
-    ButtonComponent,
     ModalComponent,
     FormsModule,
-    RouterLink,
-    ArrowRightIcon,
     EditIcon,
     DeleteIcon,
     AddIcon,
@@ -57,7 +51,7 @@ export class CategoriesComponent {
 
   async loadCategories() {
     const response = await this.categoriesService.getCategories();
-  
+
     if (!response?.data) {
       this.popupService.addNewPopUp({
         type: Status.Error,
@@ -65,7 +59,7 @@ export class CategoriesComponent {
       });
       return;
     }
-  
+
     if ('errors' in response.data) {
       Object.values(response.data.errors).forEach((error) => {
         this.popupService.addNewPopUp({
@@ -75,9 +69,9 @@ export class CategoriesComponent {
       });
       return;
     }
-  
+
     const categoriesList = response.data.data?.['deviceCategories'];
-  
+
     if (Array.isArray(categoriesList)) {
       const categories = categoriesList
         .map(item => ({
@@ -86,7 +80,7 @@ export class CategoriesComponent {
           isActive: item['is_active']
         }))
         .filter(category => category.isActive);
-  
+
       this.categories.set(categories.filter(category => category));
     } else {
       this.popupService.addNewPopUp({
@@ -95,7 +89,7 @@ export class CategoriesComponent {
       });
     }
   }
-  
+
 
   openNewCategoryModal() {
     this.isNewCategoryModalOpen.set(false);

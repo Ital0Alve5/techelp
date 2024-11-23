@@ -1,8 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { EmployeeService } from '@/shared/services/employees/employee.service';
-import { EmployeesTableRowComponent } from './components/employees-table-row/employees-table-row.component';
-import { ArrowRightIcon } from '@/shared/ui/icons/arrow-right.icon';
 import { AddIcon } from '@/shared/ui/icons/add/add.icon';
 import { DeleteIcon } from '@/shared/ui/icons/delete/delete.icon';
 import { EditIcon } from '@/shared/ui/icons/edit/edit.icon';
@@ -24,9 +21,6 @@ import { Status } from '@/shared/ui/pop-up/enum/status.enum';
   selector: 'app-employees-listing',
   standalone: true,
   imports: [
-    EmployeesTableRowComponent,
-    RouterLink,
-    ArrowRightIcon,
     AddIcon,
     DeleteIcon,
     EditIcon,

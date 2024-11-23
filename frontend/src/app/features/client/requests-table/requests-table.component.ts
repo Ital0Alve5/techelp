@@ -1,7 +1,5 @@
 import { Component, signal } from '@angular/core';
 
-import { CardComponent } from '@/shared/ui/card/card.component';
-
 import { RequestsService } from './services/requests.service';
 import { TableComponent } from '@/shared/ui/table/table.component';
 import { Router } from '@angular/router';
@@ -14,7 +12,7 @@ import { ClientRequests } from './types/client-requests.type';
 @Component({
   selector: 'app-client-requests-table',
   standalone: true,
-  imports: [CardComponent, AllowVisibilityIcon, TableComponent, WaitingIcon],
+  imports: [AllowVisibilityIcon, TableComponent, WaitingIcon],
   providers: [RequestsService],
   templateUrl: './requests-table.component.html',
   styleUrl: './requests-table.component.scss',

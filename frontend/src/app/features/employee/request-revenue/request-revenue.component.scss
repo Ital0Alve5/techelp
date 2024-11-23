@@ -3,15 +3,25 @@
 @import 'typology';
 
 :host {
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  @media (min-width: $desktop-width) {
-    max-width: 460px;
-  }
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
 }
+
+
+// :host {
+//   width: 100%;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+
+//   @media (min-width: $desktop-width) {
+//     max-width: 460px;
+//   }
+// }
 
 h1 {
   text-align: center;

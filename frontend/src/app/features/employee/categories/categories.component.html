@@ -1,9 +1,3 @@
-<div class="buttons">
-  <a routerLink="/funcionario/solicitacoes">
-    <arrow-right-icon width="20px" color="#fff"></arrow-right-icon>
-  </a>
-</div>
-
 @if (categories().length > 0) {
   <app-table>
     <tr table-titles>
@@ -20,7 +14,7 @@
         <td (click)="openEditCategoryModal(categorie)"><edit-icon /></td>
         <td (click)="openDeleteCategoryModal(categorie)"><delete-icon /></td>
       </tr>
-    }    
+    }
   </app-table>
 } @else {
   <div class="noCategoriesYet">

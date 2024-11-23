@@ -1,6 +1,5 @@
 import { Component, OnInit, output, signal } from '@angular/core';
 
-import { ButtonComponent } from '@/shared/ui/button/button.component';
 import { DateComponent } from '../date/date.component';
 import { FiltersResponse } from './types/filters-response.type';
 import { FilterTypes } from './types/filter-types.type';
@@ -8,7 +7,7 @@ import { FilterTypes } from './types/filter-types.type';
 @Component({
   selector: 'app-filters',
   standalone: true,
-  imports: [ButtonComponent, DateComponent],
+  imports: [DateComponent],
   templateUrl: './filters.component.html',
   styleUrl: './filters.component.scss',
 })
@@ -19,6 +18,7 @@ export class FiltersComponent implements OnInit {
   currentDate = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${this.date.getDate()}`;
 
   filterType = signal(this.urlParams.get('filter'));
+  currentFilter = signal('abertas');
   startDate = signal(this.urlParams.get('startDate'));
   endDate = signal(this.urlParams.get('endDate') || this.currentDate);
 
@@ -60,6 +60,7 @@ export class FiltersComponent implements OnInit {
     this.onFilter.emit(response);
     this.setQueryParams(response);
     this.clearDateFilter();
+    this.currentFilter.set('hoje');
   }
 
   filterAll() {
@@ -71,6 +72,7 @@ export class FiltersComponent implements OnInit {
     this.onFilter.emit(response);
     this.setQueryParams(response);
     this.clearDateFilter();
+    this.currentFilter.set('todas');
   }
 
   filterOpen() {
@@ -82,6 +84,7 @@ export class FiltersComponent implements OnInit {
     this.onFilter.emit(response);
     this.setQueryParams(response);
     this.clearDateFilter();
+    this.currentFilter.set('abertas');
   }
 
   filterByDate() {
@@ -96,6 +99,7 @@ export class FiltersComponent implements OnInit {
 
     response.data = { startDate: this.startDate()!, endDate: this.endDate()! };
     this.setQueryParams(response);
+    this.currentFilter.set('');
   }
 
   setQueryParams(filterResponse: FiltersResponse) {

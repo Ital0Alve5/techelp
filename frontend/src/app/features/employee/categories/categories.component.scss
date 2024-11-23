@@ -3,13 +3,15 @@
 @import 'typology';
 
 :host {
-  width: 100%;
-  max-width: 300px;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 app-table {
-  display: flex;
-  margin-top: 30px;
+  width: 100%;
+  max-width: 300px;
 }
 
 .noRequestsYet {

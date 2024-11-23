@@ -1,3 +1,5 @@
+@import 'colors';
+
 .filters {
   display: flex;
   justify-content: space-between;
@@ -10,4 +12,17 @@
     gap: 10px;
     font-weight: 600;
   }
+}
+
+button {
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: transparent;
+  border: 1px solid $brand-pink;
+}
+
+.current {
+  background-color: $brand-pink;
+  color: white;
 }

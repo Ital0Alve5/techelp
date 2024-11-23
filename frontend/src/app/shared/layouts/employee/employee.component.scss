@@ -5,8 +5,6 @@ main {
   position: relative;
   margin: 0 20px;
   padding: 80px 0;
-  display: flex;
-  justify-content: center;
 
   @media (min-width: $tablet-width) {
     margin: 0 80px;

@@ -5,7 +5,7 @@
 
     <div class="options">
       <div (click)="chooseCategory()" [class]="isCategory() ? 'active' : ''">Categoria</div>
-      <div (click)="chooseDate()" [class]="!isCategory() ? 'active' : ''">data</div>
+      <div (click)="chooseDate()" [class]="!isCategory() ? 'active' : ''">Data</div>
     </div>
   </div>
   <form (ngSubmit)="onSubmit()">

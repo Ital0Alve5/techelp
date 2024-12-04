@@ -15,7 +15,7 @@ export class FiltersComponent implements OnInit {
   queryString = location.search;
   urlParams = new URLSearchParams(this.queryString);
   date = new Date();
-  currentDate = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${this.date.getDate()}`;
+  currentDate = `${this.date.getFullYear()}-${String(this.date.getMonth() + 1).padStart(2, '0')}-${String(this.date.getDate()).padStart(2, '0')}`;
 
   filterType = signal(this.urlParams.get('filter'));
   currentFilter = signal('abertas');

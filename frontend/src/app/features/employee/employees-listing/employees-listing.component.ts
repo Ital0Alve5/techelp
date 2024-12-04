@@ -20,14 +20,7 @@ import { Status } from '@/shared/ui/pop-up/enum/status.enum';
 @Component({
   selector: 'app-employees-listing',
   standalone: true,
-  imports: [
-    AddIcon,
-    DeleteIcon,
-    EditIcon,
-    TableComponent,
-    ModalComponent,
-    InputComponent,
-  ],
+  imports: [AddIcon, DeleteIcon, EditIcon, TableComponent, ModalComponent, InputComponent],
   providers: [
     EmployeeService,
     RequiredValidator,
@@ -41,7 +34,6 @@ import { Status } from '@/shared/ui/pop-up/enum/status.enum';
   styleUrl: './employees-listing.component.scss',
 })
 export class EmployeesListingComponent implements OnInit {
-
   userId: number = JSON.parse(localStorage.getItem('userId')!);
 
   employeesList = signal([] as Employee[]);
@@ -216,18 +208,31 @@ export class EmployeesListingComponent implements OnInit {
       name: this.newEmployeeData().name.value,
       birthdate: this.newEmployeeData().birthdate.value,
       is_active: true,
-      is_current: false
+      is_current: false,
     };
 
-    if (!(await this.employeeService.addNewEmployeeApi(employeeData))) {
+    const response = await this.employeeService.addNewEmployeeApi(employeeData);
+
+    if (!response?.data) {
       this.popupService.addNewPopUp({
         type: Status.Error,
-        message: 'Funcionário já existe!',
+        message: 'Algo deu errado!',
+      });
+      return;
+    }
+
+    if ('errors' in response.data) {
+      Object.values(response.data.errors).forEach((error) => {
+        this.popupService.addNewPopUp({
+          type: Status.Error,
+          message: error,
+        });
       });
       return;
     }
 
     const responseFetch = await this.fetchEmployeeByEmail(employeeData.email);
+
     if (responseFetch) {
       const id = responseFetch?.['id'];
       employeeData.id = id;
@@ -248,7 +253,7 @@ export class EmployeesListingComponent implements OnInit {
       birthdate: this.selectedEmployeeData().birthdate.value,
       password: this.selectedEmployeeData().password.value,
       is_active: this.selectedEmployeeData().is_active,
-      is_current: this.selectedEmployeeData().is_current
+      is_current: this.selectedEmployeeData().is_current,
     };
 
     if (!this.updateEmployeeById(this.selectedEmployeeData().id, employeeData)) {

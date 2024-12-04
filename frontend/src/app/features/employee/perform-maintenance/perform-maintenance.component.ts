@@ -38,17 +38,7 @@ export class PerformMaintenanceComponent implements OnInit {
   isRedirectModalOpen = signal(true);
   selectedEmployeeId: number | null = null;
 
-  registeredEmployees = signal<Employee[]>([
-    {
-      id: 0,
-      name: '',
-      email: '',
-      birthdate: '',
-      password: '',
-      is_active: false,
-      is_current: false,
-    },
-  ]);
+  registeredEmployees = signal<Employee[]>([]);
 
   requestData = signal<ClientRequests>({
     id: 0,
@@ -105,7 +95,12 @@ export class PerformMaintenanceComponent implements OnInit {
     }
 
     const registeredEmployees = response?.data?.data?.['allEmployeesList'] as unknown;
-    this.registeredEmployees.set(registeredEmployees as Employee[]);
+
+    (registeredEmployees as Employee[]).forEach((employee) => {
+      if (employee.is_active) {
+        this.registeredEmployees().push(employee);
+      }
+    });
   }
 
   async getRequestDetailsByRequestId() {
@@ -196,10 +191,8 @@ export class PerformMaintenanceComponent implements OnInit {
         maintenanceDetails.form.value.maintenanceDescription,
         maintenanceDetails.form.value.orientationToClient,
       );
-      console.log(response);
 
       if (response?.data) {
-        console.log('Resposta da requisição de manutenção:', response.data);
         this.router.navigate([`/funcionario/solicitacoes`]);
 
         this.popupService.addNewPopUp({
@@ -207,7 +200,6 @@ export class PerformMaintenanceComponent implements OnInit {
           message: 'Manutenção confirmada!',
         });
       } else {
-        console.log('Resposta sem dados:', response);
         this.popupService.addNewPopUp({
           type: Status.Error,
           message: 'Algo deu errado ao realizar a manutenção!',

@@ -25,7 +25,6 @@ export class AuthService {
     ).pipe(
       map((response: AxiosResponse<{ authenticated: boolean; userType?: string; userName?: string }>) => {
         if (response.data.authenticated) {
-          console.log(response.data.userName)
           this.userType.set(response.data.userType || null);
           this.userName.set(response.data.userName || '');
         } else {

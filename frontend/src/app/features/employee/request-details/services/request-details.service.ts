@@ -24,7 +24,6 @@ export class RequestDetailsService {
   async getRequestHistory(requestId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
       const response = await axiosConfig('/api/employee/maintenance-requests/'+requestId+'/history');
-      console.log(response);
       return response;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

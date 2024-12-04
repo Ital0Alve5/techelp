@@ -19,19 +19,8 @@ import { Categorie } from './types/categorie.type';
 @Component({
   selector: 'app-request-maintenance',
   standalone: true,
-  imports: [
-    CardComponent,
-    TextareaComponent,
-    ButtonComponent,
-    SelectComponent,
-    FormsModule,
-  ],
-  providers: [
-    RequiredValidator,
-    MaxLengthValidator,
-    MinLengthValidator,
-    RequestMaintenanceService,
-  ],
+  imports: [CardComponent, TextareaComponent, ButtonComponent, SelectComponent, FormsModule],
+  providers: [RequiredValidator, MaxLengthValidator, MinLengthValidator, RequestMaintenanceService],
   templateUrl: './request-maintenance.component.html',
   styleUrls: ['./request-maintenance.component.scss'],
 })
@@ -76,7 +65,11 @@ export class RequestMaintenanceComponent implements OnInit {
     const maintenanceRequestsList = success.data.data?.['deviceCategories'] as unknown;
 
     if (Array.isArray(maintenanceRequestsList)) {
-      this.deviceCategories.set(maintenanceRequestsList as Categorie[]);
+      maintenanceRequestsList.forEach((request) => {
+        if (request.is_active) {
+          this.deviceCategories().push(request);
+        }
+      });
     } else {
       this.popupService.addNewPopUp({
         type: Status.Error,
@@ -136,7 +129,6 @@ export class RequestMaintenanceComponent implements OnInit {
     this.maxLengthValidator.setMaxLength(150);
     this.requiredValidator.setNext(this.minLengthValidator).setNext(this.maxLengthValidator);
     this.formValues().issueDescription.validation = this.requiredValidator.validate(issueDescription.value);
-
 
     if (!deviceDescription.validation.error && !issueDescription.validation.error && !deviceCategory.validation.error) {
       this.sendData();

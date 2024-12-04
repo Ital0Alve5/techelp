@@ -4,12 +4,15 @@ import axios, { AxiosResponse } from 'axios';
 import axiosConfig from '@/axios.config';
 import { ResponseError } from '@/shared/types/api/response-error.type';
 import { ResponseSuccess } from '@/shared/types/api/response-success.type';
+import { EmployeeRequestHistory } from '../types/employee-request-history.type';
 
 @Injectable()
 export class RequestDetailsService {
-  async getRequestDetailsByRequestId(requestId: number) : Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
+  async getRequestDetailsByRequestId(
+    requestId: number,
+  ): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      const response = await axiosConfig('/api/employee/maintenance-requests/'+requestId);
+      const response = await axiosConfig('/api/employee/maintenance-requests/' + requestId);
       return response;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -23,7 +26,7 @@ export class RequestDetailsService {
 
   async getRequestHistory(requestId: number): Promise<AxiosResponse<ResponseError | ResponseSuccess> | null> {
     try {
-      const response = await axiosConfig('/api/employee/maintenance-requests/'+requestId+'/history');
+      const response = await axiosConfig('/api/employee/maintenance-requests/' + requestId + '/history');
       return response;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -35,4 +38,14 @@ export class RequestDetailsService {
     }
   }
 
+  sortEmployeeRequestsByDate(requests: EmployeeRequestHistory[]): EmployeeRequestHistory[] {
+    return requests
+      .sort((a: EmployeeRequestHistory, b: EmployeeRequestHistory) => {
+        const dateTimeA = new Date(a.date.split('/').reverse().join('-').replace(' ', 'T'));
+        const dateTimeB = new Date(b.date.split('/').reverse().join('-').replace(' ', 'T'));
+
+        return dateTimeA.getTime() - dateTimeB.getTime();
+      })
+      .reverse();
+  }
 }

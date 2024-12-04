@@ -68,6 +68,8 @@ export class RequestDetailsComponent implements OnInit {
     }
     const requestHistory = success.data.data as unknown;
     this.dataHistory.set(requestHistory as ClientRequestHistory[]);
+    console.log(this.dataHistory());
+    this.requestDetailsService.sortEmployeeRequestsByDate(this.dataHistory());
   }
   async getRequestDetailsByRequestId(id: number) {
     const success = await this.requestDetailsService.getRequestDetailsByRequestId(id);

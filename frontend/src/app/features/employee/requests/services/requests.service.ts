@@ -107,7 +107,7 @@ export class RequestsService {
     return requests.sort((a: ClientRequests, b: ClientRequests) => {
       const dateTimeA = new Date(`${a.date.split('/').reverse().join('-')}T${a.hour}`);
       const dateTimeB = new Date(`${b.date.split('/').reverse().join('-')}T${b.hour}`);
-      return dateTimeB.getTime() - dateTimeA.getTime(); // Reverse order for most recent first
+      return dateTimeB.getTime() - dateTimeA.getTime(); 
     });
 }
 }

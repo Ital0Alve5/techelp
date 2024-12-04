@@ -379,7 +379,7 @@ public class MaintenanceRequestService {
                                 .orElseThrow(() -> new ValidationException("Erro de validação",
                                                 Map.of("id", "O outro funcionário não foi encontrado!")));
 
-                if (email == anotherEmployeeEmail) {
+                if (email.equals(anotherEmployeeEmail)) {
                         throw new ValidationException("Erro de autorização",
                                         Map.of("requestId",
                                                         "Usuário não pode redirecionar para si mesmo!"));

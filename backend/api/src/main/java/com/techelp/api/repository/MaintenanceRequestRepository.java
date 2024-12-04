@@ -8,11 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import com.techelp.api.model.MaintenanceRequestModel;
+
 import com.techelp.api.dto.RevenueDto;
 import com.techelp.api.model.ClientModel;
 import com.techelp.api.model.DeviceModel;
 import com.techelp.api.model.EmployeeModel;
+import com.techelp.api.model.MaintenanceRequestModel;
 
 @Repository
 public interface MaintenanceRequestRepository extends JpaRepository<MaintenanceRequestModel, Integer> {
@@ -54,7 +55,7 @@ public interface MaintenanceRequestRepository extends JpaRepository<MaintenanceR
                         "   WHERE h1.maintenanceRequest = mr " +
                         "   AND h1.date = (SELECT MAX(h2.date) FROM HistoryModel h2 WHERE h2.maintenanceRequest = mr) "
                         +
-                        "   AND h1.status.name = 'Aberta' " + // Verifica se o status atual é "Aberta"
+                        "   AND h1.status.name = 'Aberta' " + 
                         "   AND CAST(h1.date AS DATE) BETWEEN :startDate AND :endDate" +
                         ")")
         List<MaintenanceRequestModel> findRequestsByCreationDateRange(

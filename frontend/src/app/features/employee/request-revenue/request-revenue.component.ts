@@ -24,7 +24,7 @@ export class RequestRevenueComponent {
   isCategory = signal(true);
 
   date = new Date();
-  currentDate = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${this.date.getDate()}`;
+  currentDate = `${this.date.getFullYear()}-${String(this.date.getMonth() + 1).padStart(2, '0')}-${String(this.date.getDate()).padStart(2, '0')}`;
 
   constructor(
     private router: Router,

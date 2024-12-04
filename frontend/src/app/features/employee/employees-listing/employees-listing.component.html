@@ -5,7 +5,7 @@
     <th (click)="openNewEmployeeModal()"><add-icon /></th>
   </tr>
 
-  @for (employee of employeesList(); track employee.id) {
+  @for (employee of employeesList(); track $index) {
     <tr table-data>
       <td>
         {{ employee.name }}

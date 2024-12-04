@@ -6,7 +6,7 @@
       <th (click)="openNewCategoryModal()"><add-icon /></th>
     </tr>
 
-    @for (categorie of categories(); track categorie.id) {
+    @for (categorie of categories(); track $index) {
       <tr table-data>
         <td>
           {{ categorie.label }}

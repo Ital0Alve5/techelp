@@ -58,6 +58,7 @@ export class RequestsComponent {
 
     if (Array.isArray(maintenanceRequestsList)) {
       this.requests.set(maintenanceRequestsList as ClientRequests[]);
+      this.requestsService.sortRequestsByDateAndHour(maintenanceRequestsList);
     } else {
       this.popupService.addNewPopUp({
         type: Status.Error,
@@ -91,6 +92,7 @@ export class RequestsComponent {
 
     if (Array.isArray(maintenanceRequestsList)) {
       this.requests.set(maintenanceRequestsList as ClientRequests[]);
+      this.requestsService.sortRequestsByDateAndHour(maintenanceRequestsList);
     } else {
       this.popupService.addNewPopUp({
         type: Status.Error,
@@ -124,6 +126,7 @@ export class RequestsComponent {
 
     if (Array.isArray(maintenanceRequestsList)) {
       this.requests.set(maintenanceRequestsList as ClientRequests[]);
+      this.requestsService.sortRequestsByDateAndHour(maintenanceRequestsList);
     } else {
       this.popupService.addNewPopUp({
         type: Status.Error,
@@ -160,6 +163,7 @@ export class RequestsComponent {
 
     if (Array.isArray(maintenanceRequestsList)) {
       this.requests.set(maintenanceRequestsList as ClientRequests[]);
+      this.requestsService.sortRequestsByDateAndHour(maintenanceRequestsList);
     } else {
       this.popupService.addNewPopUp({
         type: Status.Error,

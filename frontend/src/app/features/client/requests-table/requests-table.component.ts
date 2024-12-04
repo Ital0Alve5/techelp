@@ -55,6 +55,7 @@ export class ClientRequestsTableComponent implements OnInit {
 
     if (Array.isArray(maintenanceRequestsList) && maintenanceRequestsList.every((item) => typeof item === 'object')) {
       this.requests.set(maintenanceRequestsList as ClientRequests[]);
+      this.requestsService.sortRequestsByDateAndHour(maintenanceRequestsList);
     } else {
       this.popupService.addNewPopUp({
         type: Status.Error,

@@ -1,0 +1,22 @@
+<div>
+  <label for="startDate">Início:</label>
+  <input
+    id="startDate"
+    type="date"
+    #startDateElement
+    [max]="endDate()"
+    [value]="startDate()"
+    (change)="onStartDateFiltered(startDateElement.value)"
+  />
+
+  <label for="endDate">Fim:</label>
+  <input
+    id="endDate"
+    type="date"
+    #endDateElement
+    [value]="endDate()"
+    [max]="currentDate()"
+    [min]="startDate()"
+    (change)="onEndDateFiltered(endDateElement.value)"
+  />
+</div>

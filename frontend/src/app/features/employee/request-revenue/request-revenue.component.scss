@@ -1,0 +1,56 @@
+@import 'variables';
+@import 'colors';
+@import 'typology';
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+}
+
+h1 {
+  text-align: center;
+  font-size: $size-2x-large;
+  margin-bottom: 24px;
+  font-weight: $weight-base;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .checkbox {
+    display: flex;
+    gap: 8px;
+    font-size: 10xp;
+  }
+}
+
+.chooseFilter {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .options {
+    display: flex;
+    gap: 12px;
+
+    div {
+      border: 1px solid $neutral-50;
+      padding: 8px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+
+      &.active {
+        border: none;
+        background-color: $brand-pink;
+        color: #fff;
+      }
+    }
+  }
+}

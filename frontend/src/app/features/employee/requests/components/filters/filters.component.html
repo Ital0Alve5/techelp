@@ -1,0 +1,17 @@
+<div class="filters">
+  <div class="filters__buttons">
+    <p>Filtrar por:</p>
+    <button [class.current]="currentFilter() === 'abertas'" (click)="filterOpen()">Abertas</button>
+    <button [class.current]="currentFilter() === 'hoje'" (click)="filterToday()">Abertas hoje</button>
+    <button [class.current]="currentFilter() === 'todas'" (click)="filterAll()">Todas</button>
+  </div>
+  <div class="filters__date">
+    <app-date
+      [currentDate]="currentDate"
+      [startDate]="startDate() || ''"
+      [endDate]="endDate() || ''"
+      (startDateFiltered)="setStartDate($event)"
+      (endDateFiltered)="setEndDate($event)"
+    />
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="buttons">
+  <a routerLink="/funcionario/pedir-receita">
+    <arrow-right-icon width="20px" color="#fff"></arrow-right-icon>
+  </a>
+</div>
+<div id="printable-area">
+  <h2>Receita por {{ isCategory ? 'Categoria' : 'Data' }}</h2>
+  @if (revenues().length > 0) {
+    <app-table>
+      <tr table-titles>
+        <th>{{ isCategory ? 'Categoria' : 'Data' }}</th>
+        <th>Valor</th>
+      </tr>
+      @for (revenue of revenues(); track $index) {
+        <tr table-data>
+          <td>
+            {{ isCategory ? revenue.category : revenue.date }}
+          </td>
+          <td>
+            {{ currencyMaskService.apply(revenue.budget + '') }}
+          </td>
+        </tr>
+      }
+    </app-table>
+  } @else {
+    <p class="noRequestsYet">Nenhum pagamento realizado!</p>
+  }
+</div>
+
+<div class="button-container">
+  @if (revenues().length > 0) {
+    <button (click)="generatePdf()">Exportar como pdf</button>
+  }
+</div>

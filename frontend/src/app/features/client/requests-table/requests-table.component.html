@@ -1,0 +1,47 @@
+@if (requests().length > 0) {
+  <app-table>
+    <tr table-titles>
+      <th></th>
+      <th>Data/Hora</th>
+      <th>Descrição</th>
+      <th>Estado atual</th>
+      <th>Ações</th>
+    </tr>
+
+    @for (request of requests(); track $index) {
+      <tr table-data>
+        <td><allow-visibility-icon width="16px" color="#9197B3" (click)="onViewRequestDetails(request.id)" /></td>
+        <td>{{ request.date }} {{ request.hour }}</td>
+        <td>
+          {{
+            request.deviceDescription.length > 30
+              ? request.deviceDescription.slice(0, 30) + '...'
+              : request.deviceDescription
+          }}
+        </td>
+        <td [class]="request.status.toLocaleLowerCase().replace('ç', 'c')">
+          {{ request.status }}
+        </td>
+        <td class="actions">
+          @switch (request.status) {
+            @case ('Aprovada') {
+              <p>Manutenção em andamento</p>
+              <waiting-icon width="14px" color="#fd9519" />
+            }
+            @case ('Orçada') {
+              <button class="checkBudgetButton" (click)="onCheckBudget(request.id)">Aprovar/Rejeitar</button>
+            }
+            @case ('Rejeitada') {
+              <button class="redeemRequestButton" (click)="onRedeemRequest(request.id)">Resgatar serviço</button>
+            }
+            @case ('Arrumada') {
+              <button class="payServiceButton" (click)="onPayService(request.id)">Pagar serviço</button>
+            }
+          }
+        </td>
+      </tr>
+    }
+  </app-table>
+} @else {
+  <p class="noRequestsYet">Nenhuma solicitação realizada ainda!</p>
+}

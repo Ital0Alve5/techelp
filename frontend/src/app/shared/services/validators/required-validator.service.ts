@@ -5,7 +5,7 @@ import { BaseValidator } from '@/shared/models/validator/Validator.model';
 @Injectable()
 export class RequiredValidator extends BaseValidator {
   override validate(inputValue: string): InputError {
-    inputValue = super.sanitize(inputValue);
+    if (typeof inputValue === 'string') inputValue = super.sanitize(inputValue);
 
     if (inputValue.length === 0)
       return {

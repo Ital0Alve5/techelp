@@ -31,12 +31,13 @@
       textarea {
         font-size: $size-small;
         padding: 8px 16px;
-        border-radius: 24px;
+        border-radius: 16px;
         background-color: $neutral-10;
         border: 1px solid $neutral-30;
         outline: none;
         width: 100%;
-
+        resize: none;
+        
         &.error {
           border: 1px solid $feedback-negative-50;
         }

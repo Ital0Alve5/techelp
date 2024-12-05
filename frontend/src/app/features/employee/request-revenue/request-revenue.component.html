@@ -1,0 +1,41 @@
+<app-card>
+  <h1>Relatório de vendas</h1>
+  <div class="chooseFilter">
+    <p>Filtrar por:</p>
+
+    <div class="options">
+      <div (click)="chooseCategory()" [class]="isCategory() ? 'active' : ''">Categoria</div>
+      <div (click)="chooseDate()" [class]="!isCategory() ? 'active' : ''">Data</div>
+    </div>
+  </div>
+  <form (ngSubmit)="onSubmit()">
+    <app-input
+      id="dataComeco"
+      label="Data do inicio"
+      [(value)]="formValues().startDate.value"
+      [type]="'date'"
+      [validation]="formValues().startDate.validation"
+      (change)="validateDate()"
+      [max]="formValues().endDate.value || currentDate"
+      [disabled]="isCategory()"
+    >
+      <lock-icon input-icon width="14px" color="#9197B3" />
+    </app-input>
+
+    <app-input
+      id="dataFim"
+      label="Data do fim"
+      [(value)]="formValues().endDate.value"
+      [type]="'date'"
+      [validation]="formValues().endDate.validation"
+      (change)="validateDate()"
+      [min]="formValues().startDate.value"
+      [max]="currentDate"
+      [disabled]="isCategory()"
+    >
+      <lock-icon input-icon width="14px" color="#9197B3" />
+    </app-input>
+
+    <button app-button>Mostrar Relatório</button>
+  </form>
+</app-card>

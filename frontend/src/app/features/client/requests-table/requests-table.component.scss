@@ -1,0 +1,80 @@
+@import 'typology';
+@import 'variables';
+@import 'colors';
+
+:host {
+  margin: auto;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding-top: 80px;
+}
+
+app-table {
+  width: 100%;
+}
+
+p {
+  color: $feedback-warning-50;
+}
+
+.noRequestsYet {
+  text-align: center;
+  font-weight: $weight-bold;
+}
+
+allow-visibility-icon {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.checkBudgetButton {
+  border: 1px solid $feedback-positive-50;
+  color: $feedback-positive-50;
+}
+
+.payServiceButton {
+  border: 1px solid $feedback-info-50;
+  color: $feedback-info-50;
+}
+
+.redeemRequestButton {
+  border: 1px solid $feedback-negative-90;
+  color: $feedback-negative-90;
+}
+
+.aberta {
+  color: gray;
+}
+
+.orcada {
+  color: rgb(123, 75, 30);
+}
+
+.rejeitada {
+  color: red;
+}
+
+.aprovada {
+  color: rgb(197, 197, 10);
+}
+
+.redirecionada {
+  color: purple;
+}
+
+.aguardando {
+  color: blue;
+}
+
+.arrumada{
+  color: rgb(40, 115, 201);
+}
+
+.paga {
+  color: orange;
+}
+
+.finalizada {
+  color: green;
+}

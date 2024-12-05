@@ -1,0 +1,70 @@
+@if (categories().length > 0) {
+  <app-table>
+    <tr table-titles>
+      <th>Categoria</th>
+      <th></th>
+      <th (click)="openNewCategoryModal()"><add-icon /></th>
+    </tr>
+
+    @for (categorie of categories(); track $index) {
+      <tr table-data>
+        <td>
+          {{ categorie.label }}
+        </td>
+        <td (click)="openEditCategoryModal(categorie)"><edit-icon /></td>
+        <td (click)="openDeleteCategoryModal(categorie)"><delete-icon /></td>
+      </tr>
+    }
+  </app-table>
+} @else {
+  <div class="noCategoriesYet">
+    Nenhuma categoria encontrada.
+    <button (click)="openNewCategoryModal()">Adicione uma categoria</button>
+  </div>
+}
+
+<div>
+  <app-modal [(isHidden)]="isNewCategoryModalOpen">
+    <p class="modal-title">Adicionar nova categoria</p>
+    <form>
+      <app-textarea
+        id="defectDescription"
+        placeholder="Nome da nova categoria"
+        [(value)]="newCategorieData().value"
+        [validation]="newCategorieData().validation"
+      />
+      <div class="modalsButton">
+        <button class="cancelButton" (click)="closeNewCategoryModal()">Cancelar</button>
+        <button class="confirmButton" (click)="addNewCategory()" type="submit">Adicionar</button>
+      </div>
+    </form>
+  </app-modal>
+</div>
+
+<div>
+  <app-modal [(isHidden)]="isEditCategoryModalOpen">
+    <p class="modal-title">Editar Categoria</p>
+    <form>
+      <app-textarea
+        id="defectDescription"
+        placeholder="Novo nome da categoria"
+        [(value)]="selectedCategoryData().value"
+        [validation]="selectedCategoryData().validation"
+      />
+      <div class="modalsButton">
+        <button class="cancelButton" (click)="closeEditCategoryModal()">Cancelar</button>
+        <button class="confirmButton" (click)="updateCategory()" type="submit">Atualizar</button>
+      </div>
+    </form>
+  </app-modal>
+</div>
+
+<div>
+  <app-modal [(isHidden)]="isDeleteCategoryModalOpen">
+    <p class="modal-title">Tem certeza que deseja deletar esta categoria?</p>
+    <div class="modalsButton">
+      <button class="cancelButton" (click)="closeDeleteCategoryModal()">Cancelar</button>
+      <button class="confirmButton" (click)="deleteCategory()" type="submit">Deletar</button>
+    </div>
+  </app-modal>
+</div>

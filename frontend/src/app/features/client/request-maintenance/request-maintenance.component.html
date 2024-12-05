@@ -1,0 +1,32 @@
+<app-card>
+  <h1>Solicitação de Manutenção</h1>
+  <form (ngSubmit)="onSubmit()">
+    <app-select
+      id="deviceCategory"
+      label="Categoria do Equipamento"
+      placeholder="Selecione a categoria *"
+      [options]="deviceCategories()"
+      [getId]="true"
+      [(value)]="formValues().deviceCategory.value"
+      [validation]="formValues().deviceCategory.validation"
+    ></app-select>
+
+    <app-textarea
+      id="deviceDescription"
+      label="Descrição do Equipamento"
+      placeholder="Descreva o equipamento *"
+      [(value)]="formValues().deviceDescription.value"
+      [validation]="formValues().deviceDescription.validation"
+    ></app-textarea>
+
+    <app-textarea
+      id="issueDescription"
+      label="Descrição do Defeito"
+      placeholder="Descreva o defeito *"
+      [(value)]="formValues().issueDescription.value"
+      [validation]="formValues().issueDescription.validation"
+    />
+
+    <button app-button>Enviar Solicitação</button>
+  </form>
+</app-card>

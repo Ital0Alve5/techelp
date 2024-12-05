@@ -1,0 +1,107 @@
+<app-table>
+  <tr table-titles>
+    <th>Funcionário</th>
+    <th></th>
+    <th (click)="openNewEmployeeModal()"><add-icon /></th>
+  </tr>
+
+  @for (employee of employeesList(); track $index) {
+    <tr table-data>
+      <td>
+        {{ employee.name }}
+      </td>
+      <td (click)="openEditEmployeeModal(employee)"><edit-icon /></td>
+      <td>
+        @if (!employee.is_current && employeesList().length > 1) {
+          <delete-icon (click)="openDeleteEmployeeModal(employee)" />
+        }
+      </td>
+    </tr>
+  }
+</app-table>
+
+<app-modal [(isHidden)]="isNewEmployeeModalOpen">
+  <p class="modal-title">Adicionar novo funcionário</p>
+  <form>
+    <app-input
+      id="email"
+      label="E-mail"
+      placeholder="Digite seu e-mail *"
+      [(value)]="newEmployeeData().email.value"
+      [validation]="newEmployeeData().email.validation"
+    />
+    <app-input
+      id="name"
+      label="Nome"
+      placeholder="Nome completo *"
+      [(value)]="newEmployeeData().name.value"
+      [validation]="newEmployeeData().name.validation"
+    />
+    <app-input
+      id="date"
+      label="Data de aniversário"
+      placeholder="dd/mm/yyyy *"
+      [(value)]="newEmployeeData().birthdate.value"
+      [validation]="newEmployeeData().birthdate.validation"
+      [mask]="newEmployeeData().birthdate.mask"
+    />
+    <app-input
+      id="password"
+      label="Senha"
+      placeholder="Digite sua senha *"
+      [(value)]="newEmployeeData().password.value"
+      [validation]="newEmployeeData().password.validation"
+    />
+    <app-input
+      id="confirmPassword"
+      label="Confirmar senha"
+      placeholder="Confirme sua senha *"
+      [(value)]="newEmployeeData().confirmPassword.value"
+      [validation]="newEmployeeData().confirmPassword.validation"
+    />
+    <div class="modalsButton">
+      <button type="button" class="cancelButton" (click)="closeNewEmployeeModal()">Cancelar</button>
+      <button type="button" class="confirmButton" (click)="addNewEmployee()">Adicionar novo funcionário</button>
+    </div>
+  </form>
+</app-modal>
+
+<app-modal [(isHidden)]="isEditEmployeeModalOpen">
+  <p class="modal-title">Editar funcionário</p>
+  <form>
+    <app-input
+      id="email"
+      label="E-mail"
+      placeholder="Digite seu e-mail *"
+      [(value)]="selectedEmployeeData().email.value"
+      [validation]="selectedEmployeeData().email.validation"
+    />
+    <app-input
+      id="name"
+      label="Nome"
+      placeholder="Nome completo *"
+      [(value)]="selectedEmployeeData().name.value"
+      [validation]="selectedEmployeeData().name.validation"
+    />
+    <app-input
+      id="date"
+      label="Data de aniversário"
+      placeholder="dd/mm/yyyy *"
+      [(value)]="selectedEmployeeData().birthdate.value"
+      [validation]="selectedEmployeeData().birthdate.validation"
+      [mask]="selectedEmployeeData().birthdate.mask"
+    />
+    <div class="modalsButton">
+      <button type="button" class="cancelButton" (click)="closeEditEmployeeModal()">Cancelar</button>
+      <button type="button" class="confirmButton" (click)="editEmployee()">Editar funcionário</button>
+    </div>
+  </form>
+</app-modal>
+
+<app-modal [(isHidden)]="isDeleteEmployeeModalOpen">
+  <p class="modal-title">Tem certeza que deseja deletar este funcionário?</p>
+  <div class="modalsButton">
+    <button class="cancelButton" (click)="closeDeleteEmployeeModal()">Cancelar</button>
+    <button class="confirmButton" (click)="deleteEmployee()" type="submit">Deletar</button>
+  </div>
+</app-modal>

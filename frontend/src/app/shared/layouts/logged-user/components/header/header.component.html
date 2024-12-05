@@ -4,10 +4,14 @@
     <span>Techelp</span>
   </div>
   <nav>
-    @if (router.url.includes('solicitar')) {
-      <a routerLink="cliente/1/solicitacoes" routerLinkActive="active">Consultar solicitações</a>
-    } @else if (router.url.includes('solicitacoes')) {
-      <a routerLink="cliente/1/solicitar-manutencao" routerLinkActive="active">Solicitar manutenção</a>
+    @if (router.url.includes('cliente')) {
+      @if (router.url.includes('solicitar')) {
+        <a routerLink="cliente/solicitacoes" routerLinkActive="active">Consultar solicitações</a>
+      } @else if (router.url.includes('solicitacoes')) {
+        <a routerLink="cliente/solicitar-manutencao" routerLinkActive="active">Solicitar manutenção</a>
+      }
+    } @else if (router.url.includes('funcionario')) {
+      <a routerLink="funcionario/categorias" routerLinkActive="active">Consultar categorias</a>
     }
     <p>
       Olá, <b>{{ userName.split(' ')[0] }}</b>

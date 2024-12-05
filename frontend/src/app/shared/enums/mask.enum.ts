@@ -1,5 +1,7 @@
 export enum Mask {
   Cpf,
   Phone,
-  Cep
+  Cep,
+  Currency,
+  Date
 }

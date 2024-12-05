@@ -1,0 +1,12 @@
+@import 'variables';
+
+main {
+  height: 100vh;
+  position: relative;
+  margin: 0 20px;
+  padding: 80px 0;
+
+  @media (min-width: $tablet-width) {
+    margin: 0 80px;
+  }
+}

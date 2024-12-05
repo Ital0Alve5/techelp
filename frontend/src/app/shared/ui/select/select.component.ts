@@ -8,12 +8,14 @@ import { InputError } from '@/shared/types/input-error.type';
   styleUrls: ['./select.component.scss'],
 })
 export class SelectComponent implements OnChanges {
-  value = model<string>('');
+  value = model<string | number>('');
 
+  textValue = signal('');
   id = input<string>('');
+  getId = input(false);
   label = input<string>('');
   placeholder = input.required<string>();
-  options = input<{ id: number; label: string }[]>([]);
+  options = input<({ id: number; [key: string]: unknown } & ({ name: string } | { label: string }))[]>([]);
   validation = input<InputError>();
   disabled = input<boolean>();
   isOpen = signal<boolean>(false);
@@ -28,11 +30,15 @@ export class SelectComponent implements OnChanges {
     this.isOpen.set(!this.isOpen());
   }
 
-  onChange(event: Event) {
-    this.value.set((event.target as HTMLSelectElement).value);
-  }
+  onOptionChosen(chosenOption: { [key: string]: unknown; id: number } & ({ name: string } | { label: string })) {
+    if ('label' in chosenOption) {
+      this.value.set(chosenOption.label as string);
+      this.textValue.set(chosenOption.label as string);
+    } else if ('name' in chosenOption) {
+      this.value.set(chosenOption.name as string);
+      this.textValue.set(chosenOption.name as string);
+    }
 
-  onOptionChosen(event: Event) {
-    this.value.set((event.target as HTMLElement).innerText);
+    if (this.getId()) this.value.set(chosenOption.id);
   }
 }

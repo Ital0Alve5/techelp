@@ -1,0 +1,66 @@
+<app-filters (onFilter)="handleFilter($event)" />
+
+@if (requests().length > 0) {
+  <app-table>
+    <tr table-titles>
+      <th></th>
+      <th>Data/Hora</th>
+      <th>Cliente</th>
+      <th>Descrição do produto</th>
+      <th>Descrição do defeito</th>
+      <th>Estado</th>
+      <th>Ação</th>
+    </tr>
+
+    @for (request of requests(); track $index) {
+      <tr table-data>
+        <td><allow-visibility-icon (click)="onViewRequest(request.id)" width="16px" color="#9197B3" /></td>
+        <td>{{ request.date }} {{ request.hour }}</td>
+        <td>{{ request.clientName }}</td>
+        <td>
+          {{
+            request.deviceDescription.length > 30
+              ? request.deviceDescription.slice(0, 30) + '...'
+              : request.deviceDescription
+          }}
+        </td>
+        <td>
+          {{
+            request.issueDescription.length > 30
+              ? request.issueDescription.slice(0, 30) + '...'
+              : request.issueDescription
+          }}
+        </td>
+        <td [class]="request.status">
+          {{ request.status }}
+        </td>
+
+        <td class="actions">
+          @switch (request.status) {
+            @case ('Aberta') {
+              <button class="makeBudget" (click)="onMakeBudget(request.id)">Efetuar orçamento</button>
+            }
+            @case ('Aprovada') {
+              <button class="makeMaintenance" (click)="onMakeMaintenance(request.id)">Efetuar manutenção</button>
+            }
+            @case ('Redirecionada') {
+              <button class="makeMaintenance" (click)="onMakeMaintenance(request.id)">Efetuar manutenção</button>
+            }
+            @case ('Paga') {
+              <button class="finishRequest" (click)="onOpenFinishModal(request.id)">Finalizar solicitação</button>
+            }
+          }
+        </td>
+      </tr>
+    }
+  </app-table>
+  <app-modal [(isHidden)]="hideModal">
+    <p class="modal">Você tem certeza que deseja finalizar esta solicitação?</p>
+    <div class="buttons">
+      <button class="cancelButton" (click)="onCloseFinishModal()">Cancelar</button>
+      <button class="confirmButton" (click)="onFinishRequest()">Confirmar</button>
+    </div>
+  </app-modal>
+} @else {
+  <p class="noRequestsYet">Nenhuma solicitação realizada ainda!</p>
+}

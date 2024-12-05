@@ -1,0 +1,94 @@
+@import 'variables';
+@import 'colors';
+@import 'typology';
+
+:host {
+  margin: auto;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding-top: 20px;
+}
+
+allow-visibility-icon {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.noRequestsYet {
+  text-align: center;
+  font-weight: $weight-bold;
+}
+
+app-table {
+  width: 100%;
+}
+
+.makeBudget {
+  border: 1px solid $feedback-positive-50;
+  color: $feedback-positive-50;
+}
+
+.makeMaintenance {
+  border: 1px solid $feedback-info-50;
+  color: $feedback-info-50;
+}
+
+.finishRequest {
+  border: 1px solid $feedback-negative-90;
+  color: $feedback-negative-90;
+}
+
+.aberta {
+  color: gray;
+}
+
+.Orçada {
+  color: rgb(123, 75, 30);
+}
+
+.Rejeitada {
+  color: red;
+}
+
+.Aprovada {
+  color: rgb(197, 197, 10);
+}
+
+.Redirecionada {
+  color: purple;
+}
+
+.Arrumada{
+  color: rgb(40, 115, 201);
+}
+
+.aguardando {
+  color: blue;
+}
+
+.Paga {
+  color: orange;
+}
+
+.Finalizada {
+  color: green;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
+
+  .cancelButton {
+    background-color: $feedback-negative-50;
+    color: #fff;
+  }
+
+  .confirmButton {
+    background-color: $feedback-positive-50;
+    color: #fff;
+  }
+}

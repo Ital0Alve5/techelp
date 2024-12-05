@@ -1,0 +1,85 @@
+<div class="buttons">
+  <a routerLink="/cliente/solicitacoes">
+    <arrow-right-icon width="20px" color="#fff" />
+  </a>
+  @if (requestData().status === 'Orçada') {
+    <button backgroundColor="#dc363c" app-button (click)="openModalReject()">Rejeitar</button>
+    <button backgroundColor="#10855b" app-button (click)="openModalApprove()">Aprovar</button>
+  } @else if (requestData().status === 'Arrumada') {
+    <button backgroundColor="#10855b" app-button (click)="openModalPayment()">Pagar serviço</button>
+  }
+</div>
+<section class="budget-container">
+  <p>
+    Serviço avaliado por <b> {{ requestData().lastEmployee }}</b> e orçado em:
+  </p>
+  <p class="price">R$ {{ convertCurrency(requestData().budget) }}</p>
+</section>
+<section>
+  <ul class="request-description">
+    <li>
+      <b>Data da solicitação:</b>
+      <p>{{ requestData().date }} às {{ requestData().hour }}</p>
+    </li>
+    <li>
+      <b>Categoria do equipamento:</b>
+      <p>{{ requestData().categoryName }}</p>
+    </li>
+    <li>
+      <b>Descrição do equipamento:</b>
+      <p>{{ requestData().deviceDescription }}</p>
+    </li>
+    <li>
+      <b>Descrição do defeito:</b>
+      <p>{{ requestData().issueDescription }}</p>
+    </li>
+  </ul>
+</section>
+
+<div>
+  <app-modal [(isHidden)]="isApprovalModalOpen">
+    <p class="modal-title">Confirmar aprovação do serviço?</p>
+    <br />
+    <p>
+      O serviço será aprovado no valor de <span class="price-highlight">R$ {{ requestData().budget }}</span>
+    </p>
+    <div class="buttons buttons--modal">
+      <button backgroundColor="#dc363c" app-button (click)="closeModalApprove()">Cancelar</button>
+      <button backgroundColor="#10855b" app-button (click)="confirmApprove()">Continuar</button>
+    </div>
+  </app-modal>
+</div>
+
+<div>
+  <app-modal [(isHidden)]="isRejectModalOpen">
+    <p class="modal-title">Rejeitar orçamento</p>
+    <p class="modal">Escreva o motivo de rejeição:</p>
+    <form (ngSubmit)="confirmReject(rejectForm)" #rejectForm="ngForm">
+      <textarea
+        name="rejectReason"
+        class="large-textarea"
+        maxlength="300"
+        placeholder="Motivo da rejeição"
+        required
+        [(ngModel)]="rejectReason"
+      ></textarea>
+      <button type="submit" [disabled]="!rejectForm.valid" class="button--modal" backgroundColor="#10855b" app-button>
+        Continuar
+      </button>
+    </form>
+  </app-modal>
+</div>
+
+<div>
+  <app-modal [(isHidden)]="isPaymentConfirmationModalOpen">
+    <h2>Confirmação de pagamento</h2>
+    <p class="modal">
+      Confirmar pagamento de <span class="price-highlight">R${{ requestData().budget }}</span
+      >?
+    </p>
+    <div class="buttons buttons--modal">
+      <button backgroundColor="#dc363c" app-button (click)="closeModalPayment()">Cancelar</button>
+      <button backgroundColor="#10855b" app-button (click)="confirmPayment()">Continuar</button>
+    </div>
+  </app-modal>
+</div>

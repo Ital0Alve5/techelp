@@ -65,3 +65,51 @@ export class CepMaskService extends InputMaskModel {
       .replace(/(-\d{3})\d+?$/, '$1');
   }
 }
+
+@Injectable({ providedIn: 'root' })
+export class CurrencyMaskService extends InputMaskModel {
+  constructor() {
+    super();
+  }
+
+  override apply(inputValue: string): string {
+    let numericValue = inputValue.replace(/\D/g, '');
+
+    if (numericValue.length === 0) {
+      return 'R$ 0,00';
+    }
+
+    while (numericValue.length < 3) {
+      numericValue = '0' + numericValue;
+    }
+
+    const cents = numericValue.slice(-2);
+    const integerPart = numericValue.slice(0, -2);
+
+    const integerPartWithoutLeadingZeros = integerPart.replace(/^0+/, '') || '0';
+
+    const formattedIntegerPart = integerPartWithoutLeadingZeros.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    return `R$ ${formattedIntegerPart},${cents}`;
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class DateMaskService extends InputMaskModel {
+  constructor() {
+    super();
+  }
+
+  override apply(inputValue: string): string {
+    inputValue = inputValue.replace(/\D/g, '');
+
+    const day = inputValue.substring(0, 2);
+    const month = inputValue.substring(2, 4);
+    const year = inputValue.substring(4, 8);
+
+    if (inputValue.length > 2 && inputValue.length <= 4) inputValue = day + '/' + month;
+    else if (inputValue.length > 4) inputValue = day + '/' + month + '/' + year;
+
+    return inputValue;
+  }
+}

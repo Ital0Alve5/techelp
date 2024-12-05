@@ -40,6 +40,7 @@
         border: 1px solid $neutral-30;
         outline: none;
         width: 100%;
+        text-overflow: ellipsis;
 
         &.error {
           border: 1px solid $feedback-negative-50;

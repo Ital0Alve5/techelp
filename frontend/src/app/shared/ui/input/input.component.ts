@@ -25,6 +25,9 @@ export class InputComponent {
   validation = input<InputError>();
   mask = input<Mask>();
   disabled = input<boolean>();
+  max = input<string>();
+  min = input<string>();
+
   inputEvent = output<string>();
 
   isHidden = signal<boolean>(true);
@@ -42,8 +45,8 @@ export class InputComponent {
     this.inputEvent.emit(this.value());
   }
 
-  toggleHidden(shouldBeHidden: boolean) {
-    this.isHidden.set(shouldBeHidden);
+  toggleHidden() {
+    this.isHidden.set(!this.isHidden());
 
     if (this.isHidden()) this.type.set('password');
     else this.type.set('text');

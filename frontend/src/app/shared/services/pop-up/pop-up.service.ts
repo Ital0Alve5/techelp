@@ -8,6 +8,7 @@ export class PopupService {
 
   addNewPopUp(popUp: PopUp): void {
     this.popups.push(popUp);
+
     this.removePopUpAfterSomeTime(popUp);
   }
 

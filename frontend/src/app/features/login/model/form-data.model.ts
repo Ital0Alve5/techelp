@@ -7,6 +7,14 @@ export const formData = {
       message: '',
     },
   },
+  employeeID: {
+    value: '',
+    type: 'text',
+    validation: {
+      error: false,
+      message: '',
+    },
+  },
   password: {
     value: '',
     type: 'password',

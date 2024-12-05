@@ -11,13 +11,12 @@
         [class.error]="validation()?.error"
         [class.open]="isOpen()"
         [class.disabled]="disabled()"
-        (change)="onChange($event)"
       >
-        <span>{{ value().length > 0 ? value() : placeholder() }}</span>
+        <span>{{ textValue() || value() || placeholder() }}</span>
         <ul [class.open]="isOpen()">
-          @for (option of options(); track option.label) {
-            <li (click)="onOptionChosen($event)" [value]="option.id">
-              {{ option.label }}
+          @for (option of options(); track $index) {
+            <li (click)="onOptionChosen(option)" [value]="option.id">
+              {{ option.label || option.name }}
             </li>
           }
         </ul>

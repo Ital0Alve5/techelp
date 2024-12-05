@@ -1,0 +1,133 @@
+@import 'colors';
+
+
+:host {
+  display: block;
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.request-description {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  width: 100%;
+  gap: 24px;
+  li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    b {
+      min-width: 240px;
+    }
+  }
+}
+
+section {
+  position: relative;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid $neutral-30;
+  background-color: $neutral-base;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
+
+  .cancelButton {
+    background-color: $feedback-negative-50;
+    color: #fff;
+    padding: 8px 16px;
+    flex: 1;
+    cursor: pointer;
+    border: none;
+    border-radius: 16px;
+    font-size: medium;
+  }
+
+  .confirmButton {
+    background-color: $feedback-positive-50;
+    color: #fff;
+    padding: 8px 16px;
+    flex: 1;
+    cursor: pointer;
+    border: none;
+    border-radius: 16px;
+    font-size: medium;
+  }
+}
+a {
+  width: 20px;
+  margin-right: auto;
+  transform: translateY(8px);
+  background: $brand-purple;
+  padding: 6px 8px 1px 8px;
+  box-sizing: content-box;
+  border-radius: 100%;
+  transition: 1s;
+
+  &:hover {
+    background: $brand-purple-hover;
+  }
+}
+
+form {
+  margin-top: 20px;
+
+  textarea {
+    margin-top: 8px;
+  }
+}
+
+.price-highlight {
+  color: $feedback-info-50;
+  font-weight: bold;
+}
+
+app-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .modal-footer {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .modal-footer button {
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+  }
+
+  .price-highlight {
+    color: $feedback-info-50;
+    font-weight: bold;
+  }
+}
+
+.large-textarea {
+  width: 500px;
+  height: 150px;
+  padding: 10px;
+  box-sizing: border-box;
+  resize: none;
+  width: 100%;
+}
+
+.button--modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 10px;
+}

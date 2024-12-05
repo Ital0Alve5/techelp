@@ -1,5 +1,10 @@
 <app-card>
-  <h1>Bem-vindo de volta!</h1>
+  @if (isEmployeeLogin) {
+    <h1>Logue como funcionário!</h1>
+  } @else {
+    <h1>Bem-vindo de volta!</h1>
+  }
+
   <app-auth-type></app-auth-type>
   <form (ngSubmit)="onSubmit()">
     <app-input
@@ -24,7 +29,12 @@
       <lock-icon input-icon width="14px" color="#9197B3" />
     </app-input>
 
-    <a href="#">Esqueci minha senha</a>
     <button app-button>Entrar</button>
   </form>
+
+  @if (isEmployeeLogin) {
+    <a routerLink="/login"> Sou cliente </a>
+  } @else {
+    <a routerLink="/funcionario/login"> Sou funcionário </a>
+  }
 </app-card>

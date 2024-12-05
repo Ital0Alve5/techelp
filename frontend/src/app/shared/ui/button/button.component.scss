@@ -15,13 +15,4 @@ div {
   font-size: $size-base;
   cursor: pointer;
   transition: 1s;
-
-  &.purple-hover {
-    &:hover {
-      background-color: $brand-purple-hover;
-    }
-  }
-  &:hover {
-    transition: 1s;
-  }
 }

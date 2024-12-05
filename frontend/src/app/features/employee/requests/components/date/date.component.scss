@@ -1,0 +1,22 @@
+@import 'colors';
+
+div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  label {
+    font-weight: 400;
+  }
+
+  input {
+    margin-right: 10px;
+    padding: 5px 8px;
+    border: 1px solid $brand-pink;
+    border-radius: 15px;
+    color: $neutral-70;
+
+  }
+
+
+}
